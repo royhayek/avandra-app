@@ -1,0 +1,95 @@
+{
+  "ar": {
+    "common": {
+      "back": "عودة",
+      "next": "التالي",
+      "submit": "إرسال",
+      "continue": "المتابعة"
+    },
+    "navigation": {
+      "trip_planner": "مخطط الرحلة",
+      "history": "الخطط المحفوظة",
+      "categories": "التصنيفات",
+      "settings": "الإعدادات",
+      "my_subscription": "اشتراكي"
+    },
+    "planner": {
+      "where_to_go": "إلى أين تريد الذهاب؟",
+      "search_by": "البحث حسب المدينة أو البلدة",
+      "popular_destinations": "وجهات شعبية",
+      "when_to_go": "متى تريد الذهاب؟",
+      "who_is_coming": "من سيأتي معك؟",
+      "how_to_spend": "كيف تريد أن تقضي وقتك؟",
+      "step2": {
+        "noOfDays": "عدد الأيام"
+      }
+    },
+    "history": {
+      "delete_your_history": "هل أنت متأكد أنك تريد حذف السجل الخاص بك؟",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "no_history_found": "لم يتم العثور على محفوظات",
+      "my trips": "رحلاتي",
+      "days_long": "أيام طويلة",
+      "for": ": لـ"
+    },
+    "settings": {
+      "general": "عموما",
+      "language": "اللغة",
+      "theme": "النمط",
+      "subscription": "الاشتراك",
+      "restore_purchase": "استعادة الشراء",
+      "manage_subscription": "ادارة الاشتراك",
+      "other": "أخرى",
+      "faq": "الأسئلة المتداولة",
+      "privacy_policy": "سياسة الخصوصية",
+      "terms": "الشروط والأحكام",
+      "rate_app": "قيم التطبيق",
+      "upgrade_to_plus": "قم بالترقية إلى Plus!",
+      "expanded_access": "توسيع الوصول إلى ميزات {{name}}",
+      "purchase_restored": "تمت استعادة الشراء بنجاح",
+      "could_not_restore": "تعذرت استعادة الشراء",
+      "languages": {
+        "english": "الإنجليزية",
+        "arabic": "العربية",
+        "french": "الفرنسية"
+      }
+    },
+    "subscription": {
+      "powered_by_chatgpt": "مدعوم من ChatGPT 3.5 Turbo",
+      "accurate_and_detailed": "ردود أكثر دقة وتفصيلاً",
+      "no_limits": "لا حدود",
+      "unlimited_chats": "محادثات غير محدودة",
+      "no_ads": "لا اعلانات",
+      "enjoy_without_ads": "استمتع بـ {{name}} بدون أي إعلانات",
+      "unlock_access": "إفتح وصول غير محدود",
+      "cancel_anytime": "إلغاء الفواتير المتكررة في أي وقت",
+      "no_subscriptions_found": "لم يتم العثور على اشتراكات",
+      "refer_to_documentation": "يرجى الرجوع إلى الوثائق لمعرفة كيفية إضافة الاشتراكات",
+      "you_own_this_plan": "أنت تملك هذه الخطة",
+      "P1W": "أسبوعيًا",
+      "P1M": "شهريًا",
+      "P1Y": "سنويًا",
+      "P4W": "كل 4 أسابيع",
+      "P3M": "كل 3 أشهر",
+      "P6M": "كل 6 شهور"
+    },
+    "usage": {
+      "daily_free_usage": "الاستخدام اليومي المجاني",
+      "free_messages_daily": "دردش مع {{name}} مجانًا! {{number}} رسائل يومية",
+      "get_unlimited": "احصل على عدد غير محدود مع AI Plus",
+      "hit_limit": "يبدو أنك وصلت إلى الحد الأقصى لهذا اليوم! عد غدًا للمزيد أو قم بالترقية للاستمتاع بالدردشة غير المحدودة!",
+      "earn": "مشاهدة إعلان قصير"
+    },
+    "network": {
+      "no_internet_connection": "ليس هناك اتصال بالإنترنت",
+      "retry_connecting": "أعد محاولة الاتصال"
+    },
+    "trip": {
+      "save_before_you_go": "حفظ قبل الرحيل؟",
+      "you_havent_saved": "لم تقم بحفظ هذا الجدول الزمني، إذا غادرت الآن، ستفقد بعض هذه الاقتراحات.",
+      "leave": "غادر",
+      "go_back": "ارجع"
+    }
+  }
+}

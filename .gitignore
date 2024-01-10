@@ -33,3 +33,11 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Other
+android/
+ios/
+
+private_key.pepk
+credentials.json
+package-lock.json

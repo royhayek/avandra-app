@@ -1,0 +1,38 @@
+{
+  "cli": {
+    "version": ">= 0.54.1"
+  },
+  "build": {
+    "production": {},
+    "development": {
+      "channel": "dev",
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "beta": {
+      "channel": "beta"
+    },
+    "prod": {
+      "channel": "prod"
+    }
+  },
+  "submit": {
+    "prod": {}
+  }
+}

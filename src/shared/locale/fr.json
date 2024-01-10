@@ -1,0 +1,94 @@
+{
+  "fr": {
+    "common": {
+      "back": "Retour",
+      "next": "Suivant",
+      "submit": "Envoyer",
+      "continue": "Continuer"
+    },
+    "navigation": {
+      "trip_planner": "Planificateur de voyage",
+      "history": "Plans sauvegardés",
+      "settings": "Paramètres",
+      "my_subscription": "Mon abonnement"
+    },
+    "planner": {
+      "where_to_go": "Où voulez vous aller?",
+      "search_by": "Rechercher par ville ou village",
+      "popular_destinations": "Destinations populaires",
+      "when_to_go": "Quand voulez-vous aller?",
+      "who_is_coming": "Qui vient avec vous?",
+      "how_to_spend": "Comment voulez-vous passer votre temps ?",
+      "step2": {
+        "noOfDays": "Nombre de jours"
+      }
+    },
+    "history": {
+      "delete_your_history": "Voulez-vous vraiment supprimer votre historique?",
+      "delete": "Supprimer",
+      "cancel": "Annuler",
+      "no_history_found": "Aucun historique trouvé",
+      "my trips": "Mes voyages",
+      "days_long": "jours longs",
+      "for": "Pour: "
+    },
+    "settings": {
+      "general": "Générale",
+      "language": "Langue",
+      "theme": "Thème",
+      "subscription": "Abonnement",
+      "restore_purchase": "Restaurer l'achat",
+      "manage_subscription": "Gérer l'abonnement",
+      "other": "Autre",
+      "faq": "Questions Fréquemment Posées",
+      "privacy_policy": "Politique de Confidentialité",
+      "terms": "Termes et Conditions",
+      "rate_app": "Évaluer l'application",
+      "upgrade_to_plus": "Passez à Plus!",
+      "expanded_access": "Accès étendu aux fonctionnalités de {{name}}",
+      "purchase_restored": "Achat restauré avec succès",
+      "could_not_restore": "Impossible de restaurer l'achat",
+      "languages": {
+        "english": "Anglais",
+        "arabic": "Arabe",
+        "french": "Français"
+      }
+    },
+    "subscription": {
+      "powered_by_chatgpt": "Propulsé par ChatGPT 3.5 Turbo",
+      "accurate_and_detailed": "Des réponses plus précises et détaillées",
+      "no_limits": "Pas de limites",
+      "unlimited_chats": "Chats illimités",
+      "no_ads": "Pas de publicité",
+      "enjoy_without_ads": "Profitez de {{name}} sans aucune publicité",
+      "unlock_access": "Déverrouillez l'accès illimité",
+      "cancel_anytime": "Annulez la facturation récurrente à tout moment",
+      "no_subscriptions_found": "Aucune souscription trouvée",
+      "refer_to_documentation": "Veuillez vous référer à la documentation pour savoir comment ajouter des abonnements",
+      "you_own_this_plan": "Ce plan vous appartient",
+      "P1W": "Hebdomadaire",
+      "P1M": "Mensuelle",
+      "P1Y": "Annuelle",
+      "P4W": "Toutes les 4 semaines",
+      "P3M": "Tous les 3 mois",
+      "P6M": "Tous les 6 mois"
+    },
+    "usage": {
+      "daily_free_usage": "Utilisation gratuite quotidienne",
+      "free_messages_daily": "Discutez avec {{name}} gratuitement! {{number}} messages par jour",
+      "get_unlimited": "Obtenez l'illimité avec AI Plus",
+      "hit_limit": "Il semble que vous ayez atteint votre limite pour aujourd'hui! Revenez demain pour en savoir plus ou obtenez l'illimité pour profiter d'un chat illimité!",
+      "earn": "Regarder la courte publicité"
+    },
+    "network": {
+      "no_internet_connection": "Pas de connexion Internet",
+      "retry_connecting": "Réessayer"
+    },
+    "trip": {
+      "save_before_you_go": "Sauvegarder avant de partir ?",
+      "you_havent_saved": "Vous n'avez pas enregistré cet itinéraire, si vous partez maintenant, vous perdrez certaines de ces recommandations.",
+      "leave": "Partir",
+      "go_back": "Retourner"
+    }
+  }
+}

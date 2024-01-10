@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
-    "version": "1.0.0",
+    "name": "travel-ai-app",
+    "slug": "travel-ai-app",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -11,20 +11,75 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "experiments": {
+      "tsconfigPaths": true
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.codeblow.travelplanai",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "config": {
+        "googleMapsApiKey": "***REMOVED***"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app users your location information while the app is running in the foreground."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "***REMOVED***"
+        }
+      },
+      "package": "com.codeblow.travelplanai",
+      "versionCode": 8,
+      "runtimeVersion": "exposdk:44.0.0",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "googleMapsApiKey": "***REMOVED***",
+      "supportsRTL": true,
+      "eas": {
+        "projectId": "8f78b06a-2996-45bb-bc94-ffd3cc0ad712"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c944d619-e2a3-4ebc-b1a1-d9adfa9acfc5"
+    },
+    "plugins": [
+      "react-native-iap",
+      "./react-native-maps-plugin",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 31,
+            "targetSdkVersion": 31,
+            "buildToolsVersion": "31.0.0"
+          },
+          "ios": {
+            "useFrameworks": "static",
+            "deploymentTarget": "13.0"
+          }
+        }
+      ],
+      "expo-localization",
+      "@react-native-google-signin/google-signin"
+    ],
+    "owner": "royhayek"
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-1469570455778464~7118559925",
+    "ios_app_id": "ca-app-pub-1469570455778464~1963740474"
   }
 }

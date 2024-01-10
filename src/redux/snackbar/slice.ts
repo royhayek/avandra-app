@@ -1,0 +1,41 @@
+// Packages
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+
+// Utilities
+import { RootState } from '@app/store';
+
+// Interfaces
+import { SnackbarInitialState } from './types';
+
+// Slice
+const initialState: SnackbarInitialState = {
+  title: '',
+  message: '',
+  show: false,
+  delay: 1200,
+  autohide: true,
+};
+
+const snackbarSlice = createSlice({
+  name: 'snackbarSlice',
+  initialState,
+  reducers: {
+    showSnackbar: (state, action) => {
+      state.show = true;
+      state.title = action.payload.title;
+      state.message = action.payload.message;
+    },
+    hideSnackbar: (state) => {
+      state.show = false;
+    }
+  }
+});
+
+export const snackbarActions = snackbarSlice.actions;
+
+export default snackbarSlice.reducer;
+
+// Selectors
+const _snackbar = (state: RootState) => state.snackbar;
+
+export const selectSnackBar = createSelector(_snackbar, (data) => data);
