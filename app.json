@@ -25,7 +25,12 @@
         "googleMapsApiKey": "***REMOVED***"
       },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app users your location information while the app is running in the foreground."
+        "NSLocationWhenInUseUsageDescription": "This app users your location information while the app is running in the foreground.",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": "com.googleusercontent.apps.48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v"
+          }
+        ]
       }
     },
     "android": {
@@ -58,7 +63,6 @@
     },
     "plugins": [
       "react-native-iap",
-      "./react-native-maps-plugin",
       [
         "expo-build-properties",
         {
@@ -74,7 +78,8 @@
         }
       ],
       "expo-localization",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "./react-native-maps-plugin"
     ],
     "owner": "royhayek"
   },

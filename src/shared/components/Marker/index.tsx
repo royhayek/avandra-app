@@ -1,14 +1,18 @@
 // Packages
-import { useTheme, Text } from 'react-native-paper';
-import { MapMarker, MarkerPressEvent } from 'react-native-maps';
-import { Animated } from 'react-native';
 import React from 'react';
+import { ms, mvs } from 'react-native-size-matters';
+
+// Components
+import { Animated } from 'react-native';
+import {  Text } from 'react-native-paper';
+import { MapMarker, MarkerPressEvent } from 'react-native-maps';
 
 // Utilities
 import makeStyles from './styles';
-import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
+import { useAppTheme } from '@shared/assets/theme';
+
 interface InterpolationValue {
   scale: Animated.AnimatedInterpolation<string | number>;
 }
@@ -34,7 +38,7 @@ interface MarkerProps {
 // Component
 const Marker: React.FC<MarkerProps> = ({ marker, index, size, onMarkerPress, interpolations, displayDay }) => {
   // Statics
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   const { lat, lng } = marker?.searchResult?.geometry?.location || {};

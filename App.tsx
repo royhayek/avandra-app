@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import React, { useCallback, useEffect, useState } from 'react';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 // Components
 import Root from './src/app/Root';
@@ -60,6 +61,10 @@ export default function App() {
   // Effects
   useEffect(() => {
     prepare();
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
+      offlineAccess: false
+    });
   }, []);
 
   // Renderers
