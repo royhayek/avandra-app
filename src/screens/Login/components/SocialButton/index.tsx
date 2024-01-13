@@ -1,6 +1,6 @@
 // Packages
 import React from 'react';
-import { Text, useTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 // Components
 import FastImage, { Source } from 'react-native-fast-image';
@@ -27,7 +27,7 @@ const SocialButton: React.FC<SocialButtonProps> = ({ icon, title, onPress }) => 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.iconContent}>
+        <View style={[styles.iconContent, theme.dark && String(title).match(/apple/i) && { backgroundColor: theme.colors.white, padding: 1 }]}>
           <FastImage source={icon} style={styles.icon} />
         </View>
         <Text variant="bodyMedium" style={styles.title}>

@@ -88,10 +88,10 @@ const PlannerScreen = () => {
   );
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => Keyboard.dismiss()}>
+    <View style={styles.container}>
       {steps[active]}
       {active !== 0 && !isLastStep && renderFooter}
-    </TouchableOpacity>
+    </View>
   );
 };
 

@@ -1,30 +1,30 @@
 // Packages
-import { HeaderBackButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
-import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StackScreenProps } from '@react-navigation/stack';
-
-import { I18nManager, Platform } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
-import { Text, useTheme } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { I18nManager, Platform } from 'react-native';
 import React, { ReactNode, useCallback } from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Components
-import BackButton from '@shared/components/Buttons/Back';
-import SubscriptionScreen from '@screens/Subscription';
-import ItineraryScreen from '@screens/Itinerary';
-import SettingsScreen from '@screens/Settings';
+import Login from '@screens/Login';
+import MapScreen from '@screens/Map';
+import InfoScreen from '@screens/Info';
+import { Text } from 'react-native-paper';
 import MyTripsScreen from '@screens/MyTrips';
 import PlannerScreen from '@screens/Planner';
-import InfoScreen from '@screens/Info';
-import MapScreen from '@screens/Map';
-import Login from '@screens/Login';
+import { Ionicons } from '@expo/vector-icons';
+import SettingsScreen from '@screens/Settings';
+import ItineraryScreen from '@screens/Itinerary';
+import SubscriptionScreen from '@screens/Subscription';
+import BackButton from '@shared/components/Buttons/Back';
 
 // Utilities
-import { scaledFontSize, useAppTheme } from '@shared/assets/theme';
 import { t } from '@app/i18n';
+import { scaledFontSize, useAppTheme } from '@shared/assets/theme';
+
+// Interfaces
 import { ParamListBase, RouteProp } from '@react-navigation/native';
+import { HeaderBackButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 
 interface TabBarLabelProps {
   children: ReactNode;

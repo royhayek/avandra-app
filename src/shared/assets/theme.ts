@@ -98,7 +98,7 @@ const fontConfig = {
   }
 };
 
-const fonts = configureFonts({ config: fontConfig });
+const fonts = configureFonts({ config: fontConfig, isV3: true });
 
 export const lightTheme = {
   ...DefaultTheme,
@@ -121,7 +121,7 @@ export const lightTheme = {
   },
   fonts: {
     ...DefaultTheme.fonts,
-    fonts
+    ...fonts
   }
 };
 
@@ -145,7 +145,7 @@ export const darkTheme = {
   },
   fonts: {
     ...DefaultTheme.fonts,
-    fonts
+    ...fonts
   }
 };
 

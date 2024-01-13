@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Slices
 import appReducer from './app/slice';
+import authReducer from './auth/slice';
 import placesReducer from './places/slice';
 import itineraryReducer from './itinerary/slice';
 import snackbarSliceReducer from './snackbar/slice';
@@ -18,6 +19,7 @@ const appPersistConfig = {
 
 export default combineReducers({
   app: persistReducer(appPersistConfig, appReducer),
+  auth: authReducer,
   itinerary: itineraryReducer,
   destinations: destinationsReducer,
   places: placesReducer,

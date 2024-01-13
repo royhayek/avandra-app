@@ -19,6 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "bundleIdentifier": "com.codeblow.travelplanai",
       "googleServicesFile": "./GoogleService-Info.plist",
       "config": {
@@ -28,7 +29,9 @@
         "NSLocationWhenInUseUsageDescription": "This app users your location information while the app is running in the foreground.",
         "CFBundleURLTypes": [
           {
-            "CFBundleURLSchemes": "com.googleusercontent.apps.48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v"
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v"
+            ]
           }
         ]
       }
@@ -67,9 +70,9 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 31,
-            "targetSdkVersion": 31,
-            "buildToolsVersion": "31.0.0"
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0"
           },
           "ios": {
             "useFrameworks": "static",
@@ -79,6 +82,16 @@
       ],
       "expo-localization",
       "@react-native-google-signin/google-signin",
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "902078817860545",
+          "clientToken": "***REMOVED***",
+          "displayName": "AI Trip App",
+          "scheme": "fb902078817860545"
+        }
+      ],
+      "expo-apple-authentication",
       "./react-native-maps-plugin"
     ],
     "owner": "royhayek"

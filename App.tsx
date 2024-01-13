@@ -1,6 +1,7 @@
 // Packages
 import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
+import { Settings } from 'react-native-fbsdk-next';
 import { PersistGate } from 'redux-persist/integration/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -61,8 +62,11 @@ export default function App() {
   // Effects
   useEffect(() => {
     prepare();
+    Settings.initializeSDK();
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
+      webClientId: '48273391374-2q2gchl5vo804peqimv5f50mgu3l21qs.apps.googleusercontent.com',
+      iosClientId: '48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v.apps.googleusercontent.com', // Taken from google cloud console
       offlineAccess: false
     });
   }, []);

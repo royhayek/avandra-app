@@ -28,7 +28,7 @@ interface MarkerProps {
       };
     };
   };
-  size: number;
+  size?: number;
   index: number;
   displayDay?: boolean;
   interpolations?: InterpolationValue[];

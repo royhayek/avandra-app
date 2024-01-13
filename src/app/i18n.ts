@@ -53,3 +53,5 @@ export const changeLocale = (locale: string) => {
 export const isRTL = I18nManager.isRTL;
 
 export const t = (key: string, options?: TranslateOptions) => i18n.t(key, options);
+
+export default i18n;
