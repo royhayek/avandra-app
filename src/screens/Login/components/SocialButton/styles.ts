@@ -8,26 +8,26 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      minHeight: mvs(42),
+      minHeight: mvs(48),
       alignItems: 'center',
-      borderWidth: ms(1.5),
+      borderWidth: ms(1),
       borderRadius: ms(50),
-      marginBottom: mvs(16),
       justifyContent: 'center',
-      borderColor: theme.dark ? theme.colors.gray : theme.colors.lightGray
+      borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[200],
+      backgroundColor: theme.dark ? theme.colors.dark[3] : 'transparent'
     },
     content: {
       width: '100%',
       padding: ms(5),
       display: 'flex',
-      minHeight: mvs(45),
+      minHeight: mvs(48),
       alignItems: 'center',
       flexDirection: 'row',
       justifyContent: 'center'
     },
     iconContent: {
       left: ms(16),
-      borderRadius: 50,
+      borderRadius: ms(50),
       position: 'absolute',
       justifyContent: 'center'
     },
@@ -37,6 +37,6 @@ export default (theme: AppTheme) =>
     },
     title: {
       fontWeight: 'bold',
-      color: theme.dark ? theme.colors.white : theme.colors.black
+      color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     }
   });

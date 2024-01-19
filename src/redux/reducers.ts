@@ -1,15 +1,23 @@
 // Packages
 import { combineReducers } from 'redux';
-import { persistReducer } from 'redux-persist';
+import { persistCombineReducers, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage/session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Slices
 import appReducer from './app/slice';
 import authReducer from './auth/slice';
+import userReducer from './user/slice';
 import placesReducer from './places/slice';
 import itineraryReducer from './itinerary/slice';
 import snackbarSliceReducer from './snackbar/slice';
 import destinationsReducer from './destinations/slice';
+
+const persistStorageConfig = {
+  key: 'ai-trip-app',
+  storage: AsyncStorage,
+  timeout: 0
+};
 
 const appPersistConfig = {
   key: 'root',
@@ -17,9 +25,16 @@ const appPersistConfig = {
   blacklist: ['config', 'messagesCount', 'lastSentDate', 'subProducts', 'subscriptions', 'ownedSubscriptions']
 };
 
-export default combineReducers({
+const persistSessionConfig = {
+  key: 'session',
+  storage: AsyncStorage,
+  timeout: 0
+};
+
+export default persistCombineReducers(persistStorageConfig, {
   app: persistReducer(appPersistConfig, appReducer),
-  auth: authReducer,
+  auth: persistReducer(persistSessionConfig, authReducer),
+  user: userReducer,
   itinerary: itineraryReducer,
   destinations: destinationsReducer,
   places: placesReducer,

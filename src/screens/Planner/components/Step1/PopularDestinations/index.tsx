@@ -1,4 +1,5 @@
 // Packages
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 
 // Components
@@ -12,7 +13,7 @@ import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { fetchDestinations } from '@redux/destinations/thunks';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import { selectPopularDestinations } from '@redux/destinations/slice';
+import { getDestinationsLastRefresh, selectPopularDestinations } from '@redux/destinations/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -28,6 +29,7 @@ const PopularDestinations: React.FC<PopularDestinationsProps> = ({ handleSubmit 
   // Redux
   const dispatch = useAppThunkDispatch();
 
+  const lastRefresh = useAppSelector(getDestinationsLastRefresh);
   const popularDestinations = useAppSelector(selectPopularDestinations);
 
   // Statics
@@ -36,7 +38,7 @@ const PopularDestinations: React.FC<PopularDestinationsProps> = ({ handleSubmit 
 
   // Effects
   useEffect(() => {
-    dispatch(fetchDestinations());
+    !_.isEmpty(lastRefresh) && dispatch(fetchDestinations());
   }, [dispatch]);
 
   // Renderers
@@ -54,7 +56,11 @@ const PopularDestinations: React.FC<PopularDestinationsProps> = ({ handleSubmit 
         contentContainerStyle={styles.flatListContainer}
         renderItem={({ item }) => (
           <TouchableOpacity key={item._id} onPress={() => handleSubmit(item.name)} style={styles.button}>
-            <FastImage resizeMode="cover" style={styles.image} source={{ uri: `http://localhost:4000/uploads/destination/${item.image}` }} />
+            <FastImage
+              resizeMode="cover"
+              style={styles.image}
+              source={{ uri: `http://localhost:4000/uploads/destination/${item.image}` }}
+            />
             <Text variant="titleSmall" style={styles.name}>
               {item.name}
             </Text>

@@ -6,25 +6,33 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Components
-import Login from '@screens/Login';
 import MapScreen from '@screens/Map';
 import InfoScreen from '@screens/Info';
+import LoginScreen from '@screens/Login';
 import { Text } from 'react-native-paper';
+import ProfileScreen from '@screens/Profile';
 import MyTripsScreen from '@screens/MyTrips';
 import PlannerScreen from '@screens/Planner';
 import { Ionicons } from '@expo/vector-icons';
 import SettingsScreen from '@screens/Settings';
 import ItineraryScreen from '@screens/Itinerary';
+import OnBoardingScreen from '@screens/OnBoarding';
 import SubscriptionScreen from '@screens/Subscription';
 import BackButton from '@shared/components/Buttons/Back';
 
 // Utilities
 import { t } from '@app/i18n';
-import { scaledFontSize, useAppTheme } from '@shared/assets/theme';
+import { useAppSelector } from '@app/store';
+import { scaledFontSize } from '@shared/utils';
+import { useAppTheme } from '@shared/assets/theme';
+import { getUserAuthenticated } from '@redux/auth/slice';
 
 // Interfaces
-import { ParamListBase, RouteProp } from '@react-navigation/native';
-import { HeaderBackButtonProps } from '@react-navigation/native-stack/lib/typescript/src/types';
+import { ParamListBase, RouteProp, CompositeScreenProps } from '@react-navigation/native';
+import {
+  HeaderBackButtonProps,
+  NativeStackNavigationOptions
+} from '@react-navigation/native-stack/lib/typescript/src/types';
 
 interface TabBarLabelProps {
   children: ReactNode;
@@ -43,19 +51,25 @@ const TripsStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 
 const RootNavigation = () => {
+  // Redux
+  const isAuthenticated = useAppSelector(getUserAuthenticated);
+
   // Statics
   const theme = useAppTheme();
 
   const isArabic = I18nManager.isRTL && Platform.OS === 'android';
 
-  const isLoggedIn = false;
-
   // Renderers
-  const renderHeaderLeft = (props: HeaderBackButtonProps): ReactNode | undefined => (props.canGoBack ? <BackButton /> : <></>);
+  const renderHeaderLeft = (props: HeaderBackButtonProps): ReactNode | undefined =>
+    props.canGoBack ? <BackButton /> : <></>;
 
   const screenOptions = {
     headerShown: true,
-    headerTitleStyle: { color: theme.dark ? theme.colors.white : theme.colors.black, fontSize: scaledFontSize(20) },
+    headerTitleStyle: {
+      ...theme.fonts.h4,
+      fontSize: scaledFontSize(20),
+      color: theme.dark ? theme.colors.white : theme.colors.black
+    },
     headerStyle: { backgroundColor: theme.colors.background },
     headerShadowVisible: false,
     headerLeft: (props: HeaderBackButtonProps): ReactNode => (isArabic ? null : renderHeaderLeft(props)) || undefined,
@@ -64,7 +78,11 @@ const RootNavigation = () => {
 
   const ChatStackScreen = () => (
     <ChatStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <ChatStack.Screen name="Chat" component={PlannerScreen} options={{ title: _t('trip_planner'), ...screenOptions }} />
+      <ChatStack.Screen
+        name="Chat"
+        component={PlannerScreen}
+        options={{ title: _t('trip_planner'), ...screenOptions }}
+      />
       <ChatStack.Screen
         name="Subscription"
         component={SubscriptionScreen}
@@ -79,13 +97,21 @@ const RootNavigation = () => {
 
   const TripsStackScreen = () => (
     <TripsStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <TripsStack.Screen name="History" component={MyTripsScreen} options={{ title: _t('history'), ...screenOptions }} />
+      <TripsStack.Screen
+        name="History"
+        component={MyTripsScreen}
+        options={{ title: _t('history'), ...screenOptions }}
+      />
     </TripsStack.Navigator>
   );
 
   const SettingsStackScreen = () => (
     <SettingsStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ title: _t('settings'), ...screenOptions }} />
+      <SettingsStack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ title: _t('settings'), ...screenOptions }}
+      />
     </SettingsStack.Navigator>
   );
 
@@ -95,26 +121,30 @@ const RootNavigation = () => {
     size: number;
   }
 
-  const getTabBarIcon = useCallback(({ focused, color, size }: TabBarIconProps, route: RouteProp<ParamListBase, string>) => {
-    let iconName: string | any;
+  const getTabBarIcon = useCallback(
+    ({ focused, color, size }: TabBarIconProps, route: RouteProp<ParamListBase, string>) => {
+      let iconName: string | any;
 
-    if (route.name === 'ChatStack') {
-      iconName = focused ? 'ios-earth' : 'ios-earth-outline';
-    } else if (route.name === 'MapStack') {
-      iconName = focused ? 'ios-grid' : 'ios-grid-outline';
-    } else if (route.name === 'TripsStack') {
-      iconName = focused ? 'ios-paper-plane' : 'ios-paper-plane-outline';
-    } else if (route.name === 'SettingsStack') {
-      iconName = focused ? 'ios-settings' : 'ios-settings-outline';
-    }
+      if (route.name === 'ChatStack') {
+        iconName = focused ? 'ios-earth' : 'ios-earth-outline';
+      } else if (route.name === 'MapStack') {
+        iconName = focused ? 'ios-grid' : 'ios-grid-outline';
+      } else if (route.name === 'TripsStack') {
+        iconName = focused ? 'ios-paper-plane' : 'ios-paper-plane-outline';
+      } else if (route.name === 'SettingsStack') {
+        iconName = focused ? 'ios-settings' : 'ios-settings-outline';
+      }
 
-    // You can return any component that you like here!
-    return <Ionicons name={iconName} size={ms(size)} color={color} />;
-    // return <FontAwesomeIcon icon={faHouse} size={size} style={{ color: '#000000' }} />;
-  }, []);
+      // You can return any component that you like here!
+      return <Ionicons name={iconName} size={ms(size)} color={color} />;
+      // return <FontAwesomeIcon icon={faHouse} size={size} style={{ color: '#000000' }} />;
+    },
+    []
+  );
 
   const getTabBarLabel = useCallback(
-    ({ children, focused, color, position }: TabBarLabelProps) => (focused ? <Text variant="titleSmall">{children}</Text> : null),
+    ({ children, focused, color, position }: TabBarLabelProps) =>
+      focused ? <Text variant="titleSmall">{children}</Text> : null,
     []
   );
 
@@ -146,23 +176,54 @@ const RootNavigation = () => {
         }
       })}>
       <Tab.Screen name="ChatStack" component={ChatStackScreen} options={{ title: _t('trip_planner') }} />
-      <Tab.Screen name="TripsStack" component={TripsStackScreen} options={{ title: _t('history'), unmountOnBlur: true }} />
+      <Tab.Screen
+        name="TripsStack"
+        component={TripsStackScreen}
+        options={{ title: _t('history'), unmountOnBlur: true }}
+      />
       <Tab.Screen name="SettingsStack" component={SettingsStackScreen} options={{ title: _t('settings') }} />
     </Tab.Navigator>
   );
 
-  return isLoggedIn ? (
-    <Stack.Navigator screenOptions={{ headerShown: false, headerTitleAlign: 'center' }}>
+  const navigatorScreensOptions: NativeStackNavigationOptions = {
+    headerShown: false,
+    headerTitleAlign: 'center',
+    contentStyle: {
+      backgroundColor: theme.colors.background
+    }
+  };
+
+  return isAuthenticated ? (
+    <Stack.Navigator screenOptions={navigatorScreensOptions}>
       <Stack.Screen name="Home" component={Tabs} />
       <Stack.Screen name="Chat" component={PlannerScreen} options={{ title: _t('trip_planner'), ...screenOptions }} />
       <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ title: '', ...screenOptions }} />
-      <Stack.Screen name="Info" component={InfoScreen} options={({ route }) => ({ title: route.name, ...screenOptions })} />
-      <Stack.Screen name="Itinerary" component={ItineraryScreen} options={({ route }) => ({ title: route.name, ...screenOptions })} />
-      <Stack.Screen name="Map" component={MapScreen} options={({ route }) => ({ title: route.name, ...screenOptions })} />
+      <Stack.Screen
+        name="Info"
+        component={InfoScreen}
+        options={({ route }) => ({ title: route.params?.name, ...screenOptions })}
+      />
+      <Stack.Screen
+        name="Itinerary"
+        component={ItineraryScreen}
+        options={({ route }) => ({ title: route.name, ...screenOptions })}
+      />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={({ route }) => ({ title: route.name, ...screenOptions })}
+      />
     </Stack.Navigator>
   ) : (
-    <Stack.Navigator screenOptions={{ headerShown: false, headerTitleAlign: 'center' }}>
-      <Stack.Screen name="Login" component={Login} />
+    <Stack.Navigator screenOptions={navigatorScreensOptions}>
+      <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen
+        name="Info"
+        component={InfoScreen}
+        options={({ route }) => ({ title: route.params?.name, ...screenOptions })}
+      />
     </Stack.Navigator>
   );
 };

@@ -7,23 +7,29 @@ import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
-    backgroundImg: {
-      height: Platform.OS === 'ios' ? '70%' : '80%'
+    container: {
+      flex: 1,
+      justifyContent: 'space-evenly'
     },
     content: {
-      left: 0,
-      right: 0,
-      bottom: 0,
-      padding: ms(16),
-      position: 'absolute',
-      borderTopEndRadius: ms(35),
-      borderTopStartRadius: ms(35),
-      backgroundColor: theme.colors.background,
-      height: Platform.OS === 'ios' ? '35%' : '25%'
+      alignItems: 'center'
+    },
+    logo: {
+      width: ms(80),
+      height: ms(80),
+      marginBottom: mvs(50)
     },
     title: {
       textAlign: 'center',
-      marginBottom: mvs(16),
-      color: theme.dark ? theme.colors.white : theme.colors.black
+      marginBottom: mvs(12)
+    },
+    socialButtons: {
+      gap: 28,
+      marginHorizontal: ms(24)
+    },
+    infoPages: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'center'
     }
   });

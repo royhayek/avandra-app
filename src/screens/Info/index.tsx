@@ -4,16 +4,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 // Components
-import RenderHtml from 'react-native-render-html';
+import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 import { ScrollView, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
+import { scaledFontSize } from '@shared/utils';
+import { useAppTheme } from '@shared/assets/theme';
 import { getConfiguration } from '@redux/app/slice';
-import { RouteProp } from '@react-navigation/native';
-import { scaledFontSize, useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
+import { RouteProp } from '@react-navigation/native';
+
 type RootStackParamList = {
   InfoScreen: {
     type: string;
@@ -46,10 +48,15 @@ const InfoScreen: React.FC<InfoScreenProps> = ({ route }) => {
       <RenderHtml
         source={{ uri }}
         contentWidth={width}
+        systemFonts={[...defaultSystemFonts, 'urbanist-regular', 'urbanist-bold']}
         tagsStyles={{
+          strong: {
+            ...theme.fonts.h5,
+            fontFamily: 'urbanist-bold'
+          },
           body: {
-            fontSize: scaledFontSize(14),
-            lineHeight: scaledFontSize(19),
+            ...theme.fonts.xLarge,
+            fontFamily: 'urbanist-regular',
             color: theme.dark ? theme.colors.white : theme.colors.black
           }
         }}

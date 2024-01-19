@@ -2,8 +2,11 @@
 import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
+// Utilities
+import { scaledFontSize } from '@shared/utils';
+
 // Interfaces
-import { AppTheme, scaledFontSize } from '@shared/assets/theme';
+import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({

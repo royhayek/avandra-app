@@ -9,34 +9,39 @@ import { getAvailablePurchases } from 'react-native-iap';
 import Menu from '@shared/components/Menu';
 import { Ionicons } from '@expo/vector-icons';
 import Rate, { AndroidMarket } from 'react-native-rate';
-import { Switch, Text, useTheme } from 'react-native-paper';
+import { Avatar, Switch, Text, useTheme } from 'react-native-paper';
 import { Alert, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
 import { appName } from '@shared/utils';
+import { getUser, userActions } from '@redux/user/slice';
 import { Languages } from '@shared/constants';
-import { useAppTheme } from '@shared/assets/theme';
 import { changeLanguage, isRTL, t } from '@app/i18n';
+import { useAppDispatch, useAppSelector } from '@app/store';
 import { appActions, getConfiguration, getLanguage, getOwnedSubscription, getThemeMode } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { NavigationProp } from '@react-navigation/native';
+import { useAppTheme } from '@shared/assets/theme';
+import { logout } from '@redux/auth/api';
+import { authActions } from '@redux/auth/slice';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
 
 const SettingsScreen = ({ navigation }) => {
   // Redux
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const updateOwnedSubscription = useCallback((payload: string) => dispatch(appActions.setOwnedSubscription(payload)), [dispatch]);
 
-  const ownedSubscription = useSelector(getOwnedSubscription);
-  const config = useSelector(getConfiguration);
-  const themeMode = useSelector(getThemeMode);
-  const language = useSelector(getLanguage);
+  const user = useAppSelector(getUser);
+  const language = useAppSelector(getLanguage);
+  const themeMode = useAppSelector(getThemeMode);
+  const config = useAppSelector(getConfiguration);
+  const ownedSubscription = useAppSelector(getOwnedSubscription);
 
+  console.debug('user', user);
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -50,7 +55,7 @@ const SettingsScreen = ({ navigation }) => {
 
   const navigateToInfo = useCallback(
     (type: string, options?: TranslateOptions) => {
-      navigation.push('Info', { type, name: _t(type, options) });
+      navigation.navigate('Info', { type, name: _t(type, options) });
     },
     [navigation]
   );
@@ -105,6 +110,11 @@ const SettingsScreen = ({ navigation }) => {
       }
     });
   }, [config?.other?.appleAppId, config?.other?.googlePackageName]);
+
+  const handleLogout = useCallback(() => {
+    dispatch(authActions.reset());
+    dispatch(userActions.reset());
+  }, []);
 
   const toggleThemeMode = useCallback(() => dispatch(appActions.setThemeMode(isDark ? 'light' : 'dark')), [dispatch, isDark]);
 
@@ -175,6 +185,12 @@ const SettingsScreen = ({ navigation }) => {
             name: _t('rate_app'),
             icon: 'ios-star-outline',
             onPress: () => handleRateApp()
+          },
+          {
+            key: 'logout',
+            name: _t('logout'),
+            icon: 'ios-exit-outline',
+            onPress: () => handleLogout()
           }
         ]
       }
@@ -202,53 +218,63 @@ const SettingsScreen = ({ navigation }) => {
 
   const renderContent = useMemo(
     () => (
-      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer} overScrollMode="never" showsVerticalScrollIndicator={false}>
-        {_.map(sections, ({ section, items }) => (
-          <View key={section}>
-            <Text variant="labelMedium" style={styles.title}>
-              {section}
-            </Text>
-            {_.map(items, ({ key, icon, name, value, onPress, isSwitch, isMenu }) => (
-              <TouchableOpacity key={key} style={styles.item} onPress={onPress}>
-                <View style={styles.iconAndTitle}>
-                  <View style={styles.iconContainer}>
-                    <Ionicons name={icon} size={ms(24)} style={styles.endIcon} />
+      <>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, margin: ms(16) }}>
+          <Avatar.Image size={40} source={{ uri: user?.photo }} />
+          <Text variant="titleSmall">{user?.name}</Text>
+        </View>
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={styles.contentContainer}
+          overScrollMode="never"
+          showsVerticalScrollIndicator={false}>
+          {_.map(sections, ({ section, items }) => (
+            <View key={section}>
+              <Text variant="labelMedium" style={styles.title}>
+                {section}
+              </Text>
+              {_.map(items, ({ key, icon, name, value, onPress, isSwitch, isMenu }) => (
+                <TouchableOpacity key={key} style={styles.item} onPress={onPress}>
+                  <View style={styles.iconAndTitle}>
+                    <View style={styles.iconContainer}>
+                      <Ionicons name={icon} size={ms(24)} style={styles.endIcon} />
+                    </View>
+                    <Text variant="labelLarge">{name}</Text>
                   </View>
-                  <Text variant="labelLarge">{name}</Text>
-                </View>
-                {isSwitch ? (
-                  <Switch value={value} onValueChange={onPress} style={{ transform: [{ scaleX: ms(0.8) }, { scaleY: ms(0.8) }] }} />
-                ) : isMenu ? (
-                  <Menu
-                    items={Languages}
-                    visible={openLangMenu}
-                    onDismiss={toggleLangMenu}
-                    onItemPress={updateLanguage}
-                    anchor={
-                      <View style={styles.anchor}>
-                        <Text variant="bodySmall">{value}</Text>
-                        <Ionicons
-                          size={ms(18)}
-                          name="chevron-forward"
-                          style={styles.arrowIcon}
-                          color={theme.dark ? theme.colors.secondary : theme.colors.black}
-                        />
-                      </View>
-                    }
-                  />
-                ) : (
-                  <Ionicons
-                    size={ms(18)}
-                    name="chevron-forward"
-                    style={styles.arrowIcon}
-                    color={theme.dark ? theme.colors.secondary : theme.colors.black}
-                  />
-                )}
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))}
-      </ScrollView>
+                  {isSwitch ? (
+                    <Switch value={value} onValueChange={onPress} style={{ transform: [{ scaleX: ms(0.8) }, { scaleY: ms(0.8) }] }} />
+                  ) : isMenu ? (
+                    <Menu
+                      items={Languages}
+                      visible={openLangMenu}
+                      onDismiss={toggleLangMenu}
+                      onItemPress={updateLanguage}
+                      anchor={
+                        <View style={styles.anchor}>
+                          <Text variant="bodySmall">{value}</Text>
+                          <Ionicons
+                            size={ms(18)}
+                            name="chevron-forward"
+                            style={styles.arrowIcon}
+                            color={theme.dark ? theme.colors.secondary : theme.colors.black}
+                          />
+                        </View>
+                      }
+                    />
+                  ) : (
+                    <Ionicons
+                      size={ms(18)}
+                      name="chevron-forward"
+                      style={styles.arrowIcon}
+                      color={theme.dark ? theme.colors.secondary : theme.colors.black}
+                    />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </ScrollView>
+      </>
     ),
     [styles, sections, theme, openLangMenu, updateLanguage, toggleLangMenu]
   );

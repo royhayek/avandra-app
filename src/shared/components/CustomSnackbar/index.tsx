@@ -1,5 +1,5 @@
 // Packages
-import { useTheme, Snackbar } from 'react-native-paper';
+import { useTheme, Snackbar, Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback } from 'react';
 // Utilities
@@ -24,8 +24,15 @@ const CustomSnackbar = () => {
 
   // Renderers
   return (
-    <Snackbar wrapperStyle={styles.wrapperStyle} visible={show} onDismiss={handleDismiss} duration={delay}>
-      {message}
+    <Snackbar
+      visible={show}
+      duration={delay}
+      style={styles.container}
+      onDismiss={handleDismiss}
+      wrapperStyle={styles.wrapper}>
+      <Text variant="medium" style={styles.message}>
+        {message}
+      </Text>
     </Snackbar>
   );
 };

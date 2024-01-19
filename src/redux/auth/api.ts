@@ -2,11 +2,7 @@
 import axios from 'axios';
 
 // Utilities
-import { LoginProps } from './types';
+import { SocialLoginProps } from '@shared/types/SocialLoginProps';
 
 // Calls
-export const register = (payload) => axios.post('register', payload);
-
-export const login = ({ email, password }: LoginProps) => axios.post('login', { email, password });
-
-export const logout = ({ refreshToken }) => axios.post('logoutAll', { refreshToken });
+export const register = (payload: SocialLoginProps) => axios.post('register', payload);

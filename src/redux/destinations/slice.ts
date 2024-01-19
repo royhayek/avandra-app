@@ -8,6 +8,7 @@ import { fetchTravelDestinations, fetchTravelSummaryAndTips } from '../itinerary
 // Interfaces
 import { RootState } from '@app/store';
 import { DestinationsInitialState } from './types';
+import moment from 'moment';
 
 const initialState: DestinationsInitialState = {
   tips: null,
@@ -15,6 +16,7 @@ const initialState: DestinationsInitialState = {
   payload: null,
   summary: null,
   isLoading: false,
+  lastRefresh: null,
   destinations: null,
   popularDestinations: null
 };
@@ -38,6 +40,7 @@ const destinationsSlice = createSlice({
     });
     builder.addCase(fetchDestinations.fulfilled, (state, action) => {
       state.popularDestinations = action.payload.result;
+      state.lastRefresh = moment();
       state.isLoading = false;
       state.error = null;
     });
@@ -93,4 +96,7 @@ const _destinations = (state: RootState) => state.destinations;
 
 export const selectDestinations = createSelector(_destinations, (data) => data);
 
+export const getDestinationsLastRefresh = createSelector(_destinations, (data) => data?.lastRefresh);
+
 export const selectPopularDestinations = createSelector(_destinations, (data) => data?.popularDestinations);
+

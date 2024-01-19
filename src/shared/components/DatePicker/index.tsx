@@ -9,8 +9,9 @@ import { Calendar } from 'react-native-calendars';
 
 // Utilities
 import makeStyles from './styles';
+import { scaledFontSize } from '@shared/utils';
+import { useAppTheme } from '@shared/assets/theme';
 import { DateData, MarkedDates } from 'react-native-calendars/src/types';
-import { scaledFontSize, useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 interface DatePickerProps {
@@ -149,7 +150,15 @@ const DatePicker: React.FC<DatePickerProps> = ({ onSuccess }) => {
         }
       }
     },
-    [onSuccess, setupMarkedDates, setupStartMarker, state.fromDate, state.isFromDatePicked, state.isToDatePicked, state.markedDates]
+    [
+      onSuccess,
+      setupMarkedDates,
+      setupStartMarker,
+      state.fromDate,
+      state.isFromDatePicked,
+      state.isToDatePicked,
+      state.markedDates
+    ]
   );
 
   // Renderers

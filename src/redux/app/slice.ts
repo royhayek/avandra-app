@@ -22,7 +22,7 @@ const initialState: AppInitialState = {
   language: 'en',
   deviceUuid: null,
   messagesCount: 0,
-  themeMode: 'dark',
+  themeMode: 'light',
   subscriptions: [],
   lastSentDate: null,
   lastRewardedDate: null,

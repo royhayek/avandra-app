@@ -2,8 +2,10 @@
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
 
 // Utilities
+import { registerAction } from './thunks';
 import { AuthInitialState } from './types';
-import { loginAction, registerAction } from './thunks';
+
+// Interfaces
 import { RootState } from '@app/store';
 
 export const initialState: AuthInitialState = {
@@ -34,27 +36,11 @@ export const authSlice = createSlice({
     builder.addCase(registerAction.fulfilled, (state, action) => {
       state.error = null;
       state.loading = false;
-      state.authenticated = true;
+      // state.authenticated = true;
       state.token = action.payload.token;
     });
 
     builder.addCase(registerAction.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
-    
-    builder.addCase(loginAction.pending, (state) => {
-      state.loading = true;
-    });
-
-    builder.addCase(loginAction.fulfilled, (state, action) => {
-      state.error = null;
-      state.loading = false;
-      state.authenticated = true;
-      state.token = action.payload.token;
-    });
-
-    builder.addCase(loginAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

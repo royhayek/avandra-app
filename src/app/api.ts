@@ -2,7 +2,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import { stringify } from 'qs';
-import { API_KEY } from '@env';
+import { API_KEY, REACT_APP_BACKEND_URL } from '@env';
 import { Configuration } from 'openai';
 import 'moment-timezone';
 
@@ -16,7 +16,7 @@ export const openAIConfig = new Configuration({ apiKey: API_KEY });
 
 axios.interceptors.request.use((req) => {
   // Set common config
-  req.baseURL = process.env.REACT_APP_BACKEND_URL;
+  req.baseURL = REACT_APP_BACKEND_URL;
   req.headers.Accept = 'application/json';
   req.headers['timeZone'] = moment.tz.guess();
 
@@ -28,7 +28,7 @@ axios.interceptors.request.use((req) => {
   const storeState = store.getState();
   const authenticated = storeState?.auth.authenticated;
   const accessToken = storeState?.auth.token;
-  req.headers['x-auth-token'] = authenticated ? accessToken : process.env.REACT_APP_TOKEN;
+  req.headers['x-auth-token'] = accessToken ?? process.env.REACT_APP_TOKEN;
 
   // Set language
   req.headers.language = i18n.locale || process.env.REACT_APP_DEFAULT_LANGUAGE;

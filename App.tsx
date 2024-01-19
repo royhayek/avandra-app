@@ -20,11 +20,10 @@ SplashScreen.preventAutoHideAsync();
 
 const fetchFonts = () => {
   return Font.loadAsync({
-    'inter-bold': require('./src/shared/assets/fonts/Inter-Bold.ttf'),
-    'inter-semibold': require('./src/shared/assets/fonts/Inter-SemiBold.ttf'),
-    'inter-medium': require('./src/shared/assets/fonts/Inter-Medium.ttf'),
-    'inter-light': require('./src/shared/assets/fonts/Inter-Light.ttf'),
-    'inter-regular': require('./src/shared/assets/fonts/Inter-Regular.ttf')
+    'urbanist-bold': require('./src/shared/assets/fonts/Urbanist/Urbanist-Bold.ttf'),
+    'urbanist-semibold': require('./src/shared/assets/fonts/Urbanist/Urbanist-SemiBold.ttf'),
+    'urbanist-medium': require('./src/shared/assets/fonts/Urbanist/Urbanist-Medium.ttf'),
+    'urbanist-regular': require('./src/shared/assets/fonts/Urbanist/Urbanist-Regular.ttf')
   });
 };
 

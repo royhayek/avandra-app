@@ -1,17 +1,14 @@
-import { debounce } from 'lodash';
-import { persistStore } from 'redux-persist';
 import rootReducer from '../redux/reducers';
+import { persistStore } from 'redux-persist';
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-const debounceNotify = debounce((notify) => notify(), 10);
-
 export const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
-  middleware: [thunk]
-  // enhancers: [batchedSubscribe(debounceNotify)],
+  middleware: [thunk],
+  preloadedState: {}
 });
 
 export const persistor = persistStore(store);

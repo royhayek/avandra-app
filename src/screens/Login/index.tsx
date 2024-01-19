@@ -1,32 +1,48 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback } from 'react';
-import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication';
+import { NavigationContainerProps, NavigationProp, useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication';
 import { LoginManager, AuthenticationToken, AccessToken, Profile } from 'react-native-fbsdk-next';
 
 // Components
-import { Platform, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import Loading from '@shared/components/Loading';
 import SocialButton from './components/SocialButton';
+import { Platform, SafeAreaView, View } from 'react-native';
+import RegularButton from '@shared/components/Buttons/Regular';
+import { AppleIconDark, AppleIconLight, FacebookIcon, GoogleIcon } from '@shared/assets/icons';
 
 // Utils
+import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { useAppTheme } from '@shared/assets/theme';
+import { getAuthLoading } from '@redux/auth/slice';
 import { registerAction } from '@redux/auth/thunks';
-import { useAppThunkDispatch } from '@app/store';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
+
+// Interfaces
+import { appName } from '@shared/utils';
+import { useAppTheme } from '@shared/assets/theme';
+import { SocialLoginProps } from '@shared/types/SocialLoginProps';
+import { TranslateOptions } from 'i18n-js';
 
 // Component
 const Login = () => {
+  // Redux
+  const dispatch = useAppThunkDispatch();
+
+  const loading = useAppSelector(getAuthLoading);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const dispatch = useAppThunkDispatch();
+  const navigation = useNavigation();
 
   // Callbacks
   const handleSignInPress = useCallback(async (type: string) => {
-    let payload;
+    let payload: SocialLoginProps;
 
     switch (type) {
       case 'google':
@@ -36,18 +52,23 @@ const Login = () => {
 
           const token = userInfo.idToken;
 
-          const { id, name, photo } = userInfo.user || {};
+          const { id, name, photo, email } = userInfo.user || {};
 
           payload = {
             providerId: id,
             token,
             name,
-            image: photo
+            email,
+            image: photo,
+            provider: type
           };
 
-          console.debug('[handleSignInPress - Google] ::', { payload });
+          console.info('[handleSignInPress - Google] ::', { payload });
+
+          const response = await dispatch(registerAction(payload));
+          if (response.payload.success) navigation.navigate('Profile');
         } catch (error) {
-          console.debug('[handleSignInPress] :: Google Error', error);
+          console.error('[handleSignInPress] :: Google Error', error);
         }
         break;
 
@@ -65,18 +86,23 @@ const Login = () => {
           }
 
           const profile = await Profile.getCurrentProfile();
-          const { userID, name, imageURL } = profile || {};
+          const { userID, name, imageURL, email } = profile || {};
 
           payload = {
             providerId: userID,
             token,
             name,
-            image: imageURL
+            email,
+            image: imageURL,
+            provider: type
           };
 
-          console.debug('[handleSignInPress - Facebook] ::', { payload });
+          console.info('[handleSignInPress - Facebook] ::', { payload });
+
+          const response = await dispatch(registerAction(payload));
+          if (response.payload.success) navigation.navigate('Profile');
         } catch (error) {
-          console.debug('[handleSignInPress] :: Facebook Error', error);
+          console.error('[handleSignInPress] :: Facebook Error', error);
         }
         break;
 
@@ -86,43 +112,52 @@ const Login = () => {
             requestedScopes: [AppleAuthenticationScope.FULL_NAME, AppleAuthenticationScope.EMAIL]
           });
 
-          const { fullName, user, identityToken } = result || {};
+          const { fullName, user, identityToken, email } = result || {};
 
           payload = {
             providerId: user,
             token: identityToken,
             name: fullName?.givenName,
-            image: null
+            image: null,
+            email,
+            provider: type
           };
 
-          console.debug('[handleSignInPress - Apple] ::', { payload });
+          console.info('[handleSignInPress - Apple] ::', { payload });
+
+          const response = await dispatch(registerAction(payload));
+          if (response.payload.success) navigation.navigate('Profile');
+
           break;
         } catch (error) {
-          console.debug('[handleSignInPress] :: Apple Error', error);
+          console.error('[handleSignInPress] :: Apple Error', error);
         }
     }
-
-    dispatch(registerAction(payload));
   }, []);
+
+  const handleNavigateToInfo = useCallback(
+    (type: string, options?: object) => navigation.navigate('Info', { type, name: t(`settings.${type}`, options) }),
+    []
+  );
 
   // Renderer vars
   const socialButtons = [
     {
       key: 'google',
       title: 'Continue with Google',
-      icon: require('@shared/assets/icons/google-icon.png')
+      icon: <GoogleIcon />
     },
     {
       key: 'facebook',
       title: 'Continue with Facebook',
-      icon: require('@shared/assets/icons/facebook-icon.png')
+      icon: <FacebookIcon />
     },
     ...(Platform.OS === 'ios'
       ? [
           {
             key: 'apple',
             title: 'Continue with Apple',
-            icon: require('@shared/assets/icons/apple-icon.png')
+            icon: theme.dark ? <AppleIconDark /> : <AppleIconLight />
           }
         ]
       : [])
@@ -130,17 +165,33 @@ const Login = () => {
 
   // Renders
   return (
-    <>
-      <FastImage source={{ uri: 'https://picsum.photos/400/600' }} style={styles.backgroundImg} />
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text variant="titleMedium" style={styles.title}>
+        <FastImage source={require('@shared/assets/images/logo.png')} style={styles.logo} />
+        <Text variant="h3" style={styles.title}>
           Let's Get Started!
         </Text>
+        <Text variant="xLarge">Your Passport to Adventure Awaits</Text>
+      </View>
+
+      <View style={styles.socialButtons}>
         {_.map(socialButtons, ({ key, title, icon }) => (
           <SocialButton key={key} title={title} icon={icon} onPress={() => handleSignInPress(key)} />
         ))}
       </View>
-    </>
+
+      <View style={styles.infoPages}>
+        <RegularButton variant="text" title="Privacy Policy" onPress={() => handleNavigateToInfo('privacy_policy')} />
+        <Text variant="bodyMedium">•</Text>
+        <RegularButton
+          variant="text"
+          title="Terms of Service"
+          onPress={() => handleNavigateToInfo('terms', { name: appName })}
+        />
+      </View>
+
+      {loading && <Loading message="Please wait..." />}
+    </SafeAreaView>
   );
 };
 
