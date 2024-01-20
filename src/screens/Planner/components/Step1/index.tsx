@@ -45,9 +45,6 @@ const Step1: React.FC<Step1Props> = ({ setActive }) => {
   // Renderers
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-      <Text variant="titleLarge" style={styles.title}>
-        {_t('where_to_go')}
-      </Text>
       <DestinationInput handleSubmit={handleSubmitPrompt} />
       <PopularDestinations handleSubmit={handleSubmitPrompt} />
     </ScrollView>

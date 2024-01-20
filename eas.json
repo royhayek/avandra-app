@@ -3,17 +3,22 @@
     "version": ">= 0.54.1"
   },
   "build": {
-    "production": {},
     "development": {
       "channel": "dev",
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_SERVER_API_URL": "http://localhost:4000/api"
+      }
     },
     "development-simulator": {
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
         "simulator": true
+      },
+      "env": {
+        "EXPO_PUBLIC_SERVER_API_URL": "http://localhost:4000/api"
       }
     },
     "preview": {
@@ -25,14 +30,23 @@
         "simulator": true
       }
     },
-    "beta": {
-      "channel": "beta"
-    },
-    "prod": {
-      "channel": "prod"
+    "production": {
+      "env": {
+        "EXPO_PUBLIC_SERVER_API_URL": "https://trip-ai-server.onrender.com/api"
+      }
     }
   },
   "submit": {
-    "prod": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./trippify-411809-bdd413c2cd28.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "royhayek27@gmail.com",
+        "ascAppId": "6476438006",
+        "appleTeamId": "DVGN5DN5ST"
+      }
+    }
   }
 }

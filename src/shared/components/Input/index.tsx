@@ -5,13 +5,15 @@ import { ms } from 'react-native-size-matters';
 
 // Components
 import { View } from 'react-native';
-import { Text, TextInput, TextInputProps } from 'react-native-paper';
+import Text from '@shared/components/Text';
+import { TextInput, TextInputProps } from 'react-native-paper';
 
 // Utilities
 import makeStyles from './styles';
 
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
+import i18n from '@app/i18n';
 
 // Interfaces
 interface InputProps extends TextInputProps {
@@ -40,6 +42,9 @@ const Input: React.FC<InputProps> = ({
   const theme = useAppTheme();
   const styles = makeStyles(theme, !_.isEmpty(leftIcon), !_.isEmpty(value));
 
+  const leftIconComponent = leftIcon ? <TextInput.Icon icon={() => leftIcon} disabled /> : null;
+  const rightIconComponent = rightIcon ? <TextInput.Icon icon={() => rightIcon} disabled /> : null;
+
   // Renderers
   return (
     <View>
@@ -48,6 +53,7 @@ const Input: React.FC<InputProps> = ({
       </Text>
       <TextInput
         value={value}
+        numberOfLines={1}
         error={Boolean(error)}
         style={styles.textInput}
         placeholder={placeholder}
@@ -56,8 +62,8 @@ const Input: React.FC<InputProps> = ({
         underlineStyle={styles.underline}
         placeholderTextColor={theme.colors.gray[500]}
         contentStyle={{ ...theme.fonts.xLarge, ...styles.contentStyle }}
-        left={leftIcon ? <TextInput.Icon icon={() => leftIcon} disabled /> : null}
-        right={rightIcon ? <TextInput.Icon icon={() => rightIcon} disabled /> : null}
+        left={i18n.locale === 'ar' ? rightIconComponent : leftIconComponent}
+        right={i18n.locale === 'ar' ? leftIconComponent : rightIconComponent}
         {...props}
       />
       {error && (

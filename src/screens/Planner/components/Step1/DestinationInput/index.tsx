@@ -9,11 +9,12 @@ import { GooglePlaceData, GooglePlacesAutocomplete } from 'react-native-google-p
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { SearchIcon } from '@shared/assets/icons';
+import { useAppTheme } from '@shared/assets/theme';
 import { GOOGLE_MAPS_API_KEY } from '@redux/places/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { useAppTheme } from '@shared/assets/theme';
 
 interface DestinationInputProps {
   handleSubmit: (city: any) => void;
@@ -49,14 +50,14 @@ const DestinationInput: React.FC<DestinationInputProps> = ({ handleSubmit }) => 
       placeholder={_t('search_by')}
       enablePoweredByContainer={false}
       textInputProps={{
-        placeholderTextColor: theme.colors.secondary
+        placeholderTextColor: theme.dark ? theme.colors.gray[600] : theme.colors.gray[400]
       }}
       query={{
         language: 'en',
         type: '(cities)',
         key: GOOGLE_MAPS_API_KEY
       }}
-      renderLeftButton={() => <Ionicons name="md-search" size={ms(22)} color={theme.colors.secondary} />}
+      renderLeftButton={() => <SearchIcon />}
       styles={{
         listView: styles.listView,
         textInput: styles.textInput,

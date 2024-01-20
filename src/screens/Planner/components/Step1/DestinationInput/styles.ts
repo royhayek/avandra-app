@@ -9,20 +9,21 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       marginTop: mvs(6),
-      minHeight: mvs(40),
-      borderRadius: ms(8),
+      minHeight: mvs(50),
+      borderRadius: ms(12),
       marginBottom: mvs(8),
       alignItems: 'center',
       justifyContent: 'center',
       marginHorizontal: ms(24),
-      borderWidth: theme.dark ? 1 : 0,
-      borderColor: theme.dark ? theme.colors.secondary : 'transparent',
-      backgroundColor: theme.dark ? 'transparent' : theme.colors.inputBg
+      borderWidth: ms(1),
+      borderColor: theme.dark ? theme.colors.dark[1] : theme.colors.white,
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },
     textInput: {
-      ...theme.fonts.titleSmall,
+      ...theme.fonts.xLarge,
       justifyContent: 'center',
-      backgroundColor: 'transparent'
+      paddingBottom: 10,
+      backgroundColor: 'transparent',
     },
     listView: {
       borderRadius: ms(8),
@@ -30,8 +31,8 @@ export default (theme: AppTheme) =>
       borderColor: theme.colors.lightGray
     },
     textInputContainer: {
-      minHeight: mvs(40),
+      minHeight: mvs(50),
       alignItems: 'center',
-      paddingHorizontal: ms(16)
+      paddingHorizontal: ms(16),
     }
   });

@@ -1,13 +1,13 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { NavigationContainerProps, NavigationProp, useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication';
 import { LoginManager, AuthenticationToken, AccessToken, Profile } from 'react-native-fbsdk-next';
 
 // Components
-import { Text } from 'react-native-paper';
+import Text from '@shared/components/Text';
 import FastImage from 'react-native-fast-image';
 import Loading from '@shared/components/Loading';
 import SocialButton from './components/SocialButton';
@@ -18,20 +18,20 @@ import { AppleIconDark, AppleIconLight, FacebookIcon, GoogleIcon } from '@shared
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { getAuthLoading } from '@redux/auth/slice';
+import { authActions, getAuthLoading } from '@redux/auth/slice';
 import { registerAction } from '@redux/auth/thunks';
-import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
 import { appName } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 import { SocialLoginProps } from '@shared/types/SocialLoginProps';
-import { TranslateOptions } from 'i18n-js';
 
 // Component
 const Login = () => {
   // Redux
-  const dispatch = useAppThunkDispatch();
+  const dispatch = useAppDispatch();
+  const dispatchThunk = useAppThunkDispatch();
 
   const loading = useAppSelector(getAuthLoading);
 
@@ -41,102 +41,119 @@ const Login = () => {
   const navigation = useNavigation();
 
   // Callbacks
-  const handleSignInPress = useCallback(async (type: string) => {
-    let payload: SocialLoginProps;
+  const handleRegisterUser = async (type: string, payload: SocialLoginProps, socialId: string | null | undefined) => {
+    console.info(`[handleSignInPress - ${type}] ::`, { payload });
 
+    const response = await dispatchThunk(registerAction(payload));
+
+    const { providerId, name, email, country } = response.payload.user || {};
+
+    if (response.payload?.success) {
+      if (_.isEqual(providerId, socialId) && !_.isEmpty(name) && !_.isEmpty(email) && !_.isEmpty(country)) {
+        dispatch(authActions.update({ authenticated: true }));
+      } else {
+        navigation.navigate('Profile');
+      }
+    }
+  };
+
+  const handleGoogleSignIn = async (type: string) => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+
+      const token = userInfo.idToken;
+      const { id: providerId, name, photo, email } = userInfo.user || {};
+
+      const payload = {
+        providerId,
+        token,
+        name,
+        email,
+        image: photo,
+        provider: type
+      };
+
+      await handleRegisterUser(type, payload, providerId);
+    } catch (error) {
+      console.error('[handleSignInPress] :: Google Error', error);
+    }
+  };
+
+  const handleFacebookSignIn = async (type: string) => {
+    try {
+      const result = await LoginManager.logInWithPermissions(['public_profile']);
+      let token;
+
+      if (Platform.OS === 'ios') {
+        const result = await AuthenticationToken.getAuthenticationTokenIOS();
+        if (result) token = result.authenticationToken;
+      } else {
+        const result = await AccessToken.getCurrentAccessToken();
+        if (result) token = result.accessToken;
+      }
+
+      const profile = await Profile.getCurrentProfile();
+      const { userID: providerId, name, imageURL, email } = profile || {};
+
+      const payload = {
+        providerId,
+        token,
+        name,
+        email,
+        image: imageURL,
+        provider: type
+      };
+
+      await handleRegisterUser(type, payload, providerId);
+    } catch (error) {
+      console.error('[handleSignInPress] :: Facebook Error', error);
+    }
+  };
+
+  const handleAppleSignIn = async (type: string) => {
+    try {
+      const result = await signInAsync({
+        requestedScopes: [AppleAuthenticationScope.FULL_NAME, AppleAuthenticationScope.EMAIL]
+      });
+      const { fullName, user: providerId, identityToken, email } = result || {};
+
+      const payload = {
+        providerId,
+        token: identityToken,
+        name: `${fullName?.givenName} ${fullName?.familyName}`,
+        image: null,
+        email,
+        provider: type
+      };
+
+      await handleRegisterUser(type, payload, providerId);
+    } catch (error) {
+      console.error('[handleSignInPress] :: Apple Error', error);
+    }
+  };
+
+  const handleSignInPress = useCallback(async (type: string) => {
     switch (type) {
       case 'google':
-        try {
-          await GoogleSignin.hasPlayServices();
-          const userInfo = await GoogleSignin.signIn();
-
-          const token = userInfo.idToken;
-
-          const { id, name, photo, email } = userInfo.user || {};
-
-          payload = {
-            providerId: id,
-            token,
-            name,
-            email,
-            image: photo,
-            provider: type
-          };
-
-          console.info('[handleSignInPress - Google] ::', { payload });
-
-          const response = await dispatch(registerAction(payload));
-          if (response.payload.success) navigation.navigate('Profile');
-        } catch (error) {
-          console.error('[handleSignInPress] :: Google Error', error);
-        }
+        await handleGoogleSignIn(type);
         break;
 
       case 'facebook':
-        try {
-          const result = await LoginManager.logInWithPermissions(['public_profile']);
-          let token;
-
-          if (Platform.OS === 'ios') {
-            const result = await AuthenticationToken.getAuthenticationTokenIOS();
-            if (result) token = result.authenticationToken;
-          } else {
-            const result = await AccessToken.getCurrentAccessToken();
-            if (result) token = result.accessToken;
-          }
-
-          const profile = await Profile.getCurrentProfile();
-          const { userID, name, imageURL, email } = profile || {};
-
-          payload = {
-            providerId: userID,
-            token,
-            name,
-            email,
-            image: imageURL,
-            provider: type
-          };
-
-          console.info('[handleSignInPress - Facebook] ::', { payload });
-
-          const response = await dispatch(registerAction(payload));
-          if (response.payload.success) navigation.navigate('Profile');
-        } catch (error) {
-          console.error('[handleSignInPress] :: Facebook Error', error);
-        }
+        await handleFacebookSignIn(type);
         break;
 
       case 'apple':
-        try {
-          const result = await signInAsync({
-            requestedScopes: [AppleAuthenticationScope.FULL_NAME, AppleAuthenticationScope.EMAIL]
-          });
+        await handleAppleSignIn(type);
+        break;
 
-          const { fullName, user, identityToken, email } = result || {};
-
-          payload = {
-            providerId: user,
-            token: identityToken,
-            name: fullName?.givenName,
-            image: null,
-            email,
-            provider: type
-          };
-
-          console.info('[handleSignInPress - Apple] ::', { payload });
-
-          const response = await dispatch(registerAction(payload));
-          if (response.payload.success) navigation.navigate('Profile');
-
-          break;
-        } catch (error) {
-          console.error('[handleSignInPress] :: Apple Error', error);
-        }
+      default:
+        break;
     }
   }, []);
 
   const handleNavigateToInfo = useCallback(
-    (type: string, options?: object) => navigation.navigate('Info', { type, name: t(`settings.${type}`, options) }),
+    (type: string, options?: object) => navigation.navigate('Info', { type, name: t(`common.${type}`, options) }),
     []
   );
 
@@ -144,19 +161,19 @@ const Login = () => {
   const socialButtons = [
     {
       key: 'google',
-      title: 'Continue with Google',
+      title: t('login.continue_with_google'),
       icon: <GoogleIcon />
     },
     {
       key: 'facebook',
-      title: 'Continue with Facebook',
+      title: t('login.continue_with_facebook'),
       icon: <FacebookIcon />
     },
     ...(Platform.OS === 'ios'
       ? [
           {
             key: 'apple',
-            title: 'Continue with Apple',
+            title: t('login.continue_with_apple'),
             icon: theme.dark ? <AppleIconDark /> : <AppleIconLight />
           }
         ]
@@ -169,9 +186,9 @@ const Login = () => {
       <View style={styles.content}>
         <FastImage source={require('@shared/assets/images/logo.png')} style={styles.logo} />
         <Text variant="h3" style={styles.title}>
-          Let's Get Started!
+          {t('login.title')}
         </Text>
-        <Text variant="xLarge">Your Passport to Adventure Awaits</Text>
+        <Text variant="xLarge">{t('login.description')}</Text>
       </View>
 
       <View style={styles.socialButtons}>
@@ -181,16 +198,20 @@ const Login = () => {
       </View>
 
       <View style={styles.infoPages}>
-        <RegularButton variant="text" title="Privacy Policy" onPress={() => handleNavigateToInfo('privacy_policy')} />
+        <RegularButton
+          variant="text"
+          title={t('common.privacy_policy')}
+          onPress={() => handleNavigateToInfo('privacy_policy')}
+        />
         <Text variant="bodyMedium">•</Text>
         <RegularButton
           variant="text"
-          title="Terms of Service"
+          title={t('common.terms')}
           onPress={() => handleNavigateToInfo('terms', { name: appName })}
         />
       </View>
 
-      {loading && <Loading message="Please wait..." />}
+      {loading && <Loading message={t('common.please_wait')} />}
     </SafeAreaView>
   );
 };

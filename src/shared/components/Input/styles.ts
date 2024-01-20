@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 // Utilities
-import { scaledFontSize } from '@shared/utils';
+import i18n from '@app/i18n';
 
 // Types
 import { AppTheme } from '@shared/assets/theme';
@@ -18,6 +18,7 @@ export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
       justifyContent: 'center',
       borderWidth: theme.dark ? ms(1) : 0,
       paddingHorizontal: hasIcon ? ms(6) : 'auto',
+      textAlign: i18n.locale === 'ar' ? 'right' : 'left',
       borderColor: theme.dark ? theme.colors.dark[3] : 'transparent',
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },

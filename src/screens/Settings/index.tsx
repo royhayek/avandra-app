@@ -7,25 +7,25 @@ import { getAvailablePurchases } from 'react-native-iap';
 
 // Components
 import Menu from '@shared/components/Menu';
+import Text from '@shared/components/Text';
 import { Ionicons } from '@expo/vector-icons';
+import { Avatar, Switch } from 'react-native-paper';
 import Rate, { AndroidMarket } from 'react-native-rate';
-import { Avatar, Switch, Text, useTheme } from 'react-native-paper';
 import { Alert, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
 import { appName } from '@shared/utils';
-import { getUser, userActions } from '@redux/user/slice';
 import { Languages } from '@shared/constants';
 import { changeLanguage, isRTL, t } from '@app/i18n';
+import { getUser, userActions } from '@redux/user/slice';
 import { useAppDispatch, useAppSelector } from '@app/store';
 import { appActions, getConfiguration, getLanguage, getOwnedSubscription, getThemeMode } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { useAppTheme } from '@shared/assets/theme';
-import { logout } from '@redux/auth/api';
 import { authActions } from '@redux/auth/slice';
+import { useAppTheme } from '@shared/assets/theme';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -33,7 +33,10 @@ const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, opt
 const SettingsScreen = ({ navigation }) => {
   // Redux
   const dispatch = useAppDispatch();
-  const updateOwnedSubscription = useCallback((payload: string) => dispatch(appActions.setOwnedSubscription(payload)), [dispatch]);
+  const updateOwnedSubscription = useCallback(
+    (payload: string) => dispatch(appActions.setOwnedSubscription(payload)),
+    [dispatch]
+  );
 
   const user = useAppSelector(getUser);
   const language = useAppSelector(getLanguage);
@@ -116,7 +119,10 @@ const SettingsScreen = ({ navigation }) => {
     dispatch(userActions.reset());
   }, []);
 
-  const toggleThemeMode = useCallback(() => dispatch(appActions.setThemeMode(isDark ? 'light' : 'dark')), [dispatch, isDark]);
+  const toggleThemeMode = useCallback(
+    () => dispatch(appActions.setThemeMode(isDark ? 'light' : 'dark')),
+    [dispatch, isDark]
+  );
 
   // Renderer Vars
   const sections = useMemo(
@@ -170,13 +176,13 @@ const SettingsScreen = ({ navigation }) => {
           // },
           {
             key: 'privacy_policy',
-            name: _t('privacy_policy'),
+            name: t('common.privacy_policy'),
             icon: 'ios-document-text-outline',
             onPress: () => navigateToInfo('privacy_policy')
           },
           {
             key: 'terms',
-            name: _t('terms'),
+            name: t('common.terms'),
             icon: 'ios-information-circle-outline',
             onPress: () => navigateToInfo('terms', { name: appName })
           },
@@ -195,7 +201,16 @@ const SettingsScreen = ({ navigation }) => {
         ]
       }
     ],
-    [handleRateApp, handleRestorePurchase, isDark, language, navigateToInfo, navigateToSubscription, toggleLangMenu, toggleThemeMode]
+    [
+      handleRateApp,
+      handleRestorePurchase,
+      isDark,
+      language,
+      navigateToInfo,
+      navigateToSubscription,
+      toggleLangMenu,
+      toggleThemeMode
+    ]
   );
 
   // Renderers
@@ -210,7 +225,12 @@ const SettingsScreen = ({ navigation }) => {
             {_t('expanded_access', { name: appName })}
           </Text>
         </View>
-        <Ionicons name="ios-chevron-forward-sharp" size={ms(28)} color="white" style={{ transform: isRTL ? [{ scaleX: -1 }] : undefined }} />
+        <Ionicons
+          name="ios-chevron-forward-sharp"
+          size={ms(28)}
+          color="white"
+          style={{ transform: isRTL ? [{ scaleX: -1 }] : undefined }}
+        />
       </TouchableOpacity>
     ),
     [handleUpgradePress, styles.upgradeContainer, styles.upgradeDesc, styles.upgradeTitle]
@@ -224,9 +244,9 @@ const SettingsScreen = ({ navigation }) => {
           <Text variant="titleSmall">{user?.name}</Text>
         </View>
         <ScrollView
+          overScrollMode="never"
           style={styles.content}
           contentContainerStyle={styles.contentContainer}
-          overScrollMode="never"
           showsVerticalScrollIndicator={false}>
           {_.map(sections, ({ section, items }) => (
             <View key={section}>
@@ -242,7 +262,11 @@ const SettingsScreen = ({ navigation }) => {
                     <Text variant="labelLarge">{name}</Text>
                   </View>
                   {isSwitch ? (
-                    <Switch value={value} onValueChange={onPress} style={{ transform: [{ scaleX: ms(0.8) }, { scaleY: ms(0.8) }] }} />
+                    <Switch
+                      value={value}
+                      onValueChange={onPress}
+                      style={{ transform: [{ scaleX: ms(0.8) }, { scaleY: ms(0.8) }] }}
+                    />
                   ) : isMenu ? (
                     <Menu
                       items={Languages}

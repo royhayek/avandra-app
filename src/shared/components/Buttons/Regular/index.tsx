@@ -1,14 +1,18 @@
 // Packages
+import _ from 'lodash';
 import React from 'react';
+
 // Components
-import { Button, Text } from 'react-native-paper';
+import Text from '@shared/components/Text';
+import { Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, TouchableOpacity, TouchableOpacityProps, ViewStyle, StyleProp } from 'react-native';
+
 // Utilities
 import makeStyles from './styles';
+
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
-import _ from 'lodash';
 
 // Interfaces
 type ButtonVariant = 'primary' | 'secondary' | 'gradient' | 'text';

@@ -3,8 +3,37 @@
     "common": {
       "back": "Back",
       "next": "Next",
+      "skip": "Skip",
       "submit": "Submit",
-      "continue": "Continue"
+      "continue": "Continue",
+      "privacy_policy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "please_wait": "Please wait..."
+    },
+    "onBoarding": {
+      "walkthrough_title_1": "Discover Your Next Adventure",
+      "walkthrough_desc_1": "Tripify curates travel gems just for you. Get personalized destination recommendations and start building your dream journey.",
+      "walkthrough_title_2": "Save and Plan Your Adventures",
+      "walkthrough_desc_2": "Found your dream destination? Add it to your saved list for later. Tripify keeps your travel dreams organized and within reach.",
+      "walkthrough_title_3": "Intelligent Trip Planning with Tripify AI",
+      "walkthrough_desc_3": "Let our AI plan a detailed trip tailored to your preferences. Easy planning for your unforgettable experience."
+    },
+    "login": {
+      "title": "Let's Get Started!",
+      "description": "Your Passport to Adventure Awaits",
+      "continue_with_google": "Continue with Google",
+      "continue_with_facebook": "Continue with Facebook",
+      "continue_with_apple": "Continue with Apple"
+    },
+    "profile": {
+      "title": "Add a personal touch 👤",
+      "description": "To enhance your travel journey, we'd love to know more about you.",
+      "full_name": "Full Name",
+      "email": "Email",
+      "country": "Country",
+      "success_title": "You're all set!",
+      "success_desc": "Congratulations! You're now part of the Tripify community. Your personalized travel experiences await.",
+      "explore_destinations": "Explore Destinations"
     },
     "navigation": {
       "trip_planner": "Planner",
@@ -41,8 +70,6 @@
       "manage_subscription": "Manage Subscription",
       "other": "Other",
       "faq": "Frequently Asked Questions",
-      "privacy_policy": "Privacy Policy",
-      "terms": "Terms of Service",
       "rate_app": "Rate App",
       "logout": "Logout",
       "upgrade_to_plus": "Upgrade to Plus!",

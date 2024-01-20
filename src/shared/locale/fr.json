@@ -3,8 +3,37 @@
     "common": {
       "back": "Retour",
       "next": "Suivant",
+      "skip": "Passer",
       "submit": "Envoyer",
-      "continue": "Continuer"
+      "continue": "Continuer",
+      "privacy_policy": "Politique de Confidentialité",
+      "terms": "Termes et Conditions",
+      "please_wait": "Veuillez patienter..."
+    },
+    "onBoarding": {
+      "walkthrough_title_1": "Découvrez votre prochaine aventure",
+      "walkthrough_desc_1": "Tripify organise des joyaux de voyage juste pour vous. Obtenez des recommandations de destinations personnalisées et commencez à construire le voyage de vos rêves.",
+      "walkthrough_title_2": "Sauvegardez et planifiez vos aventures",
+      "walkthrough_desc_2": "Vous avez trouvé la destination de vos rêves ? Ajoutez-le à votre liste enregistrée pour plus tard. Tripify garde vos rêves de voyage organisés et à portée de main.",
+      "walkthrough_title_3": "Planification de voyage intelligente avec Tripify AI",
+      "walkthrough_desc_3": "Laissez notre IA planifier un voyage détaillé adapté à vos préférences. Planification facile pour votre expérience inoubliable."
+    },
+    "login": {
+      "title": "Commençons!",
+      "description": "Votre passeport pour l'aventure vous attend",
+      "continue_with_google": "Continuer avec Google",
+      "continue_with_facebook": "Continuer avec Facebook",
+      "continue_with_apple": "Continuer avec Apple"
+    },
+    "profile": {
+      "title": "Ajoutez une touche personnelle 👤",
+      "description": "Pour agrémenter votre voyage, nous aimerions en savoir plus de vous.",
+      "full_name": "Nom complet",
+      "email": "E-mail",
+      "country": "Pays",
+      "success_title": "Vous êtes prêt!",
+      "success_desc": "Toutes nos félicitations! Vous faites désormais partie de la communauté Tripify. Vos expériences de voyage personnalisées vous attendent.",
+      "explore_destinations": "Explorer les destinations"
     },
     "navigation": {
       "trip_planner": "Planificateur de voyage",
@@ -41,9 +70,8 @@
       "manage_subscription": "Gérer l'abonnement",
       "other": "Autre",
       "faq": "Questions Fréquemment Posées",
-      "privacy_policy": "Politique de Confidentialité",
-      "terms": "Termes et Conditions",
       "rate_app": "Évaluer l'application",
+      "logout": "Se déconnecter",
       "upgrade_to_plus": "Passez à Plus!",
       "expanded_access": "Accès étendu aux fonctionnalités de {{name}}",
       "purchase_restored": "Achat restauré avec succès",

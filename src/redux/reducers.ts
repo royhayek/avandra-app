@@ -28,7 +28,8 @@ const appPersistConfig = {
 const persistSessionConfig = {
   key: 'session',
   storage: AsyncStorage,
-  timeout: 0
+  timeout: 0,
+  blacklist: ['error', 'loading']
 };
 
 export default persistCombineReducers(persistStorageConfig, {

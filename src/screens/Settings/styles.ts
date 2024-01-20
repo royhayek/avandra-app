@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 // Utilities
-import { isRTL } from '../../app/i18n';
+import i18n from '../../app/i18n';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
@@ -15,9 +15,11 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background
     },
     content: {
-      marginHorizontal: ms(24)
+      marginHorizontal: ms(24),
     },
-    contentContainer: { paddingBottom: mvs(30) },
+    contentContainer: {
+      paddingBottom: mvs(30),
+    },
     iconAndTitle: {
       gap: ms(16),
       flexDirection: 'row',
@@ -52,7 +54,7 @@ export default (theme: AppTheme) =>
     },
     arrowIcon: {
       marginStart: ms(3),
-      transform: isRTL ? [{ rotateY: '180deg' }] : []
+      transform: i18n.locale === 'ar' ? [{ rotateY: '180deg' }] : []
     },
     upgradeContainer: {
       padding: mvs(20),

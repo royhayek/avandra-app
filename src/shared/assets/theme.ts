@@ -191,15 +191,17 @@ const fonts = (theme: string) => ({
   h4: {
     fontSize: scaledFontSize(24),
     lineHeight: scaledFontSize(38.4),
-    fontFamily: 'urbanist-bold',
+    fontFamily: 'urbanist-bold'
   },
   h5: {
     fontSize: scaledFontSize(20),
-    lineHeight: scaledFontSize(32)
+    lineHeight: scaledFontSize(32),
+    fontFamily: 'urbanist-bold'
   },
   h6: {
     fontSize: scaledFontSize(18),
-    lineHeight: scaledFontSize(28.8)
+    lineHeight: scaledFontSize(28.8),
+    fontFamily: 'urbanist-semibold'
   },
   xLarge: {
     fontSize: scaledFontSize(18),

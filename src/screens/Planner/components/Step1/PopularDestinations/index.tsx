@@ -1,9 +1,10 @@
 // Packages
 import _ from 'lodash';
+import Constants from 'expo-constants';
 import React, { useEffect } from 'react';
 
 // Components
-import { Text } from 'react-native-paper';
+import Text from '@shared/components/Text';
 import FastImage from 'react-native-fast-image';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
@@ -23,6 +24,8 @@ interface PopularDestinationsProps {
 }
 
 // Component
+const publicUrl = process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000';
+
 const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
 
 const PopularDestinations: React.FC<PopularDestinationsProps> = ({ handleSubmit }) => {
@@ -38,17 +41,18 @@ const PopularDestinations: React.FC<PopularDestinationsProps> = ({ handleSubmit 
 
   // Effects
   useEffect(() => {
-    !_.isEmpty(lastRefresh) && dispatch(fetchDestinations());
+    _.isEmpty(lastRefresh) && dispatch(fetchDestinations());
   }, [dispatch]);
 
   // Renderers
   return (
     <View style={styles.flex1}>
-      <Text variant="titleMedium" style={styles.popularDestText}>
+      <Text variant="h5" style={styles.popularDestText}>
         {_t('popular_destinations')}
       </Text>
       <FlatList
         numColumns={2}
+        disableVirtualization
         data={popularDestinations}
         keyExtractor={(item) => item._id}
         showsHorizontalScrollIndicator={false}
@@ -59,12 +63,14 @@ const PopularDestinations: React.FC<PopularDestinationsProps> = ({ handleSubmit 
             <FastImage
               resizeMode="cover"
               style={styles.image}
-              source={{ uri: `http://localhost:4000/uploads/destination/${item.image}` }}
+              source={{
+                uri: `${publicUrl?.replace('/api', '')}/uploads/destination/${item.image}`
+              }}
             />
-            <Text variant="titleSmall" style={styles.name}>
+            <Text variant="h6" style={styles.name}>
               {item.name}
             </Text>
-            <Text variant="labelMedium" style={styles.country}>
+            <Text variant="medium" style={styles.country}>
               {item.country}
             </Text>
           </TouchableOpacity>

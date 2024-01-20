@@ -1,8 +1,8 @@
 // Packages
 import React from 'react';
-import { Text } from 'react-native-paper';
 
 // Components
+import Text from '@shared/components/Text';
 import { TouchableOpacity, View } from 'react-native';
 
 // Utils

@@ -7,12 +7,13 @@ import React, { useCallback, useRef, useState } from 'react';
 // Components
 import { View } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { Text } from 'react-native-paper';
+import Text from '@shared/components/Text';
 import FastImage from 'react-native-fast-image';
 import Indicator from '@shared/components/Indicator';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utils
+import { t } from '@app/i18n';
 import { data } from './data';
 import makeStyles from './styles';
 import makeCommonStyles from '@shared/assets/styles';
@@ -33,6 +34,8 @@ const OnBoarding = () => {
 
   const [index, setIndex] = useState(0);
 
+  const onBoardingData = data(t);
+
   // Callbacks
   const handleOnIndexChanged = useCallback((i: number) => setIndex(i), []);
 
@@ -45,7 +48,7 @@ const OnBoarding = () => {
   }, [index]);
 
   const handleContinuePress = useCallback(() => {
-    if (index === data.length - 1) {
+    if (index === onBoardingData.length - 1) {
       navigation.navigate('Login');
     } else {
       swiperRef.current.scrollBy(1, true);
@@ -56,7 +59,7 @@ const OnBoarding = () => {
   return (
     <>
       <View style={styles.container}>
-        <FastImage resizeMode="contain" source={data[index].background} style={styles.backgroundImg} />
+        <FastImage resizeMode="contain" source={onBoardingData[index].background} style={styles.backgroundImg} />
       </View>
 
       <View style={styles.bottomBackground}>
@@ -72,7 +75,7 @@ const OnBoarding = () => {
 
         <View style={styles.content}>
           <Swiper ref={swiperRef} pagingEnabled showsPagination loop={false} onIndexChanged={handleOnIndexChanged}>
-            {_.map(data, ({ title, description }) => (
+            {_.map(onBoardingData, ({ title, description }) => (
               <View key={title} style={{ flex: 1 }}>
                 <Text variant="h3" style={styles.title}>
                   {title}
@@ -81,19 +84,19 @@ const OnBoarding = () => {
                   {description}
                 </Text>
 
-                <Indicator index={index} length={data?.length} />
+                <Indicator index={index} length={onBoardingData?.length} />
 
                 <View style={commonStyles.footer}>
                   <RegularButton
                     variant="secondary"
                     style={styles.button}
                     onPress={handleBackOrSkipPress}
-                    title={index > 0 ? 'Back' : 'Skip'}
+                    title={index > 0 ? t('common.back') : t('common.skip')}
                     backgroundColors={[theme.colors.lightGray, theme.colors.lightGray]}
                   />
                   <RegularButton
-                    title="Continue"
                     style={styles.button}
+                    title={t('common.continue')}
                     onPress={handleContinuePress}
                     backgroundColors={[theme.colors.primary, theme.colors.primary]}
                   />

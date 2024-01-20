@@ -3,23 +3,23 @@ import _ from 'lodash';
 import React, { useCallback, useMemo, useState, useRef } from 'react';
 
 // Components
-import { Text } from 'react-native-paper';
-import { Formik, FormikProps, useFormik } from 'formik';
+import Text from '@shared/components/Text';
+import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
 import FastImage from 'react-native-fast-image';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AvatarPlaceholderDark, AvatarPlaceholderLight } from '@shared/assets/images';
 import RegularButton from '@shared/components/Buttons/Regular';
 import SquareEditIcon from '@shared/assets/icons/SquareEditIcon';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { AvatarPlaceholderDark, AvatarPlaceholderLight } from '@shared/assets/images';
 import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from 'react-native-country-picker-modal';
 
 // Utils
 import makeStyles from './styles';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
-import { authActions, getAuth } from '@redux/auth/slice';
+import { authActions } from '@redux/auth/slice';
 import { updateProfileAction } from '@redux/user/thunks';
 import { getUser, getUserLoading } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store'
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
 import { ProfileFormValues } from '@shared/types/ProfileFormProps';
+import { t } from '@app/i18n';
 
 // Component
 const Profile = () => {
@@ -50,6 +51,7 @@ const Profile = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
+  console.debug('user', user);
   const formInitialValues = { _id, name, email, country: '' };
 
   // Callbacks
@@ -85,7 +87,7 @@ const Profile = () => {
         <RegularButton
           fullWidth
           loading={loading}
-          title={isSuccess ? 'Explore Destinations' : 'Continue'}
+          title={isSuccess ? t('profile.explore_destinations') : t('common.continue')}
           onPress={() => (isSuccess ? handleExplorePress() : formRef.current?.handleSubmit())}
         />
       </View>
@@ -99,10 +101,10 @@ const Profile = () => {
         <View style={styles.successContainer}>
           <FastImage source={require('@shared/assets/images/SuccessProfileLogo.png')} style={styles.successLogo} />
           <Text variant="h3" style={styles.title}>
-            You're all set!
+            {t('profile.success_title')}
           </Text>
           <Text variant="xLarge" style={styles.subtitle}>
-            Congratulations! You're now part of the Tripify community. Your personalized travel experiences await.
+            {t('profile.success_desc')}
           </Text>
         </View>
 
@@ -118,9 +120,9 @@ const Profile = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <Text variant="h3" style={styles.title}>
-            Add a personal touch 👤
+            {t('profile.title')}
           </Text>
-          <Text variant="xLarge">To enhance your travel journey, we'd love to know more about you.</Text>
+          <Text variant="xLarge">{t('profile.description')}</Text>
 
           <Formik
             innerRef={formRef}
@@ -139,39 +141,39 @@ const Profile = () => {
 
                 <Input
                   name="name"
-                  label="Full Name"
                   value={values.name}
                   error={errors.name}
-                  placeholder="Full Name"
                   handleChange={handleChange}
+                  label={t('profile.full_name')}
+                  placeholder={t('profile.full_name')}
                 />
 
                 <Input
                   name="email"
-                  label="Email"
                   error={errors.email}
                   value={values.email}
-                  placeholder="Email"
+                  label={t('profile.email')}
                   handleChange={handleChange}
                   keyboardType="email-address"
+                  placeholder={t('profile.email')}
                   leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 
                 <Input
                   name="country"
-                  label="Country"
-                  placeholder="Country"
                   error={errors.country}
-                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                   value={values.country}
                   handleChange={handleChange}
+                  label={t('profile.country')}
                   onFocus={handleOpenCountryPicker}
+                  placeholder={t('profile.country')}
+                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 
                 {isOpenCountryPicker && (
                   <CountryPicker
-                    countryCode="AD"
                     withFilter
+                    countryCode="AD"
                     visible={isOpenCountryPicker}
                     onClose={handleCloseCountryPicker}
                     onSelect={(country: Country) => formRef.current?.setFieldValue('country', country.name)}

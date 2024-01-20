@@ -6,7 +6,7 @@ import React from 'react';
 import _ from 'lodash';
 // Utilities
 import LeftChevron from '../../../../shared/assets/icons/LeftChevron';
-import { isRTL } from '../../../../app/i18n';
+import i18n from '../../../../app/i18n';
 import makeStyles from './styles';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -31,7 +31,7 @@ const BackButton: React.FC<BackButtonProps> = ({ title, onPress, style, ...props
       style={[styles.container, style]}
       onPress={() => navigation.goBack()}
       icon={() => (
-        <LeftChevron color={theme.dark ? theme.colors.white : theme.colors.black} style={{ transform: [{ rotateY: isRTL ? '180deg' : '0deg' }] }} />
+        <LeftChevron color={theme.dark ? theme.colors.white : theme.colors.black} style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }} />
       )}
       {...props}
     />

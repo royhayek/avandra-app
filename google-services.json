@@ -1,32 +1,18 @@
 {
   "project_info": {
-    "project_number": "48273391374",
-    "firebase_url": "https://travelplanai-a53f4-default-rtdb.firebaseio.com",
-    "project_id": "travelplanai-a53f4",
-    "storage_bucket": "travelplanai-a53f4.appspot.com"
+    "project_number": "1056052970187",
+    "project_id": "trippify-4c3bd",
+    "storage_bucket": "trippify-4c3bd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:48273391374:android:8c85d8808820725b25e15f",
+        "mobilesdk_app_id": "1:1056052970187:android:4df78d329d798f8e4a914e",
         "android_client_info": {
-          "package_name": "com.codeblow.travelplanai"
+          "package_name": "com.nextgenappsdev.trippify"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "48273391374-0jmt2jaqbgd6r3utuqoi5n425utgo8iu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.codeblow.travelplanai",
-            "certificate_hash": "a8acc98f3bea6e050b1122a3c96705e74da0bf87"
-          }
-        },
-        {
-          "client_id": "48273391374-is0oj5lvto6eki5f2e890fg4mfstoln4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "***REMOVED***"
@@ -34,19 +20,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "48273391374-2q2gchl5vo804peqimv5f50mgu3l21qs.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.codeblow.travelplanai"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

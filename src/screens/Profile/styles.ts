@@ -8,7 +8,7 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
     },
     successContainer: {
       flex: 1,

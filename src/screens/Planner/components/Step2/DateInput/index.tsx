@@ -8,7 +8,7 @@ import { Keyboard } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 // Utilities
-import { isRTL } from '@app/i18n';
+import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
@@ -55,7 +55,7 @@ const DateInput: React.FC<DateInputProps> = ({ defaultValue }) => {
           centered
           icon="calendar-blank-outline"
           color={theme.colors.secondary}
-          style={{ transform: isRTL ? [{ scaleX: -1 }] : undefined }}
+          style={{ transform: i18n.locale === 'ar' ? [{ scaleX: -1 }] : undefined }}
         />
       }
     />

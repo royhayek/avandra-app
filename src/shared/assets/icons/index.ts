@@ -4,3 +4,4 @@ export { default as AppleIconLight } from './AppleIconLight';
 export { default as AppleIconDark } from './AppleIconDark';
 export { default as MessageIcon } from './MessageIcon';
 export { default as DownChevron } from './DownChevron';
+export { default as SearchIcon } from './SearchIcon';
