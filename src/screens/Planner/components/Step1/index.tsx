@@ -1,28 +1,27 @@
 // Packages
+import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import React, { useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
-import { ScrollView } from 'react-native';
-import DestinationInput from './DestinationInput';
+import { View } from 'react-native';
+import StepHeader from '../StepHeader';
+import PartnersList from './PartnersList';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { PARTNERS_LIST } from './data';
+import { useAppTheme } from '@shared/assets/theme';
 import { destinationsActions } from '@redux/destinations/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { useAppTheme } from '@shared/assets/theme';
-
-interface Step1Props {
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-}
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
+const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
 
-const Step1: React.FC<Step1Props> = ({ setActive }) => {
+const Step1 = () => {
   // Redux
   const dispatch = useDispatch();
 
@@ -30,21 +29,21 @@ const Step1: React.FC<Step1Props> = ({ setActive }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  // Callbacks
-  const handleSubmitPrompt = useCallback(
-    (city: any) => {
-      console.debug('[Step 1 - handleSubmitPrompt] :: ', city);
-      dispatch(destinationsActions.setPayload({ destination: city }));
-      setActive(1);
-    },
-    [dispatch, setActive]
-  );
+  const [whoIsGoing, setWhoIsGoing] = useState(PARTNERS_LIST[0].key);
+
+  // Effects
+  useEffect(() => {
+    const partner = _.find(PARTNERS_LIST, { key: whoIsGoing });
+    const withWho = _.isEqual(partner?.key, 'alone') ? 'alone' : `with ${partner?.title}`;
+    dispatch(destinationsActions.setPayload({ whoIsGoing: withWho }));
+  }, [whoIsGoing, dispatch]);
 
   // Renderers
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-      <DestinationInput handleSubmit={handleSubmitPrompt} />
-    </ScrollView>
+    <View style={styles.container}>
+      <StepHeader title={_t('who_is_going')} description={_t('lets_start')} />
+      <PartnersList transKey="step1" list={PARTNERS_LIST} value={whoIsGoing} setValue={setWhoIsGoing} />
+    </View>
   );
 };
 

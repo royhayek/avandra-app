@@ -14,7 +14,7 @@ import { View, TouchableOpacity, ImageBackground } from 'react-native';
 // Utilities
 import makeStyles from './styles';
 import { deleteConversation } from '@shared/services/localdb';
-import { PARTNERS_LIST } from '../../../Planner/components/Step3/data';
+import { PARTNERS_LIST } from '../../../Planner/components/Step1/data';
 
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';

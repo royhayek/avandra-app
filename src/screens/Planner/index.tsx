@@ -11,8 +11,6 @@ import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
 import Step4 from './components/Step4';
-import Step5 from './components/Step5';
-import Step6 from './components/Step6';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
@@ -56,6 +54,7 @@ const PlannerScreen = () => {
             })
           );
         }
+
         break;
 
       case 2:
@@ -99,7 +98,7 @@ const PlannerScreen = () => {
   }, [active, navigation, theme.colors.dark, theme.colors.gray, theme.colors.primary, theme.dark]);
 
   // Renderer Vars
-  const steps = [<Step3 />, <Step2 />, <Step4 />, <Step6 />, <Step5 />, <Step1 />];
+  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />];
 
   const isBeforeLastStep = _.isEqual(active, steps.length - 2);
   const isLastStep = _.isEqual(active, steps.length - 1);
