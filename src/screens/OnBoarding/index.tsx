@@ -1,6 +1,5 @@
 // Packages
 import _ from 'lodash';
-import * as Device from 'expo-device';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
 
@@ -30,7 +29,7 @@ const OnBoarding = () => {
 
   const navigation = useNavigation();
 
-  const swiperRef = useRef();
+  const swiperRef = useRef<Swiper>(null);
 
   const [index, setIndex] = useState(0);
 
@@ -43,17 +42,17 @@ const OnBoarding = () => {
     if (index === 0) {
       navigation.navigate('Login');
     } else {
-      swiperRef.current.scrollBy(-1, true);
+      swiperRef.current?.scrollBy(-1, true);
     }
-  }, [index]);
+  }, [index, navigation]);
 
   const handleContinuePress = useCallback(() => {
     if (index === onBoardingData.length - 1) {
       navigation.navigate('Login');
     } else {
-      swiperRef.current.scrollBy(1, true);
+      swiperRef.current?.scrollBy(1, true);
     }
-  }, [index]);
+  }, [index, navigation, onBoardingData.length]);
 
   // Renders
   return (
@@ -84,7 +83,7 @@ const OnBoarding = () => {
                   {description}
                 </Text>
 
-                <Indicator index={index} length={onBoardingData?.length} />
+                <Indicator index={index} length={onBoardingData?.length} style={styles.indicator} />
 
                 <View style={commonStyles.footer}>
                   <RegularButton

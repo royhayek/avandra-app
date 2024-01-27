@@ -1,103 +1,23 @@
+import { ms } from 'react-native-size-matters';
 import { scaledFontSize } from '@shared/utils';
-import { MD3LightTheme as DefaultTheme, MD3DarkTheme as DarkTheme, useTheme } from 'react-native-paper';
+import { MD3DarkTheme as DarkTheme, MD3LightTheme as DefaultTheme, useTheme } from 'react-native-paper';
 
-// const DESIGN_SCREEN_HEIGHT = 932;
+// Define a type for your custom fonts
+// export interface CustomFonts {
+//   h1: TextStyle;
+//   h2: TextStyle;
+//   h3: TextStyle;
+//   h4: TextStyle;
+//   h5: TextStyle;
+//   h6: TextStyle;
+//   xLarge: TextStyle;
+//   large: TextStyle;
+//   medium: TextStyle;
+//   small: TextStyle;
+//   xSmall: TextStyle;
+// }
 
-// const fontConfig = {
-//   displaySmall: {
-//     ...DefaultTheme.fonts.displaySmall,
-//     fontSize: scaledFontSize(36),
-//     lineHeight: scaledFontSize(44),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   displayMedium: {
-//     ...DefaultTheme.fonts.displayMedium,
-//     fontSize: scaledFontSize(45),
-//     lineHeight: scaledFontSize(52),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   displayLarge: {
-//     ...DefaultTheme.fonts.displayLarge,
-//     fontSize: scaledFontSize(57),
-//     lineHeight: scaledFontSize(64),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   headlineSmall: {
-//     ...DefaultTheme.fonts.headlineSmall,
-//     fontSize: scaledFontSize(24),
-//     lineHeight: scaledFontSize(32),
-//     fontFamily: 'urbanist-semibold'
-//   },
-//   headlineMedium: {
-//     ...DefaultTheme.fonts.headlineMedium,
-//     fontSize: scaledFontSize(28),
-//     lineHeight: scaledFontSize(40),
-//     fontFamily: 'urbanist-bold'
-//   },
-//   headlineLarge: {
-//     ...DefaultTheme.fonts.headlineLarge,
-//     fontSize: scaledFontSize(32),
-//     lineHeight: scaledFontSize(40),
-//     fontFamily: 'urbanist-bold'
-//   },
-//   titleSmall: {
-//     ...DefaultTheme.fonts.titleSmall,
-//     fontSize: scaledFontSize(14),
-//     lineHeight: scaledFontSize(20),
-//     fontFamily: 'urbanist-bold'
-//   },
-//   titleMedium: {
-//     ...DefaultTheme.fonts.titleMedium,
-//     fontSize: scaledFontSize(16),
-//     lineHeight: scaledFontSize(24),
-//     fontFamily: 'urbanist-bold'
-//   },
-//   titleLarge: {
-//     ...DefaultTheme.fonts.titleLarge,
-//     fontSize: scaledFontSize(18),
-//     lineHeight: scaledFontSize(26),
-//     fontFamily: 'urbanist-semibold'
-//   },
-//   labelSmall: {
-//     ...DefaultTheme.fonts.labelSmall,
-//     fontSize: scaledFontSize(11),
-//     lineHeight: scaledFontSize(16),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   labelMedium: {
-//     ...DefaultTheme.fonts.labelMedium,
-//     fontSize: scaledFontSize(12),
-//     lineHeight: scaledFontSize(16),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   labelLarge: {
-//     ...DefaultTheme.fonts.labelLarge,
-//     fontSize: scaledFontSize(12),
-//     lineHeight: scaledFontSize(20),
-//     fontFamily: 'urbanist-medium'
-//   },
-//   bodySmall: {
-//     ...DefaultTheme.fonts.bodySmall,
-//     fontSize: scaledFontSize(12),
-//     lineHeight: scaledFontSize(16),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   bodyMedium: {
-//     ...DefaultTheme.fonts.bodyMedium,
-//     fontSize: scaledFontSize(14),
-//     lineHeight: scaledFontSize(20),
-//     fontFamily: 'urbanist-regular'
-//   },
-//   bodyLarge: {
-//     ...DefaultTheme.fonts.bodyLarge,
-//     fontSize: scaledFontSize(16),
-//     lineHeight: scaledFontSize(24),
-//     fontFamily: 'urbanist-regular'
-//   }
-// };
-
-// const fonts = configureFonts({ config: fontConfig, isV3: true });
-
+// Extend the existing Theme interface with your custom fonts
 const lightColors = {
   ...DefaultTheme.colors,
   primary: '#34B27D',
@@ -114,7 +34,10 @@ const lightColors = {
   darkBlue: '#906FE7',
   pieBlue: '#9b59b6',
   star: '#FBBC04',
+  red: '#F75555',
   redSurface: '#FE3323',
+  secondaryContainer: '#34B27D',
+  onSecondaryContainer: '#FFFFFF',
   dark: {
     1: '#181A20',
     2: '#1E2025',
@@ -151,7 +74,10 @@ const darkColors = {
   darkBlue: '#906FE7',
   pieBlue: '#9b59b6',
   star: '#FBBC04',
+  red: '#F75555',
   redSurface: '#FE3323',
+  secondaryContainer: '#34B27D',
+  onSecondaryContainer: '#FFFFFF',
   dark: {
     1: '#181A20',
     2: '#1E2025',
@@ -173,14 +99,16 @@ const darkColors = {
   }
 };
 
-const fonts = (theme: string) => ({
+const customFonts = (theme: string) => ({
   h1: {
     fontSize: scaledFontSize(48),
-    lineHeight: scaledFontSize(76.8)
+    lineHeight: scaledFontSize(76.8),
+    fontFamily: 'urbanist-bold'
   },
   h2: {
     fontSize: scaledFontSize(40),
-    lineHeight: scaledFontSize(64)
+    lineHeight: scaledFontSize(64),
+    fontFamily: 'urbanist-bold'
   },
   h3: {
     fontSize: scaledFontSize(32),
@@ -221,29 +149,33 @@ const fonts = (theme: string) => ({
   },
   small: {
     fontSize: scaledFontSize(12),
-    lineHeight: scaledFontSize(19.2)
+    lineHeight: scaledFontSize(19.2),
+    fontFamily: 'urbanist-regular'
   },
   xSmall: {
     fontSize: scaledFontSize(10),
-    lineHeight: scaledFontSize(16)
+    lineHeight: scaledFontSize(16),
+    fontFamily: 'urbanist-regular'
   }
 });
 
 export const lightTheme = {
   ...DefaultTheme,
   colors: lightColors,
+  roundness: ms(10),
   fonts: {
     ...DefaultTheme.fonts,
-    ...fonts('light')
+    ...customFonts('light')
   }
 };
 
 export const darkTheme = {
   ...DarkTheme,
   colors: darkColors,
+  roundness: ms(10),
   fonts: {
     ...DefaultTheme.fonts,
-    ...fonts('dark')
+    ...customFonts('dark')
   }
 };
 

@@ -46,7 +46,12 @@ const ExitModal: React.FC<ExitModalProps> = ({ visible, toggle }) => {
       <Text style={styles.description}>{_t('you_havent_saved')}</Text>
       <View style={styles.buttonsContainer}>
         <OutlinedButton title={_t('leave')} onPress={handleLeaveScreen} />
-        <RegularButton style={styles.gobackButton} backgroundColors={['black', 'black', 'black']} title={_t('go_back')} onPress={toggle} />
+        <RegularButton
+          style={styles.gobackButton}
+          backgroundColors={['black', 'black', 'black']}
+          title={_t('go_back')}
+          onPress={toggle}
+        />
       </View>
     </Modal>
   );

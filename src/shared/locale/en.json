@@ -8,7 +8,8 @@
       "continue": "Continue",
       "privacy_policy": "Privacy Policy",
       "terms": "Terms of Service",
-      "please_wait": "Please wait..."
+      "please_wait": "Please wait...",
+      "save": "Save"
     },
     "onBoarding": {
       "walkthrough_title_1": "Discover Your Next Adventure",
@@ -36,21 +37,60 @@
       "explore_destinations": "Explore Destinations"
     },
     "navigation": {
-      "trip_planner": "Planner",
+      "home": "Home",
       "history": "My trips",
       "settings": "Settings",
-      "my_subscription": "My Subscription"
+      "my_subscription": "My Subscription",
+      "app_appearance": "App Appearance",
+      "personal_info": "Personal Info",
+      "help_and_support": "Help & Support",
+      "account_and_security": "Account & Security"
     },
-    "planner": {
+    "home": {
       "where_to_go": "Where do you want to go?",
       "search_by": "Search by city or town",
       "popular_destinations": "Popular Destinations",
-      "when_to_go": "When do you want to go?",
-      "who_is_coming": "Who is coming with you?",
-      "how_to_spend": "How do you want to spend your time?",
+      "popular_articles": "Popular Articles",
+      "view_all": "View all"
+    },
+    "planner": {
+      "step1": {
+        "who_is_going": "Who is going? 🧳",
+        "lets_start": "Let's get started by selecting who you're traveling with.",
+        "only_me": "Only Me🚶",
+        "only_me_desc": "Traveling solo, just you.",
+        "a_couple": "A Couple ❤️",
+        "a_couple_desc": "A romantic getaway for two.",
+        "family": "Family 👨‍👩‍👧‍👦",
+        "family_desc": "Quality time with your loved ones.",
+        "friends": "Friends 🌟",
+        "friends_desc": "Adventure with your closest pals.",
+        "work": "Work 💼",
+        "work_desc": "Business or corporate travel."
+      },
       "step2": {
+        "adventure_date": "When will your adventure begin and end? 🗓️",
+        "adventure_date_desc": "Choose the dates for your trip. This helps us plan the perfect itinerary for your travel period.",
         "noOfDays": "Number of days"
-      }
+      },
+      "step3": {
+        "interest_title": "Tailor your adventure to your tastes 🌟",
+        "interest_desc": "Select your travel preferences to customize your trip plan."
+      },
+      "step4": {
+        "budget_title": "Set your trip budget 💰",
+        "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort.",
+        "cheap": "Cheap 💰",
+        "cheap_desc": "Budget-friendly, economical travel.",
+        "balanced": "Balanced 💼",
+        "balanced_desc": "Moderate spending for a balanced trip.",
+        "luxury": "Luxury 💎",
+        "luxury_desc": "High-end, indulgent experiences.",
+        "flexible": "Flexible 💫",
+        "flexible_desc": "No budget restrictions."
+      },
+      "when_to_go": "When do you want to go?",
+      "how_to_spend": "How do you want to spend your time?",
     },
     "history": {
       "delete_your_history": "Are you sure you want to delete your history?",
@@ -66,16 +106,29 @@
       "language": "Language",
       "theme": "Theme",
       "subscription": "Subscription",
+      "travel_preferences": "Travel Preferences",
+      "personal_info": "Personal Info",
       "restore_purchase": "Restore purchase",
-      "manage_subscription": "Manage Subscription",
+      "account_and_security": "Account & Security",
+      "billing_and_subscriptions": "Billing & Subscriptions",
+      "data_and_analytics": "Data & Analytics",
       "other": "Other",
-      "faq": "Frequently Asked Questions",
-      "rate_app": "Rate App",
+      "faq": "FAQ",
+      "rate_us": "Rate us",
       "logout": "Logout",
-      "upgrade_to_plus": "Upgrade to Plus!",
-      "expanded_access": "Extended access to {{name}} features",
+      "upgrade_to_plus": "Upgrade Plan to Unlock More!",
+      "expanded_access": "Enjoy all the benefits and explore more possibilities",
       "purchase_restored": "Purchase restored successfully",
       "could_not_restore": "Could not restore purchase",
+      "app_appearance": "App Appearance",
+      "help_and_support": "Help & Support",
+      "contact_support": "Contact Support",
+      "biometric_id": "Biometric ID",
+      "face_id": "Face ID",
+      "deactivate_account": "Deactivate Account",
+      "delete_account": "Delete Account",
+      "deactivate_account_desc": "Temporarily deactivate your account. Easily reactivate when you're ready.",
+      "delete_account_desc": "Permanently remove your account and data from {{name}}. Proceed with caution.",
       "languages": {
         "english": "English",
         "arabic": "Arabic",
@@ -113,6 +166,12 @@
       "retry_connecting": "Retry Connecting"
     },
     "trip": {
+      "active_trip": "Active Trip",
+      "upcoming": "Upcoming",
+      "expired": "expired",
+      "regenerate": "Regenerate",
+      "share": "Share",
+      "delete": "Delete",
       "save_before_you_go": "Save before you go?",
       "you_havent_saved": "You haven't saved this iterenary, if you leave now, you'll lose of these recommendations",
       "leave": "Leave",

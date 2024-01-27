@@ -1,5 +1,5 @@
 // Packages
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces

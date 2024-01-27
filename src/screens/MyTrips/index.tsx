@@ -1,7 +1,7 @@
 // Packages
 import { ms, mvs } from 'react-native-size-matters';
 import { Ionicons, Octicons } from '@expo/vector-icons';
-import React, { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // Components
 import FastImage from 'react-native-fast-image';
@@ -9,7 +9,7 @@ import HistoryCard from './components/HistoryCard';
 import { FlatList, RefreshControl, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 import CustomBottomSheet from '@shared/components/BottomSheet';
-import { ActivityIndicator, IconButton, Text } from 'react-native-paper';
+import { ActivityIndicator, IconButton, SegmentedButtons, Text } from 'react-native-paper';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -23,7 +23,7 @@ import { deleteAllConversations, getConversations } from '@shared/services/local
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`history.${key}`, options);
+const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
 
 const HistoryScreen = ({ navigation }) => {
   // Statics
@@ -33,6 +33,7 @@ const HistoryScreen = ({ navigation }) => {
   const bottomSheetRef = useRef<BottomSheetMethods>();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedTab, setSelectedTab] = useState('upcoming');
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [savedTrips, setSavedTrips] = useState(savedTripsData);
 
@@ -41,7 +42,8 @@ const HistoryScreen = ({ navigation }) => {
   // Callbacks
   const refreshSavedTrips = useCallback((isRefreshing?: boolean) => {
     !isRefreshing && setLoading(true);
-    getConversations().then((convos) => {
+
+    getConversations().then(() => {
       setSavedTrips(savedTripsData);
       setRefreshing(false);
       !isRefreshing && setLoading(false);
@@ -59,7 +61,10 @@ const HistoryScreen = ({ navigation }) => {
   }, [handleSheetClose, refreshSavedTrips]);
 
   const renderDeleteIcon = useCallback(
-    () => savedTrips?.length > 0 && <Octicons name="trash" size={22} color={theme.dark ? theme.colors.white : theme.colors.black} />,
+    () =>
+      savedTrips?.length > 0 && (
+        <Octicons name="trash" size={22} color={theme.dark ? theme.colors.white : theme.colors.black} />
+      ),
     [savedTrips?.length, theme.colors.black, theme.colors.white, theme.dark]
   );
 
@@ -78,6 +83,36 @@ const HistoryScreen = ({ navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Renderer Vars
+  const segmentedButtonStyle = useMemo(
+    () => ({
+      labelStyle: { ...theme.fonts.large },
+      uncheckedColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500],
+      style: {
+        borderRadius: ms(12),
+        borderWidth: 0.5,
+        borderColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500]
+      }
+    }),
+    [theme.colors.gray, theme.dark, theme.fonts.large]
+  );
+
+  const segmentedButtons = useMemo(
+    () => [
+      {
+        value: 'upcoming',
+        label: _t('upcoming'),
+        ...segmentedButtonStyle
+      },
+      {
+        value: 'expired',
+        label: _t('expired'),
+        ...segmentedButtonStyle
+      }
+    ],
+    [segmentedButtonStyle]
+  );
+
   // Renderers
   const renderRefreshControl = useMemo(
     () => (
@@ -93,16 +128,20 @@ const HistoryScreen = ({ navigation }) => {
   const renderActiveTrip = useMemo(
     () => (
       <>
-        <Text variant="headlineSmall" style={{ marginBottom: mvs(16) }}>
-          Active Trip
+        <Text variant="h4" style={{ marginBottom: mvs(16) }}>
+          {_t('active_trip')}
         </Text>
         <HistoryCard item={savedTrips[0]} index={0} refresh={refreshSavedTrips} />
-        <Text variant="titleMedium" style={{ marginBottom: mvs(16) }}>
-          Upcoming Trips
-        </Text>
+        <SegmentedButtons
+          density="small"
+          value={selectedTab}
+          buttons={segmentedButtons}
+          onValueChange={setSelectedTab}
+          style={styles.segmentedButtons}
+        />
       </>
     ),
-    [refreshSavedTrips, savedTrips]
+    [savedTrips, refreshSavedTrips, selectedTab, segmentedButtons, styles.segmentedButtons]
   );
 
   const renderList = useMemo(

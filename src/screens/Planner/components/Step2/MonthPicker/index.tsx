@@ -48,11 +48,16 @@ const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
       showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => {
         const isActive = _.isEqual(value, item);
+
         return (
           <TouchableOpacity onPress={() => setValue(item)}>
             <View style={[styles.container, isActive ? styles.activeContainer : {}]}>
-              <Fontisto name="date" size={ms(14)} color={isActive ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black} />
-              <Text variant="labelMedium" style={[styles.title, isActive ? styles.activeTitle : {}]}>
+              <Fontisto
+                name="date"
+                size={ms(14)}
+                color={isActive ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black}
+              />
+              <Text variant="large" style={[styles.title, isActive ? styles.activeTitle : {}]}>
                 {item}
               </Text>
             </View>

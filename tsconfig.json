@@ -3,14 +3,11 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "es6",
     "noEmit": true,
     "target": "es6",
     "skipLibCheck": true,
@@ -18,25 +15,12 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@screens/*": [
-        "src/screens/*"
-      ],
-      "@redux/*": [
-        "src/redux/*"
-      ],
-      "@shared/*": [
-        "src/shared/*"
-      ]
+      "@app/*": ["src/app/*"],
+      "@screens/*": ["src/screens/*"],
+      "@redux/*": ["src/redux/*"],
+      "@shared/*": ["src/shared/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "src/screens/Settings/index.jsx"],
+  "exclude": ["node_modules"]
 }

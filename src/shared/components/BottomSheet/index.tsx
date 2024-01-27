@@ -37,7 +37,13 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({ sheetRef, snapPoi
         backgroundStyle={styles.background}
         handleIndicatorStyle={{ display: 'none' }}
         backdropComponent={(props) => (
-          <BottomSheetBackdrop {...props} opacity={0.5} disappearsOnIndex={-1} appearsOnIndex={0} pressBehavior="close" />
+          <BottomSheetBackdrop
+            {...props}
+            opacity={0.5}
+            disappearsOnIndex={-1}
+            appearsOnIndex={0}
+            pressBehavior="close"
+          />
         )}>
         {children}
       </BottomSheet>

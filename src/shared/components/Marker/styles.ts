@@ -1,4 +1,3 @@
-
 // Packages
 import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';

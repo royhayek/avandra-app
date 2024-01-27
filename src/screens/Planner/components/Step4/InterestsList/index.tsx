@@ -24,26 +24,31 @@ const InterestsList: React.FC<InterestsListProps> = ({ value, setValue }) => {
   const styles = makeStyles(theme);
 
   // Renderers
+  const renderItem = (item) => {
+    const selected = _.includes(value, item.title);
+
+    return (
+      <Chip
+        mode="outlined"
+        selected={selected}
+        showSelectedCheck={false}
+        onPress={() => setValue(item.title)}
+        style={[styles.chip, selected && styles.activeChip]}
+        textStyle={[styles.textStyle, selected && styles.activeTextStyle]}
+        selectedColor={selected ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black}>
+        {item.title}
+      </Chip>
+    );
+  };
+
   return (
     <FlatList
-      numColumns={5}
+      numColumns={2}
       data={INTEREST_LIST}
-      style={styles.flatList}
+      contentContainerStyle={styles.flatList}
       keyExtractor={(item) => item.key}
       columnWrapperStyle={styles.listColumnWrapper}
-      renderItem={({ item }) => {
-        const selected = _.includes(value, item.title);
-        return (
-          <Chip
-            mode="outlined"
-            selected={selected}
-            style={[styles.chip, { borderColor: selected ? theme.colors.primary : theme.colors.lightGray }]}
-            onPress={() => setValue(item.title)}
-            selectedColor={selected ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black}>
-            {item.title}
-          </Chip>
-        );
-      }}
+      renderItem={({ item }) => renderItem(item)}
     />
   );
 };

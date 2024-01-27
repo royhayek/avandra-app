@@ -23,7 +23,7 @@ i18n.enableFallback = true;
 export const changeLanguage = (lng: string) => {
   i18n.locale = lng;
 
-  wait(10).then(() => {
+  wait(10).then(async () => {
     const isRTL = _.isEqual(lng, 'ar');
     I18nManager.forceRTL(isRTL);
     I18nManager.allowRTL(isRTL);
@@ -31,7 +31,7 @@ export const changeLanguage = (lng: string) => {
     if (__DEV__) {
       DevSettings.reload();
     } else {
-      Updates.reloadAsync();
+      await Updates.reloadAsync();
     }
   });
 };

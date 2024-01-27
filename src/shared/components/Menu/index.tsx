@@ -1,14 +1,16 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
-import { useTheme } from 'react-native-paper';
 import { Menu as RNMenu } from 'react-native-paper';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 // Interfaces
+import { useAppTheme } from '@shared/assets/theme';
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+
 interface MenuItem {
   item: string;
   title: string;
@@ -26,14 +28,25 @@ interface MenuProps {
 // Component
 const Menu: React.FC<MenuProps> = ({ visible, onDismiss, anchor, items, onItemPress }) => {
   // Statics
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
   return (
-    <RNMenu visible={visible} onDismiss={onDismiss} anchorPosition="bottom" contentStyle={styles.content} anchor={anchor}>
+    <RNMenu
+      anchor={anchor}
+      visible={visible}
+      onDismiss={onDismiss}
+      anchorPosition="bottom"
+      contentStyle={styles.content}>
       {_.map(items, ({ item, title, leadingIcon }) => (
-        <RNMenu.Item key={item} leadingIcon={leadingIcon} onPress={() => onItemPress(item)} title={title} titleStyle={styles.itemTitle} />
+        <RNMenu.Item
+          key={item}
+          title={t(title)}
+          leadingIcon={leadingIcon}
+          titleStyle={styles.itemTitle}
+          onPress={() => onItemPress(item)}
+        />
       ))}
     </RNMenu>
   );

@@ -14,6 +14,6 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background
     },
     itemTitle: {
-      ...theme.fonts.labelMedium
+      ...theme.fonts.large
     }
   });

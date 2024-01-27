@@ -15,18 +15,22 @@ import {
   promotedProductListener,
   purchaseErrorListener,
   purchaseUpdatedListener,
-  setup,
+  setup
 } from 'react-native-iap';
 // Utilities
 import { appActions, getConfiguration } from '@redux/app/slice';
-import { isAndroid } from '../helpers';
+import { isAndroid } from '@shared/utils';
 
 // Component
 const SubscriptionManager = () => {
   // Redux
   const dispatch = useDispatch();
-  const updateSubscriptions = useCallback(payload => dispatch(appActions.setPaidSubscriptions(payload)), [dispatch]);
-  const updateOwnedSubscription = useCallback(payload => dispatch(appActions.setOwnedSubscription(payload)), [dispatch]);
+  const updateSubscriptions = useCallback((payload) => dispatch(appActions.setPaidSubscriptions(payload)), [dispatch]);
+
+  const updateOwnedSubscription = useCallback(
+    (payload) => dispatch(appActions.setOwnedSubscription(payload)),
+    [dispatch]
+  );
 
   const config = useSelector(getConfiguration);
 
@@ -62,21 +66,22 @@ const SubscriptionManager = () => {
         // Load available products (subscription plans) from the app stores
         const productIds = Platform.select({
           android: config?.productIds?.android,
-          ios: config?.productIds?.ios,
+          ios: config?.productIds?.ios
         });
+
         return getSubscriptions({ skus: productIds });
       })
-      .then(subscriptions => {
+      .then((subscriptions) => {
         // Here you can store the available subscription plans in your state or Redux store
         console.log('Available Subscription Plans:', subscriptions);
 
         updateSubscriptions(subscriptions);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error setting up subscriptions:', error);
       });
 
-    const purchaseUpdate = purchaseUpdatedListener(async purchase => {
+    const purchaseUpdate = purchaseUpdatedListener(async (purchase) => {
       const receipt = purchase.transactionReceipt ? purchase.transactionReceipt : purchase.originalJson;
 
       if (receipt) {
@@ -93,9 +98,13 @@ const SubscriptionManager = () => {
       }
     });
 
-    const purchaseError = purchaseErrorListener(error => console.info('[Product promoted] :: ', { error: JSON.stringify(error) }));
+    const purchaseError = purchaseErrorListener((error) =>
+      console.info('[Product promoted] :: ', { error: JSON.stringify(error) })
+    );
 
-    const promotedProduct = promotedProductListener(productId => console.info('[Product promoted] :: ', { productId }));
+    const promotedProduct = promotedProductListener((productId) =>
+      console.info('[Product promoted] :: ', { productId })
+    );
 
     return () => {
       purchaseUpdate?.remove();

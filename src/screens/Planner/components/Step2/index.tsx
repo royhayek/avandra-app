@@ -18,9 +18,10 @@ import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
 import { destinationsActions } from '@redux/destinations/slice';
+import StepHeader from '../StepHeader';
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
+const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`, options);
 
 const Step2 = () => {
   // Redux
@@ -44,6 +45,7 @@ const Step2 = () => {
     (start: string, end: string) => {
       const diffDays = moment(end).diff(moment(start), 'days') + 1;
       setNoOfDays(diffDays);
+
       setDateState({
         ...dateState,
         fromDate: start,
@@ -71,15 +73,15 @@ const Step2 = () => {
     switch (activeButton) {
       case 'days':
         return (
-          <ScrollView style={styles.secondContent}>
-            <Text variant="titleMedium">How many days?</Text>
+          <ScrollView style={styles.secondContent} showsVerticalScrollIndicator={false}>
+            <Text variant="large">How many days?</Text>
             <DaysPicker value={noOfDays} setValue={setNoOfDays} />
-            <Text variant="bodySmall" style={styles.maxDays}>
+            <Text variant="medium" style={styles.maxDays}>
               7 days maximum
             </Text>
-            <Text variant="titleMedium" style={styles.whatMonth}>
+            <Text variant="large" style={styles.whatMonth}>
               During what month?{' '}
-              <Text variant="titleMedium" style={{ color: theme.colors.secondary }}>
+              <Text variant="large" style={{ color: theme.colors.secondary }}>
                 (optional)
               </Text>
             </Text>
@@ -89,9 +91,13 @@ const Step2 = () => {
 
       default:
         return (
-          <ScrollView style={styles.firstContent}>
+          <ScrollView contentContainerStyle={styles.firstContent} showsVerticalScrollIndicator={false}>
             <DateInput
-              defaultValue={dateState.fromDate && dateState.toDate && `${formatMonthDay(dateState.fromDate)} - ${formatMonthDay(dateState.toDate)}`}
+              defaultValue={
+                dateState.fromDate &&
+                dateState.toDate &&
+                `${formatMonthDay(dateState.fromDate)} - ${formatMonthDay(dateState.toDate)}`
+              }
             />
             <DatePicker onSuccess={handleDatePickerSuccess} />
           </ScrollView>
@@ -114,12 +120,7 @@ const Step2 = () => {
 
   return (
     <View style={styles.container}>
-      <Text variant="titleLarge" style={styles.title}>
-        {_t('when_to_go')}
-      </Text>
-      <Text variant="titleSmall" style={styles.subtitle}>
-        Choose a day/date range, up to 7 days.
-      </Text>
+      <StepHeader title={_t('adventure_date')} description={_t('adventure_date_desc')} />
       <ToggleButtons buttons={toggleButtons} active={activeButton} setActive={setActiveButton} />
       {renderContent}
     </View>

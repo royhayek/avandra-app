@@ -1,5 +1,5 @@
-import { AppTheme } from '@shared/assets/theme';
 import { StyleSheet } from 'react-native';
+import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({

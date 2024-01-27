@@ -99,7 +99,10 @@ const ItineraryScreen: React.FC<ItineraryScreenProps> = ({ navigation }) => {
             latitude: _.first(places)?.searchResult.geometry.location.lat || 0,
             longitude: _.first(places)?.searchResult.geometry.location.lng || 0
           }}>
-          {_.map(places, (place, index) => place && <Marker index={index} marker={place} interpolations={[]} size={ms(28)} />)}
+          {_.map(
+            places,
+            (place, index) => place && <Marker index={index} marker={place} interpolations={[]} size={ms(28)} />
+          )}
         </MapView>
         <Animated.View style={[styles.headerButtons, { opacity: headerButtonsOpacity }]}>
           <BackButton style={styles.backBtn} onPress={handleToggleCloseModal} />
@@ -107,7 +110,13 @@ const ItineraryScreen: React.FC<ItineraryScreenProps> = ({ navigation }) => {
             title="Map view"
             containerStyle={styles.mapViewBtn}
             onPress={() => handleNavigateToMapView()}
-            startIcon={<Ionicons name="location-outline" size={ms(20)} color={theme.dark ? theme.colors.white : theme.colors.black} />}
+            startIcon={
+              <Ionicons
+                name="location-outline"
+                size={ms(20)}
+                color={theme.dark ? theme.colors.white : theme.colors.black}
+              />
+            }
           />
         </Animated.View>
       </Animated.View>

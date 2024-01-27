@@ -31,11 +31,12 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActiv
     <View style={styles.container}>
       {_.map(buttons, (button, index) => {
         const isActive = _.isEqual(button.key, active);
+
         return (
           <TouchableWithoutFeedback key={button.key} onPress={() => setActive(button.key)}>
             <View style={index === 0 ? styles.buttonContainer : styles.activeButtonContainer}>
               <View style={isActive ? styles.activeButton : styles.button}>
-                <Text variant="bodySmall" style={styles.title}>
+                <Text variant="medium" style={[styles.title, isActive && styles.activeTitle]}>
                   {button.title}
                 </Text>
               </View>

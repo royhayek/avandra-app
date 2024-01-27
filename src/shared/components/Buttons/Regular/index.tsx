@@ -3,8 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 
 // Components
-import Text from '@shared/components/Text';
-import { Button } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, TouchableOpacity, TouchableOpacityProps, ViewStyle, StyleProp } from 'react-native';
 
@@ -27,20 +26,22 @@ interface RegularButtonProps extends TouchableOpacityProps {
   startIcon?: React.ReactNode;
   backgroundColors?: string[];
   style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<ViewStyle>;
 }
 
 // Component
 const RegularButton: React.FC<RegularButtonProps> = ({
   title,
+  style,
   variant,
   onPress,
-  style,
-  startIcon,
-  endIcon,
-  backgroundColors,
-  disabled,
-  fullWidth,
   loading,
+  endIcon,
+  disabled,
+  startIcon,
+  textStyle,
+  fullWidth,
+  backgroundColors,
   ...props
 }) => {
   // Statics
@@ -72,7 +73,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
   if (_.isEqual(variant, 'text')) {
     return (
       <Button loading={loading} disabled={loading} onPress={onPress} style={[styles.button, style]}>
-        <Text variant="medium" style={styles.textButtonLabel}>
+        <Text variant="medium" style={textStyle}>
           {title}
         </Text>
       </Button>
@@ -105,6 +106,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
 
 RegularButton.defaultProps = {
   title: 'Submit',
+  fullWidth: false,
   onPress: () => null,
   variant: 'primary' as ButtonVariant
 };

@@ -32,7 +32,7 @@ const DaysPicker: React.FC<DaysPickerProps> = ({ value, setValue }) => {
   // Renderers
   return (
     <View style={styles.container}>
-      <Text variant="bodySmall" style={{ color: theme.colors.secondary }}>
+      <Text variant="medium" style={styles.noOfDays}>
         {_t('noOfDays')}
       </Text>
       <View style={styles.stepperRow}>
@@ -40,18 +40,18 @@ const DaysPicker: React.FC<DaysPickerProps> = ({ value, setValue }) => {
           disabled={isMinusDisabled}
           onPress={() => setValue((d) => d - 1)}
           style={[styles.button, isMinusDisabled ? styles.disabledButton : {}]}>
-          <Text variant="headlineSmall" style={{ color: theme.colors.white }}>
+          <Text variant="h5" style={{ color: theme.colors.white }}>
             -
           </Text>
         </TouchableOpacity>
-        <Text variant="titleMedium" style={styles.value}>
+        <Text variant="h6" style={styles.value}>
           {value}
         </Text>
         <TouchableOpacity
           disabled={isPlusDisabled}
           onPress={() => setValue((d) => d + 1)}
           style={[styles.button, isPlusDisabled ? styles.disabledButton : {}]}>
-          <Text variant="headlineSmall" style={{ color: theme.colors.white }}>
+          <Text variant="h5" style={{ color: theme.colors.white }}>
             +
           </Text>
         </TouchableOpacity>

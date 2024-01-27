@@ -8,16 +8,21 @@ import { ms, mvs } from 'react-native-size-matters';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      height: mvs(300),
+      height: mvs(280),
       borderRadius: ms(16),
       marginBottom: mvs(24)
     },
-    horizontalContainer: {
+    verticalContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: mvs(16)
     },
-    content: {
+    verticalImage: {
+      width: ms(70),
+      height: ms(70),
+      borderRadius: ms(16)
+    },
+    verticalInfoContent: {
       left: 0,
       right: 0,
       bottom: 0,
@@ -28,6 +33,10 @@ export default (theme: AppTheme) =>
       position: 'absolute',
       backgroundColor: theme.colors.background
     },
+    horizontalInfoContent: {
+      flex: 1,
+      marginHorizontal: ms(10)
+    },
     deleteBtn: {
       top: 0,
       right: 0,
@@ -37,6 +46,7 @@ export default (theme: AppTheme) =>
     },
     title: {
       marginBottom: mvs(6),
+      alignSelf: 'flex-start',
       color: theme.dark ? theme.colors.white : theme.colors.black
     },
     assistant: {
@@ -49,13 +59,17 @@ export default (theme: AppTheme) =>
       flex: 1,
       borderRadius: ms(24)
     },
+    dot: {
+      marginHorizontal: ms(2),
+      color: theme.dark ? theme.colors.white : theme.colors.black
+    },
     rowContainer: {
       alignItems: 'center',
       flexDirection: 'row'
       // justifyContent: 'space-between',
     },
     infoItemContainer: {
-      gap: ms(6),
+      gap: ms(5),
       alignItems: 'center',
       flexDirection: 'row'
     }

@@ -2,7 +2,7 @@ import Svg, { G, Path } from 'react-native-svg';
 import { ms } from 'react-native-size-matters';
 import * as React from 'react';
 
-const StarsIcon = props => (
+const StarsIcon = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     fillRule="evenodd"

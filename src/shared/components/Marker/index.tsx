@@ -4,7 +4,7 @@ import { ms, mvs } from 'react-native-size-matters';
 
 // Components
 import { Animated } from 'react-native';
-import {  Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { MapMarker, MarkerPressEvent } from 'react-native-maps';
 
 // Utilities
@@ -36,7 +36,7 @@ interface MarkerProps {
 }
 
 // Component
-const Marker: React.FC<MarkerProps> = ({ marker, index, size, onMarkerPress, interpolations, displayDay }) => {
+const Marker: React.FC<MarkerProps> = ({ marker, index, size = 10, onMarkerPress, interpolations }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -51,7 +51,7 @@ const Marker: React.FC<MarkerProps> = ({ marker, index, size, onMarkerPress, int
         <Animated.View style={[styles.markerWrap]}>
           <Animated.Image
             resizeMode="cover"
-            source={require('../../../../assets/map-pin.png')}
+            source={require('@shared/assets/images/map-pin.png')}
             style={[styles.marker, { width: ms(size), height: mvs(size) }, scaleStyle]}
           />
           <Text variant="labelSmall" style={styles.label}>

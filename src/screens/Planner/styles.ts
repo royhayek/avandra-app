@@ -9,10 +9,11 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     flex1: { flex: 1 },
     container: {
-      flex: 1,
-      backgroundColor: theme.colors.background
+      flex: 1
     },
-    divider: { marginTop: mvs(10) },
+    divider: {
+      marginTop: mvs(10)
+    },
     input: {
       marginTop: mvs(6),
       maxHeight: mvs(120),
@@ -21,7 +22,9 @@ export default (theme: AppTheme) =>
       marginHorizontal: ms(16),
       justifyContent: 'center'
     },
-    underline: { display: 'none' },
+    underline: {
+      display: 'none'
+    },
     stopButton: {
       bottom: 0,
       left: '20%',

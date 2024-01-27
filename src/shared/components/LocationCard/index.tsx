@@ -2,12 +2,10 @@
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import React, { useCallback } from 'react';
-import { ms } from 'react-native-size-matters';
 
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import StarRating from 'react-native-star-rating';
 import { View, TouchableOpacity, Platform, Linking } from 'react-native';
 
 // Utilities
@@ -40,7 +38,13 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
 
   const places = itineraryPlacesSelect?.places || DUMMY_PLACES;
   const { id, place, desc, address, geometry: { location: { lat = '', long = '' } = {} } = {} } = location || {};
-  const { rating, user_ratings_total, photos = 'https://picsum.photos/160/160' } = _.find(places, { id })?.searchResult || {};
+
+  const {
+    rating,
+    user_ratings_total,
+    photos = 'https://picsum.photos/160/160'
+  } = _.find(places, { id })?.searchResult || {};
+
   const image = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photo_reference=${photos[0].photo_reference}&key=${GOOGLE_MAPS_API_KEY}`;
 
   // Callbacks
@@ -48,6 +52,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
     const scheme = Platform.select({ ios: 'maps://0,0?q=', android: 'geo:0,0?q=' });
     const latLng = `${lat},${long}`;
     const label = place;
+
     const url = Platform.select({
       ios: `${scheme}${label}@${latLng}`,
       android: `${scheme}${latLng}(${label})`
@@ -68,7 +73,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
           <Text variant="bodyMedium" style={styles.rating}>
             {rating}
           </Text>
-          <StarRating
+          {/* <StarRating
             disabled
             maxStars={5}
             rating={rating}
@@ -81,7 +86,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
             emptyStarColor={theme.colors.lightGray}
             starSize={isHorizontal ? ms(14) : ms(16)}
             containerStyle={styles.starRatingContainer}
-          />
+          /> */}
           <Text variant="bodySmall" style={styles.userRatingTotal}>
             ({formatAmount(user_ratings_total)})
           </Text>

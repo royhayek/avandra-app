@@ -3,12 +3,12 @@ import Svg, { Path } from 'react-native-svg';
 import { ms } from 'react-native-size-matters';
 import * as React from 'react';
 
-const LeftChevron = props => (
+const LeftChevron = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
     style={{
-      enableBackground: 'new 0 0 492 492',
+      enableBackground: 'new 0 0 492 492'
     }}
     viewBox="0 0 492 492"
     width={ms(15)}

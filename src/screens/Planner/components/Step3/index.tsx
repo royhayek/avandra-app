@@ -6,26 +6,27 @@ import React, { useEffect, useState } from 'react';
 // Components
 import { View } from 'react-native';
 import PartnersList from './PartnersList';
-import { Text, useTheme } from 'react-native-paper';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import StepHeader from '../StepHeader';
 import { PARTNERS_LIST } from './data';
+import { useAppTheme } from '@shared/assets/theme';
 import { destinationsActions } from '@redux/destinations/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
+const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
 
 const Step3 = () => {
   // Redux
   const dispatch = useDispatch();
 
   // Statics
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   const [whoIsGoing, setWhoIsGoing] = useState(PARTNERS_LIST[0].key);
@@ -40,13 +41,8 @@ const Step3 = () => {
   // Renderers
   return (
     <View style={styles.container}>
-      <Text variant="titleLarge" style={styles.title}>
-        {_t('who_is_coming')}
-      </Text>
-      <Text variant="titleSmall" style={styles.subtitle}>
-        Choose one
-      </Text>
-      <PartnersList value={whoIsGoing} setValue={setWhoIsGoing} />
+      <StepHeader title={_t('who_is_going')} description={_t('lets_start')} />
+      <PartnersList transKey="step1" list={PARTNERS_LIST} value={whoIsGoing} setValue={setWhoIsGoing} />
     </View>
   );
 };

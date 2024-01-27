@@ -10,19 +10,20 @@ export default (theme: AppTheme) =>
     container: {
       width: ms(90),
       height: mvs(90),
-      borderRadius: ms(8),
+      borderWidth: ms(1),
       marginRight: ms(10),
-      borderWidth: ms(1.8),
       alignItems: 'center',
       justifyContent: 'center',
-      borderColor: theme.colors.lightGray
+      borderRadius: theme.roundness,
+      borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[200],
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },
     activeContainer: {
       borderColor: theme.colors.primary
     },
     title: {
       marginTop: mvs(10),
-      fontWeight: '600',
+      fontFamily: 'urbanist-medium',
       color: theme.dark ? theme.colors.white : theme.colors.black
     },
     activeTitle: {

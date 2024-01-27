@@ -1,61 +1,57 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
-import { ms } from 'react-native-size-matters';
 
 // Components
-import { Text, useTheme } from 'react-native-paper';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Text } from 'react-native-paper';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { PARTNERS_LIST } from '../data';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
+import { TranslateOptions } from 'i18n-js';
+
 interface PartnersListProps {
+  list: [];
   value: string;
+  transKey: string;
   setValue: (value: string) => void;
 }
 
 // Component
-const PartnersList: React.FC<PartnersListProps> = ({ value, setValue }) => {
+const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
+
+const PartnersList: React.FC<PartnersListProps> = ({ transKey, list, value, setValue }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
+  const renderItem = (item) => {
+    const isActive = _.isEqual(value, item.key);
+
+    return (
+      <TouchableOpacity onPress={() => setValue(item.key)} style={[styles.button, isActive && styles.activeButton]}>
+        <View>
+          <Text variant="h5">{_t(`${transKey}.${item.title}`)}</Text>
+          <Text variant="medium" style={styles.description}>
+            {_t(`${transKey}.${item.desc}`)}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <FlatList
-      data={PARTNERS_LIST}
-      contentContainerStyle={styles.flatList}
-      // columnWrapperStyle={styles.listColumnWrapper}
+      data={list}
       keyExtractor={(item) => item.key}
-      renderItem={({ item }) => {
-        const isActive = _.isEqual(value, item.key);
-        return (
-          <TouchableOpacity
-            onPress={() => setValue(item.key)}
-            style={[styles.button, { borderColor: isActive ? theme.colors.primary : theme.colors.lightGray }]}>
-            <View>
-              <View style={[styles.iconContainer, { backgroundColor: isActive ? theme.colors.primary : 'transparent' }]}>
-                <MaterialIcons
-                  size={ms(24)}
-                  name={item.icon}
-                  color={isActive ? theme.colors.white : theme.dark ? theme.colors.white : theme.colors.black}
-                />
-              </View>
-              <Text
-                variant="titleMedium"
-                style={[styles.title, { color: isActive ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black }]}>
-                {item.title}
-              </Text>
-            </View>
-            {isActive && <Ionicons name="ios-checkmark-sharp" size={ms(25)} color={theme.colors.primary} />}
-          </TouchableOpacity>
-        );
-      }}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.flatList}
+      renderItem={({ item }) => renderItem(item)}
     />
   );
 };

@@ -66,7 +66,9 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
   }, [navigation]);
 
   useEffect(() => {
-    Platform.OS === 'ios' && scrollViewRef.current && scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: true });
+    Platform.OS === 'ios' &&
+      scrollViewRef.current &&
+      scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: true });
   }, []);
 
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -143,10 +145,24 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
   // Renderers
   return (
     <View style={styles.container}>
-      <MapView ref={mapRef} provider={PROVIDER_GOOGLE} style={styles.map} initialRegion={state.region} showsUserLocation>
+      <MapView
+        ref={mapRef}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        initialRegion={state.region}
+        showsUserLocation>
         {state.markers.map(
           (marker, index) =>
-            marker && <Marker key={index} marker={marker} index={index} interpolations={interpolations} onMarkerPress={onMarkerPress} displayDay />
+            marker && (
+              <Marker
+                key={index}
+                marker={marker}
+                index={index}
+                interpolations={interpolations}
+                onMarkerPress={onMarkerPress}
+                displayDay
+              />
+            )
         )}
       </MapView>
       <BackButton style={styles.backBtn} />

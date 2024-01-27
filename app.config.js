@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Trippify',
     slug: 'trippify',
-    version: '1.0.1',
+    version: '1.0.2',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -24,6 +24,7 @@ module.exports = {
         policy: 'appVersion'
       },
       config: {
+        usesNonExemptEncryption: false,
         googleMapsApiKey: '***REMOVED***'
       },
       infoPlist: {
@@ -74,10 +75,16 @@ module.exports = {
       eas: {
         projectId: '7435fea4-bc85-4a71-8526-db121810f0ed'
       },
-      apiUrl: process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:3000'
+      apiUrl: process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api'
     },
     plugins: [
       'react-native-iap',
+      [
+        'expo-updates',
+        {
+          username: 'royhayek'
+        }
+      ],
       [
         'expo-build-properties',
         {

@@ -2,7 +2,7 @@ import { ms } from 'react-native-size-matters';
 import Svg, { Path } from 'react-native-svg';
 import * as React from 'react';
 
-const UnlimitedIcon = props => (
+const UnlimitedIcon = (props) => (
   <Svg xmlns="http://www.w3.org/2000/svg" width={ms(34)} height={ms(34)} viewBox="0 0 24 24" {...props}>
     <Path
       fill="currentColor"

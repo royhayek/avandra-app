@@ -1,7 +1,7 @@
 // Packages
 import * as Device from 'expo-device';
-import { Dimensions, Platform, StatusBar, StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
+import { Platform, StyleSheet } from 'react-native';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
@@ -46,6 +46,9 @@ export default (theme: AppTheme) =>
       marginTop: mvs(10),
       marginBottom: mvs(16),
       paddingHorizontal: ms(20)
+    },
+    indicator: {
+      marginBottom: mvs(24)
     },
     button: {
       flex: 1

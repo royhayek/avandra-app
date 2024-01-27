@@ -12,10 +12,10 @@ export default (theme: AppTheme) =>
       ...StyleSheet.absoluteFillObject,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.dark ? theme.colors.background : theme.colors.white,
+      backgroundColor: theme.dark ? theme.colors.background : theme.colors.white
     },
     lottie: {
       width: ms(130),
-      height: mvs(130),
-    },
+      height: mvs(130)
+    }
   });

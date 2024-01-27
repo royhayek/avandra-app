@@ -8,25 +8,15 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      flex: 1
-    },
-    title: {
-      marginTop: mvs(20),
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: mvs(10)
-    },
-    subtitle: {
-      textAlign: 'center',
-      color: theme.colors.secondary
+      flex: 1,
+      marginHorizontal: ms(24)
     },
     firstContent: {
-      flex: 1,
-      margin: ms(16)
+      paddingBottom: mvs(30)
     },
     secondContent: {
       flex: 1,
-      margin: ms(24)
+      paddingVertical: mvs(16)
     },
     maxDays: {
       marginTop: mvs(6),

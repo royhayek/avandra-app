@@ -66,7 +66,12 @@ const Step5: React.FC<Step5Props> = ({ setActive }) => {
   // Renderers
   return (
     <View style={styles.container}>
-      <LottieView autoPlay loop style={styles.lottie} source={require('../../../../../assets/planning-animation.json')} />
+      <LottieView
+        autoPlay
+        loop
+        style={styles.lottie}
+        source={require('../../../../../assets/planning-animation.json')}
+      />
       <Text variant="labelLarge" style={styles.information}>
         {isEmptyDestinations
           ? "We're curating your adventure! 🌍 Please wait while we gather exciting destinations for your trip"

@@ -3,10 +3,21 @@ import _ from 'lodash';
 import { Text } from 'react-native-paper';
 import { ms } from 'react-native-size-matters';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 // Components
 import Markdown from 'react-native-marked';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { View, TouchableOpacity, LayoutAnimation, Platform, UIManager, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+  StyleProp,
+  ViewStyle,
+  TextStyle
+} from 'react-native';
+
 // Utilities
 import { useAppTheme } from '@shared/assets/theme';
 import makeStyles, { markdownStyles } from './styles';
@@ -23,7 +34,15 @@ interface AccordionProps {
 }
 
 // Component
-const Accordion: React.FC<AccordionProps> = ({ title, style, expanded, setExpanded, children, titleStyle, markdown }) => {
+const Accordion: React.FC<AccordionProps> = ({
+  title,
+  style,
+  expanded,
+  setExpanded,
+  children,
+  titleStyle,
+  markdown
+}) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -37,7 +56,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, style, expanded, setExpand
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsExpanded((cur) => !cur);
     _.isFunction(setExpanded) && setExpanded();
-  }, []);
+  }, [setExpanded]);
 
   // Effects
   useEffect(() => {

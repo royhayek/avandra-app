@@ -22,5 +22,8 @@ eas secret:create --scope project --name secret-name --value secret-value --type
 To run in development
 SERVER_API_URL="http://localhost:4000/api" npx expo start --dev-client
 
-To build the app on expo and ship it to the stores:
+To build the app on expo and ship it to the stores: (Remember to increment the version!!!)
 eas build --profile production --platform ios --auto-submit 
+
+To update the app using eas update
+EXPO_PUBLIC_SERVER_API_URL="https://trip-ai-server.onrender.com/api" eas update --branch production --message " "

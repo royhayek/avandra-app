@@ -8,7 +8,8 @@
       "continue": "Continuer",
       "privacy_policy": "Politique de Confidentialité",
       "terms": "Termes et Conditions",
-      "please_wait": "Veuillez patienter..."
+      "please_wait": "Veuillez patienter...",
+      "save": "Sauvegarder"
     },
     "onBoarding": {
       "walkthrough_title_1": "Découvrez votre prochaine aventure",
@@ -36,21 +37,60 @@
       "explore_destinations": "Explorer les destinations"
     },
     "navigation": {
-      "trip_planner": "Planificateur de voyage",
-      "history": "Plans sauvegardés",
+      "home": "Accueil",
+      "history": "Mes Plans",
       "settings": "Paramètres",
-      "my_subscription": "Mon abonnement"
+      "my_subscription": "Mon abonnement",
+      "app_appearance": "Apparence de l'application",
+      "personal_info": "Informations personnelles",
+      "help_and_support": "Aide & assistance",
+      "account_and_security": "Compte & Sécurité"
     },
-    "planner": {
+    "home": {
       "where_to_go": "Où voulez vous aller?",
       "search_by": "Rechercher par ville ou village",
       "popular_destinations": "Destinations populaires",
-      "when_to_go": "Quand voulez-vous aller?",
-      "who_is_coming": "Qui vient avec vous?",
-      "how_to_spend": "Comment voulez-vous passer votre temps ?",
+      "popular_articles": "Articles populaires",
+      "view_all": "Voir tout"
+    },
+    "planner": {
+      "step1": {
+        "who_is_going": "Who is going? 🧳",
+        "lets_start": "Let's get started by selecting who you're traveling with.",
+        "only_me": "Only Me🚶",
+        "only_me_desc": "Traveling solo, just you.",
+        "a_couple": "A Couple ❤️",
+        "a_couple_desc": "A romantic getaway for two.",
+        "family": "Family 👨‍👩‍👧‍👦",
+        "family_desc": "Quality time with your loved ones.",
+        "friends": "Friends 🌟",
+        "friends_desc": "Adventure with your closest pals.",
+        "work": "Work 💼",
+        "work_desc": "Business or corporate travel."
+      },
       "step2": {
-        "noOfDays": "Nombre de jours"
-      }
+        "adventure_date": "When will your adventure begin and end? 🗓️",
+        "adventure_date_desc": "Choose the dates for your trip. This helps us plan the perfect itinerary for your travel period.",
+        "noOfDays": "Number of days"
+      },
+      "step3": {
+        "interest_title": "Tailor your adventure to your tastes 🌟",
+        "interest_desc": "Select your travel preferences to customize your trip plan."
+      },
+      "step4": {
+        "budget_title": "Set your trip budget 💰",
+        "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort.",
+        "cheap": "Cheap 💰",
+        "cheap_desc": "Budget-friendly, economical travel.",
+        "balanced": "Balanced 💼",
+        "balanced_desc": "Moderate spending for a balanced trip.",
+        "luxury": "Luxury 💎",
+        "luxury_desc": "High-end, indulgent experiences.",
+        "flexible": "Flexible 💫",
+        "flexible_desc": "No budget restrictions."
+      },
+      "when_to_go": "Quand voulez-vous aller?",
+      "how_to_spend": "Comment voulez-vous passer votre temps ?"
     },
     "history": {
       "delete_your_history": "Voulez-vous vraiment supprimer votre historique?",
@@ -66,16 +106,30 @@
       "language": "Langue",
       "theme": "Thème",
       "subscription": "Abonnement",
+      "travel_preferences": "Préférences de voyage",
+      "personal_info": "Information personnelle",
       "restore_purchase": "Restaurer l'achat",
-      "manage_subscription": "Gérer l'abonnement",
+      "account_and_security": "Compte & Sécurité",
+      "billing_and_subscriptions": "Facturation & Abonnements",
+      "manage_subscription": "Facturation & Abonnements",
+      "data_and_analytics": "Données & analyses",
       "other": "Autre",
-      "faq": "Questions Fréquemment Posées",
-      "rate_app": "Évaluer l'application",
+      "faq": "FAQ",
+      "rate_us": "Évaluez nous",
       "logout": "Se déconnecter",
       "upgrade_to_plus": "Passez à Plus!",
-      "expanded_access": "Accès étendu aux fonctionnalités de {{name}}",
+      "expanded_access": "Profitez de tous les avantages et explorez plus",
       "purchase_restored": "Achat restauré avec succès",
       "could_not_restore": "Impossible de restaurer l'achat",
+      "app_appearance": "Apparence de l'application",
+      "help_and_support": "Aide & assistance",
+      "contact_support": "Contacter l'assistance",
+      "biometric_id": "ID biométrique",
+      "face_id": "Identification faciale",
+      "deactivate_account": "Désactiver le compte",
+      "delete_account": "Supprimer le compte",
+      "deactivate_account_desc": "Désactivez temporairement votre compte. Réactivez facilement lorsque vous êtes prêt.",
+      "delete_account_desc": "Supprimez définitivement votre compte et vos données de Tripify. Procéder avec prudence.",
       "languages": {
         "english": "Anglais",
         "arabic": "Arabe",
@@ -113,6 +167,12 @@
       "retry_connecting": "Réessayer"
     },
     "trip": {
+      "active_trip": "Voyage Actif",
+      "upcoming": "Prochain",
+      "expired": "Expiré",
+      "regenerate": "Régénérer",
+      "share": "Partager",
+      "delete": "Supprimer",
       "save_before_you_go": "Sauvegarder avant de partir ?",
       "you_havent_saved": "Vous n'avez pas enregistré cet itinéraire, si vous partez maintenant, vous perdrez certaines de ces recommandations.",
       "leave": "Partir",

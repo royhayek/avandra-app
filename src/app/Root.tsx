@@ -1,6 +1,5 @@
 // Packages
 import _ from 'lodash';
-import { StatusBar } from 'expo-status-bar';
 import { LayoutChangeEvent } from 'react-native';
 import { ref, onValue } from 'firebase/database';
 import { withIAPContext } from 'react-native-iap';
@@ -9,12 +8,14 @@ import * as Notifications from 'expo-notifications';
 import { connectAsync } from 'expo-in-app-purchases';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 // Components
 import RootNavigation from './navigation';
-import SplashScreen from '@screens/Splash';
+import { StatusBar } from 'expo-status-bar';
 import CustomSnackbar from '@shared/components/CustomSnackbar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 // Utilities
 import { changeLocale } from './i18n';
 import { Firebase } from '@shared/constants';
@@ -62,6 +63,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const getConfiguration = useCallback(async () => {
     try {
       const configRef = ref(FIREBASE_DB, Firebase.CONFIGURATION_REF);
+
       onValue(configRef, (snapshot) => {
         const data = snapshot.val();
         dispatch(appActions.setConfig(data));
@@ -71,7 +73,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
     } catch (e) {
       console.error('[getConfiguration] - ERROR :: ', e);
     }
-  }, [dispatch, appActions]);
+  }, [dispatch]);
 
   const initAppPurchases = useCallback(async () => {
     try {
@@ -93,7 +95,10 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
     notificationListener.current = Notifications.addNotificationReceivedListener((noti) => setNotification(noti));
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => console.log(response));
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) =>
+      console.log(response)
+    );
 
     return () => {
       notificationListener.current && Notifications.removeNotificationSubscription(notificationListener.current);

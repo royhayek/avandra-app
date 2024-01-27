@@ -8,13 +8,15 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     calendar: {
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100],
+      borderRadius: theme.roundness,
       marginVertical: mvs(16)
     },
     dateStyle: {
       width: '100%',
       height: mvs(28),
       borderRadius: 0,
-      backgroundColor: theme.colors.blueLight
+      backgroundColor: theme.dark ? theme.colors.gray[800] : theme.colors.gray[300]
     },
     startDateStyle: {
       width: '100%',

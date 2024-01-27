@@ -13,7 +13,7 @@ const initialState: SnackbarInitialState = {
   message: '',
   show: false,
   delay: 1200,
-  autohide: true,
+  autohide: true
 };
 
 const snackbarSlice = createSlice({

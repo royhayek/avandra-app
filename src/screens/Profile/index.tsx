@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React, { useCallback, useMemo, useState, useRef } from 'react';
 
 // Components
-import Text from '@shared/components/Text';
+import { Text } from 'react-native-paper';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
 import FastImage from 'react-native-fast-image';
@@ -16,10 +16,11 @@ import { AvatarPlaceholderDark, AvatarPlaceholderLight } from '@shared/assets/im
 import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from 'react-native-country-picker-modal';
 
 // Utils
+import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { authActions } from '@redux/auth/slice';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
-import { authActions } from '@redux/auth/slice';
 import { updateProfileAction } from '@redux/user/thunks';
 import { getUser, getUserLoading } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
@@ -29,7 +30,6 @@ import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store'
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
 import { ProfileFormValues } from '@shared/types/ProfileFormProps';
-import { t } from '@app/i18n';
 
 // Component
 const Profile = () => {
@@ -51,7 +51,6 @@ const Profile = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
-  console.debug('user', user);
   const formInitialValues = { _id, name, email, country: '' };
 
   // Callbacks
@@ -63,20 +62,23 @@ const Profile = () => {
 
   const handleExplorePress = useCallback(() => dispatch(authActions.update({ authenticated: true })), []);
 
-  const handleFormSubmit = useCallback(async (values: ProfileFormValues) => {
-    console.info('[handleFormSubmit] :: ', { values });
-    const response = await dispatchThunk(updateProfileAction(values));
+  const handleFormSubmit = useCallback(
+    async (values: ProfileFormValues) => {
+      console.info('[handleFormSubmit] :: ', { values });
+      const response = await dispatchThunk(updateProfileAction(values));
 
-    if (response.payload.success) setIsSuccess(true);
-    else
-      dispatch(
-        snackbarActions.showSnackbar({
-          type: 'error',
-          title: 'Error',
-          message: 'An error has occured, try again later.'
-        })
-      );
-  }, []);
+      if (response.payload.success) setIsSuccess(true);
+      else
+        dispatch(
+          snackbarActions.showSnackbar({
+            type: 'error',
+            title: 'Error',
+            message: 'An error has occured, try again later.'
+          })
+        );
+    },
+    [dispatch, dispatchThunk]
+  );
 
   // Renderer vars
 
@@ -92,7 +94,7 @@ const Profile = () => {
         />
       </View>
     ),
-    [isSuccess]
+    [commonStyles.footer, handleExplorePress, isSuccess, loading]
   );
 
   if (isSuccess) {

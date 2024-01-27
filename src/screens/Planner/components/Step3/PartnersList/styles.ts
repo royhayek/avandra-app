@@ -8,28 +8,28 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     flatList: {
-      gap: ms(8),
-      marginTop: mvs(20)
+      gap: ms(12),
+      marginTop: mvs(20),
+      paddingBottom: mvs(50)
     },
-    listColumnWrapper: {
-      gap: ms(10)
-    },
+
     button: {
       flex: 1,
-      padding: ms(16),
-      height: mvs(80),
+      paddingVertical: mvs(12),
+      paddingHorizontal: ms(16),
+      borderWidth: ms(1),
       borderRadius: ms(8),
-      borderWidth: ms(1.8),
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[200],
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]
     },
-    title: {
-      marginTop: ms(4)
+    activeButton: {
+      borderColor: theme.colors.primary
     },
-    iconContainer: {
-      padding: ms(6),
-      borderRadius: ms(50),
-      alignSelf: 'flex-start'
+    description: {
+      marginTop: mvs(4),
+      fontFamily: 'urbanist-medium'
     }
   });

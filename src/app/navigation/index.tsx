@@ -1,44 +1,48 @@
 // Packages
+import { Platform } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
-import { I18nManager, Platform } from 'react-native';
 import React, { ReactNode, useCallback } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Components
 import MapScreen from '@screens/Map';
+import HomeScreen from '@screens/Home';
 import InfoScreen from '@screens/Info';
 import LoginScreen from '@screens/Login';
 import { Text } from 'react-native-paper';
 import ProfileScreen from '@screens/Profile';
-import MyTripsScreen from '@screens/MyTrips';
 import PlannerScreen from '@screens/Planner';
+import MyTripsScreen from '@screens/MyTrips';
 import { Ionicons } from '@expo/vector-icons';
+import Header from '@shared/components/Header';
 import SettingsScreen from '@screens/Settings';
 import ItineraryScreen from '@screens/Itinerary';
 import OnBoardingScreen from '@screens/OnBoarding';
-import SubscriptionScreen from '@screens/Subscription';
-import BackButton from '@shared/components/Buttons/Back';
+import PopularScreen from '@screens/Home/screens/Popular';
+import ArticleDetailsScreen from '@screens/ArticleDetails';
+import DestinationDetailsScreen from '@screens/DestinationDetails';
+import AppearanceScreen from '@screens/Settings/screens/Appearance';
+import HelpSupportScreen from '@screens/Settings/screens/HelpSupport';
+import PersonalInfoScreen from '@screens/Settings/screens/PersonalInfo';
+import AccountSecurityScreen from '@screens/Settings/screens/AccountSecurity';
+import BillingSubscriptionsScreen from '@screens/Settings/screens/BillingSubscriptions';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import { useAppSelector } from '@app/store';
-import { scaledFontSize } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 import { getUserAuthenticated } from '@redux/auth/slice';
 
 // Interfaces
-import { ParamListBase, RouteProp, CompositeScreenProps } from '@react-navigation/native';
-import {
-  HeaderBackButtonProps,
-  NativeStackNavigationOptions
-} from '@react-navigation/native-stack/lib/typescript/src/types';
+import { ParamListBase, RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack/lib/typescript/src/types';
 
 interface TabBarLabelProps {
-  children: ReactNode;
-  focused: boolean;
   color: string;
+  focused: boolean;
   position: string;
+  children: ReactNode;
 }
 
 // Component
@@ -46,7 +50,7 @@ const _t = (key: string) => t(`navigation.${key}`);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-const ChatStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator();
 const TripsStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 
@@ -57,42 +61,21 @@ const RootNavigation = () => {
   // Statics
   const theme = useAppTheme();
 
-  const isArabic = I18nManager.isRTL && Platform.OS === 'android';
-
   // Renderers
-  const renderHeaderLeft = (props: HeaderBackButtonProps): ReactNode | undefined =>
-    props.canGoBack ? <BackButton /> : <></>;
-
-  const screenOptions = {
+  const screenOptions: NativeStackNavigationOptions = {
     headerShown: true,
-    headerTitleStyle: {
-      ...theme.fonts.h4,
-      fontSize: scaledFontSize(20),
-      color: theme.dark ? theme.colors.white : theme.colors.black
-    },
+    header: (props) => <Header {...props} />,
     headerStyle: { backgroundColor: theme.colors.background },
-    headerShadowVisible: false,
-    headerLeft: (props: HeaderBackButtonProps): ReactNode => (isArabic ? null : renderHeaderLeft(props)) || undefined,
-    headerRight: (props: HeaderBackButtonProps): ReactNode => (isArabic ? renderHeaderLeft(props) : null) || undefined
+    contentStyle: {
+      backgroundColor: theme.colors.background,
+      direction: i18n.locale === 'ar' ? 'rtl' : 'ltr'
+    }
   };
 
-  const ChatStackScreen = () => (
-    <ChatStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <ChatStack.Screen
-        name="Chat"
-        component={PlannerScreen}
-        options={{ title: _t('trip_planner'), ...screenOptions }}
-      />
-      <ChatStack.Screen
-        name="Subscription"
-        component={SubscriptionScreen}
-        options={{
-          title: '',
-          headerTitleAlign: 'center',
-          ...screenOptions
-        }}
-      />
-    </ChatStack.Navigator>
+  const HomeStackScreen = () => (
+    <HomeStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
+      <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: _t('home'), ...screenOptions }} />
+    </HomeStack.Navigator>
   );
 
   const TripsStackScreen = () => (
@@ -106,7 +89,8 @@ const RootNavigation = () => {
   );
 
   const SettingsStackScreen = () => (
-    <SettingsStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
+    <SettingsStack.Navigator
+      screenOptions={{ headerTitleAlign: 'center', contentStyle: { backgroundColor: theme.colors.background } }}>
       <SettingsStack.Screen
         name="Settings"
         component={SettingsScreen}
@@ -125,10 +109,8 @@ const RootNavigation = () => {
     ({ focused, color, size }: TabBarIconProps, route: RouteProp<ParamListBase, string>) => {
       let iconName: string | any;
 
-      if (route.name === 'ChatStack') {
+      if (route.name === 'HomeStack') {
         iconName = focused ? 'ios-earth' : 'ios-earth-outline';
-      } else if (route.name === 'MapStack') {
-        iconName = focused ? 'ios-grid' : 'ios-grid-outline';
       } else if (route.name === 'TripsStack') {
         iconName = focused ? 'ios-paper-plane' : 'ios-paper-plane-outline';
       } else if (route.name === 'SettingsStack') {
@@ -143,12 +125,25 @@ const RootNavigation = () => {
   );
 
   const getTabBarLabel = useCallback(
-    ({ children, focused, color, position }: TabBarLabelProps) =>
-      focused ? <Text variant="titleSmall">{children}</Text> : null,
+    ({ children, focused }: TabBarLabelProps) =>
+      focused ? (
+        <Text variant="medium" style={{ fontFamily: 'urbanist-semibold' }}>
+          {children}
+        </Text>
+      ) : null,
     []
   );
 
-  const Tabs = () => (
+  const navigatorScreensOptions: NativeStackNavigationOptions = {
+    headerShown: false,
+    headerTitleAlign: 'center',
+    contentStyle: {
+      backgroundColor: theme.colors.background,
+      direction: i18n.locale === 'ar' ? 'rtl' : 'ltr'
+    }
+  };
+
+  const HomeTabs = () => (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarStyle: {
@@ -156,12 +151,13 @@ const RootNavigation = () => {
           borderTopWidth: 0,
           paddingHorizontal: ms(16),
           backgroundColor: theme.colors.background,
+          direction: i18n.locale === 'ar' ? 'rtl' : 'ltr',
           height: Platform.OS === 'ios' ? mvs(80) : mvs(65)
         },
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarAllowFontScaling: true,
-        tabBarIconStyle: { width: ms(36) },
+        tabBarIconStyle: { width: ms(32) },
         tabBarLabelPosition: 'beside-icon',
         tabBarActiveTintColor: theme.dark ? theme.colors.white : theme.colors.black,
         tabBarInactiveBackgroundColor: 'transparent',
@@ -171,33 +167,44 @@ const RootNavigation = () => {
         tabBarActiveBackgroundColor: theme.colors.primaryLight,
         tabBarItemStyle: {
           borderRadius: ms(30),
-          marginVertical: Platform.OS === 'ios' ? mvs(10) : mvs(16),
-          marginHorizontal: ms(6)
+          marginHorizontal: ms(2),
+          marginVertical: Platform.OS === 'ios' ? mvs(9) : mvs(16)
         }
       })}>
-      <Tab.Screen name="ChatStack" component={ChatStackScreen} options={{ title: _t('trip_planner') }} />
-      <Tab.Screen
-        name="TripsStack"
-        component={TripsStackScreen}
-        options={{ title: _t('history'), unmountOnBlur: true }}
-      />
+      <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{ title: _t('home') }} />
+      <Tab.Screen name="TripsStack" component={TripsStackScreen} options={{ title: _t('history') }} />
       <Tab.Screen name="SettingsStack" component={SettingsStackScreen} options={{ title: _t('settings') }} />
     </Tab.Navigator>
   );
 
-  const navigatorScreensOptions: NativeStackNavigationOptions = {
-    headerShown: false,
-    headerTitleAlign: 'center',
-    contentStyle: {
-      backgroundColor: theme.colors.background
-    }
-  };
-
   return isAuthenticated ? (
-    <Stack.Navigator screenOptions={navigatorScreensOptions}>
-      <Stack.Screen name="Home" component={Tabs} />
-      <Stack.Screen name="Chat" component={PlannerScreen} options={{ title: _t('trip_planner'), ...screenOptions }} />
-      <Stack.Screen name="Subscription" component={SubscriptionScreen} options={{ title: '', ...screenOptions }} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeTabs} />
+      <Stack.Screen name="Planner" component={PlannerScreen} options={{ ...screenOptions }} />
+      <Stack.Screen name="Popular" component={PopularScreen} options={{ ...screenOptions }} />
+      <Stack.Screen name="DestinationDetails" component={DestinationDetailsScreen} options={{ ...screenOptions }} />
+      <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ title: '', ...screenOptions }} />
+      <Stack.Screen name="BillingSubscriptions" component={BillingSubscriptionsScreen} options={{ ...screenOptions }} />
+      <Stack.Screen
+        name="Appearance"
+        component={AppearanceScreen}
+        options={{ title: _t('app_appearance'), ...screenOptions }}
+      />
+      <Stack.Screen
+        name="PersonalInfo"
+        component={PersonalInfoScreen}
+        options={{ title: _t('personal_info'), ...screenOptions }}
+      />
+      <Stack.Screen
+        name="AccountSecurity"
+        component={AccountSecurityScreen}
+        options={{ title: _t('account_and_security'), ...screenOptions }}
+      />
+      <Stack.Screen
+        name="HelpSupport"
+        component={HelpSupportScreen}
+        options={{ title: _t('help_and_support'), ...screenOptions }}
+      />
       <Stack.Screen
         name="Info"
         component={InfoScreen}

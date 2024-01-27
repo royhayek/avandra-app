@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, Feather, Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
@@ -13,11 +13,11 @@ import { View, TouchableOpacity, ImageBackground } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
-import { useAppTheme } from '@shared/assets/theme';
 import { deleteConversation } from '@shared/services/localdb';
 import { PARTNERS_LIST } from '../../../Planner/components/Step3/data';
 
 // Interfaces
+import { useAppTheme } from '@shared/assets/theme';
 
 interface HistoryCardProps {
   index: number;
@@ -40,12 +40,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
   const partner = _.find(PARTNERS_LIST, { key: guest.type });
 
   // Callbacks
-  const handleTextPress = useCallback(
-    (conversation) => {
-      navigation.navigate('Itinerary');
-    },
-    [navigation]
-  );
+  const toggleOptionsMenu = useCallback(() => setOpenOptionsMenu((cur) => !cur), []);
+
+  const handleTextPress = useCallback(() => navigation.navigate('Itinerary'), [navigation]);
 
   const handleDeleteHistory = useCallback(
     async (id: number) => {
@@ -55,7 +52,30 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
     [refresh]
   );
 
-  const toggleOptionsMenu = useCallback(() => setOpenOptionsMenu((cur) => !cur), []);
+  // Renderer Vars
+  const menuItems = [
+    {
+      item: '1',
+      title: 'trip.regenerate',
+      leadingIcon: () => (
+        <Ionicons name="refresh" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
+      )
+    },
+    {
+      item: '2',
+      title: 'trip.share',
+      leadingIcon: () => (
+        <Ionicons name="share-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
+      )
+    },
+    {
+      item: '3',
+      title: 'trip.delete',
+      leadingIcon: () => (
+        <Ionicons name="trash-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
+      )
+    }
+  ];
 
   // Renderers
   const renderDeleteIcon = useCallback(
@@ -64,68 +84,70 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
   );
 
   const renderMenuIcon = useCallback(
-    () => <MaterialCommunityIcons name="dots-vertical" size={ms(18)} color={theme.dark ? theme.colors.white : theme.colors.black} />,
-    [theme.colors.black, theme.colors.white, theme.dark]
+    () => <MaterialCommunityIcons name="dots-vertical" size={ms(18)} color={theme.colors.primary} />,
+    [theme.colors.primary]
   );
 
-  return small ? (
-    <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.horizontalContainer}>
-      <FastImage source={require('../../../../../assets/paris.jpeg')} style={{ width: ms(70), height: ms(70), borderRadius: ms(16) }} />
-      <View style={{ marginHorizontal: ms(10), flex: 1 }}>
-        <Text variant="labelLarge" style={styles.title}>
+  const renderTripInformation = useMemo(
+    () => (
+      <View style={small ? styles.horizontalInfoContent : styles.verticalInfoContent}>
+        <Text variant="h6" style={styles.title}>
           {country}, {city}
         </Text>
+
         <View style={styles.rowContainer}>
           <View style={styles.infoItemContainer}>
-            <MaterialIcons size={ms(15)} name={partner?.icon} color={theme.dark ? theme.colors.white : theme.colors.black} />
-            <Text variant="labelSmall" style={styles.assistant}>
+            <MaterialIcons
+              name={partner?.icon}
+              size={ms(small ? ms(15) : ms(18))}
+              color={theme.dark ? theme.colors.white : theme.colors.black}
+            />
+            <Text variant="medium" style={styles.assistant}>
               {partner?.title}
             </Text>
           </View>
-          {/* <View style={{ width: 1, height: 17, backgroundColor: theme.colors.gray }} />
-          <Text variant="bodySmall" style={styles.date}>
-            {moment(plannedDate).format('ddd M')} - {duration}
-          </Text> */}
-          <Entypo name="dot-single" size={ms(20)} style={{ marginHorizontal: ms(2) }} />
+
+          <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
+
           <View style={styles.infoItemContainer}>
-            <MaterialIcons size={ms(15)} name="date-range" color={theme.dark ? theme.colors.white : theme.colors.black} />
-            <Text variant="labelSmall" style={styles.date}>
+            <Feather
+              name="calendar"
+              size={ms(small ? ms(15) : ms(18))}
+              color={theme.dark ? theme.colors.white : theme.colors.black}
+            />
+            <Text variant="medium" style={styles.date}>
               March 6th, 2023
             </Text>
           </View>
         </View>
       </View>
+    ),
+    [city, country, partner?.icon, partner?.title, small, styles, theme.colors.black, theme.colors.white, theme.dark]
+  );
+
+  return small ? (
+    <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
+      <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
+
+      {renderTripInformation}
+
       <Menu
+        items={menuItems}
+        onItemPress={() => null}
         visible={openOptionsMenu}
         onDismiss={toggleOptionsMenu}
-        items={[
-          {
-            item: '1',
-            title: 'Regenerate',
-            leadingIcon: () => <Ionicons name="refresh" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-          },
-          {
-            item: '2',
-            title: 'Share',
-            leadingIcon: () => <Ionicons name="share-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-          },
-          {
-            item: '3',
-            title: 'Delete',
-            leadingIcon: () => <Ionicons name="trash-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-          }
-        ]}
-        onItemPress={() => null}
-        anchor={<IconButton size={ms(20)} icon={renderMenuIcon} onPress={toggleOptionsMenu} style={{ borderRadius: ms(8) }} />}
+        anchor={
+          <IconButton size={ms(20)} icon={renderMenuIcon} onPress={toggleOptionsMenu} style={{ borderRadius: ms(8) }} />
+        }
       />
     </TouchableOpacity>
   ) : (
     <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.container}>
       <ImageBackground
-        source={require('../../../../../assets/paris.jpeg')}
-        style={styles.cityImage}
         resizeMode="stretch"
-        imageStyle={{ borderRadius: ms(16) }}>
+        style={styles.cityImage}
+        imageStyle={{ borderRadius: ms(16) }}
+        source={require('../../../../../assets/paris.jpeg')}>
         <IconButton
           size={ms(20)}
           mode="contained"
@@ -135,30 +157,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
           onPress={() => handleDeleteHistory(item?.id)}
         />
 
-        <View style={styles.content}>
-          <Text variant="labelLarge" style={styles.title}>
-            {country}, {city}
-          </Text>
-          <View style={styles.rowContainer}>
-            <View style={styles.infoItemContainer}>
-              <MaterialIcons size={ms(20)} name={partner?.icon} color={theme.dark ? theme.colors.white : theme.colors.black} />
-              <Text variant="labelMedium" style={styles.assistant}>
-                {partner?.title}
-              </Text>
-            </View>
-            {/* <View style={{ width: 1, height: 18, backgroundColor: theme.colors.gray }} />
-            <Text variant="bodySmall" style={styles.date}>
-              {moment(plannedDate).format('ddd M')} - {duration}
-            </Text> */}
-            <Entypo name="dot-single" size={ms(20)} style={{ marginHorizontal: ms(2) }} />
-            <View style={styles.infoItemContainer}>
-              <Feather size={ms(20)} name="calendar" color={theme.dark ? theme.colors.white : theme.colors.black} />
-              <Text variant="bodySmall" style={styles.date}>
-                March 6th, 2023
-              </Text>
-            </View>
-          </View>
-        </View>
+        {renderTripInformation}
       </ImageBackground>
     </TouchableOpacity>
   );

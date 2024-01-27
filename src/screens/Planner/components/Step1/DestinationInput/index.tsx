@@ -1,20 +1,18 @@
 // Packages
 import React, { useCallback } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { ms } from 'react-native-size-matters';
 
 // Components
+import { SearchIcon } from '@shared/assets/icons';
 import { GooglePlaceData, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { SearchIcon } from '@shared/assets/icons';
-import { useAppTheme } from '@shared/assets/theme';
 import { GOOGLE_MAPS_API_KEY } from '@redux/places/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import { useAppTheme } from '@shared/assets/theme';
 
 interface DestinationInputProps {
   handleSubmit: (city: any) => void;
@@ -49,6 +47,7 @@ const DestinationInput: React.FC<DestinationInputProps> = ({ handleSubmit }) => 
       onPress={handleValueChange}
       placeholder={_t('search_by')}
       enablePoweredByContainer={false}
+      renderLeftButton={() => <SearchIcon />}
       textInputProps={{
         placeholderTextColor: theme.dark ? theme.colors.gray[600] : theme.colors.gray[400]
       }}
@@ -57,7 +56,6 @@ const DestinationInput: React.FC<DestinationInputProps> = ({ handleSubmit }) => 
         type: '(cities)',
         key: GOOGLE_MAPS_API_KEY
       }}
-      renderLeftButton={() => <SearchIcon />}
       styles={{
         listView: styles.listView,
         textInput: styles.textInput,

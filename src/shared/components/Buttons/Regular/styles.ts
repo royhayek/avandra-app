@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { AppTheme } from '@shared/assets/theme';
 import { ms, mvs } from 'react-native-size-matters';
 
-export default (theme: AppTheme, fullWidth: boolean) =>
+export default (theme: AppTheme, fullWidth: boolean | undefined) =>
   StyleSheet.create({
     container: {
       opacity: 1

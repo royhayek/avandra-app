@@ -2,9 +2,6 @@
 import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
-// Utilities
-import i18n from '../../app/i18n';
-
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
@@ -14,51 +11,20 @@ export default (theme: AppTheme) =>
       flex: 1,
       backgroundColor: theme.colors.background
     },
-    content: {
-      marginHorizontal: ms(24),
-    },
     contentContainer: {
-      paddingBottom: mvs(30),
-    },
-    iconAndTitle: {
-      gap: ms(16),
-      flexDirection: 'row',
-      alignItems: 'center'
-    },
-    anchor: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    iconContainer: {
-      width: ms(48),
-      height: ms(48),
-      borderWidth: ms(1.5),
-      borderRadius: ms(50),
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderColor: theme.dark ? theme.colors.secondary : theme.colors.lightGray
+      marginTop: mvs(16),
+      paddingBottom: mvs(30)
     },
     title: {
       marginVertical: ms(16),
       color: theme.colors.secondary
     },
-    item: {
-      marginVertical: mvs(4),
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between'
-    },
     endIcon: {
       color: theme.dark ? theme.colors.white : theme.colors.black
     },
-    arrowIcon: {
-      marginStart: ms(3),
-      transform: i18n.locale === 'ar' ? [{ rotateY: '180deg' }] : []
-    },
     upgradeContainer: {
-      padding: mvs(20),
-      marginTop: ms(5),
+      padding: ms(14),
+      marginTop: ms(12),
       borderRadius: ms(12),
       flexDirection: 'row',
       alignItems: 'center',
@@ -68,33 +34,16 @@ export default (theme: AppTheme) =>
     },
     upgradeTitle: {
       color: theme.colors.white,
-      fontWeight: 'bold'
+      fontFamily: 'urbanist-bold'
     },
     upgradeDesc: {
-      marginTop: mvs(5),
+      marginTop: mvs(2),
       color: theme.colors.white
     },
-    modalContainer: {
-      margin: ms(24),
-      shadowOpacity: 0,
-      borderRadius: ms(8),
-      backgroundColor: theme.colors.background
-    },
-    modalHeader: {
-      padding: ms(16),
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    modalHeaderTitle: {
-      fontWeight: 'bold'
-    },
-    modalContent: {
-      padding: ms(16)
-    },
-    planTitle: {
-      fontWeight: 'bold',
-      marginBottom: mvs(10),
-      color: theme.colors.secondary
+    upgradeIllustration: {
+      width: ms(50),
+      height: ms(48),
+      marginRight: ms(6)
     },
     upgradeBtn: {
       height: mvs(46),

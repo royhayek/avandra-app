@@ -15,7 +15,8 @@ export const registerAction = createAsyncThunk(
     try {
       const response = await register(args);
 
-      console.debug('[registerAction] :: response', response)
+      console.debug('[registerAction] :: response', response);
+
       if (response.data.success) {
         dispatch(userActions.update({ data: response.data.user }));
       }

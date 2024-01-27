@@ -31,13 +31,15 @@ export const queryLogSlice = createSlice({
 
       try {
         // Read existing content from the file
-        FileSystem.readAsStringAsync(logFilePath, { encoding: FileSystem.EncodingType.UTF8 }).then((existingContent) => {
-          // Append the new log to the existing content
-          existingContent += JSON.stringify(log) + '\n';
+        FileSystem.readAsStringAsync(logFilePath, { encoding: FileSystem.EncodingType.UTF8 }).then(
+          (existingContent) => {
+            // Append the new log to the existing content
+            existingContent += JSON.stringify(log) + '\n';
 
-          // Write the updated content back to the file
-          FileSystem.writeAsStringAsync(logFilePath, existingContent, { encoding: FileSystem.EncodingType.UTF8 });
-        });
+            // Write the updated content back to the file
+            FileSystem.writeAsStringAsync(logFilePath, existingContent, { encoding: FileSystem.EncodingType.UTF8 });
+          }
+        );
 
         // Add the log object to the Redux store
         state[id] = log;

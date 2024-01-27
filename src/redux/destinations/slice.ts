@@ -1,14 +1,13 @@
 // Packages
+import moment from 'moment';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 // Thunks
 import { fetchDestinations } from './thunks';
-import { fetchTravelDestinations, fetchTravelSummaryAndTips } from '../itinerary/thunks';
 
 // Interfaces
 import { RootState } from '@app/store';
 import { DestinationsInitialState } from './types';
-import moment from 'moment';
 
 const initialState: DestinationsInitialState = {
   tips: null,
@@ -23,7 +22,7 @@ const initialState: DestinationsInitialState = {
 
 const destinationsSlice = createSlice({
   name: 'destinations',
-  initialState: initialState,
+  initialState,
   reducers: {
     setPayload: (state, action) => {
       state.payload = { ...state.payload, ...action.payload };
@@ -38,51 +37,58 @@ const destinationsSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     });
+
     builder.addCase(fetchDestinations.fulfilled, (state, action) => {
       state.popularDestinations = action.payload.result;
       state.lastRefresh = moment();
       state.isLoading = false;
       state.error = null;
     });
+
     builder.addCase(fetchDestinations.rejected, (state, action) => {
       state.popularDestinations = null;
       state.isLoading = false;
       state.error = action.error.message;
     });
 
-    builder.addCase(fetchTravelDestinations.pending, (state) => {
-      state.destinations = null;
-      state.isLoading = true;
-      state.error = null;
-    });
-    builder.addCase(fetchTravelDestinations.fulfilled, (state, action) => {
-      state.destinations = action.payload;
-      state.isLoading = false;
-      state.error = null;
-    });
-    builder.addCase(fetchTravelDestinations.rejected, (state, action) => {
-      state.destinations = null;
-      state.isLoading = false;
-      state.error = action.error.message;
-    });
-    builder.addCase(fetchTravelSummaryAndTips.pending, (state) => {
-      state.summary = null;
-      state.tips = null;
-      state.isLoading = true;
-      state.error = null;
-    });
-    builder.addCase(fetchTravelSummaryAndTips.fulfilled, (state, action) => {
-      state.summary = action.payload.summary;
-      state.tips = action.payload.tips;
-      state.isLoading = false;
-      state.error = null;
-    });
-    builder.addCase(fetchTravelSummaryAndTips.rejected, (state, action) => {
-      state.summary = null;
-      state.tips = null;
-      state.isLoading = false;
-      state.error = action.error.message;
-    });
+    // builder.addCase(fetchTravelDestinations.pending, (state) => {
+    //   state.destinations = null;
+    //   state.isLoading = true;
+    //   state.error = null;
+    // });
+
+    // builder.addCase(fetchTravelDestinations.fulfilled, (state, action) => {
+    //   state.destinations = action.payload;
+    //   state.isLoading = false;
+    //   state.error = null;
+    // });
+
+    // builder.addCase(fetchTravelDestinations.rejected, (state, action) => {
+    //   state.destinations = null;
+    //   state.isLoading = false;
+    //   state.error = action.error.message;
+    // });
+
+    // builder.addCase(fetchTravelSummaryAndTips.pending, (state) => {
+    //   state.summary = null;
+    //   state.tips = null;
+    //   state.isLoading = true;
+    //   state.error = null;
+    // });
+
+    // builder.addCase(fetchTravelSummaryAndTips.fulfilled, (state, action) => {
+    //   state.summary = action.payload.summary;
+    //   state.tips = action.payload.tips;
+    //   state.isLoading = false;
+    //   state.error = null;
+    // });
+
+    // builder.addCase(fetchTravelSummaryAndTips.rejected, (state, action) => {
+    //   state.summary = null;
+    //   state.tips = null;
+    //   state.isLoading = false;
+    //   state.error = action.error.message;
+    // });
   }
 });
 
@@ -99,4 +105,3 @@ export const selectDestinations = createSelector(_destinations, (data) => data);
 export const getDestinationsLastRefresh = createSelector(_destinations, (data) => data?.lastRefresh);
 
 export const selectPopularDestinations = createSelector(_destinations, (data) => data?.popularDestinations);
-

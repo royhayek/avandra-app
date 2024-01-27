@@ -1,16 +1,19 @@
 // Packages
-import { IconButton, IconButtonProps, useTheme } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { ms } from 'react-native-size-matters';
-import React from 'react';
 import _ from 'lodash';
+import React from 'react';
+import { ms } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
+import { IconButton, IconButtonProps } from 'react-native-paper';
+
 // Utilities
-import LeftChevron from '../../../../shared/assets/icons/LeftChevron';
-import i18n from '../../../../app/i18n';
+import i18n from '@app/i18n';
 import makeStyles from './styles';
-import { StyleProp, ViewStyle } from 'react-native';
+import LeftChevron from '@shared/assets/icons/LeftChevron';
 
 // Interfaces
+import { useAppTheme } from '@shared/assets/theme';
+import { StyleProp, ViewStyle } from 'react-native';
+
 interface BackButtonProps extends Omit<IconButtonProps, 'icon'> {
   title?: string;
   onPress?: () => void;
@@ -18,9 +21,9 @@ interface BackButtonProps extends Omit<IconButtonProps, 'icon'> {
 }
 
 // Component
-const BackButton: React.FC<BackButtonProps> = ({ title, onPress, style, ...props }) => {
+const BackButton: React.FC<BackButtonProps> = ({ style, ...props }) => {
   // Statics
-  const theme = useTheme();
+  const theme = useAppTheme();
   const styles = makeStyles(theme);
   const navigation = useNavigation();
 
@@ -29,9 +32,13 @@ const BackButton: React.FC<BackButtonProps> = ({ title, onPress, style, ...props
     <IconButton
       size={ms(18)}
       style={[styles.container, style]}
-      onPress={() => navigation.goBack()}
+      onPressOut={() => navigation.goBack()}
+      // onPress={() => navigation.goBack()}
       icon={() => (
-        <LeftChevron color={theme.dark ? theme.colors.white : theme.colors.black} style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }} />
+        <LeftChevron
+          color={theme.dark ? theme.colors.white : theme.colors.black}
+          style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
+        />
       )}
       {...props}
     />

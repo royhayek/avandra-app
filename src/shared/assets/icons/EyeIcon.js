@@ -1,0 +1,36 @@
+import * as React from 'react';
+import Svg, { Path, Mask, G } from 'react-native-svg';
+
+const EyeIcon = (props) => (
+  <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
+    <Path
+      fill="#212121"
+      fillRule="evenodd"
+      d="M12 10.14a2.414 2.414 0 0 0-2.41 2.413 2.413 2.413 0 0 0 2.41 2.41 2.414 2.414 0 0 0 2.413-2.41A2.415 2.415 0 0 0 12 10.14Zm0 6.323a3.915 3.915 0 0 1-3.91-3.91A3.916 3.916 0 0 1 12 8.64a3.917 3.917 0 0 1 3.913 3.912A3.915 3.915 0 0 1 12 16.463Z"
+      clipRule="evenodd"
+      {...props}
+    />
+    <Mask
+      id="a"
+      width={20}
+      height={17}
+      x={2}
+      y={4}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: 'luminance'
+      }}>
+      <Path fill="#fff" fillRule="evenodd" d="M2 4.5h20v16.105H2V4.5Z" clipRule="evenodd" />
+    </Mask>
+    <G mask="url(#a)">
+      <Path
+        fill="#212121"
+        fillRule="evenodd"
+        d="M3.57 12.553c1.86 4.109 4.993 6.552 8.43 6.553 3.437-.001 6.57-2.444 8.43-6.553C18.57 8.445 15.437 6.002 12 6c-3.436 0-6.57 2.444-8.43 6.552Zm8.432 8.053h-.005c-4.136-.003-7.85-2.902-9.936-7.757a.751.751 0 0 1 0-.592c2.086-4.854 5.8-7.753 9.936-7.756h.006c4.136.003 7.85 2.902 9.936 7.756a.742.742 0 0 1 0 .592c-2.085 4.855-5.8 7.754-9.936 7.757h-.001Z"
+        clipRule="evenodd"
+        {...props}
+      />
+    </G>
+  </Svg>
+);
+export default EyeIcon;

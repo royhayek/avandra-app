@@ -9,7 +9,6 @@ import { ScrollView, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
-import { scaledFontSize } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 import { getConfiguration } from '@redux/app/slice';
 

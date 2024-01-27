@@ -39,20 +39,24 @@ export const registerForPushNotificationsAsync = async () => {
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
+
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
+
     if (finalStatus !== 'granted') {
       console.error('Failed to get push token for push notification!');
+
       return;
     }
+
     token = (await Notifications.getExpoPushTokenAsync({ projectId: '2850dfa7-a5c7-4cc0-a06c-be90c8c6d9bc' })).data;
     const fcmToken = (await Notifications.getDevicePushTokenAsync()).data;
     console.info('[expoToken] :: ', token);
     console.info('[fcmToken] :: ', fcmToken);
   } else {
-    console.info('Must use physical device for Push Notifications');
+    console.info('[PushNotifications] :: Must use physical device for Push Notifications');
   }
 
   return token;
@@ -60,42 +64,52 @@ export const registerForPushNotificationsAsync = async () => {
 
 export const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
   const paddingToBottom = 20;
+
   return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
 };
 
-export const hasArabicCharacters = (text) => {
-  var arregex =
+export const hasArabicCharacters = (text: string) => {
+  const arregex =
     /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\uFDF0-\uFDFD]/;
+
   return arregex.test(text);
 };
 
 export const getMonths = (startDate, endDate) => {
-  let betweenMonths = [];
+  const betweenMonths = [];
+
   if (startDate < endDate) {
     const date = moment(startDate).startOf('month');
+
     while (date < moment(endDate).endOf('month')) {
       betweenMonths.push(moment(date).format('MMMM'));
       date.add(1, 'month');
     }
   }
+
   return betweenMonths.join(', ');
 };
 
 export const parseAIResponse = (response) => {
   try {
     let modifiedResponse = response;
+
     if (response.includes('=')) {
       modifiedResponse = response.split('=')[1].trim();
     }
+
     if (response.includes(';')) {
       modifiedResponse = modifiedResponse.replace(';', '');
     }
+
     if (response.includes('JSON.stringify(')) {
       modifiedResponse = modifiedResponse.replace('JSON.stringify(', '');
     }
+
     if (response.includes('})')) {
       modifiedResponse = modifiedResponse.replace('})', '}');
     }
+
     if (response.includes('`')) {
       modifiedResponse = modifiedResponse.replace('`', '}');
     }

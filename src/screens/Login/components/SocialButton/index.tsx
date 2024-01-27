@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Components
-import Text from '@shared/components/Text';
+import { Text } from 'react-native-paper';
 import { TouchableOpacity, View } from 'react-native';
 
 // Utils

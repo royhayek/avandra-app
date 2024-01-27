@@ -2,6 +2,7 @@
 import React, { ReactNode } from 'react';
 import { Text } from 'react-native-paper';
 import { View, TouchableOpacity, ViewStyle } from 'react-native';
+
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
@@ -21,13 +22,11 @@ interface OutlinedButtonProps {
 // Component
 const OutlinedButton: React.FC<OutlinedButtonProps> = ({
   title,
-  style,
   onPress,
   endIcon,
   disabled,
   startIcon,
   containerStyle,
-  backgroundColors,
   ...props
 }) => {
   // Statics

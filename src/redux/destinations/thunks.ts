@@ -7,7 +7,7 @@ export const fetchDestinations = createAsyncThunk('destionation/fetch', async (p
     const response = await axios.get('destination/list');
 
     console.debug('[fetchDestinations - response] :: ', response.data);
-    
+
     return response.data;
   } catch (error: any) {
     console.error('[fetchDestinations - error] :: ', error);

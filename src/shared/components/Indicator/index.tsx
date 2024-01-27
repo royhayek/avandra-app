@@ -3,9 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 
 // Components
-import { Text } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
-import { View, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { View, TouchableOpacityProps } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
@@ -20,16 +18,17 @@ interface IndicatorProps extends TouchableOpacityProps {
 }
 
 // Component
-const Indicator: React.FC<IndicatorProps> = ({ index, length, ...props }) => {
+const Indicator: React.FC<IndicatorProps> = ({ index, length, style }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {_.times(length, (i) => {
         const isActive = _.isEqual(i, index);
+
         return <View key={i} style={isActive ? styles.activeDot : styles.dot} />;
       })}
     </View>

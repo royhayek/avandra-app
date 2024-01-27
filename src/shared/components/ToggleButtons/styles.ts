@@ -8,10 +8,9 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      height: mvs(48),
+      height: mvs(46),
       marginTop: mvs(24),
-      flexDirection: 'row',
-      marginHorizontal: ms(16)
+      flexDirection: 'row'
     },
     buttonContainer: {
       flex: 1,
@@ -20,9 +19,9 @@ export default (theme: AppTheme) =>
       borderTopRightRadius: 0,
       justifyContent: 'center',
       borderBottomRightRadius: 0,
-      borderTopLeftRadius: ms(30),
-      borderBottomLeftRadius: ms(30),
-      backgroundColor: theme.colors.primaryLight
+      borderTopLeftRadius: theme.roundness,
+      borderBottomLeftRadius: theme.roundness,
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[200]
     },
     activeButtonContainer: {
       flex: 1,
@@ -31,27 +30,30 @@ export default (theme: AppTheme) =>
       borderTopLeftRadius: 0,
       justifyContent: 'center',
       borderBottomLeftRadius: 0,
-      borderTopRightRadius: ms(30),
-      borderBottomRightRadius: ms(30),
-      backgroundColor: theme.colors.primaryLight
+      borderTopRightRadius: theme.roundness,
+      borderBottomRightRadius: theme.roundness,
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[200]
     },
     button: {
-      borderRadius: ms(30),
-      paddingVertical: mvs(10.5),
-      backgroundColor: 'transparent'
+      paddingVertical: mvs(8),
+      backgroundColor: 'transparent',
+      borderRadius: theme.roundness
     },
     activeButton: {
-      shadowRadius: 1,
-      shadowOpacity: 0.2,
-      borderRadius: ms(30),
-      paddingVertical: mvs(10.5),
-      shadowColor: theme.colors.black,
-      shadowOffset: { width: 0, height: 1 },
+      paddingVertical: mvs(8),
+      borderRadius: theme.roundness - 2,
       backgroundColor: theme.colors.primary
     },
     title: {
       textAlign: 'center',
       fontWeight: 'bold',
+      fontFamily: 'urbanist-medium',
       color: theme.dark ? theme.colors.white : theme.colors.black
+    },
+    activeTitle: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+      color: theme.colors.white,
+      fontFamily: 'urbanist-bold'
     }
   });

@@ -1,6 +1,7 @@
 export const PARTNERS_LIST = [
-  { key: 'alone', title: 'Going Solo', icon: 'person' },
-  { key: 'partner', title: 'Partner', icon: 'favorite' },
-  { key: 'friends', title: 'Friends', icon: 'people-alt' },
-  { key: 'family', title: 'Family', icon: 'family-restroom' },
+  { key: 'alone', title: 'only_me', desc: 'only_me_desc', icon: '🚶' },
+  { key: 'partner', title: 'a_couple', desc: 'a_couple_desc', icon: '❤️' },
+  { key: 'family', title: 'family', desc: 'family_desc', icon: '👨‍👩‍👧‍👦' },
+  { key: 'friends', title: 'friends', desc: 'friends_desc', icon: '🌟' },
+  { key: 'work', title: 'work', desc: 'work_desc', icon: '💼' }
 ];

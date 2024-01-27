@@ -3,10 +3,8 @@ import { useDispatch } from 'react-redux';
 import React, { useCallback } from 'react';
 
 // Components
-import { Text } from 'react-native-paper';
 import { ScrollView } from 'react-native';
 import DestinationInput from './DestinationInput';
-import PopularDestinations from './PopularDestinations';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -46,7 +44,6 @@ const Step1: React.FC<Step1Props> = ({ setActive }) => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
       <DestinationInput handleSubmit={handleSubmitPrompt} />
-      <PopularDestinations handleSubmit={handleSubmitPrompt} />
     </ScrollView>
   );
 };
