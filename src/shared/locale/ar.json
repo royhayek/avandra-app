@@ -56,42 +56,52 @@
     },
     "planner": {
       "step1": {
-        "who_is_going": "Who is going? 🧳",
-        "lets_start": "Let's get started by selecting who you're traveling with.",
-        "only_me": "Only Me🚶",
-        "only_me_desc": "Traveling solo, just you.",
-        "a_couple": "A Couple ❤️",
-        "a_couple_desc": "A romantic getaway for two.",
-        "family": "Family 👨‍👩‍👧‍👦",
-        "family_desc": "Quality time with your loved ones.",
-        "friends": "Friends 🌟",
-        "friends_desc": "Adventure with your closest pals.",
-        "work": "Work 💼",
-        "work_desc": "Business or corporate travel."
+        "who_is_going": "من سيتوجه؟ 🧳",
+        "lets_start": "لنبدأ بتحديد من ستسافر معه",
+        "only_me": "أنا فقط 🚶",
+        "only_me_desc": "رحلة فردية، أنت فقط",
+        "a_couple": "زوجين ❤️",
+        "a_couple_desc": "رحلة رومانسية لاثنين",
+        "family": "عائلة 👨‍👩‍👧‍👦",
+        "family_desc": "وقت جودة مع أحبائك",
+        "friends": "أصدقاء 🌟",
+        "friends_desc": "مغامرة مع أفضل أصدقائك",
+        "work": "عمل 💼",
+        "work_desc": "رحلة عمل أو تجارية"
       },
       "step2": {
-        "adventure_date": "When will your adventure begin and end? 🗓️",
-        "adventure_date_desc": "Choose the dates for your trip. This helps us plan the perfect itinerary for your travel period.",
-        "noOfDays": "Number of days"
+        "adventure_date": "متى ستبدأ وتنتهي مغامرتك؟ 🗓️",
+        "adventure_date_desc": "اختر تواريخ رحلتك. هذا يساعدنا في تخطيط جدول زمني مثالي لفترة سفرك",
+        "noOfDays": "عدد الأيام"
       },
       "step3": {
-        "interest_title": "Tailor your adventure to your tastes 🌟",
-        "interest_desc": "Select your travel preferences to customize your trip plan."
+        "interest_title": "ضبط مغامرتك وفقًا لاهتماماتك 🌟",
+        "interest_desc": "حدد تفضيلات السفر الخاصة بك لتخصيص خطة رحلتك"
       },
       "step4": {
-        "budget_title": "Set your trip budget 💰",
-        "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort.",
-        "cheap": "Cheap 💰",
-        "cheap_desc": "Budget-friendly, economical travel.",
-        "balanced": "Balanced 💼",
-        "balanced_desc": "Moderate spending for a balanced trip.",
-        "luxury": "Luxury 💎",
-        "luxury_desc": "High-end, indulgent experiences.",
-        "flexible": "Flexible 💫",
-        "flexible_desc": "No budget restrictions."
+        "budget_title": "حدد ميزانية رحلتك 💰",
+        "budget_desc": "أخبرنا بتفضيلات ميزانيتك، وسنقوم بصياغة جدول زمني يناسب راحتك المالية",
+        "cheap": "رخيصة 💰",
+        "cheap_desc": "رحلة اقتصادية وميسورة التكلفة",
+        "balanced": "متوازنة 💼",
+        "balanced_desc": "إنفاق معقول لرحلة متوازنة",
+        "luxury": "فاخرة 💎",
+        "luxury_desc": "تجارب فاخرة ومغرمة",
+        "flexible": "مرنة 💫",
+        "flexible_desc": "لا يوجد قيود ميزانية"
       },
-      "when_to_go": "متى تريد الذهاب؟",
-      "how_to_spend": "كيف تريد أن تقضي وقتك؟"
+      "step5": {
+        "review_summary": "ملخص المراجعة",
+        "review_summary_desc": "إليك ملخص لخطة رحلتك. يمكنك دائمًا العودة وإجراء تغييرات.",
+        "destination": "الوجهة",
+        "party": "الفريق",
+        "trip_dates": "تواريخ الرحلة",
+        "interest": "{{number}} اهتمامات",
+        "budget": "الميزانية",
+        "build_my_trip": "بناء رحلتي",
+        "generating_your_trip": "جارٍ إنشاء رحلتك... ({progress}%)",
+        "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك"
+      }
     },
     "history": {
       "delete_your_history": "هل أنت متأكد أنك تريد حذف السجل الخاص بك؟",

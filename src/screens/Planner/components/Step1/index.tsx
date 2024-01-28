@@ -29,20 +29,18 @@ const Step1 = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [whoIsGoing, setWhoIsGoing] = useState(PARTNERS_LIST[0].key);
+  const [traveler, setTraveler] = useState(PARTNERS_LIST[0].key);
 
   // Effects
   useEffect(() => {
-    const partner = _.find(PARTNERS_LIST, { key: whoIsGoing });
-    const withWho = _.isEqual(partner?.key, 'alone') ? 'alone' : `with ${partner?.title}`;
-    dispatch(destinationsActions.setPayload({ whoIsGoing: withWho }));
-  }, [whoIsGoing, dispatch]);
+    dispatch(destinationsActions.setPayload({ traveler: _.find(PARTNERS_LIST, { key: traveler }) }));
+  }, [traveler, dispatch]);
 
   // Renderers
   return (
     <View style={styles.container}>
       <StepHeader title={_t('who_is_going')} description={_t('lets_start')} />
-      <PartnersList transKey="step1" list={PARTNERS_LIST} value={whoIsGoing} setValue={setWhoIsGoing} />
+      <PartnersList transKey="step1" list={PARTNERS_LIST} value={traveler} setValue={setTraveler} />
     </View>
   );
 };

@@ -40,3 +40,14 @@ export { default as LogoutIcon } from './LogoutIcon';
 
 // Subscriptions
 export { default as CheckIcon } from './CheckIcon';
+
+// Trip Summary
+export { default as LocationIcon } from './LocationIcon';
+
+export { default as UsersIcon } from './UsersIcon';
+
+export { default as CalendarIcon } from './CalendarIcon';
+
+export { default as MoneyBagIcon } from './MoneyBagIcon';
+
+export { default as EditIcon } from './EditIcon';

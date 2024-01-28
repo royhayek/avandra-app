@@ -12,12 +12,14 @@ import { IconButton, Text } from 'react-native-paper';
 import { View, TouchableOpacity, ImageBackground } from 'react-native';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppTheme } from '@shared/assets/theme';
 import { deleteConversation } from '@shared/services/localdb';
 import { PARTNERS_LIST } from '../../../Planner/components/Step1/data';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
+import { TranslateOptions } from 'i18n-js';
 
 interface HistoryCardProps {
   index: number;
@@ -27,6 +29,8 @@ interface HistoryCardProps {
 }
 
 // Component
+const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
+
 const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }) => {
   // Statics
   const theme = useAppTheme();
@@ -97,13 +101,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
 
         <View style={styles.rowContainer}>
           <View style={styles.infoItemContainer}>
-            <MaterialIcons
-              name={partner?.icon}
-              size={ms(small ? ms(15) : ms(18))}
-              color={theme.dark ? theme.colors.white : theme.colors.black}
-            />
             <Text variant="medium" style={styles.assistant}>
-              {partner?.title}
+              {_t(partner?.title)}
             </Text>
           </View>
 

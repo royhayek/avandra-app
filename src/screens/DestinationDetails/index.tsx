@@ -1,5 +1,6 @@
 // Packages
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,12 +17,16 @@ import makeStyles from './styles';
 import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
+import { destinationsActions } from '@redux/destinations/slice';
 
 // Interfaces
 interface DestinationDetailsScreenProps {}
 
 // Component
 const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => {
+  // Redux
+  const dispatch = useDispatch();
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -33,8 +38,9 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   // Callbacks
   const handleStartTripPress = useCallback(() => {
+    dispatch(destinationsActions.setPayload({ destination: { id, name, image, country } }));
     navigation.navigate('Planner');
-  }, [navigation]);
+  }, [dispatch, navigation]);
 
   const handleGalleryImagePress = useCallback(() => {}, []);
 

@@ -11,6 +11,7 @@ import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
 import Step4 from './components/Step4';
+import Step5 from './components/Step5';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
@@ -36,6 +37,11 @@ const PlannerScreen = () => {
   const navigation = useNavigation();
 
   const [active, setActive] = useState(0);
+
+  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
+
+  const isBeforeLastStep = _.isEqual(active, steps.length - 2);
+  const isLastStep = _.isEqual(active, steps.length - 1);
 
   // Callbacks
   const handleNextPress = useCallback(() => {
@@ -81,27 +87,27 @@ const PlannerScreen = () => {
 
   // Effects
   useEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => (
-        <Progress.Bar
-          width={200}
-          height={10}
-          borderWidth={0}
-          borderRadius={50}
-          progress={(active + 1) / 4}
-          color={theme.colors.primary}
-          style={{ alignSelf: 'center' }}
-          unfilledColor={theme.dark ? theme.colors.dark[5] : theme.colors.gray[200]}
-        />
-      )
-    });
-  }, [active, navigation, theme.colors.dark, theme.colors.gray, theme.colors.primary, theme.dark]);
+    navigation.setOptions(
+      isLastStep
+        ? { title: t('planner.step5.review_summary') }
+        : {
+            headerTitle: () => (
+              <Progress.Bar
+                width={200}
+                height={10}
+                borderWidth={0}
+                borderRadius={50}
+                progress={(active + 1) / 4}
+                color={theme.colors.primary}
+                style={{ alignSelf: 'center' }}
+                unfilledColor={theme.dark ? theme.colors.dark[5] : theme.colors.gray[200]}
+              />
+            )
+          }
+    );
+  }, [active, isLastStep, navigation, theme.colors.dark, theme.colors.gray, theme.colors.primary, theme.dark]);
 
   // Renderer Vars
-  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />];
-
-  const isBeforeLastStep = _.isEqual(active, steps.length - 2);
-  const isLastStep = _.isEqual(active, steps.length - 1);
 
   // Renderers
   const renderFooter = useMemo(
@@ -110,11 +116,11 @@ const PlannerScreen = () => {
         <RegularButton
           fullWidth
           onPress={!isBeforeLastStep ? handleNextPress : handleSubmitPress}
-          title={!isBeforeLastStep ? t('common.continue') : t('common.submit')}
+          title={!isLastStep ? t('common.continue') : t('planner.step5.build_my_trip')}
         />
       </View>
     ),
-    [commonStyles.footer, isBeforeLastStep, handleNextPress, handleSubmitPress]
+    [commonStyles.footer, isBeforeLastStep, isLastStep, handleNextPress, handleSubmitPress]
   );
 
   return (

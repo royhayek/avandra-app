@@ -16,6 +16,7 @@ import { destinationsActions } from '@redux/destinations/slice';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
+import { INTEREST_LIST } from './data';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step3.${key}`, options);
@@ -26,18 +27,17 @@ const Step3 = () => {
   const styles = makeStyles(theme);
   const dispatch = useDispatch();
 
-  const [interests, setInterests] = useState<string[]>([]);
+  const [interests, setInterests] = useState([]);
 
   // Callbacks
-  const handleInterestPress = useCallback(
-    (interest: string) => setInterests(_.xor(interests, [interest])),
-    [interests]
-  );
+  const handleInterestPress = useCallback((interest) => setInterests(_.xor(interests, [interest])), [interests]);
 
   // Effects
   useEffect(() => {
-    dispatch(destinationsActions.setPayload({ interests }));
+    dispatch(destinationsActions.setPayload({ interests: _.map(interests) }));
   }, [dispatch, interests]);
+
+  console.debug('interests', interests);
 
   // Renderers
   return (
@@ -45,7 +45,10 @@ const Step3 = () => {
       <View style={styles.container}>
         <StepHeader title={_t('interest_title')} description={_t('interest_desc')} />
       </View>
-      <InterestsList value={interests} setValue={handleInterestPress} />
+
+      <View style={styles.interests}>
+        <InterestsList data={INTEREST_LIST} value={interests} setValue={handleInterestPress} />
+      </View>
     </>
   );
 };

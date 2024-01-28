@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { Configuration } from 'openai';
-import Constants from 'expo-constants';
+// import Constants from 'expo-constants';
 
 // Utils
 import 'moment-timezone';
@@ -14,7 +14,7 @@ import { store } from './store';
 // import { logout } from 'shared/utils';
 // import {ROUTES} from 'shared/constants/routes';
 
-const serverApiUrl = 'http://172.20.10.14:4000/api'; //process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api';
+const serverApiUrl = process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api';
 console.debug('[api - serverApiUrl] :: ', serverApiUrl);
 
 export const openAIConfig = new Configuration({ apiKey: process.env.OPENAI_API_KEY });

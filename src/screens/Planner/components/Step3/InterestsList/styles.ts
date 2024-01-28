@@ -8,8 +8,7 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     flatList: {
-      paddingTop: mvs(24),
-      paddingHorizontal: ms(16)
+      paddingTop: mvs(6)
     },
     listColumnWrapper: {
       flexWrap: 'wrap'

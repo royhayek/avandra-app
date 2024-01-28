@@ -8,7 +8,6 @@ import { Chip } from 'react-native-paper';
 
 // Utilities
 import makeStyles from './styles';
-import { INTEREST_LIST } from '../data';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
@@ -18,21 +17,22 @@ interface InterestsListProps {
 }
 
 // Component
-const InterestsList: React.FC<InterestsListProps> = ({ value, setValue }) => {
+const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, setValue }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
   const renderItem = (item) => {
-    const selected = _.includes(value, item.title);
+    const selected = _.includes(value, item);
 
     return (
       <Chip
         mode="outlined"
+        disabled={disabled}
         selected={selected}
         showSelectedCheck={false}
-        onPress={() => setValue(item.title)}
+        onPress={() => setValue(item)}
         style={[styles.chip, selected && styles.activeChip]}
         textStyle={[styles.textStyle, selected && styles.activeTextStyle]}
         selectedColor={selected ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black}>
@@ -43,10 +43,10 @@ const InterestsList: React.FC<InterestsListProps> = ({ value, setValue }) => {
 
   return (
     <FlatList
+      data={data}
       numColumns={2}
-      data={INTEREST_LIST}
-      contentContainerStyle={styles.flatList}
       keyExtractor={(item) => item.key}
+      contentContainerStyle={styles.flatList}
       columnWrapperStyle={styles.listColumnWrapper}
       renderItem={({ item }) => renderItem(item)}
     />

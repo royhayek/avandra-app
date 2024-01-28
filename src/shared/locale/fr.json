@@ -55,42 +55,52 @@
     },
     "planner": {
       "step1": {
-        "who_is_going": "Who is going? 🧳",
-        "lets_start": "Let's get started by selecting who you're traveling with.",
-        "only_me": "Only Me🚶",
-        "only_me_desc": "Traveling solo, just you.",
-        "a_couple": "A Couple ❤️",
-        "a_couple_desc": "A romantic getaway for two.",
-        "family": "Family 👨‍👩‍👧‍👦",
-        "family_desc": "Quality time with your loved ones.",
-        "friends": "Friends 🌟",
-        "friends_desc": "Adventure with your closest pals.",
-        "work": "Work 💼",
-        "work_desc": "Business or corporate travel."
+        "who_is_going": "Qui part? 🧳",
+        "lets_start": "Commençons par sélectionner avec qui vous voyagez.",
+        "only_me": "Seulement moi 🚶",
+        "only_me_desc": "Voyage en solo, juste vous.",
+        "a_couple": "Un couple ❤️",
+        "a_couple_desc": "Escapade romantique pour deux.",
+        "family": "Famille 👨‍👩‍👧‍👦",
+        "family_desc": "Temps de qualité avec vos proches.",
+        "friends": "Amis 🌟",
+        "friends_desc": "Aventure avec vos amis les plus proches.",
+        "work": "Travail 💼",
+        "work_desc": "Voyage d'affaires ou professionnel."
       },
       "step2": {
-        "adventure_date": "When will your adventure begin and end? 🗓️",
-        "adventure_date_desc": "Choose the dates for your trip. This helps us plan the perfect itinerary for your travel period.",
-        "noOfDays": "Number of days"
+        "adventure_date": "Quand commencera et se terminera votre aventure? 🗓️",
+        "adventure_date_desc": "Choisissez les dates de votre voyage. Cela nous aide à planifier l'itinéraire parfait pour votre période de voyage.",
+        "noOfDays": "Nombre de jours"
       },
       "step3": {
-        "interest_title": "Tailor your adventure to your tastes 🌟",
-        "interest_desc": "Select your travel preferences to customize your trip plan."
+        "interest_title": "Adaptez votre aventure à vos goûts 🌟",
+        "interest_desc": "Sélectionnez vos préférences de voyage pour personnaliser votre plan de voyage."
       },
       "step4": {
-        "budget_title": "Set your trip budget 💰",
-        "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort.",
-        "cheap": "Cheap 💰",
-        "cheap_desc": "Budget-friendly, economical travel.",
-        "balanced": "Balanced 💼",
-        "balanced_desc": "Moderate spending for a balanced trip.",
-        "luxury": "Luxury 💎",
-        "luxury_desc": "High-end, indulgent experiences.",
+        "budget_title": "Définissez votre budget de voyage 💰",
+        "budget_desc": "Indiquez-nous vos préférences budgétaires, et nous créerons un itinéraire qui convient à votre confort financier.",
+        "cheap": "Bon marché 💰",
+        "cheap_desc": "Voyage économique et économique.",
+        "balanced": "Équilibré 💼",
+        "balanced_desc": "Dépenses modérées pour un voyage équilibré.",
+        "luxury": "Luxe 💎",
+        "luxury_desc": "Expériences haut de gamme et indulgentes.",
         "flexible": "Flexible 💫",
-        "flexible_desc": "No budget restrictions."
+        "flexible_desc": "Aucune restriction budgétaire."
       },
-      "when_to_go": "Quand voulez-vous aller?",
-      "how_to_spend": "Comment voulez-vous passer votre temps ?"
+      "step5": {
+        "review_summary": "Résumé de l'examen",
+        "review_summary_desc": "Voici un résumé de votre plan de voyage. Vous pouvez toujours revenir en arrière et apporter des modifications.",
+        "destination": "Destination",
+        "party": "Groupe",
+        "trip_dates": "Dates du voyage",
+        "interest": "{{number}} centres d'intérêt",
+        "budget": "Budget",
+        "build_my_trip": "Construire mon voyage",
+        "generating_your_trip": "Génération de votre voyage... ({progress}%)",
+        "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
+      }
     },
     "history": {
       "delete_your_history": "Voulez-vous vraiment supprimer votre historique?",

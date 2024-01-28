@@ -29,20 +29,18 @@ const Step4 = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [whoIsGoing, setWhoIsGoing] = useState(BUDGET_LIST[0].key);
+  const [budget, setBudget] = useState(BUDGET_LIST[0].key);
 
   // Effects
   useEffect(() => {
-    const partner = _.find(BUDGET_LIST, { key: whoIsGoing });
-    const withWho = _.isEqual(partner?.key, 'alone') ? 'alone' : `with ${partner?.title}`;
-    dispatch(destinationsActions.setPayload({ whoIsGoing: withWho }));
-  }, [whoIsGoing, dispatch]);
+    dispatch(destinationsActions.setPayload({ budget: _.find(BUDGET_LIST, { key: budget }) }));
+  }, [budget, dispatch]);
 
   // Renderers
   return (
     <View style={styles.container}>
       <StepHeader title={_t('budget_title')} description={_t('budget_desc')} />
-      <PartnersList transKey="step4" list={BUDGET_LIST} value={whoIsGoing} setValue={setWhoIsGoing} />
+      <PartnersList transKey="step4" list={BUDGET_LIST} value={budget} setValue={setBudget} />
     </View>
   );
 };

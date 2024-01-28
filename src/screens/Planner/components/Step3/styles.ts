@@ -20,5 +20,9 @@ export default (theme: AppTheme) =>
     subtitle: {
       textAlign: 'center',
       color: theme.colors.secondary
+    },
+    interests: {
+      paddingTop: mvs(8),
+      paddingHorizontal: ms(16)
     }
   });

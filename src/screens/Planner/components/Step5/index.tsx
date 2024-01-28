@@ -1,85 +1,162 @@
 // Packages
 import _ from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
 // Components
-import { View } from 'react-native';
-import { Text } from 'react-native-paper';
-import LottieView from 'lottie-react-native';
+import { ScrollView, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import InterestsList from '../Step3/InterestsList';
+import { Divider, IconButton, Text } from 'react-native-paper';
+import {
+  CalendarIcon,
+  EditIcon,
+  JapanFlag,
+  LocationIcon,
+  MoneyBagIcon,
+  StarIcon,
+  UsersIcon
+} from '@shared/assets/icons';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { clearPlaces, selectPlaces } from '@redux/places/slice';
-import { selectItinerary, submitForm } from '@redux/itinerary/slice';
-import { selectDestinations, destinationsActions } from '@redux/destinations/slice';
+import { selectDestinations } from '@redux/destinations/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-
-interface Step5Props {
-  setActive: (value: number) => void;
-}
+import moment from 'moment';
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
+const _t = (key: string, options?: TranslateOptions) => t(`planner.step5.${key}`, options);
 
-const Step5: React.FC<Step5Props> = ({ setActive }) => {
+const Step5 = ({ setActive }) => {
   // Redux
-  const placesSelect = useAppSelector(selectPlaces);
-  const itinerarySelect = useAppSelector(selectItinerary);
+  const dispatch = useDispatch();
   const destinationsSelect = useAppSelector(selectDestinations);
+  console.debug('[Planner] - Step 5 :: payload ', destinationsSelect?.payload);
 
   // Statics
-  const navigation = useNavigation();
-
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const dispatch = useDispatch();
 
-  const isEmptyPlaces = _.isEmpty(placesSelect.places);
-  const isEmptyDestinations = _.isEmpty(destinationsSelect.destinations);
-  const isEmptySummaryOrTips = _.isEmpty(destinationsSelect.summary) && _.isEmpty(destinationsSelect.tips);
+  const {
+    interests,
+    traveler,
+    budget,
+    fromDate,
+    toDate,
+    destination: { image, name, country }
+  } = destinationsSelect?.payload;
 
-  // Effects
-  useEffect(() => {
-    console.debug('[itinerarySelect] - Step 5 :: ', { destinationsSelect });
-    dispatch(destinationsActions.clearDestinations());
-    dispatch(clearPlaces());
-    dispatch(submitForm(destinationsSelect.payload));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  // Callbacks
+  const formatDate = (date: string) => moment(date).format('MMMM DD, YYYY');
 
-  useEffect(() => {
-    console.debug('[itinerarySelect] - Step 5 :: ', { itinerarySelect });
-    if (!itinerarySelect.isLoading && !isEmptyDestinations && !isEmptySummaryOrTips && !isEmptyPlaces) {
-      navigation.navigate('Itinerary');
-      dispatch(destinationsActions.setPayload({}));
-      setActive(0);
-    }
-  }, [dispatch, isEmptyDestinations, isEmptyPlaces, isEmptySummaryOrTips, itinerarySelect, navigation, setActive]);
+  const handleEditPress = useCallback(
+    (step: string) => {
+      setActive();
+    },
+    [setActive]
+  );
 
   // Renderers
+  const renderTitle = useCallback(
+    (key, title, onPress) => (
+      <View style={styles.titleContainer}>
+        <Text variant="h5" style={styles.title}>
+          {title}
+        </Text>
+        <IconButton
+          size={15}
+          style={styles.editIcon}
+          onPress={() => onPress(key)}
+          icon={() => <EditIcon fill={theme.colors.gray[900]} />}
+        />
+      </View>
+    ),
+    [styles.editIcon, styles.title, styles.titleContainer, theme.colors.gray]
+  );
+
   return (
-    <View style={styles.container}>
-      <LottieView
-        autoPlay
-        loop
-        style={styles.lottie}
-        source={require('../../../../../assets/planning-animation.json')}
-      />
-      <Text variant="labelLarge" style={styles.information}>
-        {isEmptyDestinations
-          ? "We're curating your adventure! 🌍 Please wait while we gather exciting destinations for your trip"
-          : isEmptySummaryOrTips
-            ? 'Trip planning in progress! 🗺️ Sit tight while we prepare a summary of your adventure and suggest exciting trips'
-            : "Exploring the details! 🏞️ We're fetching places, opening hours, and more details. Just a moment, please!"}
-      </Text>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text variant="xLarge">{_t('review_summary_desc')}</Text>
+
+      <View>
+        <View style={styles.section}>
+          <LocationIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+          <View style={styles.flex1}>
+            <Text variant="h5" style={styles.title}>
+              {_t('destination')}
+            </Text>
+            <View style={styles.row}>
+              <FastImage source={{ uri: image }} style={styles.image} />
+              <View>
+                <Text variant="h6">{name}</Text>
+                <View style={styles.countryRow}>
+                  <JapanFlag />
+                  <Text variant="medium" style={styles.country}>
+                    {country}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <Divider />
+
+        <View style={styles.section}>
+          <UsersIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+          <View style={styles.flex1}>
+            {renderTitle('traveler', _t('party'), handleEditPress)}
+            <Text variant="xLarge" style={styles.value}>
+              {t(`planner.step1.${traveler?.title}`)}
+            </Text>
+          </View>
+        </View>
+
+        <Divider />
+
+        <View style={styles.section}>
+          <CalendarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+          <View style={styles.flex1}>
+            {renderTitle('date', _t('trip_dates'), handleEditPress)}
+            <Text variant="xLarge" style={styles.value}>
+              {formatDate(fromDate)} to {formatDate(toDate)}
+            </Text>
+          </View>
+        </View>
+
+        <Divider />
+
+        <View style={styles.section}>
+          <StarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+          <View style={styles.flex1}>
+            {renderTitle('interests', _t('interest', { number: interests?.length }), handleEditPress)}
+            <InterestsList data={interests} disabled />
+          </View>
+        </View>
+
+        <Divider />
+
+        <View style={styles.section}>
+          <MoneyBagIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+          <View style={styles.flex1}>
+            {renderTitle('bidget', _t('budget'), handleEditPress)}
+            <Text variant="xLarge" style={styles.value}>
+              {t(`planner.step4.${budget?.title}`)}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

@@ -4,6 +4,8 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { Dimensions, Platform } from 'react-native';
+import { store } from '@app/store';
+import { snackbarActions } from '@redux/snackbar/slice';
 
 export const appName = Constants.expoConfig?.name;
 
@@ -25,41 +27,59 @@ export const wait = (timeout: number) => {
 };
 
 export const registerForPushNotificationsAsync = async () => {
-  let token;
+  try {
+    let token;
 
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C'
-    });
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C'
+      });
     }
 
-    if (finalStatus !== 'granted') {
-      console.error('Failed to get push token for push notification!');
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
 
-      return;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        console.info('[PushNotifications] :: status ', status);
+        finalStatus = status;
+      }
+
+      if (finalStatus !== 'granted') {
+        console.error('Failed to get push token for push notification!');
+
+        return;
+      }
+
+      token = (
+        await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig?.extra?.eas?.projectId ?? '7435fea4-bc85-4a71-8526-db121810f0ed'
+        })
+      ).data;
+
+      const fcmToken = (await Notifications.getDevicePushTokenAsync()).data;
+      console.info('[expoToken] :: ', token);
+      console.info('[fcmToken] :: ', fcmToken);
+    } else {
+      console.info('[PushNotifications] :: Must use physical device for Push Notifications');
     }
 
-    token = (await Notifications.getExpoPushTokenAsync({ projectId: '2850dfa7-a5c7-4cc0-a06c-be90c8c6d9bc' })).data;
-    const fcmToken = (await Notifications.getDevicePushTokenAsync()).data;
-    console.info('[expoToken] :: ', token);
-    console.info('[fcmToken] :: ', fcmToken);
-  } else {
-    console.info('[PushNotifications] :: Must use physical device for Push Notifications');
-  }
+    return token;
+  } catch (error) {
+    console.error('[PushNotifications] :: error ', error);
 
-  return token;
+    store.dispatch(
+      snackbarActions.showSnackbar({
+        type: 'error',
+        title: 'Push Notifications Error',
+        message: error
+      })
+    );
+  }
 };
 
 export const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {

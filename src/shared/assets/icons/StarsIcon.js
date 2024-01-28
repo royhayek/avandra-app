@@ -18,4 +18,5 @@ const StarsIcon = (props) => (
     </G>
   </Svg>
 );
+
 export default StarsIcon;

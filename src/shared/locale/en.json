@@ -89,8 +89,18 @@
         "flexible": "Flexible 💫",
         "flexible_desc": "No budget restrictions."
       },
-      "when_to_go": "When do you want to go?",
-      "how_to_spend": "How do you want to spend your time?",
+      "step5": {
+        "review_summary": "Review Summary",
+        "review_summary_desc": "Here's a summary of your trip plan. You can always go back and make changes.",
+        "destination": "Destination",
+        "party": "Party",
+        "trip_dates": "Trip Dates",
+        "interest": "{{number}} interests",
+        "budget": "Budget",
+        "build_my_trip": "Build My Trip",
+        "generating_your_trip": "Generating your trip... ({progress}%)",
+        "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
+      }
     },
     "history": {
       "delete_your_history": "Are you sure you want to delete your history?",
@@ -168,7 +178,7 @@
     "trip": {
       "active_trip": "Active Trip",
       "upcoming": "Upcoming",
-      "expired": "expired",
+      "expired": "Expired",
       "regenerate": "Regenerate",
       "share": "Share",
       "delete": "Delete",
