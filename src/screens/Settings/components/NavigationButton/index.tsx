@@ -74,7 +74,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
 
   // Renderers
   return (
-    <TouchableOpacity style={styles.item} onPress={isMenu ? toggleMenu : onPress}>
+    <TouchableOpacity style={styles.item} onPress={isMenu && !_.isFunction(onPress) ? toggleMenu : onPress}>
       <View style={styles.titleAndDesc}>
         <View style={styles.iconAndTitle}>
           {icon}

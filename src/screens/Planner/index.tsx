@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 
 // Components
@@ -36,9 +36,10 @@ const PlannerScreen = () => {
 
   const navigation = useNavigation();
 
+  const [generating, setGenerating] = useState(false);
   const [active, setActive] = useState(0);
 
-  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
+  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 generating={generating} />];
 
   const isBeforeLastStep = _.isEqual(active, steps.length - 2);
   const isLastStep = _.isEqual(active, steps.length - 1);
@@ -74,16 +75,22 @@ const PlannerScreen = () => {
   }, [active, dispatch, itinerarySelect.payload]);
 
   const handleSubmitPress = useCallback(() => {
-    const { interests } = itinerarySelect.payload;
+    setGenerating(true);
 
-    if (!_.isEmpty(interests)) {
-      setActive((a) => a + 1);
-    } else {
-      dispatch(
-        snackbarActions.showSnackbar({ type: 'error', title: 'Error', message: 'Please select at least 2 interests' })
-      );
-    }
-  }, [dispatch, itinerarySelect.payload]);
+    setTimeout(() => {
+      setGenerating(false);
+      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+    }, 3000);
+    // const { interests } = itinerarySelect.payload;
+
+    // if (!_.isEmpty(interests)) {
+    //   setActive((a) => a + 1);
+    // } else {
+    //   dispatch(
+    //     snackbarActions.showSnackbar({ type: 'error', title: 'Error', message: 'Please select at least 2 interests' })
+    //   );
+    // }
+  }, [navigation]);
 
   // Effects
   useEffect(() => {
@@ -115,12 +122,12 @@ const PlannerScreen = () => {
       <View style={commonStyles.footer}>
         <RegularButton
           fullWidth
-          onPress={!isBeforeLastStep ? handleNextPress : handleSubmitPress}
+          onPress={!isLastStep ? handleNextPress : handleSubmitPress}
           title={!isLastStep ? t('common.continue') : t('planner.step5.build_my_trip')}
         />
       </View>
     ),
-    [commonStyles.footer, isBeforeLastStep, isLastStep, handleNextPress, handleSubmitPress]
+    [commonStyles.footer, isLastStep, handleNextPress, handleSubmitPress]
   );
 
   return (

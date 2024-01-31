@@ -33,7 +33,7 @@ const DaysPicker: React.FC<DaysPickerProps> = ({ value, setValue }) => {
   return (
     <View style={styles.container}>
       <Text variant="medium" style={styles.noOfDays}>
-        {_t('noOfDays')}
+        {_t('no_of_days')}
       </Text>
       <View style={styles.stepperRow}>
         <TouchableOpacity

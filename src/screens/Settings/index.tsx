@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 // Components
@@ -33,6 +33,8 @@ import { useAppDispatch, useAppSelector } from '@app/store';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
+import CustomBottomSheet from '@shared/components/BottomSheet';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -48,11 +50,17 @@ const SettingsScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const logoutSheetRef = useRef<BottomSheetMethods>();
+
   // Callbacks
   const handleUpgradePress = useCallback(
     () => navigation.navigate('BillingSubscriptions', { title: 'Upgrade Plan' }),
     [navigation]
   );
+
+  const handleLogoutSheetClose = useCallback(() => logoutSheetRef.current?.close(), []);
+
+  const handleLogoutPress = useCallback(() => logoutSheetRef.current?.expand(), []);
 
   const navigateToPersonalInfo = useCallback(() => navigation.navigate('PersonalInfo'), [navigation]);
 
@@ -78,8 +86,8 @@ const SettingsScreen = () => {
   const buttons: NavigationButtonProps[] = useMemo(
     () => [
       {
-        key: 'travel_preferences',
-        name: _t('travel_preferences'),
+        key: 'saved_trips',
+        name: _t('saved_trips'),
         icon: <CategoryIcon fill={buttonIconColor} />,
         onPress: navigateToAccountAndSecurity
       },
@@ -108,12 +116,6 @@ const SettingsScreen = () => {
         onPress: navigateToAppearance
       },
       {
-        key: 'data_and_analytics',
-        name: _t('data_and_analytics'),
-        icon: <ActivityIcon fill={buttonIconColor} />,
-        onPress: () => null
-      },
-      {
         key: 'help_and_support',
         name: _t('help_and_support'),
         icon: <PaperIcon fill={buttonIconColor} />,
@@ -124,13 +126,13 @@ const SettingsScreen = () => {
         name: _t('logout'),
         icon: <LogoutIcon />,
         color: theme.colors.red,
-        onPress: () => handleLogout()
+        onPress: handleLogoutPress
       }
     ],
     [
-      handleLogout,
       buttonIconColor,
       theme.colors.red,
+      handleLogoutPress,
       navigateToAppearance,
       navigateToSubscription,
       navigateToPersonalInfo,
@@ -192,10 +194,28 @@ const SettingsScreen = () => {
     [styles, buttons]
   );
 
+  const renderLogoutModal = useMemo(
+    () => (
+      <CustomBottomSheet
+        title={_t('logout')}
+        sheetRef={logoutSheetRef}
+        titleColor={theme.colors.red}
+        onClose={handleLogoutSheetClose}
+        primaryBtnProps={{ title: 'Yes, Logout', onPress: handleLogout }}
+        secondaryBtnProps={{ title: t('common.cancel'), onPress: handleLogoutSheetClose }}>
+        <Text variant="h5" style={{ textAlign: 'center' }}>
+          Are you sure you want to log out?
+        </Text>
+      </CustomBottomSheet>
+    ),
+    []
+  );
+
   return (
     <View style={styles.container}>
       {!ownedSubscription && renderUpgradeButton}
       {renderContent}
+      {renderLogoutModal}
     </View>
   );
 };

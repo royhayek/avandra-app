@@ -9,7 +9,10 @@
       "privacy_policy": "Privacy Policy",
       "terms": "Terms of Service",
       "please_wait": "Please wait...",
-      "save": "Save"
+      "save": "Save",
+      "cancel": "Cancel",
+      "ok": "Ok",
+      "yes_continue": "Yes, Continue"
     },
     "onBoarding": {
       "walkthrough_title_1": "Discover Your Next Adventure",
@@ -32,6 +35,9 @@
       "full_name": "Full Name",
       "email": "Email",
       "country": "Country",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
       "success_title": "You're all set!",
       "success_desc": "Congratulations! You're now part of the Tripify community. Your personalized travel experiences await.",
       "explore_destinations": "Explore Destinations"
@@ -71,7 +77,24 @@
       "step2": {
         "adventure_date": "When will your adventure begin and end? 🗓️",
         "adventure_date_desc": "Choose the dates for your trip. This helps us plan the perfect itinerary for your travel period.",
-        "noOfDays": "Number of days"
+        "dates_mm_dd": "Dates (MM/DD)",
+        "no_of_days": "Number of days",
+        "how_many_days": "How many days?",
+        "maximum_days": "7 days maximum",
+        "during_what_month": "During what month?",
+        "optional": "Optional",
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
       },
       "step3": {
         "interest_title": "Tailor your adventure to your tastes 🌟",
@@ -98,13 +121,14 @@
         "interest": "{{number}} interests",
         "budget": "Budget",
         "build_my_trip": "Build My Trip",
-        "generating_your_trip": "Generating your trip... ({progress}%)",
-        "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
+        "generating_your_trip": "Generating your trip... ({{progress}}%)",
+        "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences",
+        "to": "to"
       }
     },
     "history": {
       "delete_your_history": "Are you sure you want to delete your history?",
-      "delete": "Delete",
+      "delete": "Yes, Delete",
       "cancel": "Cancel",
       "no_history_found": "No History Found",
       "my_trips": "My Trips",
@@ -116,12 +140,11 @@
       "language": "Language",
       "theme": "Theme",
       "subscription": "Subscription",
-      "travel_preferences": "Travel Preferences",
+      "saved_trips": "Saved Trips",
       "personal_info": "Personal Info",
       "restore_purchase": "Restore purchase",
       "account_and_security": "Account & Security",
       "billing_and_subscriptions": "Billing & Subscriptions",
-      "data_and_analytics": "Data & Analytics",
       "other": "Other",
       "faq": "FAQ",
       "rate_us": "Rate us",
@@ -135,14 +158,19 @@
       "contact_support": "Contact Support",
       "biometric_id": "Biometric ID",
       "face_id": "Face ID",
-      "deactivate_account": "Deactivate Account",
       "delete_account": "Delete Account",
-      "deactivate_account_desc": "Temporarily deactivate your account. Easily reactivate when you're ready.",
       "delete_account_desc": "Permanently remove your account and data from {{name}}. Proceed with caution.",
+      "choose_language": "Choose Language",
+      "choose_theme": "Choose Theme",
       "languages": {
         "english": "English",
         "arabic": "Arabic",
         "french": "French"
+      },
+      "themeOptions": {
+        "system_default": "System Default",
+        "light": "Light",
+        "dark": "Dark"
       }
     },
     "subscription": {
@@ -185,7 +213,8 @@
       "save_before_you_go": "Save before you go?",
       "you_havent_saved": "You haven't saved this iterenary, if you leave now, you'll lose of these recommendations",
       "leave": "Leave",
-      "go_back": "Go Back"
+      "go_back": "Go Back",
+      "delete_your_trips": "Delete your trips?"
     }
   }
 }

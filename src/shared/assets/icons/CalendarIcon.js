@@ -20,7 +20,7 @@ const CalendarIcon = (props) => (
       style={{
         maskType: 'luminance'
       }}>
-      <Path fill="#fff" fillRule="evenodd" d="M2 2.58h19.5V22.5H2V2.58Z" clipRule="evenodd" {...props} />
+      <Path fill="#fff" fillRule="evenodd" d="M2 2.58h19.5V22.5H2V2.58Z" clipRule="evenodd" />
     </Mask>
     <G mask="url(#a)">
       <Path

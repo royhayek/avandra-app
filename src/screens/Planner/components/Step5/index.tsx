@@ -1,13 +1,14 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // Components
 import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import InterestsList from '../Step3/InterestsList';
-import { Divider, IconButton, Text } from 'react-native-paper';
+import * as Progress from 'react-native-progress';
+import { Divider, IconButton, Modal, Portal, Text } from 'react-native-paper';
 import {
   CalendarIcon,
   EditIcon,
@@ -32,7 +33,7 @@ import moment from 'moment';
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step5.${key}`, options);
 
-const Step5 = ({ setActive }) => {
+const Step5 = ({ setActive, generating }) => {
   // Redux
   const dispatch = useDispatch();
   const destinationsSelect = useAppSelector(selectDestinations);
@@ -79,84 +80,105 @@ const Step5 = ({ setActive }) => {
     [styles.editIcon, styles.title, styles.titleContainer, theme.colors.gray]
   );
 
+  const renderGeneratingModal = useMemo(
+    () => (
+      <Portal>
+        <Modal visible={generating} dismissable={false} contentContainerStyle={styles.modalContainer}>
+          <Progress.Circle indeterminate size={60} borderWidth={5} color={theme.colors.primary} />
+          <Text variant="h5" style={styles.generate_title}>
+            {_t('generating_your_trip', { progress: 0 })}
+          </Text>
+          <Text variant="medium" style={styles.generate_desc}>
+            {_t('generating_your_trip_desc')}
+          </Text>
+        </Modal>
+      </Portal>
+    ),
+    [generating, styles.generate_desc, styles.generate_title, styles.modalContainer, theme.colors.primary]
+  );
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text variant="xLarge">{_t('review_summary_desc')}</Text>
+    <>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text variant="xLarge">{_t('review_summary_desc')}</Text>
 
-      <View>
-        <View style={styles.section}>
-          <LocationIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+        <View>
+          <View style={styles.section}>
+            <LocationIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
 
-          <View style={styles.flex1}>
-            <Text variant="h5" style={styles.title}>
-              {_t('destination')}
-            </Text>
-            <View style={styles.row}>
-              <FastImage source={{ uri: image }} style={styles.image} />
-              <View>
-                <Text variant="h6">{name}</Text>
-                <View style={styles.countryRow}>
-                  <JapanFlag />
-                  <Text variant="medium" style={styles.country}>
-                    {country}
-                  </Text>
+            <View style={styles.flex1}>
+              <Text variant="h5" style={styles.title}>
+                {_t('destination')}
+              </Text>
+              <View style={styles.row}>
+                <FastImage source={{ uri: image }} style={styles.image} />
+                <View>
+                  <Text variant="h6">{name}</Text>
+                  <View style={styles.countryRow}>
+                    <JapanFlag />
+                    <Text variant="medium" style={styles.country}>
+                      {country}
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
 
-        <Divider />
+          <Divider />
 
-        <View style={styles.section}>
-          <UsersIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+          <View style={styles.section}>
+            <UsersIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
 
-          <View style={styles.flex1}>
-            {renderTitle('traveler', _t('party'), handleEditPress)}
-            <Text variant="xLarge" style={styles.value}>
-              {t(`planner.step1.${traveler?.title}`)}
-            </Text>
+            <View style={styles.flex1}>
+              {renderTitle('traveler', _t('party'), handleEditPress)}
+              <Text variant="xLarge" style={styles.value}>
+                {t(`planner.step1.${traveler?.title}`)}
+              </Text>
+            </View>
+          </View>
+
+          <Divider />
+
+          <View style={styles.section}>
+            <CalendarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+            <View style={styles.flex1}>
+              {renderTitle('date', _t('trip_dates'), handleEditPress)}
+              <Text variant="xLarge" style={styles.value}>
+                {formatDate(fromDate)} {_t('to')} {formatDate(toDate)}
+              </Text>
+            </View>
+          </View>
+
+          <Divider />
+
+          <View style={styles.section}>
+            <StarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+            <View style={styles.flex1}>
+              {renderTitle('interests', _t('interest', { number: interests?.length }), handleEditPress)}
+              <InterestsList data={interests} disabled />
+            </View>
+          </View>
+
+          <Divider />
+
+          <View style={styles.section}>
+            <MoneyBagIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+
+            <View style={styles.flex1}>
+              {renderTitle('bidget', _t('budget'), handleEditPress)}
+              <Text variant="xLarge" style={styles.value}>
+                {t(`planner.step4.${budget?.title}`)}
+              </Text>
+            </View>
           </View>
         </View>
+      </ScrollView>
 
-        <Divider />
-
-        <View style={styles.section}>
-          <CalendarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-
-          <View style={styles.flex1}>
-            {renderTitle('date', _t('trip_dates'), handleEditPress)}
-            <Text variant="xLarge" style={styles.value}>
-              {formatDate(fromDate)} to {formatDate(toDate)}
-            </Text>
-          </View>
-        </View>
-
-        <Divider />
-
-        <View style={styles.section}>
-          <StarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-
-          <View style={styles.flex1}>
-            {renderTitle('interests', _t('interest', { number: interests?.length }), handleEditPress)}
-            <InterestsList data={interests} disabled />
-          </View>
-        </View>
-
-        <Divider />
-
-        <View style={styles.section}>
-          <MoneyBagIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-
-          <View style={styles.flex1}>
-            {renderTitle('bidget', _t('budget'), handleEditPress)}
-            <Text variant="xLarge" style={styles.value}>
-              {t(`planner.step4.${budget?.title}`)}
-            </Text>
-          </View>
-        </View>
-      </View>
-    </ScrollView>
+      {renderGeneratingModal}
+    </>
   );
 };
 

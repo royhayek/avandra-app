@@ -10,6 +10,7 @@ import RegularButton from '@shared/components/Buttons/Regular';
 import { t } from '@app/i18n';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import { mvs } from 'react-native-size-matters';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`network.${key}`, options);
@@ -78,8 +79,8 @@ const makeStyles = (theme) =>
       marginBottom: 5
     },
     text: {
-      marginBottom: 5,
       fontWeight: 'bold',
+      marginBottom: mvs(15),
       color: theme.dark ? theme.colors.white : theme.colors.black
     }
   });

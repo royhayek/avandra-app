@@ -37,8 +37,6 @@ const Step3 = () => {
     dispatch(destinationsActions.setPayload({ interests: _.map(interests) }));
   }, [dispatch, interests]);
 
-  console.debug('interests', interests);
-
   // Renderers
   return (
     <>

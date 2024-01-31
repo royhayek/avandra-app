@@ -20,7 +20,7 @@ const LocationIcon = (props) => (
       style={{
         maskType: 'luminance'
       }}>
-      <Path fill="#fff" fillRule="evenodd" d="M4 2h16.5v19.5H4V2Z" clipRule="evenodd" {...props} />
+      <Path fill="#fff" fillRule="evenodd" d="M4 2h16.5v19.5H4V2Z" clipRule="evenodd" />
     </Mask>
     <G mask="url(#a)">
       <Path

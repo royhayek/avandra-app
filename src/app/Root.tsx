@@ -32,15 +32,6 @@ interface RootProps {
   onLayout: ((event: LayoutChangeEvent) => void) | undefined;
 }
 
-// Component
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false
-  })
-});
-
 const Root: React.FC<RootProps> = ({ onLayout }) => {
   // Redux
   const dispatch = useAppDispatch();

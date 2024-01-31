@@ -9,7 +9,9 @@
       "privacy_policy": "Politique de Confidentialité",
       "terms": "Termes et Conditions",
       "please_wait": "Veuillez patienter...",
-      "save": "Sauvegarder"
+      "save": "Sauvegarder",
+      "ok": "D'accord",
+      "yes_continue": "Oui, continue"
     },
     "onBoarding": {
       "walkthrough_title_1": "Découvrez votre prochaine aventure",
@@ -32,6 +34,9 @@
       "full_name": "Nom complet",
       "email": "E-mail",
       "country": "Pays",
+      "gender": "Le Sexe",
+      "male": "Masculin",
+      "female": "Feminin",
       "success_title": "Vous êtes prêt!",
       "success_desc": "Toutes nos félicitations! Vous faites désormais partie de la communauté Tripify. Vos expériences de voyage personnalisées vous attendent.",
       "explore_destinations": "Explorer les destinations"
@@ -71,7 +76,24 @@
       "step2": {
         "adventure_date": "Quand commencera et se terminera votre aventure? 🗓️",
         "adventure_date_desc": "Choisissez les dates de votre voyage. Cela nous aide à planifier l'itinéraire parfait pour votre période de voyage.",
-        "noOfDays": "Nombre de jours"
+        "dates_mm_dd": "Dates (MM/DD)",
+        "no_of_days": "Nombre de jours",
+        "how_many_days": "Combien de jours?",
+        "maximum_days": "Maximum 7 jours",
+        "during_what_month": "Pendant quel mois?",
+        "optional": "Optionnel",
+        "january": "Janvier",
+        "february": "Février",
+        "march": "Mars",
+        "april": "Avril",
+        "may": "Mai",
+        "june": "Juin",
+        "july": "Juillet",
+        "august": "Août",
+        "september": "Septembre",
+        "october": "Octobre",
+        "november": "Novembre",
+        "december": "Décembre"
       },
       "step3": {
         "interest_title": "Adaptez votre aventure à vos goûts 🌟",
@@ -98,8 +120,9 @@
         "interest": "{{number}} centres d'intérêt",
         "budget": "Budget",
         "build_my_trip": "Construire mon voyage",
-        "generating_your_trip": "Génération de votre voyage... ({progress}%)",
-        "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
+        "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
+        "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences",
+        "to": "à"
       }
     },
     "history": {
@@ -116,13 +139,12 @@
       "language": "Langue",
       "theme": "Thème",
       "subscription": "Abonnement",
-      "travel_preferences": "Préférences de voyage",
+      "saved_trips": "Voyages sauvegardés",
       "personal_info": "Information personnelle",
       "restore_purchase": "Restaurer l'achat",
       "account_and_security": "Compte & Sécurité",
       "billing_and_subscriptions": "Facturation & Abonnements",
       "manage_subscription": "Facturation & Abonnements",
-      "data_and_analytics": "Données & analyses",
       "other": "Autre",
       "faq": "FAQ",
       "rate_us": "Évaluez nous",
@@ -136,14 +158,19 @@
       "contact_support": "Contacter l'assistance",
       "biometric_id": "ID biométrique",
       "face_id": "Identification faciale",
-      "deactivate_account": "Désactiver le compte",
       "delete_account": "Supprimer le compte",
-      "deactivate_account_desc": "Désactivez temporairement votre compte. Réactivez facilement lorsque vous êtes prêt.",
       "delete_account_desc": "Supprimez définitivement votre compte et vos données de Tripify. Procéder avec prudence.",
+      "choose_language": "Choisir la Langue",
+      "choose_theme": "Choisir le thème",
       "languages": {
         "english": "Anglais",
         "arabic": "Arabe",
         "french": "Français"
+      },
+      "themeOptions": {
+        "system_default": "Défaut du système",
+        "light": "Lumineux",
+        "dark": "Sombre"
       }
     },
     "subscription": {

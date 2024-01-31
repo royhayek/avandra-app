@@ -37,7 +37,7 @@ const PersonalInfoScreen = () => {
 
   const loading = useAppSelector(getUserLoading);
   const user = useAppSelector(getUser);
-  const { _id, name, email, country } = user;
+  const { _id, name, email, country, gender } = user;
 
   // Statics
   const theme = useAppTheme();
@@ -49,10 +49,12 @@ const PersonalInfoScreen = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
-  const formInitialValues = { _id, name, email, country };
+  const formInitialValues = { _id, name, email, country, gender };
 
   // Callbacks
   const handleEditPicture = useCallback(() => {}, []);
+
+  const hanldeOpenGenderPicker = useCallback(() => setIsOpenCountryPicker(true), []);
 
   const handleOpenCountryPicker = useCallback(() => setIsOpenCountryPicker(true), []);
 
@@ -158,6 +160,17 @@ const PersonalInfoScreen = () => {
                   label={t('profile.country')}
                   onFocus={handleOpenCountryPicker}
                   placeholder={t('profile.country')}
+                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                />
+
+                <Input
+                  name="gender"
+                  error={errors.gender}
+                  value={values.gender}
+                  handleChange={handleChange}
+                  label={t('profile.gender')}
+                  onFocus={hanldeOpenGenderPicker}
+                  placeholder={t('profile.gender')}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 

@@ -22,6 +22,7 @@ export default (theme: AppTheme) =>
       color: theme.colors.secondary
     },
     interests: {
+      flex: 1,
       paddingTop: mvs(8),
       paddingHorizontal: ms(16)
     }

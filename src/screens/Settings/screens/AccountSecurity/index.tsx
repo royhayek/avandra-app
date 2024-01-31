@@ -25,8 +25,6 @@ const AccountSecurityScreen = () => {
 
   const handleFaceIdToggle = useCallback(() => {}, []);
 
-  const handleDeactivateAccount = useCallback(() => {}, []);
-
   const handleDeleteAccount = useCallback(() => {}, []);
 
   // Renderer Vars
@@ -45,12 +43,6 @@ const AccountSecurityScreen = () => {
         switchProps: { value: enabledFaceId, onValueChange: handleFaceIdToggle }
       },
       {
-        key: 'deactivate_account',
-        name: t('settings.deactivate_account'),
-        description: t('settings.deactivate_account_desc'),
-        onPress: handleDeactivateAccount
-      },
-      {
         key: 'delete_account',
         name: t('settings.delete_account'),
         description: t('settings.delete_account_desc', { name: appName }),
@@ -59,13 +51,12 @@ const AccountSecurityScreen = () => {
       }
     ],
     [
-      enabledBiometricId,
-      handleBiometricIdToggle,
       enabledFaceId,
+      theme.colors.red,
+      enabledBiometricId,
       handleFaceIdToggle,
-      handleDeactivateAccount,
       handleDeleteAccount,
-      theme.colors.red
+      handleBiometricIdToggle
     ]
   );
 

@@ -51,12 +51,14 @@ const Profile = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
-  const formInitialValues = { _id, name, email, country: '' };
+  const formInitialValues = { _id, name, email, country: '', gender: '' };
 
   // Callbacks
   const handleEditPicture = useCallback(() => {}, []);
 
   const handleOpenCountryPicker = useCallback(() => setIsOpenCountryPicker(true), []);
+
+  const handleOpenGenderPicker = useCallback(() => setIsOpenCountryPicker(true), []);
 
   const handleCloseCountryPicker = useCallback(() => setIsOpenCountryPicker(false), []);
 
@@ -169,6 +171,17 @@ const Profile = () => {
                   label={t('profile.country')}
                   onFocus={handleOpenCountryPicker}
                   placeholder={t('profile.country')}
+                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                />
+
+                <Input
+                  name="gender"
+                  error={errors.gender}
+                  value={values.gender}
+                  handleChange={handleChange}
+                  label={t('profile.gender')}
+                  onFocus={handleOpenGenderPicker}
+                  placeholder={t('profile.gender')}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 

@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import * as Updates from 'expo-updates';
 import { Settings } from 'react-native-fbsdk-next';
+import * as Notifications from 'expo-notifications';
 import { PersistGate } from 'redux-persist/integration/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -19,6 +20,15 @@ import { persistor, store } from './src/app/store';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
+
+// Component
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false
+  })
+});
 
 const fetchFonts = () => {
   return Font.loadAsync({

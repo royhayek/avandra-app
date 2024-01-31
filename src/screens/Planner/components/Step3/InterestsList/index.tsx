@@ -46,6 +46,7 @@ const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, se
       data={data}
       numColumns={2}
       keyExtractor={(item) => item.key}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatList}
       columnWrapperStyle={styles.listColumnWrapper}
       renderItem={({ item }) => renderItem(item)}

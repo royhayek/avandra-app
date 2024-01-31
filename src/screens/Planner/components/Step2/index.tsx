@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 // Components
 import DateInput from './DateInput';
 import DaysPicker from './DaysPicker';
+import StepHeader from '../StepHeader';
 import MonthPicker from './MonthPicker';
 import { Text } from 'react-native-paper';
 import { ScrollView, View } from 'react-native';
@@ -18,7 +19,6 @@ import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
 import { destinationsActions } from '@redux/destinations/slice';
-import StepHeader from '../StepHeader';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`, options);
@@ -64,8 +64,8 @@ const Step2 = () => {
 
   // Renderer Vars
   const toggleButtons = [
-    { key: 'date', title: 'Dates (MM/DD)' },
-    { key: 'days', title: 'Number of days' }
+    { key: 'date', title: _t('dates_mm_dd') },
+    { key: 'days', title: _t('no_of_days') }
   ];
 
   // Renderers
@@ -73,25 +73,27 @@ const Step2 = () => {
     switch (activeButton) {
       case 'days':
         return (
-          <ScrollView style={styles.secondContent} showsVerticalScrollIndicator={false}>
-            <Text variant="large">How many days?</Text>
+          <>
+            <Text variant="large" style={styles.noOfDays}>
+              {_t('how_many_days')}
+            </Text>
             <DaysPicker value={noOfDays} setValue={setNoOfDays} />
             <Text variant="medium" style={styles.maxDays}>
-              7 days maximum
+              {_t('maximum_days')}
             </Text>
             <Text variant="large" style={styles.whatMonth}>
-              During what month?{' '}
+              {_t('during_what_month')}{' '}
               <Text variant="large" style={{ color: theme.colors.secondary }}>
-                (optional)
+                ({_t('optional')})
               </Text>
             </Text>
             <MonthPicker value={selectedMonth} setValue={setSelectedMonth} />
-          </ScrollView>
+          </>
         );
 
       default:
         return (
-          <ScrollView contentContainerStyle={styles.firstContent} showsVerticalScrollIndicator={false}>
+          <>
             <DateInput
               defaultValue={
                 dateState.fromDate &&
@@ -100,17 +102,16 @@ const Step2 = () => {
               }
             />
             <DatePicker onSuccess={handleDatePickerSuccess} />
-          </ScrollView>
+          </>
         );
     }
   }, [
     handleDatePickerSuccess,
     theme.colors.secondary,
-    styles.secondContent,
-    styles.firstContent,
     dateState.fromDate,
     styles.whatMonth,
     dateState.toDate,
+    styles.noOfDays,
     styles.maxDays,
     formatMonthDay,
     selectedMonth,
@@ -119,11 +120,11 @@ const Step2 = () => {
   ]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
       <StepHeader title={_t('adventure_date')} description={_t('adventure_date_desc')} />
       <ToggleButtons buttons={toggleButtons} active={activeButton} setActive={setActiveButton} />
       {renderContent}
-    </View>
+    </ScrollView>
   );
 };
 

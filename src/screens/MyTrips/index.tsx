@@ -1,13 +1,12 @@
 // Packages
 import { ms, mvs } from 'react-native-size-matters';
-import { Ionicons, Octicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // Components
+import { Octicons } from '@expo/vector-icons';
 import FastImage from 'react-native-fast-image';
 import HistoryCard from './components/HistoryCard';
 import { FlatList, RefreshControl, View } from 'react-native';
-import RegularButton from '@shared/components/Buttons/Regular';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import { ActivityIndicator, IconButton, SegmentedButtons, Text } from 'react-native-paper';
 
@@ -36,8 +35,6 @@ const HistoryScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState('upcoming');
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [savedTrips, setSavedTrips] = useState(savedTripsData);
-
-  const snapPoints = useMemo(() => ['25%'], []);
 
   // Callbacks
   const refreshSavedTrips = useCallback((isRefreshing?: boolean) => {
@@ -179,25 +176,16 @@ const HistoryScreen = ({ navigation }) => {
 
   const renderConfBottomSheet = useMemo(
     () => (
-      <CustomBottomSheet sheetRef={bottomSheetRef} snapPoints={snapPoints} onClose={handleSheetClose}>
-        <Text variant="bodyLarge" style={styles.modalTitle}>
-          {_t('delete_your_history')}
-        </Text>
-        <View style={styles.modalButtons}>
-          <RegularButton
-            title={_t('delete')}
-            onPress={handleDeleteAllHistory}
-            startIcon={<Octicons name="trash" size={ms(18)} color={theme.colors.white} />}
-          />
-          <RegularButton
-            title={_t('cancel')}
-            startIcon={<Ionicons name="close" size={ms(18)} color={theme.colors.white} />}
-            onPress={handleSheetClose}
-          />
-        </View>
+      <CustomBottomSheet
+        title={_t('delete_your_trips')}
+        sheetRef={bottomSheetRef}
+        onClose={handleSheetClose}
+        primaryBtnProps={{ title: t('history.delete'), onPress: handleDeleteAllHistory }}
+        secondaryBtnProps={{ title: t('history.cancel'), onPress: handleSheetClose }}>
+        <Text>test</Text>
       </CustomBottomSheet>
     ),
-    [handleDeleteAllHistory, handleSheetClose, snapPoints, styles.modalButtons, styles.modalTitle, theme.colors.white]
+    [handleDeleteAllHistory, handleSheetClose]
   );
 
   return (

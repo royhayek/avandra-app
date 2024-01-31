@@ -9,7 +9,9 @@
       "privacy_policy": "سياسة الخصوصية",
       "terms": "الشروط والأحكام",
       "please_wait": "...يرجى الانتظار",
-      "save": "حفظ"
+      "save": "حفظ",
+      "ok": "نعم",
+      "yes_continue": "نعم، استمر"
     },
     "onBoarding": {
       "walkthrough_title_1": "اكتشف مغامرتك المقبلة",
@@ -32,6 +34,9 @@
       "full_name": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "country": "الدولة",
+      "gender": "الجنس",
+      "male": "مذكر",
+      "female": "أنثى",
       "success_title": "!أنت جاهز تمامًا",
       "success_desc": "تهانينا! أنت الآن جزء من مجتمع Tripify. تجارب السفر الشخصية الخاصة بك في انتظارك.",
       "explore_destinations": "اكتشف الوجهات"
@@ -72,7 +77,24 @@
       "step2": {
         "adventure_date": "متى ستبدأ وتنتهي مغامرتك؟ 🗓️",
         "adventure_date_desc": "اختر تواريخ رحلتك. هذا يساعدنا في تخطيط جدول زمني مثالي لفترة سفرك",
-        "noOfDays": "عدد الأيام"
+        "dates_mm_dd": "التواريخ (شهر/يوم)",
+        "no_of_days": "عدد الأيام",
+        "how_many_days": "كم عدد الأيام؟",
+        "maximum_days": "7 أيام كحد أقصى",
+        "during_what_month": "خلال أي شهر؟",
+        "optional": "اختياري",
+        "january": "يناير",
+        "february": "فبراير",
+        "march": "مارس",
+        "april": "إبريل",
+        "may": "مايو",
+        "june": "يونيو",
+        "july": "يوليو",
+        "august": "أغسطس",
+        "september": "سبتمبر",
+        "october": "أكتوبر",
+        "november": "نوفمبر",
+        "december": "ديسمبر"
       },
       "step3": {
         "interest_title": "ضبط مغامرتك وفقًا لاهتماماتك 🌟",
@@ -99,8 +121,9 @@
         "interest": "{{number}} اهتمامات",
         "budget": "الميزانية",
         "build_my_trip": "بناء رحلتي",
-        "generating_your_trip": "جارٍ إنشاء رحلتك... ({progress}%)",
-        "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك"
+        "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
+        "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك",
+        "to": "الى"
       }
     },
     "history": {
@@ -117,13 +140,12 @@
       "language": "اللغة",
       "theme": "النمط",
       "subscription": "الاشتراك",
-      "travel_preferences": "تفضيلات الرحلات",
+      "saved_trips": "الرحلات المحفوظة",
       "personal_info": "المعلومات الشخصية",
       "restore_purchase": "استعادة الشراء",
       "account_and_security": "الحساب والأمن",
       "billing_and_subscriptions": "الفواتير والاشتراكات",
       "manage_subscription": "الفواتير والاشتراكات",
-      "data_and_analytics": "البيانات والتحليلات",
       "other": "أخرى",
       "faq": "الأسئلة الشائعة",
       "rate_us": "قيمنا",
@@ -137,14 +159,19 @@
       "contact_support": "تواصل مع الدعم",
       "biometric_id": "تفعيل الهوية البيومترية",
       "face_id": "تفعيل معرف الوجه",
-      "deactivate_account": "تعطيل الحساب",
       "delete_account": "حذف الحساب",
-      "deactivate_account_desc": "قم بإلغاء تنشيط حسابك مؤقتًا. يمكنك إعادة التنشيط بسهولة عندما تكون جاهزًا",
       "delete_account_desc": "قم بإزالة حسابك وبياناتك نهائيًا من {{name}}. التقدم بحذر",
+      "choose_language": "اختيار اللغة",
+      "choose_theme": "اختيار النمط",
       "languages": {
         "english": "الإنجليزية",
         "arabic": "العربية",
         "french": "الفرنسية"
+      },
+      "themeOptions": {
+        "system_default": "النظام الافتراضي",
+        "light": "فاتح",
+        "dark": "داكن"
       }
     },
     "subscription": {

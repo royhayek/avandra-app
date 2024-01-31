@@ -7,16 +7,12 @@ import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      marginHorizontal: ms(24)
+    scrollView: {
+      paddingHorizontal: ms(24),
+      paddingBottom: mvs(24)
     },
-    firstContent: {
-      paddingBottom: mvs(30)
-    },
-    secondContent: {
-      flex: 1,
-      paddingVertical: mvs(16)
+    noOfDays: {
+      marginTop: mvs(16)
     },
     maxDays: {
       marginTop: mvs(6),

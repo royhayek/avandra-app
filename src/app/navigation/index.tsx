@@ -164,7 +164,7 @@ const RootNavigation = () => {
         tabBarInactiveTintColor: theme.colors.secondary,
         tabBarIcon: (props) => getTabBarIcon(props, route),
         tabBarLabel: (props) => getTabBarLabel(props),
-        tabBarActiveBackgroundColor: theme.colors.primaryLight,
+        tabBarActiveBackgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100],
         tabBarItemStyle: {
           borderRadius: ms(30),
           marginHorizontal: ms(2),

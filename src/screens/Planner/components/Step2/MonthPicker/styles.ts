@@ -25,8 +25,5 @@ export default (theme: AppTheme) =>
       marginTop: mvs(10),
       fontFamily: 'urbanist-medium',
       color: theme.dark ? theme.colors.white : theme.colors.black
-    },
-    activeTitle: {
-      color: theme.colors.primary
     }
   });

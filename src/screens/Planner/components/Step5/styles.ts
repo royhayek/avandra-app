@@ -8,7 +8,7 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      marginHorizontal: mvs(24),
+      paddingHorizontal: ms(24),
       paddingBottom: mvs(50)
     },
     section: {
@@ -54,5 +54,21 @@ export default (theme: AppTheme) =>
     },
     editIcon: {
       margin: 0
+    },
+    modalContainer: {
+      width: '70%',
+      padding: ms(24),
+      alignSelf: 'center',
+      alignItems: 'center',
+      borderRadius: ms(16),
+      justifyContent: 'center',
+      backgroundColor: theme.colors.background
+    },
+    generate_title: {
+      marginTop: mvs(16),
+    },
+    generate_desc: {
+      marginTop: mvs(16),
+      textAlign: 'center'
     }
   });

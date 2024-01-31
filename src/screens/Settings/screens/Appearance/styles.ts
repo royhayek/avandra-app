@@ -33,5 +33,17 @@ export default (theme: AppTheme) =>
     arrowIcon: {
       marginStart: ms(3),
       transform: i18n.locale === 'ar' ? [{ rotateY: '180deg' }] : []
+    },
+    radioButton: {
+      gap: ms(16),
+      paddingVertical: mvs(4),
+      alignItems: 'center',
+      flexDirection: 'row'
+    },
+    radioTitle: {
+      fontFamily: 'urbanist-medium'
+    },
+    divider: {
+      marginTop: mvs(24)
     }
   });

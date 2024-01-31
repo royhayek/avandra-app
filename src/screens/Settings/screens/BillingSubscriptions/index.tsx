@@ -71,6 +71,7 @@ const BillingSubscriptionsScreen = () => {
   return (
     <FlatList
       data={plans}
+      keyExtractor={(item) => item._id}
       contentContainerStyle={styles.plansList}
       renderItem={({ item }) => <PlanListItem key={item._id} item={item} setIsSuccess={setIsSuccess} />}
     />
