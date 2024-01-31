@@ -24,4 +24,5 @@ const FacebookIcon = (props) => (
     </Defs>
   </Svg>
 );
+
 export default FacebookIcon;

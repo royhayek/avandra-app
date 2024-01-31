@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
-import { useDispatch } from 'react-redux';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
@@ -11,31 +11,35 @@ import InterestsList from './InterestsList';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { destinationsActions } from '@redux/destinations/slice';
+import { INTEREST_LIST } from './data';
+import { useAppTheme } from '@shared/assets/theme';
+import { destinationsActions, selectDestinations } from '@redux/destinations/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { useAppTheme } from '@shared/assets/theme';
-import { INTEREST_LIST } from './data';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step3.${key}`, options);
 
 const Step3 = () => {
+  // Redux
+  const dispatch = useDispatch();
+  const destinations = useSelector(selectDestinations);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const dispatch = useDispatch();
 
-  const [interests, setInterests] = useState([]);
+  const { payload } = destinations;
 
   // Callbacks
-  const handleInterestPress = useCallback((interest) => setInterests(_.xor(interests, [interest])), [interests]);
-
-  // Effects
-  useEffect(() => {
-    dispatch(destinationsActions.setPayload({ interests: _.map(interests) }));
-  }, [dispatch, interests]);
+  const handleInterestPress = useCallback(
+    (interest) => {
+      const interests = _.xor(payload?.interests, [interest]);
+      dispatch(destinationsActions.setPayload({ interests: _.map(interests) }));
+    },
+    [dispatch, payload?.interests]
+  );
 
   // Renderers
   return (
@@ -45,7 +49,7 @@ const Step3 = () => {
       </View>
 
       <View style={styles.interests}>
-        <InterestsList data={INTEREST_LIST} value={interests} setValue={handleInterestPress} />
+        <InterestsList data={INTEREST_LIST} value={payload?.interests} setValue={handleInterestPress} />
       </View>
     </>
   );

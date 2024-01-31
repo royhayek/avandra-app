@@ -23,6 +23,7 @@ import {
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppSelector } from '@app/store';
+import { appActions } from '@redux/app/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectDestinations } from '@redux/destinations/slice';
 
@@ -55,12 +56,7 @@ const Step5 = ({ setActive, generating }) => {
   // Callbacks
   const formatDate = (date: string) => moment(date).format('MMMM DD, YYYY');
 
-  const handleEditPress = useCallback(
-    (step: string) => {
-      setActive();
-    },
-    [setActive]
-  );
+  const handleEditPress = useCallback((step: number) => dispatch(appActions.updatePlannerStep(step)), [dispatch]);
 
   // Renderers
   const renderTitle = useCallback(
@@ -131,7 +127,7 @@ const Step5 = ({ setActive, generating }) => {
             <UsersIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
 
             <View style={styles.flex1}>
-              {renderTitle('traveler', _t('party'), handleEditPress)}
+              {renderTitle('traveler', _t('party'), () => handleEditPress(0))}
               <Text variant="xLarge" style={styles.value}>
                 {t(`planner.step1.${traveler?.title}`)}
               </Text>
@@ -144,7 +140,7 @@ const Step5 = ({ setActive, generating }) => {
             <CalendarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
 
             <View style={styles.flex1}>
-              {renderTitle('date', _t('trip_dates'), handleEditPress)}
+              {renderTitle('date', _t('trip_dates'), () => handleEditPress(1))}
               <Text variant="xLarge" style={styles.value}>
                 {formatDate(fromDate)} {_t('to')} {formatDate(toDate)}
               </Text>
@@ -157,7 +153,7 @@ const Step5 = ({ setActive, generating }) => {
             <StarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
 
             <View style={styles.flex1}>
-              {renderTitle('interests', _t('interest', { number: interests?.length }), handleEditPress)}
+              {renderTitle('interests', _t('interest', { number: interests?.length }), () => handleEditPress(2))}
               <InterestsList data={interests} disabled />
             </View>
           </View>
@@ -168,7 +164,7 @@ const Step5 = ({ setActive, generating }) => {
             <MoneyBagIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
 
             <View style={styles.flex1}>
-              {renderTitle('bidget', _t('budget'), handleEditPress)}
+              {renderTitle('bidget', _t('budget'), () => handleEditPress(3))}
               <Text variant="xLarge" style={styles.value}>
                 {t(`planner.step4.${budget?.title}`)}
               </Text>

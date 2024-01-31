@@ -1,7 +1,7 @@
 // Packages
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from 'react';
 
 // Components
 import DateInput from './DateInput';
@@ -9,7 +9,7 @@ import DaysPicker from './DaysPicker';
 import StepHeader from '../StepHeader';
 import MonthPicker from './MonthPicker';
 import { Text } from 'react-native-paper';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import DatePicker from '@shared/components/DatePicker';
 import ToggleButtons from '@shared/components/ToggleButtons';
 
@@ -18,7 +18,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
-import { destinationsActions } from '@redux/destinations/slice';
+import { destinationsActions, selectDestinations } from '@redux/destinations/slice';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`, options);
@@ -26,6 +26,8 @@ const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`
 const Step2 = () => {
   // Redux
   const dispatch = useDispatch();
+
+  const destinations = useSelector(selectDestinations);
 
   // Statics
   const theme = useAppTheme();
@@ -36,7 +38,8 @@ const Step2 = () => {
   const [noOfDays, setNoOfDays] = useState<number>(4);
   const [activeButton, setActiveButton] = useState<string>('date');
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-  const [dateState, setDateState] = useState({ fromDate: '', toDate: '', dateError: '' });
+
+  const { fromDate, toDate } = destinations?.payload;
 
   // Callbacks
   const formatMonthDay = useCallback((date: string) => moment(date, 'YYYY-MM-DD').format('MM/DD'), []);
@@ -44,23 +47,19 @@ const Step2 = () => {
   const handleDatePickerSuccess = useCallback(
     (start: string, end: string) => {
       const diffDays = moment(end).diff(moment(start), 'days') + 1;
-      setNoOfDays(diffDays);
 
-      setDateState({
-        ...dateState,
-        fromDate: start,
-        toDate: end,
-        dateError: ''
-      });
+      dispatch(
+        destinationsActions.setPayload({
+          toDate: end,
+          selectedMonth,
+          fromDate: start,
+          noOfDays: diffDays,
+          periodType: activeButton
+        })
+      );
     },
-    [dateState]
+    [activeButton, selectedMonth, dispatch]
   );
-
-  // Effects
-  useEffect(() => {
-    const { fromDate, toDate } = dateState;
-    dispatch(destinationsActions.setPayload({ periodType: activeButton, fromDate, toDate, noOfDays, selectedMonth }));
-  }, [noOfDays, dateState, selectedMonth, activeButton, dispatch]);
 
   // Renderer Vars
   const toggleButtons = [
@@ -94,13 +93,7 @@ const Step2 = () => {
       default:
         return (
           <>
-            <DateInput
-              defaultValue={
-                dateState.fromDate &&
-                dateState.toDate &&
-                `${formatMonthDay(dateState.fromDate)} - ${formatMonthDay(dateState.toDate)}`
-              }
-            />
+            <DateInput defaultValue={fromDate && toDate && `${formatMonthDay(fromDate)} - ${formatMonthDay(toDate)}`} />
             <DatePicker onSuccess={handleDatePickerSuccess} />
           </>
         );
@@ -108,15 +101,15 @@ const Step2 = () => {
   }, [
     handleDatePickerSuccess,
     theme.colors.secondary,
-    dateState.fromDate,
     styles.whatMonth,
-    dateState.toDate,
     styles.noOfDays,
     styles.maxDays,
     formatMonthDay,
     selectedMonth,
     activeButton,
-    noOfDays
+    noOfDays,
+    fromDate,
+    toDate
   ]);
 
   return (

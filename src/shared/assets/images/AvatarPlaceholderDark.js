@@ -23,4 +23,5 @@ const AvatarPlaceholderDark = (props) => (
     </Defs>
   </Svg>
 );
+
 export default AvatarPlaceholderDark;

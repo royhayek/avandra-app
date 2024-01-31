@@ -13,6 +13,7 @@ export interface AppInitialState {
   };
   language: string;
   themeMode: string;
+  plannerStep: number;
   subscriptions: any[];
   messagesCount: number;
   deviceUuid: string | null;

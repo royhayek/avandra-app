@@ -9,7 +9,6 @@ import { Calendar } from 'react-native-calendars';
 
 // Utilities
 import makeStyles from './styles';
-import { scaledFontSize } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 import { DateData, MarkedDates } from 'react-native-calendars/src/types';
 

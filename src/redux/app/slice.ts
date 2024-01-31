@@ -20,6 +20,7 @@ const initialState: AppInitialState = {
     }
   },
   language: 'en',
+  plannerStep: 0,
   deviceUuid: null,
   messagesCount: 0,
   themeMode: 'light',
@@ -59,6 +60,9 @@ export const appSlice = createSlice({
     },
     setDeviceUuid: (state, action) => {
       state.deviceUuid = action.payload;
+    },
+    updatePlannerStep: (state, action) => {
+      state.plannerStep = action.payload;
     }
   }
 });
@@ -72,9 +76,17 @@ export default appSlice.reducer;
 const _app = (state: RootState) => state.app;
 
 export const getLanguage = createSelector(_app, (data) => data.language);
+
 export const getThemeMode = createSelector(_app, (data) => data.themeMode);
+
 export const getConfiguration = createSelector(_app, (data) => data.config);
+
 export const getDeviceUuid = createSelector(_app, (data) => data.deviceUuid);
+
+export const getPlannerStep = createSelector(_app, (data) => data.plannerStep);
+
 export const getMessagesCount = createSelector(_app, (data) => data.messagesCount);
+
 export const getSubscriptions = createSelector(_app, (data) => data.subscriptions);
+
 export const getOwnedSubscription = createSelector(_app, (data) => data.ownedSubscription);
