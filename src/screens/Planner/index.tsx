@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 
 // Components
@@ -17,11 +17,10 @@ import RegularButton from '@shared/components/Buttons/Regular';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { appActions, getPlannerStep } from '@redux/app/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
-import { selectDestinations } from '@redux/destinations/slice';
+import { plannerActions, getPlannerStep, getPlannerPayload } from '@redux/planner/slice';
 
 // Component
 const PlannerScreen = () => {
@@ -29,7 +28,7 @@ const PlannerScreen = () => {
   const dispatch = useDispatch();
 
   const plannerStep = useSelector(getPlannerStep);
-  const itinerarySelect = useSelector(selectDestinations);
+  const plannerPayload = useSelector(getPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
@@ -42,14 +41,13 @@ const PlannerScreen = () => {
 
   const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 generating={generating} />];
 
-  const isBeforeLastStep = _.isEqual(plannerStep, steps.length - 2);
   const isLastStep = _.isEqual(plannerStep, steps.length - 1);
 
   // Callbacks
-  const updatePlannerStep = useCallback((step: number) => dispatch(appActions.updatePlannerStep(step)), [dispatch]);
+  const updatePlannerStep = useCallback((step: number) => dispatch(plannerActions.updatePlannerStep(step)), [dispatch]);
 
   const handleNextPress = useCallback(() => {
-    const { periodType, fromDate, toDate, interests } = itinerarySelect.payload;
+    const { periodType, fromDate, toDate, interests } = plannerPayload || {};
 
     switch (plannerStep) {
       case 1:
@@ -86,38 +84,56 @@ const PlannerScreen = () => {
         updatePlannerStep(plannerStep + 1);
         break;
     }
-  }, [dispatch, itinerarySelect.payload, plannerStep, updatePlannerStep]);
+  }, [dispatch, plannerPayload, plannerStep, updatePlannerStep]);
 
   const handleSubmitPress = useCallback(() => {
     setGenerating(true);
 
     setTimeout(() => {
       setGenerating(false);
-      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+      navigation.navigate('TripDetails', { tripId: 1 });
+      // navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+      dispatch(plannerActions.reset());
     }, 3000);
-  }, [navigation]);
+  }, [dispatch, navigation]);
+
+  const handleOnBackPress = useCallback(() => {
+    dispatch(plannerActions.reset());
+    navigation.goBack();
+  }, [dispatch, navigation]);
 
   // Effects
   useEffect(() => {
     navigation.setOptions(
       isLastStep
-        ? { title: t('planner.step5.review_summary') }
+        ? { onBackPress: handleOnBackPress, title: t('planner.step5.review_summary') }
         : {
+            onBackPress: handleOnBackPress,
             headerTitle: () => (
               <Progress.Bar
                 width={200}
                 height={10}
                 borderWidth={0}
                 borderRadius={50}
-                progress={(plannerStep + 1) / 4}
                 color={theme.colors.primary}
                 style={{ alignSelf: 'center' }}
+                progress={(plannerStep + 1) / 4}
                 unfilledColor={theme.dark ? theme.colors.dark[5] : theme.colors.gray[200]}
               />
             )
           }
     );
-  }, [plannerStep, isLastStep, navigation, theme.colors.dark, theme.colors.gray, theme.colors.primary, theme.dark]);
+  }, [
+    dispatch,
+    theme.dark,
+    isLastStep,
+    navigation,
+    plannerStep,
+    handleOnBackPress,
+    theme.colors.dark,
+    theme.colors.gray,
+    theme.colors.primary
+  ]);
   // Renderer Vars
 
   // Renderers

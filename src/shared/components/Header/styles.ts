@@ -16,6 +16,14 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background,
       direction: i18n.locale === 'ar' ? 'rtl' : 'ltr'
     },
+    absoluteView: {
+      top: 0,
+      end: 0,
+      start: 0,
+      paddingBottom: 0,
+      position: 'absolute',
+      backgroundColor: 'transparent'
+    },
     container: {
       minHeight: mvs(48),
       alignItems: 'center',

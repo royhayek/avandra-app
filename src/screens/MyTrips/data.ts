@@ -5,7 +5,7 @@ export const savedTrips = [
     country: 'France',
     plannedDate: '2023-05-15',
     guest: {
-      type: 'partner',
+      type: 'couple',
       number: 2
     },
     duration: 7,

@@ -1,9 +1,9 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons, Feather, Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
 import Menu from '@shared/components/Menu';
@@ -15,29 +15,29 @@ import { View, TouchableOpacity, ImageBackground } from 'react-native';
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { deleteConversation } from '@shared/services/localdb';
 import { PARTNERS_LIST } from '../../../Planner/components/Step1/data';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import GenerationModal from '@shared/components/GenerationModal';
 
 interface HistoryCardProps {
   index: number;
   item: CardItem; // Assuming 'item' has a specific type. Replace 'CardItem' with the actual type.
   small?: boolean;
-  refresh: (flag: boolean) => void;
 }
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
 
-const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }) => {
+const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
   const navigation = useNavigation();
 
   const [openOptionsMenu, setOpenOptionsMenu] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
 
   const { cityImage, city, country, plannedDate, guest, duration } = item;
 
@@ -46,14 +46,39 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
   // Callbacks
   const toggleOptionsMenu = useCallback(() => setOpenOptionsMenu((cur) => !cur), []);
 
-  const handleTextPress = useCallback(() => navigation.navigate('Itinerary'), [navigation]);
+  const handleTextPress = useCallback(() => navigation.navigate('TripDetails'), [navigation]);
 
-  const handleDeleteHistory = useCallback(
-    async (id: number) => {
-      await deleteConversation(id).then(() => console.debug('History Deleted Successfully'));
-      refresh(false);
+  const handleDeleteHistory = useCallback(async (id: number) => {
+    // Call an endpoint to delete the trip in database
+  }, []);
+
+  const handleTripMenuItemPress = useCallback(
+    (index: string) => {
+      console.debug('Item Pressed', item);
+
+      switch (index) {
+        case '1':
+          setRegenerating(true);
+          console.debug('Regenerate Trip');
+
+          setTimeout(() => {
+            setRegenerating(false);
+          }, 5000);
+
+          break;
+        case '2':
+          console.debug('Share Trip');
+          break;
+        case '3':
+          handleDeleteHistory(item?.id);
+          break;
+        default:
+          break;
+      }
+
+      toggleOptionsMenu();
     },
-    [refresh]
+    [handleDeleteHistory, item]
   );
 
   // Renderer Vars
@@ -92,54 +117,59 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
     [theme.colors.primary]
   );
 
-  const renderTripInformation = useMemo(
-    () => (
-      <View style={small ? styles.horizontalInfoContent : styles.verticalInfoContent}>
-        <Text variant="h6" style={styles.title}>
-          {country}, {city}
-        </Text>
+  const renderTripInformation = () => (
+    <View style={small ? styles.horizontalInfoContent : styles.verticalInfoContent}>
+      <Text variant="h6" style={styles.title}>
+        {country}, {city}
+      </Text>
 
-        <View style={styles.rowContainer}>
-          <View style={styles.infoItemContainer}>
-            <Text variant="medium" style={styles.assistant}>
-              {_t(partner?.title)}
-            </Text>
-          </View>
+      <View style={styles.rowContainer}>
+        <View style={styles.infoItemContainer}>
+          <Text variant="medium" style={styles.assistant}>
+            {_t(partner?.title)}
+          </Text>
+        </View>
 
-          <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
+        <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
 
-          <View style={styles.infoItemContainer}>
-            <Feather
-              name="calendar"
-              size={ms(small ? ms(15) : ms(18))}
-              color={theme.dark ? theme.colors.white : theme.colors.black}
-            />
-            <Text variant="medium" style={styles.date}>
-              March 6th, 2023
-            </Text>
-          </View>
+        <View style={styles.infoItemContainer}>
+          <Feather
+            name="calendar"
+            size={ms(small ? ms(15) : ms(18))}
+            color={theme.dark ? theme.colors.white : theme.colors.black}
+          />
+          <Text variant="medium" style={styles.date}>
+            March 6th, 2023
+          </Text>
         </View>
       </View>
-    ),
-    [city, country, partner?.icon, partner?.title, small, styles, theme.colors.black, theme.colors.white, theme.dark]
+    </View>
   );
 
   return small ? (
-    <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
-      <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
+    <>
+      <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
+        <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
 
-      {renderTripInformation}
+        {renderTripInformation()}
 
-      <Menu
-        items={menuItems}
-        onItemPress={() => null}
-        visible={openOptionsMenu}
-        onDismiss={toggleOptionsMenu}
-        anchor={
-          <IconButton size={ms(20)} icon={renderMenuIcon} onPress={toggleOptionsMenu} style={{ borderRadius: ms(8) }} />
-        }
-      />
-    </TouchableOpacity>
+        <Menu
+          items={menuItems}
+          visible={openOptionsMenu}
+          onDismiss={toggleOptionsMenu}
+          onItemPress={handleTripMenuItemPress}
+          anchor={
+            <IconButton
+              size={ms(20)}
+              icon={renderMenuIcon}
+              onPress={toggleOptionsMenu}
+              style={{ borderRadius: ms(8) }}
+            />
+          }
+        />
+      </TouchableOpacity>
+      <GenerationModal regenerating={regenerating} />
+    </>
   ) : (
     <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.container}>
       <ImageBackground
@@ -156,7 +186,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, refresh }
           onPress={() => handleDeleteHistory(item?.id)}
         />
 
-        {renderTripInformation}
+        {renderTripInformation()}
       </ImageBackground>
     </TouchableOpacity>
   );

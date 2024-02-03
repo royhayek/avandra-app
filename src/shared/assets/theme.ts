@@ -103,12 +103,14 @@ const customFonts = (theme: string) => ({
   h1: {
     fontSize: scaledFontSize(48),
     lineHeight: scaledFontSize(76.8),
-    fontFamily: 'urbanist-bold'
+    fontFamily: 'urbanist-bold',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h2: {
     fontSize: scaledFontSize(40),
     lineHeight: scaledFontSize(64),
-    fontFamily: 'urbanist-bold'
+    fontFamily: 'urbanist-bold',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h3: {
     fontSize: scaledFontSize(32),
@@ -119,17 +121,20 @@ const customFonts = (theme: string) => ({
   h4: {
     fontSize: scaledFontSize(24),
     lineHeight: scaledFontSize(38.4),
-    fontFamily: 'urbanist-bold'
+    fontFamily: 'urbanist-bold',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h5: {
     fontSize: scaledFontSize(20),
     lineHeight: scaledFontSize(32),
-    fontFamily: 'urbanist-bold'
+    fontFamily: 'urbanist-bold',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h6: {
     fontSize: scaledFontSize(18),
     lineHeight: scaledFontSize(28.8),
-    fontFamily: 'urbanist-semibold'
+    fontFamily: 'urbanist-semibold',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   xLarge: {
     fontSize: scaledFontSize(18),
@@ -140,22 +145,26 @@ const customFonts = (theme: string) => ({
   large: {
     fontSize: scaledFontSize(16),
     lineHeight: scaledFontSize(25.6),
-    fontFamily: 'urbanist-bold'
+    fontFamily: 'urbanist-bold',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   medium: {
     fontSize: scaledFontSize(14),
     lineHeight: scaledFontSize(22.4),
-    fontFamily: 'urbanist-regular'
+    fontFamily: 'urbanist-regular',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   small: {
     fontSize: scaledFontSize(12),
     lineHeight: scaledFontSize(19.2),
-    fontFamily: 'urbanist-regular'
+    fontFamily: 'urbanist-regular',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   xSmall: {
     fontSize: scaledFontSize(10),
     lineHeight: scaledFontSize(16),
-    fontFamily: 'urbanist-regular'
+    fontFamily: 'urbanist-regular',
+    color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   }
 });
 

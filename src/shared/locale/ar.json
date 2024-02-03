@@ -11,7 +11,11 @@
       "please_wait": "...يرجى الانتظار",
       "save": "حفظ",
       "ok": "نعم",
-      "yes_continue": "نعم، استمر"
+      "yes_continue": "نعم، استمر",
+      "save_changes": "حفظ التغييرات",
+      "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
+      "regenerating_your_trip": "جارٍ إعادة إنشاء رحلتك... ({{progress}}%)",
+      "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك",
     },
     "onBoarding": {
       "walkthrough_title_1": "اكتشف مغامرتك المقبلة",
@@ -50,7 +54,8 @@
       "app_appearance": "مظهر التطبيق",
       "personal_info": "المعلومات الشخصية",
       "help_and_support": "المساعدة والدعم",
-      "account_and_security": "الحساب والأمن"
+      "account_and_security": "الحساب والأمن",
+      "edit_itinerary": "تعديل مسار الرحلة"
     },
     "home": {
       "where_to_go": "إلى أين تريد الذهاب؟",
@@ -121,8 +126,6 @@
         "interest": "{{number}} اهتمامات",
         "budget": "الميزانية",
         "build_my_trip": "بناء رحلتي",
-        "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
-        "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك",
         "to": "الى"
       }
     },

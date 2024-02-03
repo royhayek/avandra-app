@@ -12,7 +12,11 @@
       "save": "Save",
       "cancel": "Cancel",
       "ok": "Ok",
-      "yes_continue": "Yes, Continue"
+      "yes_continue": "Yes, Continue",
+      "save_changes": "Save Changes",
+      "generating_your_trip": "Generating your trip... ({{progress}}%)",
+      "regenerating_your_trip": "Regenerating your trip... ({{progress}}%)",
+      "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
     },
     "onBoarding": {
       "walkthrough_title_1": "Discover Your Next Adventure",
@@ -50,7 +54,8 @@
       "app_appearance": "App Appearance",
       "personal_info": "Personal Info",
       "help_and_support": "Help & Support",
-      "account_and_security": "Account & Security"
+      "account_and_security": "Account & Security",
+      "edit_itinerary": "Edit Itinerary"
     },
     "home": {
       "where_to_go": "Where do you want to go?",
@@ -63,15 +68,15 @@
       "step1": {
         "who_is_going": "Who is going? 🧳",
         "lets_start": "Let's get started by selecting who you're traveling with.",
-        "only_me": "Only Me🚶",
+        "only_me": "Only Me",
         "only_me_desc": "Traveling solo, just you.",
-        "a_couple": "A Couple ❤️",
+        "a_couple": "A Couple",
         "a_couple_desc": "A romantic getaway for two.",
-        "family": "Family 👨‍👩‍👧‍👦",
+        "family": "Family",
         "family_desc": "Quality time with your loved ones.",
-        "friends": "Friends 🌟",
+        "friends": "Friends",
         "friends_desc": "Adventure with your closest pals.",
-        "work": "Work 💼",
+        "work": "Work",
         "work_desc": "Business or corporate travel."
       },
       "step2": {
@@ -101,15 +106,15 @@
         "interest_desc": "Select your travel preferences to customize your trip plan."
       },
       "step4": {
-        "budget_title": "Set your trip budget 💰",
+        "budget_title": "Set your trip budget",
         "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort.",
-        "cheap": "Cheap 💰",
+        "cheap": "Cheap",
         "cheap_desc": "Budget-friendly, economical travel.",
-        "balanced": "Balanced 💼",
+        "balanced": "Balanced",
         "balanced_desc": "Moderate spending for a balanced trip.",
-        "luxury": "Luxury 💎",
+        "luxury": "Luxury",
         "luxury_desc": "High-end, indulgent experiences.",
-        "flexible": "Flexible 💫",
+        "flexible": "Flexible",
         "flexible_desc": "No budget restrictions."
       },
       "step5": {
@@ -121,8 +126,6 @@
         "interest": "{{number}} interests",
         "budget": "Budget",
         "build_my_trip": "Build My Trip",
-        "generating_your_trip": "Generating your trip... ({{progress}}%)",
-        "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences",
         "to": "to"
       }
     },
@@ -215,6 +218,7 @@
       "leave": "Leave",
       "go_back": "Go Back",
       "delete_your_trips": "Delete your trips?"
-    }
+    },
+    "trip_modifcation": {}
   }
 }

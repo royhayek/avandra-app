@@ -1,0 +1,71 @@
+// Packages
+import { Dimensions, StyleSheet } from 'react-native';
+import { ms, mvs } from 'react-native-size-matters';
+
+// Interfaces
+import { AppTheme } from '@shared/assets/theme';
+
+const windowWidth = Dimensions.get('window').width;
+
+export default (theme: AppTheme) =>
+  StyleSheet.create({
+    scrollView: {
+      flex: 1
+    },
+    curvedContainer: {
+      overflow: 'hidden',
+      alignSelf: 'center',
+      width: windowWidth,
+      height: windowWidth / 1.15
+    },
+    shareButton: {
+      position: 'absolute',
+      top: 40,
+      end: 50,
+      backgroundColor: theme.colors.background
+    },
+    image: {
+      width: windowWidth,
+      height: windowWidth
+    },
+    content: {
+      flex: 1,
+      borderRadius: 40,
+      paddingTop: mvs(16),
+      paddingBottom: mvs(50)
+    },
+    paddedContent: {
+      paddingHorizontal: ms(24)
+    },
+    countryContainer: {
+      gap: ms(10),
+      alignItems: 'center',
+      flexDirection: 'row'
+    },
+    country: {
+      fontFamily: 'urbanist-medium',
+      color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
+    },
+    payload: {
+      marginTop: mvs(10),
+      fontFamily: 'urbanist-medium',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[700]
+    },
+    description: {
+      marginTop: mvs(16)
+    },
+    map: {
+      width: '100%',
+      height: mvs(180),
+      marginTop: mvs(24),
+      borderRadius: theme.roundness
+    },
+    fab: {
+      opacity: 0.9,
+      right: ms(24),
+      bottom: mvs(30),
+      borderRadius: ms(100),
+      position: 'absolute',
+      backgroundColor: theme.colors.primary
+    }
+  });

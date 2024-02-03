@@ -17,7 +17,7 @@ import makeStyles from './styles';
 import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
-import { destinationsActions } from '@redux/destinations/slice';
+import { plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 interface DestinationDetailsScreenProps {}
@@ -38,9 +38,9 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   // Callbacks
   const handleStartTripPress = useCallback(() => {
-    dispatch(destinationsActions.setPayload({ destination: { id, name, image, country } }));
+    dispatch(plannerActions.setPayload({ destination: { id, name, image, country } }));
     navigation.navigate('Planner');
-  }, [dispatch, navigation]);
+  }, [country, dispatch, id, image, name, navigation]);
 
   const handleGalleryImagePress = useCallback(() => {}, []);
 

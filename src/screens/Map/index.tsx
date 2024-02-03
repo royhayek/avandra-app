@@ -165,6 +165,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
             )
         )}
       </MapView>
+
       <BackButton style={styles.backBtn} />
 
       <Animated.ScrollView

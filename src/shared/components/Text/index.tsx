@@ -1,7 +1,6 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
-import { ms } from 'react-native-size-matters';
 
 // Components
 import { Text as RNPText, TextProps as RNPTextProps } from 'react-native-paper';
@@ -11,22 +10,23 @@ import makeStyles from './styles';
 
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
-import i18n from '@app/i18n';
 
 // Interfaces
+type TextVariantsProps = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'xLarge' | 'large' | 'medium' | 'small' | 'xSmall';
 interface TextProps extends RNPTextProps<string> {
   children: string;
+  variant?: TextVariantsProps;
 }
 
 // Component
-const Text: React.FC<TextProps> = ({ children, style, ...props }) => {
+const Text: React.FC<TextProps> = ({ variant, children, style, ...props }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
   return (
-    <RNPText style={[styles.text, style]} {...props}>
+    <RNPText variant={variant} style={[styles.text, style]} {...props}>
       {children}
     </RNPText>
   );

@@ -48,7 +48,7 @@ const ListHeader = () => {
             </View>
           ))}
         </View>
-        <Text variant="labelLarge" style={styles.destinationInfo}>
+        <Text variant="large" style={styles.destinationInfo}>
           {summary}
         </Text>
 

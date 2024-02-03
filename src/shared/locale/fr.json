@@ -11,7 +11,11 @@
       "please_wait": "Veuillez patienter...",
       "save": "Sauvegarder",
       "ok": "D'accord",
-      "yes_continue": "Oui, continue"
+      "yes_continue": "Oui, continue",
+      "save_changes": "Sauvegarder les modifications",
+      "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
+      "regenerating_your_trip": "Régénération de votre voyage... ({{progress}}%)",
+      "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
     },
     "onBoarding": {
       "walkthrough_title_1": "Découvrez votre prochaine aventure",
@@ -49,7 +53,8 @@
       "app_appearance": "Apparence de l'application",
       "personal_info": "Informations personnelles",
       "help_and_support": "Aide & assistance",
-      "account_and_security": "Compte & Sécurité"
+      "account_and_security": "Compte & Sécurité",
+      "edit_itinerary": "Modifier l'itinéraire"
     },
     "home": {
       "where_to_go": "Où voulez vous aller?",
@@ -120,8 +125,6 @@
         "interest": "{{number}} centres d'intérêt",
         "budget": "Budget",
         "build_my_trip": "Construire mon voyage",
-        "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
-        "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences",
         "to": "à"
       }
     },

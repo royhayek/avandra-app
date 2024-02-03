@@ -51,3 +51,26 @@ export { default as CalendarIcon } from './CalendarIcon';
 export { default as MoneyBagIcon } from './MoneyBagIcon';
 
 export { default as EditIcon } from './EditIcon';
+
+// Itinerary
+export { default as RestaurantIcon } from './RestaurantIcon';
+
+export { default as LandmarkIcon } from './LandmarkIcon';
+
+export { default as NavigationIcon } from './NavigationIcon';
+
+export { default as CarIcon } from './CarIcon';
+
+export { default as TrainIcon } from './TrainIcon';
+
+export { default as WalkIcon } from './WalkIcon';
+
+export { default as PlaneIcon } from './PlaneIcon';
+
+export { default as TimeIcon } from './TimeIcon';
+
+export { default as DollarOutlineIcon } from './DollarOutlineIcon';
+
+export { default as DeleteIcon } from './DeleteIcon';
+
+export { default as DragIcon } from './DragIcon';

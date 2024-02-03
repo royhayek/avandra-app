@@ -15,13 +15,12 @@ import { useAppTheme } from '@shared/assets/theme';
 import { StyleProp, ViewStyle } from 'react-native';
 
 interface BackButtonProps extends Omit<IconButtonProps, 'icon'> {
-  title?: string;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
 // Component
-const BackButton: React.FC<BackButtonProps> = ({ style, ...props }) => {
+const BackButton: React.FC<BackButtonProps> = ({ style, onPressOut, ...props }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -32,7 +31,7 @@ const BackButton: React.FC<BackButtonProps> = ({ style, ...props }) => {
     <IconButton
       size={ms(18)}
       style={[styles.container, style]}
-      onPressOut={() => navigation.goBack()}
+      onPressOut={_.isFunction(onPressOut) ? onPressOut : () => navigation.goBack()}
       // onPress={() => navigation.goBack()}
       icon={() => (
         <LeftChevron
@@ -46,7 +45,6 @@ const BackButton: React.FC<BackButtonProps> = ({ style, ...props }) => {
 };
 
 BackButton.defaultProps = {
-  title: 'Submit',
   onPress: () => null
 };
 

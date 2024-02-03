@@ -1,7 +1,5 @@
 // Packages
-import { combineReducers } from 'redux';
 import { persistCombineReducers, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage/session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Slices
@@ -9,6 +7,7 @@ import appReducer from './app/slice';
 import authReducer from './auth/slice';
 import userReducer from './user/slice';
 import placesReducer from './places/slice';
+import plannerReducer from './planner/slice';
 import itineraryReducer from './itinerary/slice';
 import snackbarSliceReducer from './snackbar/slice';
 import destinationsReducer from './destinations/slice';
@@ -36,8 +35,9 @@ export default persistCombineReducers(persistStorageConfig, {
   app: persistReducer(appPersistConfig, appReducer),
   auth: persistReducer(persistSessionConfig, authReducer),
   user: userReducer,
-  itinerary: itineraryReducer,
-  destinations: destinationsReducer,
   places: placesReducer,
-  snackbar: snackbarSliceReducer
+  planner: plannerReducer,
+  itinerary: itineraryReducer,
+  snackbar: snackbarSliceReducer,
+  destinations: destinationsReducer
 });

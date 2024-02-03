@@ -36,7 +36,9 @@ const PartnersList: React.FC<PartnersListProps> = ({ transKey, list, value, setV
     return (
       <TouchableOpacity onPress={() => setValue(item.key)} style={[styles.button, isActive && styles.activeButton]}>
         <View>
-          <Text variant="h5">{_t(`${transKey}.${item.title}`)}</Text>
+          <Text variant="h5">
+            {_t(`${transKey}.${item.title}`)} {item.icon}
+          </Text>
           <Text variant="medium" style={styles.description}>
             {_t(`${transKey}.${item.desc}`)}
           </Text>

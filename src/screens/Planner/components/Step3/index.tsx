@@ -13,7 +13,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { INTEREST_LIST } from './data';
 import { useAppTheme } from '@shared/assets/theme';
-import { destinationsActions, selectDestinations } from '@redux/destinations/slice';
+import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -24,21 +24,20 @@ const _t = (key: string, options?: TranslateOptions) => t(`planner.step3.${key}`
 const Step3 = () => {
   // Redux
   const dispatch = useDispatch();
-  const destinations = useSelector(selectDestinations);
+
+  const plannerPayload = useSelector(getPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const { payload } = destinations;
-
   // Callbacks
   const handleInterestPress = useCallback(
     (interest) => {
-      const interests = _.xor(payload?.interests, [interest]);
-      dispatch(destinationsActions.setPayload({ interests: _.map(interests) }));
+      const interests = _.xor(plannerPayload?.interests, [interest]);
+      dispatch(plannerActions.setPayload({ interests: _.map(interests) }));
     },
-    [dispatch, payload?.interests]
+    [dispatch, plannerPayload?.interests]
   );
 
   // Renderers
@@ -49,7 +48,7 @@ const Step3 = () => {
       </View>
 
       <View style={styles.interests}>
-        <InterestsList data={INTEREST_LIST} value={payload?.interests} setValue={handleInterestPress} />
+        <InterestsList data={INTEREST_LIST} value={plannerPayload?.interests} setValue={handleInterestPress} />
       </View>
     </>
   );

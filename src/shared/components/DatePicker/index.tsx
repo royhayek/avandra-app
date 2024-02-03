@@ -2,7 +2,7 @@
 import XDate from 'xdate';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
 import { Calendar } from 'react-native-calendars';
@@ -10,11 +10,12 @@ import { Calendar } from 'react-native-calendars';
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { DateData, MarkedDates } from 'react-native-calendars/src/types';
 
 // Interfaces
+import { DateData, MarkedDates } from 'react-native-calendars/src/types';
+
 interface DatePickerProps {
-  onSuccess: (startDate: string, endDate: string) => void;
+  onSuccess: (state: object, startDate: string, endDate: string) => void;
 }
 
 interface StateProps {
@@ -26,22 +27,24 @@ interface StateProps {
 }
 
 // Component
-const DatePicker: React.FC<DatePickerProps> = ({ onSuccess }) => {
+const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [state, setState] = useState<StateProps>({
-    fromDate: '',
-    holidayList: {},
-    markedDates: {},
-    isToDatePicked: false,
-    isFromDatePicked: false
-  });
+  const [state, setState] = useState<StateProps>(
+    defaultValue ?? {
+      fromDate: '',
+      holidayList: {},
+      markedDates: {},
+      isToDatePicked: false,
+      isFromDatePicked: false
+    }
+  );
 
   // Callbacks
   const setupMarkedDates = useCallback(
-    (fromDate: string, toDate: string, markedDates: MarkedDates) => {
+    (fromDate: string | undefined, toDate: string, markedDates: MarkedDates) => {
       const mFromDate = new XDate(fromDate);
       const mToDate = new XDate(toDate);
 
@@ -140,27 +143,22 @@ const DatePicker: React.FC<DatePickerProps> = ({ onSuccess }) => {
         const [mMarkedDates, range] = setupMarkedDates(state.fromDate, day.dateString, markedDates);
 
         if ((range as number) >= 0) {
-          setState({
+          const updatedState = {
+            ...state,
             isFromDatePicked: true,
             isToDatePicked: true,
             markedDates: mMarkedDates as MarkedDates
-          });
+          };
 
-          onSuccess(state.fromDate, day.dateString);
+          setState(updatedState);
+
+          onSuccess(updatedState, state.fromDate, day.dateString);
         } else {
           setupStartMarker(day);
         }
       }
     },
-    [
-      onSuccess,
-      setupMarkedDates,
-      setupStartMarker,
-      state.fromDate,
-      state.markedDates,
-      state.isToDatePicked,
-      state.isFromDatePicked
-    ]
+    [state, onSuccess, setupMarkedDates, setupStartMarker]
   );
 
   // Renderers

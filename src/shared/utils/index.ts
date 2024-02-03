@@ -4,6 +4,8 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { Dimensions, Platform } from 'react-native';
+
+// Utilities
 import { store } from '@app/store';
 import { snackbarActions } from '@redux/snackbar/slice';
 
@@ -82,12 +84,6 @@ export const registerForPushNotificationsAsync = async () => {
   }
 };
 
-export const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-  const paddingToBottom = 20;
-
-  return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
-};
-
 export const hasArabicCharacters = (text: string) => {
   const arregex =
     /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufbc1]|[\ufbd3-\ufd3f]|[\ufd50-\ufd8f]|[\ufd92-\ufdc7]|[\ufe70-\ufefc]|[\uFDF0-\uFDFD]/;
@@ -95,51 +91,6 @@ export const hasArabicCharacters = (text: string) => {
   return arregex.test(text);
 };
 
-export const getMonths = (startDate, endDate) => {
-  const betweenMonths = [];
+export const formatAmount = (num: number) => (num ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0);
 
-  if (startDate < endDate) {
-    const date = moment(startDate).startOf('month');
-
-    while (date < moment(endDate).endOf('month')) {
-      betweenMonths.push(moment(date).format('MMMM'));
-      date.add(1, 'month');
-    }
-  }
-
-  return betweenMonths.join(', ');
-};
-
-export const parseAIResponse = (response) => {
-  try {
-    let modifiedResponse = response;
-
-    if (response.includes('=')) {
-      modifiedResponse = response.split('=')[1].trim();
-    }
-
-    if (response.includes(';')) {
-      modifiedResponse = modifiedResponse.replace(';', '');
-    }
-
-    if (response.includes('JSON.stringify(')) {
-      modifiedResponse = modifiedResponse.replace('JSON.stringify(', '');
-    }
-
-    if (response.includes('})')) {
-      modifiedResponse = modifiedResponse.replace('})', '}');
-    }
-
-    if (response.includes('`')) {
-      modifiedResponse = modifiedResponse.replace('`', '}');
-    }
-
-    return JSON.parse(modifiedResponse);
-  } catch (error) {
-    console.debug('[parseAIResponse] :: error ', error);
-  }
-};
-
-export const formatAmount = (num) => {
-  return num ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0;
-};
+export const formatDate = (date: string, format = 'MMMM DD, YYYY') => moment(date).format(format);

@@ -10,15 +10,15 @@ import StepHeader from '../StepHeader';
 import MonthPicker from './MonthPicker';
 import { Text } from 'react-native-paper';
 import { ScrollView } from 'react-native';
-import DatePicker from '@shared/components/DatePicker';
 import ToggleButtons from '@shared/components/ToggleButtons';
+import DatePicker from '@shared/components/DatePicker';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
-import { destinationsActions, selectDestinations } from '@redux/destinations/slice';
+import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`, options);
@@ -27,38 +27,36 @@ const Step2 = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const destinations = useSelector(selectDestinations);
+  const plannerPayload = useSelector(getPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const currentMonth = moment().format('MMMM');
-
-  const [noOfDays, setNoOfDays] = useState<number>(4);
   const [activeButton, setActiveButton] = useState<string>('date');
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-
-  const { fromDate, toDate } = destinations?.payload;
 
   // Callbacks
   const formatMonthDay = useCallback((date: string) => moment(date, 'YYYY-MM-DD').format('MM/DD'), []);
 
-  const handleDatePickerSuccess = useCallback(
-    (start: string, end: string) => {
-      const diffDays = moment(end).diff(moment(start), 'days') + 1;
+  const setNoOfDays = useCallback((days) => dispatch(plannerActions.setPayload({ noOfDays: days })), [dispatch]);
 
+  const setSelectedMonth = useCallback(
+    (month) => dispatch(plannerActions.setPayload({ selectedMonth: month })),
+    [dispatch]
+  );
+
+  const handleDatePickerSuccess = useCallback(
+    (state: object, start: string | undefined, end: string) => {
       dispatch(
-        destinationsActions.setPayload({
+        plannerActions.setPayload({
           toDate: end,
-          selectedMonth,
           fromDate: start,
-          noOfDays: diffDays,
-          periodType: activeButton
+          periodType: activeButton,
+          pickerState: state
         })
       );
     },
-    [activeButton, selectedMonth, dispatch]
+    [dispatch, activeButton]
   );
 
   // Renderer Vars
@@ -76,7 +74,7 @@ const Step2 = () => {
             <Text variant="large" style={styles.noOfDays}>
               {_t('how_many_days')}
             </Text>
-            <DaysPicker value={noOfDays} setValue={setNoOfDays} />
+            <DaysPicker value={plannerPayload?.noOfDays ?? 4} setValue={setNoOfDays} />
             <Text variant="medium" style={styles.maxDays}>
               {_t('maximum_days')}
             </Text>
@@ -86,30 +84,35 @@ const Step2 = () => {
                 ({_t('optional')})
               </Text>
             </Text>
-            <MonthPicker value={selectedMonth} setValue={setSelectedMonth} />
+            <MonthPicker value={plannerPayload?.selectedMonth ?? moment().format('MMMM')} setValue={setSelectedMonth} />
           </>
         );
 
       default:
         return (
           <>
-            <DateInput defaultValue={fromDate && toDate && `${formatMonthDay(fromDate)} - ${formatMonthDay(toDate)}`} />
-            <DatePicker onSuccess={handleDatePickerSuccess} />
+            <DateInput
+              defaultValue={
+                plannerPayload?.fromDate &&
+                plannerPayload?.toDate &&
+                `${formatMonthDay(plannerPayload?.fromDate)} - ${formatMonthDay(plannerPayload?.toDate)}`
+              }
+            />
+            <DatePicker defaultValue={plannerPayload?.pickerState} onSuccess={handleDatePickerSuccess} />
           </>
         );
     }
   }, [
-    handleDatePickerSuccess,
-    theme.colors.secondary,
-    styles.whatMonth,
-    styles.noOfDays,
-    styles.maxDays,
-    formatMonthDay,
-    selectedMonth,
+    setNoOfDays,
     activeButton,
-    noOfDays,
-    fromDate,
-    toDate
+    plannerPayload,
+    formatMonthDay,
+    styles.maxDays,
+    styles.noOfDays,
+    styles.whatMonth,
+    setSelectedMonth,
+    theme.colors.secondary,
+    handleDatePickerSuccess
   ]);
 
   return (

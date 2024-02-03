@@ -33,12 +33,12 @@ export default (theme: AppTheme) =>
 
 export const markdownStyles = (theme: AppTheme, isRTL?: boolean): MarkedStyles => ({
   text: {
-    ...theme.fonts.labelLarge,
+    ...theme.fonts.large,
     direction: isRTL ? 'rtl' : 'ltr',
     color: theme.dark ? theme.colors.white : theme.colors.black
   },
   blockquote: {
-    ...theme.fonts.labelLarge,
+    ...theme.fonts.large,
     direction: isRTL ? 'rtl' : 'ltr'
     // color: theme.dark ? theme.colors.white : theme.colors.black
   },
@@ -51,18 +51,18 @@ export const markdownStyles = (theme: AppTheme, isRTL?: boolean): MarkedStyles =
     color: theme.dark ? theme.colors.white : theme.colors.black
   },
   codespan: {
-    ...theme.fonts.labelLarge,
+    ...theme.fonts.large,
     fontWeight: 'bold',
     direction: isRTL ? 'rtl' : 'ltr',
     color: theme.dark ? theme.colors.white : theme.colors.black,
     backgroundColor: theme.dark ? theme.colors.secondaryContainer : 'transparent'
   },
   link: {
-    ...theme.fonts.labelLarge,
+    ...theme.fonts.large,
     direction: isRTL ? 'rtl' : 'ltr'
   },
   code: {
-    ...theme.fonts.labelLarge,
+    ...theme.fonts.large,
     flex: 1,
     padding: ms(16),
     borderRadius: ms(8),
@@ -78,7 +78,7 @@ export const markdownStyles = (theme: AppTheme, isRTL?: boolean): MarkedStyles =
     direction: isRTL ? 'rtl' : 'ltr'
   },
   li: {
-    ...theme.fonts.labelLarge,
+    ...theme.fonts.large,
     flex: 1,
     marginBottom: mvs(10),
     color: theme.colors.primary,

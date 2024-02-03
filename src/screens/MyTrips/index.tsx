@@ -16,7 +16,6 @@ import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
 import { savedTrips as savedTripsData } from './data';
-import { deleteAllConversations, getConversations } from '@shared/services/localdb';
 
 // Interfaces
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
@@ -40,11 +39,11 @@ const HistoryScreen = ({ navigation }) => {
   const refreshSavedTrips = useCallback((isRefreshing?: boolean) => {
     !isRefreshing && setLoading(true);
 
-    getConversations().then(() => {
-      setSavedTrips(savedTripsData);
-      setRefreshing(false);
-      !isRefreshing && setLoading(false);
-    });
+    // getConversations().then(() => {
+    //   setSavedTrips(savedTripsData);
+    //   setRefreshing(false);
+    //   !isRefreshing && setLoading(false);
+    // });
   }, []);
 
   const handleSheetClose = useCallback(() => bottomSheetRef.current?.close(), []);
@@ -52,7 +51,7 @@ const HistoryScreen = ({ navigation }) => {
   const handleDeletePress = useCallback(() => bottomSheetRef.current?.expand(), []);
 
   const handleDeleteAllHistory = useCallback(async () => {
-    await deleteAllConversations().then(() => console.debug('History Deleted Successfully'));
+    // await deleteAllConversations().then(() => console.debug('History Deleted Successfully'));
     refreshSavedTrips(false);
     handleSheetClose();
   }, [handleSheetClose, refreshSavedTrips]);
@@ -86,8 +85,8 @@ const HistoryScreen = ({ navigation }) => {
       labelStyle: { ...theme.fonts.large },
       uncheckedColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500],
       style: {
-        borderRadius: ms(12),
         borderWidth: 0.5,
+        borderRadius: ms(12),
         borderColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500]
       }
     }),
@@ -115,8 +114,8 @@ const HistoryScreen = ({ navigation }) => {
     () => (
       <RefreshControl
         refreshing={refreshing}
-        tintColor={theme.dark ? theme.colors.white : theme.colors.black}
         onRefresh={() => refreshSavedTrips(true)}
+        tintColor={theme.dark ? theme.colors.white : theme.colors.black}
       />
     ),
     [refreshSavedTrips, refreshing, theme.colors.black, theme.colors.white, theme.dark]
@@ -141,57 +140,48 @@ const HistoryScreen = ({ navigation }) => {
     [savedTrips, refreshSavedTrips, selectedTab, segmentedButtons, styles.segmentedButtons]
   );
 
-  const renderList = useMemo(
-    () => (
-      <FlatList
-        data={savedTrips}
-        refreshing={refreshing}
-        keyExtractor={(item) => item.id}
-        refreshControl={renderRefreshControl}
-        ListHeaderComponent={renderActiveTrip}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item, index }) => <HistoryCard small item={item} index={index} refresh={refreshSavedTrips} />}
-      />
-    ),
-    [savedTrips, refreshing, renderActiveTrip, renderRefreshControl, styles.listContent, refreshSavedTrips]
+  const renderList = () => (
+    <FlatList
+      data={savedTrips}
+      refreshing={refreshing}
+      keyExtractor={(item) => item.id}
+      refreshControl={renderRefreshControl}
+      ListHeaderComponent={renderActiveTrip}
+      contentContainerStyle={styles.listContent}
+      renderItem={({ item, index }) => <HistoryCard small item={item} index={index} refresh={refreshSavedTrips} />}
+    />
   );
 
-  const renderLoadingOrEmpty = useMemo(
-    () => (
-      <View style={styles.emptyContainer}>
-        {loading ? (
-          <ActivityIndicator />
-        ) : (
-          <>
-            <FastImage source={require('../../../assets/empty-history.png')} style={styles.emptyImage} />
-            <Text variant="bodyMedium" style={styles.emptyText}>
-              {_t('no_history_found')}
-            </Text>
-          </>
-        )}
-      </View>
-    ),
-    [loading, styles.emptyContainer, styles.emptyImage, styles.emptyText]
+  const renderLoadingOrEmpty = () => (
+    <View style={styles.emptyContainer}>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          <FastImage source={require('../../../assets/empty-history.png')} style={styles.emptyImage} />
+          <Text variant="medium" style={styles.emptyText}>
+            {_t('no_history_found')}
+          </Text>
+        </>
+      )}
+    </View>
   );
 
-  const renderConfBottomSheet = useMemo(
-    () => (
-      <CustomBottomSheet
-        title={_t('delete_your_trips')}
-        sheetRef={bottomSheetRef}
-        onClose={handleSheetClose}
-        primaryBtnProps={{ title: t('history.delete'), onPress: handleDeleteAllHistory }}
-        secondaryBtnProps={{ title: t('history.cancel'), onPress: handleSheetClose }}>
-        <Text>test</Text>
-      </CustomBottomSheet>
-    ),
-    [handleDeleteAllHistory, handleSheetClose]
+  const renderConfBottomSheet = () => (
+    <CustomBottomSheet
+      title={_t('delete_your_trips')}
+      sheetRef={bottomSheetRef}
+      onClose={handleSheetClose}
+      primaryBtnProps={{ title: t('history.delete'), onPress: handleDeleteAllHistory }}
+      secondaryBtnProps={{ title: t('history.cancel'), onPress: handleSheetClose }}>
+      <Text variant="large">test</Text>
+    </CustomBottomSheet>
   );
 
   return (
     <View style={styles.container}>
-      {savedTrips?.length > 0 ? renderList : renderLoadingOrEmpty}
-      {renderConfBottomSheet}
+      {savedTrips?.length > 0 ? renderList() : renderLoadingOrEmpty()}
+      {renderConfBottomSheet()}
     </View>
   );
 };

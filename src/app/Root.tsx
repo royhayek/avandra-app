@@ -21,7 +21,6 @@ import { changeLocale } from './i18n';
 import { Firebase } from '@shared/constants';
 import { FIREBASE_DB } from '../../firebaseConfig';
 import NetworkInfo from '@shared/services/NetworkInfo';
-import { createTables } from '@shared/services/localdb';
 import { useAppDispatch, useAppSelector } from './store';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
 import { registerForPushNotificationsAsync } from '@shared/utils';
@@ -78,7 +77,6 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const initData = useCallback(async () => {
     changeLocale(language);
     await getConfiguration();
-    await createTables();
     await initAppPurchases();
   }, [getConfiguration, initAppPurchases, language]);
 

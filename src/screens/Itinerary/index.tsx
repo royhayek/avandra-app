@@ -2,8 +2,8 @@
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
+import { NavigationProp } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
 
 // Components
 import ExitModal from './ExitModal';
@@ -30,8 +30,6 @@ type RootStackParamList = {
   };
 };
 
-type ItineraryScreenRouteProp = RouteProp<RootStackParamList, 'Map'>;
-
 interface ItineraryScreenProps {
   navigation: NavigationProp<RootStackParamList>;
 }
@@ -45,12 +43,12 @@ const ItineraryScreen: React.FC<ItineraryScreenProps> = ({ navigation }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [closeModalVisible, setCloseModalVisible] = useState(false);
-  const [scrollY] = useState(new Animated.Value(0));
   const [expanded, setExpanded] = useState([0]);
+  const [scrollY] = useState(new Animated.Value(0));
+  const [closeModalVisible, setCloseModalVisible] = useState(false);
 
-  const destionationsSelect = useSelector(selectDestinations);
   const placesSelect = useSelector(selectPlaces);
+  const destionationsSelect = useSelector(selectDestinations);
 
   const places = placesSelect?.places || DUMMY_PLACES;
   const destinations = destionationsSelect?.destinations || DUMMY_DESTINATIONS;
@@ -59,8 +57,10 @@ const ItineraryScreen: React.FC<ItineraryScreenProps> = ({ navigation }) => {
   const handleNavigateToMapView = () => {
     const mapDestinations = _.map(destinations.flat(), (i) => {
       const place = _.find(places, { id: i.id });
+
       return { ...i, ...place };
     });
+
     navigation.navigate('Map', { destinations: mapDestinations });
   };
 

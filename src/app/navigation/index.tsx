@@ -19,8 +19,10 @@ import Header from '@shared/components/Header';
 import SettingsScreen from '@screens/Settings';
 import ItineraryScreen from '@screens/Itinerary';
 import OnBoardingScreen from '@screens/OnBoarding';
+import TripDetailsScreen from '@screens/TripDetails';
 import PopularScreen from '@screens/Home/screens/Popular';
 import ArticleDetailsScreen from '@screens/ArticleDetails';
+import TripModificationScreen from '@screens/TripModification';
 import DestinationDetailsScreen from '@screens/DestinationDetails';
 import AppearanceScreen from '@screens/Settings/screens/Appearance';
 import HelpSupportScreen from '@screens/Settings/screens/HelpSupport';
@@ -183,7 +185,13 @@ const RootNavigation = () => {
       <Stack.Screen name="Planner" component={PlannerScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="Popular" component={PopularScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="DestinationDetails" component={DestinationDetailsScreen} options={{ ...screenOptions }} />
-      <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ title: '', ...screenOptions }} />
+      <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ ...screenOptions }} />
+      <Stack.Screen name="TripDetails" component={TripDetailsScreen} options={{ ...screenOptions }} />
+      <Stack.Screen
+        name="TripModification"
+        component={TripModificationScreen}
+        options={{ ...screenOptions, title: _t('edit_itinerary') }}
+      />
       <Stack.Screen name="BillingSubscriptions" component={BillingSubscriptionsScreen} options={{ ...screenOptions }} />
       <Stack.Screen
         name="Appearance"

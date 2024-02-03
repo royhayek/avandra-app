@@ -3,31 +3,35 @@ import _ from 'lodash';
 import React from 'react';
 
 // Components
+import { TouchableOpacity, View } from 'react-native';
 import BackButton from '../Buttons/Back';
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Utilities
 import makeStyles from './styles';
+import ShareButton from '../Buttons/Share';
+import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+interface HeaderProps extends NativeStackHeaderProps {
+  back: boolean;
+  share: boolean;
+  absolute?: boolean;
+}
 
 // Component
-const Header: React.FC<NativeStackHeaderProps> = ({ options, navigation, route, back }) => {
+const Header: React.FC<HeaderProps> = ({ options, navigation, route, back, share, absolute }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  // const leftIconComponent = leftIcon ? <TextInput.Icon icon={() => leftIcon} disabled /> : null;
-  // const rightIconComponent = rightIcon ? <TextInput.Icon icon={() => rightIcon} disabled /> : null;
-
   // Renderers
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView style={[styles.safeAreaView, absolute && styles.absoluteView]}>
       <View style={styles.container}>
         {options?.title ? (
           <Text variant="h4" style={styles.appName}>
@@ -38,12 +42,12 @@ const Header: React.FC<NativeStackHeaderProps> = ({ options, navigation, route, 
         ) : null}
 
         {back ? (
-          <BackButton />
+          <BackButton onPressOut={options?.onBackPress} />
         ) : (
           <FastImage source={require('@shared/assets/icons/app-icon.png')} style={{ width: 28, height: 28 }} />
         )}
 
-        {options?.headerRight && options?.headerRight()}
+        {options?.headerRight ? options?.headerRight() : share ? <ShareButton /> : null}
       </View>
     </SafeAreaView>
   );
