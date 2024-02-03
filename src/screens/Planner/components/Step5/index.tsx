@@ -157,7 +157,7 @@ const Step5 = ({ setActive, generating }) => {
     <>
       {renderContent()}
 
-      <GenerationModal generating={generating} />
+      <GenerationModal visible={generating} />
     </>
   );
 };

@@ -10,9 +10,11 @@
       "terms": "الشروط والأحكام",
       "please_wait": "...يرجى الانتظار",
       "save": "حفظ",
+      "cancel": "إلغاء",
       "ok": "نعم",
       "yes_continue": "نعم، استمر",
       "save_changes": "حفظ التغييرات",
+      "yes_delete": "نعم، حذف",
       "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
       "regenerating_your_trip": "جارٍ إعادة إنشاء رحلتك... ({{progress}}%)",
       "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك",
@@ -130,10 +132,6 @@
       }
     },
     "history": {
-      "delete_your_history": "هل أنت متأكد أنك تريد حذف السجل الخاص بك؟",
-      "delete": "حذف",
-      "cancel": "إلغاء",
-      "no_history_found": "لم يتم العثور على محفوظات",
       "my trips": "رحلاتي",
       "days_long": "أيام طويلة",
       "for": ": لـ"

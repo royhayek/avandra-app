@@ -10,9 +10,11 @@
       "terms": "Termes et Conditions",
       "please_wait": "Veuillez patienter...",
       "save": "Sauvegarder",
+      "cancel": "Annuler",
       "ok": "D'accord",
       "yes_continue": "Oui, continue",
       "save_changes": "Sauvegarder les modifications",
+      "delete": "Oui, Supprimer",
       "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
       "regenerating_your_trip": "Régénération de votre voyage... ({{progress}}%)",
       "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
@@ -129,10 +131,6 @@
       }
     },
     "history": {
-      "delete_your_history": "Voulez-vous vraiment supprimer votre historique?",
-      "delete": "Supprimer",
-      "cancel": "Annuler",
-      "no_history_found": "Aucun historique trouvé",
       "my trips": "Mes voyages",
       "days_long": "jours longs",
       "for": "Pour: "

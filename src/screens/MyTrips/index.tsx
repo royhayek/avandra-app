@@ -7,7 +7,6 @@ import { Octicons } from '@expo/vector-icons';
 import FastImage from 'react-native-fast-image';
 import HistoryCard from './components/HistoryCard';
 import { FlatList, RefreshControl, View } from 'react-native';
-import CustomBottomSheet from '@shared/components/BottomSheet';
 import { ActivityIndicator, IconButton, SegmentedButtons, Text } from 'react-native-paper';
 
 // Utilities
@@ -167,23 +166,7 @@ const HistoryScreen = ({ navigation }) => {
     </View>
   );
 
-  const renderConfBottomSheet = () => (
-    <CustomBottomSheet
-      title={_t('delete_your_trips')}
-      sheetRef={bottomSheetRef}
-      onClose={handleSheetClose}
-      primaryBtnProps={{ title: t('history.delete'), onPress: handleDeleteAllHistory }}
-      secondaryBtnProps={{ title: t('history.cancel'), onPress: handleSheetClose }}>
-      <Text variant="large">test</Text>
-    </CustomBottomSheet>
-  );
-
-  return (
-    <View style={styles.container}>
-      {savedTrips?.length > 0 ? renderList() : renderLoadingOrEmpty()}
-      {renderConfBottomSheet()}
-    </View>
-  );
+  return <View style={styles.container}>{savedTrips?.length > 0 ? renderList() : renderLoadingOrEmpty()}</View>;
 };
 
 export default HistoryScreen;

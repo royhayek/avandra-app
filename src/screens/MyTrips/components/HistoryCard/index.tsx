@@ -168,7 +168,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
           }
         />
       </TouchableOpacity>
-      <GenerationModal regenerating={regenerating} />
+
+      <GenerationModal visible={regenerating} regenerating={regenerating} />
     </>
   ) : (
     <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.container}>

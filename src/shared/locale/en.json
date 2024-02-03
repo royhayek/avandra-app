@@ -14,6 +14,7 @@
       "ok": "Ok",
       "yes_continue": "Yes, Continue",
       "save_changes": "Save Changes",
+      "yes_delete": "Yes, Delete",
       "generating_your_trip": "Generating your trip... ({{progress}}%)",
       "regenerating_your_trip": "Regenerating your trip... ({{progress}}%)",
       "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
@@ -130,10 +131,6 @@
       }
     },
     "history": {
-      "delete_your_history": "Are you sure you want to delete your history?",
-      "delete": "Yes, Delete",
-      "cancel": "Cancel",
-      "no_history_found": "No History Found",
       "my_trips": "My Trips",
       "days_long": "days long",
       "for": "For: "
