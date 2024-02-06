@@ -1,12 +1,12 @@
 // Packages
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
 
 // Components
 import { Text } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import { FlatList, View } from 'react-native';
+import PlanListItem from './components/PlanListItem';
 import SuccessUpgrade from './components/SuccessUpgrade';
 
 // Utilities
@@ -17,16 +17,11 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import PlanListItem from './components/PlanListItem';
-
-interface RouteParams {
-  title: string;
-}
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`, options);
 
-const BillingSubscriptionsScreen = () => {
+const SubscriptionsScreen = () => {
   // Redux
   const plans = dummy_subscriptions;
 
@@ -34,17 +29,7 @@ const BillingSubscriptionsScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const route = useRoute();
-  const navigation = useNavigation();
-
-  const { title } = route?.params as RouteParams;
-
   const [isSuccess, setIsSuccess] = useState(false);
-
-  // Effects
-  useEffect(() => {
-    navigation.setOptions({ title });
-  }, [navigation, title]);
 
   // Renderers
   if (_.isEmpty(plans)) {
@@ -78,4 +63,4 @@ const BillingSubscriptionsScreen = () => {
   );
 };
 
-export default BillingSubscriptionsScreen;
+export default SubscriptionsScreen;

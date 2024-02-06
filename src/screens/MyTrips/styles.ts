@@ -11,36 +11,36 @@ export default (theme: AppTheme) =>
       flex: 1,
       backgroundColor: theme.colors.background
     },
+    listContent: {
+      paddingTop: mvs(8),
+      paddingHorizontal: ms(24)
+    },
+    segmentedButtons: {
+      marginBottom: mvs(24),
+      marginHorizontal: ms(24)
+    },
+    // Empty Layout
     emptyContainer: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center'
     },
-    listContent: {
-      paddingTop: mvs(8),
-      paddingHorizontal: ms(24)
-    },
-    modalTitle: {
-      textAlign: 'center',
-      fontWeight: 'bold',
-      marginVertical: mvs(10),
-      marginHorizontal: ms(20)
-    },
-    modalButtons: {
-      gap: ms(20),
-      flexDirection: 'row',
-      justifyContent: 'center'
-    },
     emptyImage: {
       width: ms(100),
-      height: mvs(100),
-      marginBottom: mvs(20)
+      height: mvs(100)
     },
-    emptyText: {
-      fontWeight: 'bold'
+    emptyTitle: {
+      marginTop: mvs(24),
+      fontFamily: 'urbanist-bold'
     },
-    segmentedButtons: {
-      marginBottom: mvs(24),
-      marginHorizontal: ms(24)
+    emptyDesc: {
+      marginTop: mvs(16),
+      textAlign: 'center',
+      marginBottom: mvs(32),
+      marginHorizontal: ms(24),
+      fontFamily: 'urbanist-regular'
+    },
+    searchButton: {
+      paddingHorizontal: 16
     }
   });

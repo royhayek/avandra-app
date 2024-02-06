@@ -43,7 +43,6 @@ const Step1 = () => {
     <View style={styles.container}>
       <StepHeader title={_t('who_is_going')} description={_t('lets_start')} />
       <PartnersList
-        transKey="step1"
         list={PARTNERS_LIST}
         setValue={setTraveler}
         value={plannerPayload?.traveler?.key ?? _.first(PARTNERS_LIST)?.key}

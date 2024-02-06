@@ -8,8 +8,10 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     scrollView: {
-      paddingHorizontal: ms(24),
       paddingBottom: mvs(24)
+    },
+    paddedContent: {
+      paddingHorizontal: ms(24)
     },
     noOfDays: {
       marginTop: mvs(16)

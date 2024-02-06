@@ -10,4 +10,5 @@ const DownChevron = (props) => (
     />
   </Svg>
 );
+
 export default DownChevron;

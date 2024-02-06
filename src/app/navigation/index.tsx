@@ -20,15 +20,17 @@ import SettingsScreen from '@screens/Settings';
 import ItineraryScreen from '@screens/Itinerary';
 import OnBoardingScreen from '@screens/OnBoarding';
 import TripDetailsScreen from '@screens/TripDetails';
+import FaqScreen from '@screens/Settings/screens/Faq';
 import PopularScreen from '@screens/Home/screens/Popular';
 import ArticleDetailsScreen from '@screens/ArticleDetails';
+import Billingscreen from '@screens/Settings/screens/Billing';
 import TripModificationScreen from '@screens/TripModification';
 import DestinationDetailsScreen from '@screens/DestinationDetails';
 import AppearanceScreen from '@screens/Settings/screens/Appearance';
 import HelpSupportScreen from '@screens/Settings/screens/HelpSupport';
 import PersonalInfoScreen from '@screens/Settings/screens/PersonalInfo';
+import SubscriptionsScreen from '@screens/Settings/screens/Subscriptions';
 import AccountSecurityScreen from '@screens/Settings/screens/AccountSecurity';
-import BillingSubscriptionsScreen from '@screens/Settings/screens/BillingSubscriptions';
 
 // Utilities
 import i18n, { t } from '@app/i18n';
@@ -187,12 +189,18 @@ const RootNavigation = () => {
       <Stack.Screen name="DestinationDetails" component={DestinationDetailsScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="TripDetails" component={TripDetailsScreen} options={{ ...screenOptions }} />
+      <Stack.Screen name="Faq" component={FaqScreen} options={{ ...screenOptions, title: _t('faq') }} />
       <Stack.Screen
         name="TripModification"
         component={TripModificationScreen}
         options={{ ...screenOptions, title: _t('edit_itinerary') }}
       />
-      <Stack.Screen name="BillingSubscriptions" component={BillingSubscriptionsScreen} options={{ ...screenOptions }} />
+      <Stack.Screen
+        name="Subscriptions"
+        component={SubscriptionsScreen}
+        options={{ ...screenOptions, title: _t('upgrade_plan') }}
+      />
+      <Stack.Screen name="Billing" component={Billingscreen} options={{ ...screenOptions }} />
       <Stack.Screen
         name="Appearance"
         component={AppearanceScreen}

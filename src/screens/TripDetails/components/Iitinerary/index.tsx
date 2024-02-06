@@ -22,17 +22,22 @@ import {
 } from '@shared/assets/icons';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 
 // Interfaces
+import { TranslateOptions } from 'i18n-js';
+
 interface ItineraryListProps {
   data: ItineraryProps[];
 }
 
 // Component
+const _t = (key: string, options?: TranslateOptions) => t(`trip_details.${key}`, options);
+
 const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
   // Statics
   const theme = useAppTheme();
@@ -88,7 +93,7 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
               <View style={styles.ratingContainer}>
                 <StarRatingDisplay rating={rating} starSize={20} starStyle={{ marginHorizontal: 0 }} />
                 <Text variant="small" style={styles.ratingText}>
-                  ({rating}) {reviews} reviews
+                  ({rating}) {reviews} {_t('reviews')}
                 </Text>
               </View>
 
@@ -111,7 +116,7 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
               <View style={styles.infoRow}>
                 <LocationIcon fill={theme.colors.primary} width={20} transform="scale(0.95)" />
                 <Text variant="large" style={[styles.mediumText, { color: theme.colors.primary }]}>
-                  View on Google Maps
+                  {_t('view_on_map')}
                 </Text>
               </View>
             </View>

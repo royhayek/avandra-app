@@ -9,9 +9,10 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       gap: ms(12),
+      height: mvs(40),
       flexDirection: 'row',
-      marginVertical: mvs(24),
-      paddingStart: mvs(24)
+      paddingStart: mvs(24),
+      marginVertical: mvs(8)
     },
     tab: {
       flex: 1,

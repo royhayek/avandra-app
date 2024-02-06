@@ -50,11 +50,11 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
   // Renders
   const renderDeleteModal = () => (
     <CustomBottomSheet
-      title="Delete this Event?"
+      title={t('trip_modifcation.delete_event')}
       sheetRef={deleteSheetRef}
       titleColor={theme.colors.red}
       onClose={handleDeleteSheetClose}
-      primaryBtnProps={{ title: t('history.delete'), onPress: handleDelete }}
+      primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDelete }}
       secondaryBtnProps={{ title: t('common.cancel'), onPress: handleDeleteSheetClose }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <FastImage source={{ uri: list[0]?.image }} style={styles.image} />

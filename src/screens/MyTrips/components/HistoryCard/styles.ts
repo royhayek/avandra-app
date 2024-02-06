@@ -37,6 +37,13 @@ export default (theme: AppTheme) =>
       flex: 1,
       marginHorizontal: ms(10)
     },
+    flex1: {
+      flex: 1
+    },
+    tripCard: {
+      alignItems: 'center',
+      flexDirection: 'row'
+    },
     deleteBtn: {
       top: 0,
       right: 0,

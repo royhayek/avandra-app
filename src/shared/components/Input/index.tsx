@@ -32,6 +32,7 @@ const Input: React.FC<InputProps> = ({
   rightIcon,
   placeholder,
   value,
+  inputStyle,
   handleChange,
   error,
   ...props
@@ -53,15 +54,15 @@ const Input: React.FC<InputProps> = ({
         value={value}
         numberOfLines={1}
         error={Boolean(error)}
-        style={styles.textInput}
+        left={leftIconComponent}
         placeholder={placeholder}
+        right={rightIconComponent}
         theme={{ roundness: ms(10) }}
-        onChangeText={handleChange(name)}
+        onChangeText={handleChange}
         underlineStyle={styles.underline}
+        style={[styles.textInput, inputStyle]}
         placeholderTextColor={theme.colors.gray[500]}
         contentStyle={{ ...theme.fonts.xLarge, ...styles.contentStyle }}
-        left={leftIconComponent}
-        right={rightIconComponent}
         {...props}
       />
       {error && (

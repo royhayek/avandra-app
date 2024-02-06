@@ -12,6 +12,7 @@ import { TouchableOpacity } from 'react-native';
 import makeStyles from './styles';
 import { publicUrl } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
+import i18n from '@app/i18n';
 
 // Interfaces
 interface PopularListItemProps {
@@ -48,7 +49,7 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
         }}
       />
       <Text numberOfLines={2} variant={isVertical ? 'h5' : 'h6'} style={styles.name}>
-        {item.name}
+        {item.name[i18n.locale] ?? item.name}
       </Text>
       <Text variant={isVertical ? 'large' : 'medium'} style={styles.country}>
         {isDestination ? item.country : item.date}

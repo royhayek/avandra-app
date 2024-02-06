@@ -40,12 +40,7 @@ const Step4 = () => {
   return (
     <View style={styles.container}>
       <StepHeader title={_t('budget_title')} description={_t('budget_desc')} />
-      <PartnersList
-        transKey="step4"
-        list={BUDGET_LIST}
-        value={plannerPayload?.budget?.key ?? BUDGET_LIST[0].key}
-        setValue={setBudget}
-      />
+      <PartnersList list={BUDGET_LIST} value={plannerPayload?.budget?.key ?? BUDGET_LIST[0].key} setValue={setBudget} />
     </View>
   );
 };

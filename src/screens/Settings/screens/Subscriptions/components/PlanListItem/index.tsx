@@ -8,7 +8,7 @@ import { Divider, Text } from 'react-native-paper';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
@@ -48,20 +48,22 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
       {(best || popular) && (
         <View style={styles.badge}>
           <Text variant="large" style={styles.badgeText}>
-            {best ? 'Best Value' : popular ? 'Popular' : ''}
+            {best ? _t('best_value') : popular ? _t('popular') : ''}
           </Text>
         </View>
       )}
 
       <Text variant="h5" style={styles.name}>
-        {name}
+        {name[i18n.locale]}
       </Text>
 
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <Text variant="h2" style={styles.price}>
-          {price === 0 ? 'Free' : `${currency} ${price}`}
+          {price === 0 ? _t('free') : `${currency} ${price}`}
+          <Text variant="h6">
+            {period && !String(period.en).match(/lifetime|free/) ? ` / ${period[i18n.locale]}` : ''}
+          </Text>
         </Text>
-        <Text variant="h6">{period && !String(period).match(/lifetime/) ? ` / ${period}` : ''}</Text>
       </View>
 
       <Divider style={styles.divider} />
@@ -71,7 +73,7 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
           <View style={styles.benefit}>
             <CheckIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
             <Text variant="xLarge" style={styles.benefitText}>
-              {benefit}
+              {benefit[i18n.locale]}
             </Text>
           </View>
         ))}
@@ -81,14 +83,19 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
 
       {_.isEqual(currenctPlanId, _id) ? (
         <Text variant="h6" style={styles.currentPlan}>
-          Your current plan
+          {_t('your_current_plan')}
         </Text>
       ) : (
         <View style={styles.actions}>
           {trial && (
-            <RegularButton variant="secondary" style={styles.button} title="Free Trial" onPress={handleSelectPlan} />
+            <RegularButton
+              variant="secondary"
+              style={styles.button}
+              title={_t('free_trial')}
+              onPress={handleSelectPlan}
+            />
           )}
-          <RegularButton title="Select Plan" onPress={handleSelectPlan} style={styles.button} />
+          <RegularButton title={_t('select_plan')} onPress={handleSelectPlan} style={styles.button} />
         </View>
       )}
     </View>

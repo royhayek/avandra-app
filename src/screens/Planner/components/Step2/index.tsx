@@ -9,7 +9,7 @@ import DaysPicker from './DaysPicker';
 import StepHeader from '../StepHeader';
 import MonthPicker from './MonthPicker';
 import { Text } from 'react-native-paper';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import ToggleButtons from '@shared/components/ToggleButtons';
 import DatePicker from '@shared/components/DatePicker';
 
@@ -38,6 +38,14 @@ const Step2 = () => {
   // Callbacks
   const formatMonthDay = useCallback((date: string) => moment(date, 'YYYY-MM-DD').format('MM/DD'), []);
 
+  const handleActiveButton = useCallback(
+    (active: string) => {
+      setActiveButton(active);
+      dispatch(plannerActions.setPayload({ periodType: active }));
+    },
+    [dispatch]
+  );
+
   const setNoOfDays = useCallback((days) => dispatch(plannerActions.setPayload({ noOfDays: days })), [dispatch]);
 
   const setSelectedMonth = useCallback(
@@ -51,8 +59,8 @@ const Step2 = () => {
         plannerActions.setPayload({
           toDate: end,
           fromDate: start,
-          periodType: activeButton,
-          pickerState: state
+          pickerState: state,
+          periodType: activeButton
         })
       );
     },
@@ -71,26 +79,31 @@ const Step2 = () => {
       case 'days':
         return (
           <>
-            <Text variant="large" style={styles.noOfDays}>
-              {_t('how_many_days')}
-            </Text>
-            <DaysPicker value={plannerPayload?.noOfDays ?? 4} setValue={setNoOfDays} />
-            <Text variant="medium" style={styles.maxDays}>
-              {_t('maximum_days')}
-            </Text>
-            <Text variant="large" style={styles.whatMonth}>
-              {_t('during_what_month')}{' '}
-              <Text variant="large" style={{ color: theme.colors.secondary }}>
-                ({_t('optional')})
+            <View style={styles.paddedContent}>
+              <Text variant="large" style={styles.noOfDays}>
+                {_t('how_many_days')}
               </Text>
-            </Text>
-            <MonthPicker value={plannerPayload?.selectedMonth ?? moment().format('MMMM')} setValue={setSelectedMonth} />
+              <DaysPicker value={plannerPayload?.noOfDays ?? 4} setValue={setNoOfDays} />
+              <Text variant="medium" style={styles.maxDays}>
+                {_t('maximum_days')}
+              </Text>
+              <Text variant="large" style={styles.whatMonth}>
+                {_t('during_what_month')}{' '}
+                <Text variant="large" style={{ color: theme.colors.secondary }}>
+                  ({_t('optional')})
+                </Text>
+              </Text>
+            </View>
+            <MonthPicker
+              value={plannerPayload?.selectedMonth ?? _t(String(moment().format('MMMM')).toLocaleLowerCase())}
+              setValue={setSelectedMonth}
+            />
           </>
         );
 
       default:
         return (
-          <>
+          <View style={styles.paddedContent}>
             <DateInput
               defaultValue={
                 plannerPayload?.fromDate &&
@@ -99,7 +112,7 @@ const Step2 = () => {
               }
             />
             <DatePicker defaultValue={plannerPayload?.pickerState} onSuccess={handleDatePickerSuccess} />
-          </>
+          </View>
         );
     }
   }, [
@@ -111,14 +124,17 @@ const Step2 = () => {
     styles.noOfDays,
     styles.whatMonth,
     setSelectedMonth,
+    styles.paddedContent,
     theme.colors.secondary,
     handleDatePickerSuccess
   ]);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-      <StepHeader title={_t('adventure_date')} description={_t('adventure_date_desc')} />
-      <ToggleButtons buttons={toggleButtons} active={activeButton} setActive={setActiveButton} />
+      <View style={styles.paddedContent}>
+        <StepHeader title={_t('adventure_date')} description={_t('adventure_date_desc')} />
+        <ToggleButtons buttons={toggleButtons} active={activeButton} setActive={handleActiveButton} />
+      </View>
       {renderContent}
     </ScrollView>
   );

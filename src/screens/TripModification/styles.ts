@@ -12,7 +12,7 @@ export default (theme: AppTheme) =>
     },
     content: {
       paddingEnd: ms(8),
-      paddingStart: ms(16),
+      paddingStart: ms(6),
       paddingBottom: mvs(50)
     },
     list: {
@@ -20,7 +20,7 @@ export default (theme: AppTheme) =>
       paddingVertical: mvs(24)
     },
     date: {
-      paddingHorizontal: ms(8),
-      marginTop: mvs(8)
+      marginTop: mvs(8),
+      paddingHorizontal: ms(8)
     }
   });

@@ -7,7 +7,7 @@ import { Text } from 'react-native-paper';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
@@ -24,7 +24,7 @@ interface PartnersListProps {
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
 
-const PartnersList: React.FC<PartnersListProps> = ({ transKey, list, value, setValue }) => {
+const PartnersList: React.FC<PartnersListProps> = ({ list, value, setValue }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -37,10 +37,10 @@ const PartnersList: React.FC<PartnersListProps> = ({ transKey, list, value, setV
       <TouchableOpacity onPress={() => setValue(item.key)} style={[styles.button, isActive && styles.activeButton]}>
         <View>
           <Text variant="h5">
-            {_t(`${transKey}.${item.title}`)} {item.icon}
+            {item.title[i18n.locale]} {item.icon}
           </Text>
           <Text variant="medium" style={styles.description}>
-            {_t(`${transKey}.${item.desc}`)}
+            {item.description[i18n.locale]}
           </Text>
         </View>
       </TouchableOpacity>

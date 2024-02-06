@@ -14,7 +14,7 @@
       "ok": "D'accord",
       "yes_continue": "Oui, continue",
       "save_changes": "Sauvegarder les modifications",
-      "delete": "Oui, Supprimer",
+      "yes_delete": "Oui, Supprimer",
       "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
       "regenerating_your_trip": "Régénération de votre voyage... ({{progress}}%)",
       "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
@@ -56,7 +56,9 @@
       "personal_info": "Informations personnelles",
       "help_and_support": "Aide & assistance",
       "account_and_security": "Compte & Sécurité",
-      "edit_itinerary": "Modifier l'itinéraire"
+      "edit_itinerary": "Modifier l'itinéraire",
+      "upgrade_plan": "Mettre à niveau le plan",
+      "faq": "FAQ"
     },
     "home": {
       "where_to_go": "Où voulez vous aller?",
@@ -64,6 +66,11 @@
       "popular_destinations": "Destinations populaires",
       "popular_articles": "Articles populaires",
       "view_all": "Voir tout"
+    },
+    "destination_details": {
+      "gallery": "Galerie",
+      "additional_info": "Info supplémentaires",
+      "start_a_trip": "Commencer un voyage"
     },
     "planner": {
       "step1": {
@@ -100,11 +107,13 @@
         "september": "Septembre",
         "october": "Octobre",
         "november": "Novembre",
-        "december": "Décembre"
+        "december": "Décembre",
+        "select_start_and_end_date": "Veuillez sélectionner la date de début et de fin"
       },
       "step3": {
         "interest_title": "Adaptez votre aventure à vos goûts 🌟",
-        "interest_desc": "Sélectionnez vos préférences de voyage pour personnaliser votre plan de voyage."
+        "interest_desc": "Sélectionnez vos préférences de voyage pour personnaliser votre plan de voyage.",
+        "select_at_least": "Sélectionnez au moins 3 centres d'intérêt"
       },
       "step4": {
         "budget_title": "Définissez votre budget de voyage 💰",
@@ -131,6 +140,7 @@
       }
     },
     "history": {
+      "delete_trip": "Supprimer le voyage",
       "my trips": "Mes voyages",
       "days_long": "jours longs",
       "for": "Pour: "
@@ -175,23 +185,15 @@
       }
     },
     "subscription": {
-      "powered_by_chatgpt": "Propulsé par ChatGPT 3.5 Turbo",
-      "accurate_and_detailed": "Des réponses plus précises et détaillées",
-      "no_limits": "Pas de limites",
-      "unlimited_chats": "Chats illimités",
-      "no_ads": "Pas de publicité",
-      "enjoy_without_ads": "Profitez de {{name}} sans aucune publicité",
-      "unlock_access": "Déverrouillez l'accès illimité",
-      "cancel_anytime": "Annulez la facturation récurrente à tout moment",
-      "no_subscriptions_found": "Aucune souscription trouvée",
-      "refer_to_documentation": "Veuillez vous référer à la documentation pour savoir comment ajouter des abonnements",
-      "you_own_this_plan": "Ce plan vous appartient",
-      "P1W": "Hebdomadaire",
-      "P1M": "Mensuelle",
-      "P1Y": "Annuelle",
-      "P4W": "Toutes les 4 semaines",
-      "P3M": "Tous les 3 mois",
-      "P6M": "Tous les 6 mois"
+      "your_current_plan": "Votre plan actuel",
+      "popular": "Populaire",
+      "best_value": "Meilleure valeur",
+      "select_plan": "Sélectionnez un plan",
+      "free_trial": "Essai gratuit",
+      "month": "Mois",
+      "free": "Gratuit",
+      "subscription_expiry": "Votre abonnement expirera le 10 janvier 2024. Renouvelez ou annulez votre abonnement",
+      "here": "ici"
     },
     "usage": {
       "daily_free_usage": "Utilisation gratuite quotidienne",
@@ -215,6 +217,13 @@
       "you_havent_saved": "Vous n'avez pas enregistré cet itinéraire, si vous partez maintenant, vous perdrez certaines de ces recommandations.",
       "leave": "Partir",
       "go_back": "Retourner"
+    },
+    "trip_details": {
+      "view_on_map": "Voir sur Google Maps",
+      "reviews": "avis"
+    },
+    "trip_modifcation": {
+      "delete_event": "Supprimer l'événement?",
     }
   }
 }

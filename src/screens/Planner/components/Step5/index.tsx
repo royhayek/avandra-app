@@ -20,7 +20,7 @@ import {
 } from '@shared/assets/icons';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { useAppSelector } from '@app/store';
@@ -66,11 +66,11 @@ const Step5 = ({ setActive, generating }) => {
           size={15}
           style={styles.editIcon}
           onPress={() => onPress(key)}
-          icon={() => <EditIcon fill={theme.colors.gray[900]} />}
+          icon={() => <EditIcon fill={theme.colors.primary} />}
         />
       </View>
     ),
-    [styles.editIcon, styles.title, styles.titleContainer, theme.colors.gray]
+    [styles.editIcon, styles.title, styles.titleContainer, theme.colors.primary]
   );
 
   const renderContent = () => (
@@ -108,7 +108,7 @@ const Step5 = ({ setActive, generating }) => {
           <View style={styles.flex1}>
             {renderTitle('traveler', _t('party'), () => handleEditPress(0))}
             <Text variant="xLarge" style={styles.value}>
-              {t(`planner.step1.${traveler?.title}`)}
+              {traveler?.title[i18n.locale]}
             </Text>
           </View>
         </View>
@@ -121,7 +121,7 @@ const Step5 = ({ setActive, generating }) => {
           <View style={styles.flex1}>
             {renderTitle('date', _t('trip_dates'), () => handleEditPress(1))}
             <Text variant="xLarge" style={styles.value}>
-              {formatDate(fromDate)} {_t('to')} {formatDate(toDate)}
+              {formatDate(fromDate, 'MMM DD')} {_t('to')} {formatDate(toDate, 'MMM DD, YYYY')}
             </Text>
           </View>
         </View>
@@ -145,7 +145,7 @@ const Step5 = ({ setActive, generating }) => {
           <View style={styles.flex1}>
             {renderTitle('bidget', _t('budget'), () => handleEditPress(3))}
             <Text variant="xLarge" style={styles.value}>
-              {t(`planner.step4.${budget?.title}`)}
+              {budget?.title[i18n.locale]}
             </Text>
           </View>
         </View>

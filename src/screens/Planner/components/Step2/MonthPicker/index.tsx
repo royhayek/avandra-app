@@ -30,6 +30,8 @@ const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  console.debug('MonthPicker', value);
+
   // Renderer Vars
   const upcomingMonths = useMemo(() => {
     const months = [];
@@ -50,6 +52,7 @@ const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
       horizontal
       data={upcomingMonths}
       keyExtractor={(item) => item}
+      contentContainerStyle={styles.list}
       showsHorizontalScrollIndicator={false}
       renderItem={({ item }) => {
         const isActive = _.isEqual(value, item);

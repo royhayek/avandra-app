@@ -1,25 +1,27 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState, useRef } from 'react';
 import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
 import Menu from '@shared/components/Menu';
 import FastImage from 'react-native-fast-image';
 import { IconButton, Text } from 'react-native-paper';
+import CustomBottomSheet from '@shared/components/BottomSheet';
+import GenerationModal from '@shared/components/GenerationModal';
 import { View, TouchableOpacity, ImageBackground } from 'react-native';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { PARTNERS_LIST } from '../../../Planner/components/Step1/data';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import GenerationModal from '@shared/components/GenerationModal';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 interface HistoryCardProps {
   index: number;
@@ -36,26 +38,30 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
   const styles = makeStyles(theme);
   const navigation = useNavigation();
 
-  const [openOptionsMenu, setOpenOptionsMenu] = useState(false);
   const [regenerating, setRegenerating] = useState(false);
+  const [openOptionsMenu, setOpenOptionsMenu] = useState(false);
+
+  const bottomSheetRef = useRef<BottomSheetMethods>();
 
   const { cityImage, city, country, plannedDate, guest, duration } = item;
 
   const partner = _.find(PARTNERS_LIST, { key: guest.type });
 
   // Callbacks
+  const handleSheetClose = useCallback(() => bottomSheetRef.current?.close(), []);
+
+  const handleDeletePress = useCallback(() => bottomSheetRef.current?.expand(), []);
+
   const toggleOptionsMenu = useCallback(() => setOpenOptionsMenu((cur) => !cur), []);
 
   const handleTextPress = useCallback(() => navigation.navigate('TripDetails'), [navigation]);
 
-  const handleDeleteHistory = useCallback(async (id: number) => {
+  const handleDeleteHistory = useCallback(async () => {
     // Call an endpoint to delete the trip in database
   }, []);
 
   const handleTripMenuItemPress = useCallback(
     (index: string) => {
-      console.debug('Item Pressed', item);
-
       switch (index) {
         case '1':
           setRegenerating(true);
@@ -66,11 +72,13 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
           }, 5000);
 
           break;
+
         case '2':
           console.debug('Share Trip');
           break;
+
         case '3':
-          handleDeleteHistory(item?.id);
+          handleDeletePress();
           break;
         default:
           break;
@@ -100,9 +108,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
     {
       item: '3',
       title: 'trip.delete',
-      leadingIcon: () => (
-        <Ionicons name="trash-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-      )
+      color: theme.colors.red,
+      leadingIcon: () => <Ionicons name="trash-outline" size={ms(22)} color={theme.colors.red} />
     }
   ];
 
@@ -126,7 +133,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
       <View style={styles.rowContainer}>
         <View style={styles.infoItemContainer}>
           <Text variant="medium" style={styles.assistant}>
-            {_t(partner?.title)}
+            {partner?.title[i18n.locale]} {partner?.icon}
           </Text>
         </View>
 
@@ -146,12 +153,17 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
     </View>
   );
 
+  const renderTripCard = () => (
+    <View style={styles.tripCard}>
+      <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
+      {renderTripInformation()}
+    </View>
+  );
+
   return small ? (
     <>
       <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
-        <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
-
-        {renderTripInformation()}
+        <View style={styles.flex1}>{renderTripCard()}</View>
 
         <Menu
           items={menuItems}
@@ -169,7 +181,17 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
         />
       </TouchableOpacity>
 
-      <GenerationModal visible={regenerating} regenerating={regenerating} />
+      <GenerationModal visible={regenerating} regenerating={regenerating} progress={0} />
+
+      <CustomBottomSheet
+        sheetRef={bottomSheetRef}
+        onClose={handleSheetClose}
+        titleColor={theme.colors.red}
+        title={t('history.delete_trip')}
+        secondaryBtnProps={{ title: t('common.cancel'), onPress: handleSheetClose }}
+        primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDeleteHistory }}>
+        {renderTripCard()}
+      </CustomBottomSheet>
     </>
   ) : (
     <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.container}>

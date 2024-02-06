@@ -9,6 +9,7 @@ import { Chip } from 'react-native-paper';
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
+import i18n from '@app/i18n';
 
 // Interfaces
 interface InterestsListProps {
@@ -36,7 +37,7 @@ const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, se
         style={[styles.chip, selected && styles.activeChip]}
         textStyle={[styles.textStyle, selected && styles.activeTextStyle]}
         selectedColor={selected ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black}>
-        {item.title}
+        {item.title[i18n.locale]}
       </Chip>
     );
   };

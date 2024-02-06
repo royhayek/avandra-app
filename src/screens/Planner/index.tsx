@@ -58,7 +58,7 @@ const PlannerScreen = () => {
             snackbarActions.showSnackbar({
               type: 'error',
               title: 'Error',
-              message: 'Please select a start and end date'
+              message: t('planner.step2.select_start_and_end_date')
             })
           );
         }
@@ -73,7 +73,7 @@ const PlannerScreen = () => {
             snackbarActions.showSnackbar({
               type: 'error',
               title: 'Error',
-              message: 'Please select at least 2 interests'
+              message: t('planner.step3.select_at_least')
             })
           );
         }

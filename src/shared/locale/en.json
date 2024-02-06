@@ -56,7 +56,9 @@
       "personal_info": "Personal Info",
       "help_and_support": "Help & Support",
       "account_and_security": "Account & Security",
-      "edit_itinerary": "Edit Itinerary"
+      "edit_itinerary": "Edit Itinerary",
+      "upgrade_plan": "Upgrade Plan",
+      "faq": "FAQ"
     },
     "home": {
       "where_to_go": "Where do you want to go?",
@@ -64,6 +66,11 @@
       "popular_destinations": "Popular Destinations",
       "popular_articles": "Popular Articles",
       "view_all": "View all"
+    },
+    "destination_details": {
+      "gallery": "Gallery",
+      "additional_info": "Additional Info",
+      "start_a_trip": "Start a Trip"
     },
     "planner": {
       "step1": {
@@ -100,11 +107,13 @@
         "september": "September",
         "october": "October",
         "november": "November",
-        "december": "December"
+        "december": "December",
+        "select_start_and_end_date": "Please select a start and end date"
       },
       "step3": {
         "interest_title": "Tailor your adventure to your tastes 🌟",
-        "interest_desc": "Select your travel preferences to customize your trip plan."
+        "interest_desc": "Select your travel preferences to customize your trip plan.",
+        "select_at_least": "Select at least 3 interests"
       },
       "step4": {
         "budget_title": "Set your trip budget",
@@ -131,6 +140,7 @@
       }
     },
     "history": {
+      "delete_trip": "Delete Trip?",
       "my_trips": "My Trips",
       "days_long": "days long",
       "for": "For: "
@@ -174,23 +184,15 @@
       }
     },
     "subscription": {
-      "powered_by_chatgpt": "Powered by ChatGPT 3.5 Turbo",
-      "accurate_and_detailed": "More accurate & details replies",
-      "no_limits": "No Limits",
-      "unlimited_chats": "Unlimited Chats",
-      "no_ads": "No Ads",
-      "enjoy_without_ads": "Enjoy {{name}} without any ads",
-      "unlock_access": "Unlock Unlimited Access",
-      "cancel_anytime": "Cancel recurring billing anytime",
-      "no_subscriptions_found": "No Subscriptions Found",
-      "refer_to_documentation": "Please refer to the documentation to know how to add subscriptions",
-      "you_own_this_plan": "You own this plan",
-      "P1W": "Weekly",
-      "P1M": "Monthly",
-      "P1Y": "Yearly",
-      "P4W": "Every 4 Weeks",
-      "P3M": "Every 3 Months",
-      "P6M": "Every 6 Months"
+      "your_current_plan": "Your current plan",
+      "popular": "Popular",
+      "best_value": "Best Value",
+      "select_plan": "Select Plan",
+      "free_trial": "Free Trial",
+      "month": "Month",
+      "free": "Free",
+      "subscription_expiry": "Your subscription will expire on Jan 10, 2024. Renew or cancel your subscription",
+      "here": "here"
     },
     "usage": {
       "daily_free_usage": "Daily Free Usage",
@@ -216,6 +218,12 @@
       "go_back": "Go Back",
       "delete_your_trips": "Delete your trips?"
     },
-    "trip_modifcation": {}
+    "trip_details": {
+      "view_on_map": "View on Google Maps",
+      "reviews": "reviews"
+    },
+    "trip_modifcation": {
+      "delete_event": "Delete this Event?"
+    }
   }
 }

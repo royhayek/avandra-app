@@ -13,7 +13,7 @@ import { EditIcon } from '@shared/assets/icons';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { destination_details } from './data';
@@ -33,8 +33,8 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   const { name, description, country, date, traveler, budget, location, itineraries } = destination_details;
 
-  const travelerTitle = t(`planner.step1.${_.find(PARTNERS_LIST, { key: traveler })?.title}`) ?? '';
-  const budgetTitle = t(`planner.step4.${_.find(BUDGET_LIST, { key: budget })?.title}`) ?? '';
+  const travelerTitle = _.find(PARTNERS_LIST, { key: traveler })?.title[i18n.locale] ?? '';
+  const budgetTitle = _.find(BUDGET_LIST, { key: budget })?.title[i18n.locale] ?? '';
 
   // Callbacks
   const handleMapPress = useCallback(() => navigation.navigate('Map'), [navigation]);

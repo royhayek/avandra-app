@@ -13,6 +13,7 @@ import RegularButton from '@shared/components/Buttons/Regular';
 import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
@@ -20,9 +21,13 @@ import makeCommonStyles from '@shared/assets/styles';
 import { plannerActions } from '@redux/planner/slice';
 
 // Interfaces
+import { TranslateOptions } from 'i18n-js';
+
 interface DestinationDetailsScreenProps {}
 
 // Component
+const _t = (key: string, options?: TranslateOptions) => t(`destination_details.${key}`, options);
+
 const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => {
   // Redux
   const dispatch = useDispatch();
@@ -79,7 +84,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       </View>
 
       <Text variant="h5" style={styles.title}>
-        Gallery
+        {_t('gallery')}
       </Text>
       <FlatList
         horizontal
@@ -94,7 +99,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       />
 
       <Text variant="h5" style={styles.title}>
-        Additional Info
+        {_t('additional_info')}
       </Text>
       <View style={styles.paddedContent}>
         <Text variant="xLarge">{continent}</Text>
@@ -116,7 +121,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       </ScrollView>
 
       <View style={commonStyles.footer}>
-        <RegularButton title="Start a Trip" onPress={handleStartTripPress} fullWidth />
+        <RegularButton title={_t('start_a_trip')} onPress={handleStartTripPress} fullWidth />
       </View>
     </>
   );

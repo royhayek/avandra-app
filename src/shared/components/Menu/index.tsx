@@ -14,6 +14,7 @@ import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 interface MenuItem {
   item: string;
   title: string;
+  color: string;
   leadingIcon?: IconSource | undefined;
 }
 
@@ -39,13 +40,16 @@ const Menu: React.FC<MenuProps> = ({ visible, onDismiss, anchor, items, onItemPr
       onDismiss={onDismiss}
       anchorPosition="bottom"
       contentStyle={styles.content}>
-      {_.map(items, ({ item, title, leadingIcon }) => (
+      {_.map(items, ({ item, title, color, leadingIcon }) => (
         <RNMenu.Item
           key={item}
           title={t(title)}
           leadingIcon={leadingIcon}
-          titleStyle={styles.itemTitle}
           onPress={() => onItemPress(item)}
+          titleStyle={[
+            styles.itemTitle,
+            { color: color ? color : theme.dark ? theme.colors.white : theme.colors.gray[900] }
+          ]}
         />
       ))}
     </RNMenu>

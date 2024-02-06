@@ -17,7 +17,8 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background
     },
     generate_title: {
-      marginTop: mvs(16)
+      marginTop: mvs(16),
+      textAlign: 'center'
     },
     generate_desc: {
       marginTop: mvs(16),

@@ -16,13 +16,14 @@ import { TranslateOptions } from 'i18n-js';
 
 interface GenerationModalProps {
   visible: boolean;
+  progress: number;
   regenerating?: boolean;
 }
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`common.${key}`, options);
 
-const GenerationModal: React.FC<GenerationModalProps> = ({ visible, regenerating }) => {
+const GenerationModal: React.FC<GenerationModalProps> = ({ visible, regenerating, progress }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -33,7 +34,7 @@ const GenerationModal: React.FC<GenerationModalProps> = ({ visible, regenerating
       <Modal visible={visible} dismissable={false} contentContainerStyle={styles.modalContainer}>
         <Progress.Circle indeterminate size={60} borderWidth={5} color={theme.colors.primary} />
         <Text variant="h5" style={styles.generate_title}>
-          {_t(regenerating ? 'regenerating_your_trip' : 'generating_your_trip', { progress: 0 })}
+          {_t(regenerating ? 'regenerating_your_trip' : 'generating_your_trip', { progress })}
         </Text>
         <Text variant="medium" style={styles.generate_desc}>
           {_t('generating_your_trip_desc')}
@@ -44,6 +45,7 @@ const GenerationModal: React.FC<GenerationModalProps> = ({ visible, regenerating
 };
 
 GenerationModal.defaultProps = {
+  progress: 0,
   visible: false,
   regenerating: false
 };

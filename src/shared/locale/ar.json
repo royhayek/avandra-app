@@ -57,7 +57,9 @@
       "personal_info": "المعلومات الشخصية",
       "help_and_support": "المساعدة والدعم",
       "account_and_security": "الحساب والأمن",
-      "edit_itinerary": "تعديل مسار الرحلة"
+      "edit_itinerary": "تعديل مسار الرحلة",
+      "upgrade_plan": "ترقية الخطة",
+      "faq": "الأسئلة الشائعة"
     },
     "home": {
       "where_to_go": "إلى أين تريد الذهاب؟",
@@ -65,6 +67,11 @@
       "popular_destinations": "وجهات شعبية",
       "popular_articles": "مقالات شائعة",
       "view_all": "عرض الكل"
+    },
+    "destination_details": {
+      "gallery": "الصور",
+      "additional_info": "معلومات إضافية",
+      "start_a_trip": "ابدأ رحلتك"
     },
     "planner": {
       "step1": {
@@ -101,11 +108,13 @@
         "september": "سبتمبر",
         "october": "أكتوبر",
         "november": "نوفمبر",
-        "december": "ديسمبر"
+        "december": "ديسمبر",
+        "select_start_and_end_date": "يرجى تحديد تاريخ البداية والنهاية"
       },
       "step3": {
         "interest_title": "ضبط مغامرتك وفقًا لاهتماماتك 🌟",
-        "interest_desc": "حدد تفضيلات السفر الخاصة بك لتخصيص خطة رحلتك"
+        "interest_desc": "حدد تفضيلات السفر الخاصة بك لتخصيص خطة رحلتك",
+        "select_at_least": "يرجى تحديد ما لا يقل عن 3 اهتمامات"
       },
       "step4": {
         "budget_title": "حدد ميزانية رحلتك 💰",
@@ -132,6 +141,7 @@
       }
     },
     "history": {
+      "delete_trip": "حذف الرحلة؟",
       "my trips": "رحلاتي",
       "days_long": "أيام طويلة",
       "for": ": لـ"
@@ -176,23 +186,15 @@
       }
     },
     "subscription": {
-      "powered_by_chatgpt": "مدعوم من ChatGPT 3.5 Turbo",
-      "accurate_and_detailed": "ردود أكثر دقة وتفصيلاً",
-      "no_limits": "لا حدود",
-      "unlimited_chats": "محادثات غير محدودة",
-      "no_ads": "لا اعلانات",
-      "enjoy_without_ads": "استمتع بـ {{name}} بدون أي إعلانات",
-      "unlock_access": "إفتح وصول غير محدود",
-      "cancel_anytime": "إلغاء الفواتير المتكررة في أي وقت",
-      "no_subscriptions_found": "لم يتم العثور على اشتراكات",
-      "refer_to_documentation": "يرجى الرجوع إلى الوثائق لمعرفة كيفية إضافة الاشتراكات",
-      "you_own_this_plan": "أنت تملك هذه الخطة",
-      "P1W": "أسبوعيًا",
-      "P1M": "شهريًا",
-      "P1Y": "سنويًا",
-      "P4W": "كل 4 أسابيع",
-      "P3M": "كل 3 أشهر",
-      "P6M": "كل 6 شهور"
+      "your_current_plan": "خطتك الحالية",
+      "popular": "شعبية",
+      "best_value": "أفضل قيمة",
+      "select_plan": "اختر الخطة",
+      "free_trial": "تجربة مجانية",
+      "month": "شهر",
+      "free": "مجانا",
+      "subscription_expiry": "سينتهي اشتراكك في 10 يناير 2024. قم بتجديد اشتراكك أو إلغائه",
+      "here": "هنا"
     },
     "usage": {
       "daily_free_usage": "الاستخدام اليومي المجاني",
@@ -216,6 +218,13 @@
       "you_havent_saved": "لم تقم بحفظ هذا الجدول الزمني، إذا غادرت الآن، ستفقد بعض هذه الاقتراحات.",
       "leave": "غادر",
       "go_back": "ارجع"
+    },
+    "trip_details": {
+      "view_on_map": "عرض على خرائط جوجل",
+      "reviews": "تقييمات"
+    },
+    "trip_modifcation": {
+      "delete_event": "حذف هذا الحدث؟"
     }
   }
 }

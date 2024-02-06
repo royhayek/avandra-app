@@ -1,13 +1,14 @@
 // Packages
+import _ from 'lodash';
 import { ms, mvs } from 'react-native-size-matters';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // Components
-import { Octicons } from '@expo/vector-icons';
 import FastImage from 'react-native-fast-image';
 import HistoryCard from './components/HistoryCard';
+import { SegmentedButtons, Text } from 'react-native-paper';
 import { FlatList, RefreshControl, View } from 'react-native';
-import { ActivityIndicator, IconButton, SegmentedButtons, Text } from 'react-native-paper';
+import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -16,18 +17,13 @@ import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
 import { savedTrips as savedTripsData } from './data';
 
-// Interfaces
-import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
 
-const HistoryScreen = ({ navigation }) => {
+const HistoryScreen = () => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-
-  const bottomSheetRef = useRef<BottomSheetMethods>();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState('upcoming');
@@ -45,34 +41,7 @@ const HistoryScreen = ({ navigation }) => {
     // });
   }, []);
 
-  const handleSheetClose = useCallback(() => bottomSheetRef.current?.close(), []);
-
-  const handleDeletePress = useCallback(() => bottomSheetRef.current?.expand(), []);
-
-  const handleDeleteAllHistory = useCallback(async () => {
-    // await deleteAllConversations().then(() => console.debug('History Deleted Successfully'));
-    refreshSavedTrips(false);
-    handleSheetClose();
-  }, [handleSheetClose, refreshSavedTrips]);
-
-  const renderDeleteIcon = useCallback(
-    () =>
-      savedTrips?.length > 0 && (
-        <Octicons name="trash" size={22} color={theme.dark ? theme.colors.white : theme.colors.black} />
-      ),
-    [savedTrips?.length, theme.colors.black, theme.colors.white, theme.dark]
-  );
-
-  const renderHeaderRight = useCallback(
-    () => <IconButton size={22} onPress={handleDeletePress} icon={renderDeleteIcon} />,
-    [handleDeletePress, renderDeleteIcon]
-  );
-
   // Effects
-  useEffect(() => {
-    navigation.setOptions({ headerRight: renderHeaderRight });
-  }, [navigation, renderHeaderRight]);
-
   useEffect(() => {
     refreshSavedTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,8 +50,8 @@ const HistoryScreen = ({ navigation }) => {
   // Renderer Vars
   const segmentedButtonStyle = useMemo(
     () => ({
-      labelStyle: { ...theme.fonts.large },
       uncheckedColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500],
+      labelStyle: { fontFamily: theme.fonts.large.fontFamily, fontSize: theme.fonts.large.fontSize },
       style: {
         borderWidth: 0.5,
         borderRadius: ms(12),
@@ -126,7 +95,9 @@ const HistoryScreen = ({ navigation }) => {
         <Text variant="h4" style={{ marginBottom: mvs(16) }}>
           {_t('active_trip')}
         </Text>
+
         <HistoryCard item={savedTrips[0]} index={0} refresh={refreshSavedTrips} />
+
         <SegmentedButtons
           density="small"
           value={selectedTab}
@@ -151,22 +122,32 @@ const HistoryScreen = ({ navigation }) => {
     />
   );
 
-  const renderLoadingOrEmpty = () => (
+  const renderEmptyLayout = () => (
     <View style={styles.emptyContainer}>
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <>
-          <FastImage source={require('../../../assets/empty-history.png')} style={styles.emptyImage} />
-          <Text variant="medium" style={styles.emptyText}>
-            {_t('no_history_found')}
-          </Text>
-        </>
-      )}
+      <FastImage
+        resizeMode="contain"
+        style={styles.emptyImage}
+        source={
+          theme.dark
+            ? require('@shared/assets/images/EmptyTripsDark.png')
+            : require('@shared/assets/images/EmptyTripsLight.png')
+        }
+      />
+      <Text variant="h3" style={styles.emptyTitle}>
+        Empty
+      </Text>
+      <Text variant="xLarge" style={styles.emptyDesc}>
+        Let our AI create personalized trip plans just for you. Start planning now!
+      </Text>
+      <RegularButton title="Search Trip" style={styles.searchButton} />
     </View>
   );
 
-  return <View style={styles.container}>{savedTrips?.length > 0 ? renderList() : renderLoadingOrEmpty()}</View>;
+  if (_.isEmpty(savedTrips)) {
+    return renderEmptyLayout();
+  }
+
+  return <View style={styles.container}>{renderList()}</View>;
 };
 
 export default HistoryScreen;

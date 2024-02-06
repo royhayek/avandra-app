@@ -30,12 +30,12 @@ const HelpSupportScreen = () => {
   const navigation = useNavigation();
 
   // Callbacks
-  const navigateToSupport = useCallback(() => {}, []);
+  const navigateToFaq = useCallback(() => navigation.navigate('Faq'), [navigation]);
+
+  const navigateToSupport = useCallback(() => navigation.navigate('Support'), [navigation]);
 
   const navigateToInfo = useCallback(
-    (type: string) => {
-      navigation.navigate('Info', { type, name: t(`common.${type}`) });
-    },
+    (type: string) => navigation.navigate('Info', { type, name: t(`common.${type}`) }),
     [navigation]
   );
 
@@ -67,12 +67,12 @@ const HelpSupportScreen = () => {
       {
         key: 'faq',
         name: t('settings.faq'),
-        onPress: () => null
+        onPress: navigateToFaq
       },
       {
         key: 'contact',
         name: t('settings.contact_support'),
-        onPress: () => navigateToSupport()
+        onPress: navigateToSupport
       },
       {
         key: 'language',
@@ -87,7 +87,7 @@ const HelpSupportScreen = () => {
       {
         key: 'rate',
         name: t('settings.rate_us'),
-        onPress: () => handleRateApp()
+        onPress: handleRateApp
       }
     ],
     [navigateToSupport, navigateToInfo, handleRateApp]

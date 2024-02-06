@@ -13,16 +13,26 @@ export default (theme: AppTheme) =>
     },
     date: {
       marginTop: mvs(8),
-      paddingHorizontal: ms(8)
+      paddingHorizontal: ms(16)
     },
     rowContainer: {
       alignItems: 'center',
       flexDirection: 'row',
-      paddingVertical: mvs(6)
+      paddingStart: ms(6),
+      paddingVertical: mvs(6),
+      marginHorizontal: ms(6)
     },
     activeRowContainer: {
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      elevation: 3,
+      shadowRadius: 5,
+      shadowOpacity: 0.16,
+      shadowColor: '#04060f',
       borderRadius: theme.roundness,
-      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.primary
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.white
     },
     image: {
       width: ms(120),
@@ -32,7 +42,8 @@ export default (theme: AppTheme) =>
     },
     content: {
       flex: 1,
-      marginHorizontal: ms(16)
+      marginEnd: ms(8),
+      marginStart: ms(12)
     },
     name: {
       fontFamily: 'urbanist-bold'

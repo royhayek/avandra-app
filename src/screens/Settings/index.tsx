@@ -45,7 +45,7 @@ const SettingsScreen = () => {
 
   // Callbacks
   const handleUpgradePress = useCallback(
-    () => navigation.navigate('BillingSubscriptions', { title: 'Upgrade Plan' }),
+    () => navigation.navigate('Subscriptions'),
     [navigation]
   );
 
@@ -60,7 +60,7 @@ const SettingsScreen = () => {
   const navigateToHelpAndSupport = useCallback(() => navigation.navigate('HelpSupport'), [navigation]);
 
   const navigateToSubscription = useCallback(
-    () => navigation.navigate('BillingSubscriptions', { title: _t('billing_and_subscriptions') }),
+    () => navigation.navigate('Billing', { title: _t('billing_and_subscriptions') }),
     [navigation]
   );
 
@@ -76,12 +76,6 @@ const SettingsScreen = () => {
 
   const buttons: NavigationButtonProps[] = useMemo(
     () => [
-      {
-        key: 'saved_trips',
-        name: _t('saved_trips'),
-        icon: <CategoryIcon fill={buttonIconColor} />,
-        onPress: navigateToAccountAndSecurity
-      },
       {
         key: 'personal_info',
         name: _t('personal_info'),
