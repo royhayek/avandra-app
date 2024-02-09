@@ -1,9 +1,9 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 // Components
-import { View, Appearance } from 'react-native';
+import { View } from 'react-native';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import { Divider, RadioButton, Text } from 'react-native-paper';
 import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
@@ -36,7 +36,6 @@ const AppearanceScreen = () => {
   const styles = makeStyles(appTheme);
 
   const isDark = _.isEqual(themeMode, 'dark');
-  const isLight = _.isEqual(themeMode, 'light');
 
   const [theme, setTheme] = useState(themeMode ?? 'default');
   const [language, setLanguage] = useState(appLanguage ?? 'en');
@@ -65,14 +64,6 @@ const AppearanceScreen = () => {
     handleThemeSheetClose();
   }, [dispatch, handleThemeSheetClose, theme]);
 
-  // Effects
-  useEffect(() => {
-    Appearance.addChangeListener(({ colorScheme }) => {
-      console.debug('colorScheme', colorScheme);
-      // dispatch(appActions.setThemeMode(colorScheme));
-    });
-  }, [dispatch]);
-
   // Renderer Vars
   const languageOptions = [
     { value: 'en', title: _t('languages.english') },
@@ -100,7 +91,6 @@ const AppearanceScreen = () => {
     {
       key: 'theme',
       name: _t('theme'),
-      value: isDark ? 'Dark' : 'Light',
       isMenu: true,
       onPress: handleThemePress,
       menuProps: {

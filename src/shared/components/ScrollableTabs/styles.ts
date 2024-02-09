@@ -11,8 +11,8 @@ export default (theme: AppTheme) =>
       gap: ms(12),
       height: mvs(40),
       flexDirection: 'row',
-      paddingStart: mvs(24),
-      marginVertical: mvs(8)
+      marginVertical: mvs(8),
+      paddingHorizontal: ms(24)
     },
     tab: {
       flex: 1,

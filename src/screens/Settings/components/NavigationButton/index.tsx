@@ -21,9 +21,9 @@ interface MenuItemProps {
 }
 
 interface MenuProps {
-  value: string;
-  onItemPress: (lng: string) => void;
-  items: MenuItemProps[] | undefined;
+  value: string | undefined;
+  items?: MenuItemProps[] | undefined;
+  onItemPress: (lng: string) => void | undefined;
 }
 
 interface SwitchProps {
@@ -32,6 +32,7 @@ interface SwitchProps {
 }
 
 export interface NavigationButtonProps {
+  key: string;
   name: string;
   isMenu?: boolean;
   isSwitch?: boolean;

@@ -11,10 +11,11 @@ export default (theme: AppTheme) =>
       flex: 1
     },
     search: {
-      marginHorizontal: ms(24)
+      marginHorizontal: ms(24),
+      paddingHorizontal: ms(12)
     },
     list: {
-      paddingHorizontal: ms(24)
+      marginHorizontal: ms(24)
     },
     listContent: {
       gap: mvs(20),
@@ -35,6 +36,8 @@ export default (theme: AppTheme) =>
       justifyContent: 'space-between'
     },
     questionText: {
+      flex: 1,
+      marginEnd: ms(8),
       fontFamily: 'urbanist-bold'
     },
     divider: {

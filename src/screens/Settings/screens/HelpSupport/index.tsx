@@ -7,8 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 // Components
 import { Ionicons } from '@expo/vector-icons';
 import { Switch, Text } from 'react-native-paper';
-import { TouchableOpacity, View } from 'react-native';
-import Rate, { AndroidMarket } from 'react-native-rate';
+import { Linking, Platform, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -32,7 +31,7 @@ const HelpSupportScreen = () => {
   // Callbacks
   const navigateToFaq = useCallback(() => navigation.navigate('Faq'), [navigation]);
 
-  const navigateToSupport = useCallback(() => navigation.navigate('Support'), [navigation]);
+  const navigateToSupport = useCallback(() => navigation.navigate('Contact'), [navigation]);
 
   const navigateToInfo = useCallback(
     (type: string) => navigation.navigate('Info', { type, name: t(`common.${type}`) }),
@@ -40,25 +39,14 @@ const HelpSupportScreen = () => {
   );
 
   const handleRateApp = useCallback(() => {
-    const options = {
-      AppleAppID: config?.other?.appleAppId,
-      GooglePackageName: config?.other?.googlePackageName,
-      preferredAndroidMarket: AndroidMarket.Google,
-      preferInApp: true,
-      openAppStoreIfInAppFails: true
-    };
+    const appleAppId = config?.other?.appleAppId;
+    const androidPackageName = config?.other?.googlePackageName;
 
-    Rate.rate(options, (success, errorMessage) => {
-      if (success) {
-        // This technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
-        console.debug('User successfully rated the app');
-      }
-
-      if (errorMessage) {
-        // errorMessage comes from the native code. Useful for debugging, but probably not for users to view
-        console.error(`Example page Rate.rate() error: ${errorMessage}`);
-      }
-    });
+    if (Platform.OS === 'android') {
+      Linking.openURL(`market://details?id=${androidPackageName}&showAllReviews=true`);
+    } else if (Platform.OS === 'ios') {
+      Linking.openURL(`itms-apps://itunes.apple.com/app/viewContentsUserReviews/id${appleAppId}?action=write-review`);
+    }
   }, [config?.other?.appleAppId, config?.other?.googlePackageName]);
 
   // Renderer Vars

@@ -136,7 +136,7 @@ const PersonalInfoScreen = () => {
                   name="name"
                   value={values.name}
                   error={errors.name}
-                  handleChange={handleChange}
+                  handleChange={handleChange('name')}
                   label={t('profile.full_name')}
                   placeholder={t('profile.full_name')}
                 />
@@ -146,7 +146,7 @@ const PersonalInfoScreen = () => {
                   error={errors.email}
                   value={values.email}
                   label={t('profile.email')}
-                  handleChange={handleChange}
+                  handleChange={handleChange('email')}
                   keyboardType="email-address"
                   placeholder={t('profile.email')}
                   leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
@@ -156,7 +156,7 @@ const PersonalInfoScreen = () => {
                   name="country"
                   error={errors.country}
                   value={values.country}
-                  handleChange={handleChange}
+                  handleChange={handleChange('country')}
                   label={t('profile.country')}
                   onFocus={handleOpenCountryPicker}
                   placeholder={t('profile.country')}
@@ -167,7 +167,7 @@ const PersonalInfoScreen = () => {
                   name="gender"
                   error={errors.gender}
                   value={values.gender}
-                  handleChange={handleChange}
+                  handleChange={handleChange('gender')}
                   label={t('profile.gender')}
                   onFocus={hanldeOpenGenderPicker}
                   placeholder={t('profile.gender')}

@@ -1,6 +1,7 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback, useMemo } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 // Components
 
@@ -11,11 +12,14 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
+import AccountDeletionModal from '../AccountDeletion';
 
 // Component
 const AccountSecurityScreen = () => {
   // Statics
   const theme = useAppTheme();
+
+  const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState(false);
 
   const enabledFaceId = false;
   const enabledBiometricId = false;
@@ -25,7 +29,9 @@ const AccountSecurityScreen = () => {
 
   const handleFaceIdToggle = useCallback(() => {}, []);
 
-  const handleDeleteAccount = useCallback(() => {}, []);
+  const handleDeleteAccount = useCallback(() => setIsDeletionModalOpen(true), []);
+
+  const handleCancelDeletion = useCallback(() => setIsDeletionModalOpen(false), []);
 
   // Renderer Vars
   const buttons: NavigationButtonProps[] = useMemo(
@@ -61,17 +67,23 @@ const AccountSecurityScreen = () => {
   );
 
   // Renderers
-  return _.map(buttons, ({ key, name, color, description, onPress, isSwitch, switchProps }) => (
-    <NavigationButton
-      key={key}
-      name={name}
-      color={color}
-      onPress={onPress}
-      isSwitch={isSwitch}
-      description={description}
-      switchProps={switchProps}
-    />
-  ));
+  return (
+    <>
+      {_.map(buttons, ({ key, name, color, description, onPress, isSwitch, switchProps }) => (
+        <NavigationButton
+          key={key}
+          name={name}
+          color={color}
+          onPress={onPress}
+          isSwitch={isSwitch}
+          description={description}
+          switchProps={switchProps}
+        />
+      ))}
+
+      <AccountDeletionModal visible={isDeletionModalOpen} onCancel={handleCancelDeletion} />
+    </>
+  );
 };
 
 export default AccountSecurityScreen;

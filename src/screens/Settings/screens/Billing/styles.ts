@@ -10,7 +10,7 @@ export default (theme: AppTheme) =>
     container: {
       paddingTop: mvs(16),
       paddingBottom: mvs(24),
-      marginHorizontal: ms(24),
+      marginHorizontal: ms(24)
     },
     exireInfo: {
       textAlign: 'center',

@@ -147,8 +147,8 @@ const Profile = () => {
                   name="name"
                   value={values.name}
                   error={errors.name}
-                  handleChange={handleChange}
                   label={t('profile.full_name')}
+                  handleChange={handleChange('name')}
                   placeholder={t('profile.full_name')}
                 />
 
@@ -157,9 +157,9 @@ const Profile = () => {
                   error={errors.email}
                   value={values.email}
                   label={t('profile.email')}
-                  handleChange={handleChange}
                   keyboardType="email-address"
                   placeholder={t('profile.email')}
+                  handleChange={handleChange('email')}
                   leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 
@@ -167,10 +167,10 @@ const Profile = () => {
                   name="country"
                   error={errors.country}
                   value={values.country}
-                  handleChange={handleChange}
                   label={t('profile.country')}
                   onFocus={handleOpenCountryPicker}
                   placeholder={t('profile.country')}
+                  handleChange={handleChange('country')}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 
@@ -178,10 +178,10 @@ const Profile = () => {
                   name="gender"
                   error={errors.gender}
                   value={values.gender}
-                  handleChange={handleChange}
                   label={t('profile.gender')}
                   onFocus={handleOpenGenderPicker}
                   placeholder={t('profile.gender')}
+                  handleChange={handleChange('gender')}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 

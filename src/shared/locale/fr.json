@@ -15,6 +15,7 @@
       "yes_continue": "Oui, continue",
       "save_changes": "Sauvegarder les modifications",
       "yes_delete": "Oui, Supprimer",
+      "search": "Rechercher",
       "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
       "regenerating_your_trip": "Régénération de votre voyage... ({{progress}}%)",
       "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
@@ -58,7 +59,8 @@
       "account_and_security": "Compte & Sécurité",
       "edit_itinerary": "Modifier l'itinéraire",
       "upgrade_plan": "Mettre à niveau le plan",
-      "faq": "FAQ"
+      "faq": "FAQ",
+      "contact": "Contacter l'assistance",
     },
     "home": {
       "where_to_go": "Où voulez vous aller?",
@@ -224,6 +226,16 @@
     },
     "trip_modifcation": {
       "delete_event": "Supprimer l'événement?",
+    },
+    "contact": {
+      "reach_out_to_us": "Vous pouvez nous contacter en envoyant un email via ce formulaire, et nous vous répondrons dans les plus brefs délais.",
+      "title": "Titre",
+      "message": "Message"
+    },
+    "account_deletion": {
+      "account_deletion": "Suppression du compte",
+      "losing_data": "Vous perdrez toutes vos données en supprimant votre compte. Cette action est irréversible",
+      "delete_account": "Supprimer le compte"
     }
   }
 }

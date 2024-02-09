@@ -66,7 +66,7 @@ const PlannerScreen = () => {
         break;
 
       case 2:
-        if (!_.isEmpty(interests) && interests.length >= 2) {
+        if (!_.isEmpty(interests) && interests.length >= 3) {
           updatePlannerStep(plannerStep + 1);
         } else {
           dispatch(
@@ -91,8 +91,8 @@ const PlannerScreen = () => {
 
     setTimeout(() => {
       setGenerating(false);
+      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
       navigation.navigate('TripDetails', { tripId: 1 });
-      // navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
       dispatch(plannerActions.reset());
     }, 3000);
   }, [dispatch, navigation]);
@@ -134,26 +134,28 @@ const PlannerScreen = () => {
     theme.colors.gray,
     theme.colors.primary
   ]);
-  // Renderer Vars
+
+  const handleResetNavigation = useCallback(() => dispatch(plannerActions.reset()), [dispatch]);
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', handleResetNavigation);
+  }, [dispatch, handleResetNavigation, navigation]);
 
   // Renderers
-  const renderFooter = useMemo(
-    () => (
-      <View style={commonStyles.footer}>
-        <RegularButton
-          fullWidth
-          onPress={!isLastStep ? handleNextPress : handleSubmitPress}
-          title={!isLastStep ? t('common.continue') : t('planner.step5.build_my_trip')}
-        />
-      </View>
-    ),
-    [commonStyles.footer, isLastStep, handleNextPress, handleSubmitPress]
+  const renderFooter = () => (
+    <View style={commonStyles.footer}>
+      <RegularButton
+        fullWidth
+        onPress={!isLastStep ? handleNextPress : handleSubmitPress}
+        title={!isLastStep ? t('common.continue') : t('planner.step5.build_my_trip')}
+      />
+    </View>
   );
 
   return (
     <View style={styles.container}>
       {steps[plannerStep]}
-      {renderFooter}
+      {renderFooter()}
     </View>
   );
 };

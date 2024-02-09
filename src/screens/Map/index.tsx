@@ -1,64 +1,64 @@
 // Packages
 import _ from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
+import * as Location from 'expo-location';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // Components
 import Marker from '@shared/components/Marker';
 import BackButton from '@shared/components/Buttons/Back';
 import LocationCard from '@shared/components/LocationCard';
-import MapView, { PROVIDER_GOOGLE, MapViewProps } from 'react-native-maps';
-import { View, Animated, Dimensions, Platform } from 'react-native';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { View, Animated, Dimensions, Platform, TouchableOpacity } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
+import { MapLocationIcon, MapNavigationIcon, MoonIcon, SunIcon } from '@shared/assets/icons';
+import { markers } from './data';
+import { DUMMY_PLACES } from '@screens/Itinerary/data';
+import { IconButton } from 'react-native-paper';
+import { ms } from 'react-native-size-matters';
 
 // Interfaces
-type MapScreenRouteParams = {
-  destinations: any[]; // You can replace 'any' with a more specific type if needed.
-};
-
-// Define the root stack param list if necessary
-type RootStackParamList = {
-  Map: MapScreenRouteParams;
-  // Add other screens if needed...
-};
-
-// Define the props interface for MapScreen
-interface MapScreenProps {
-  navigation: NavigationProp<RootStackParamList>;
-  route: RouteProp<RootStackParamList, 'Map'>;
-}
+type MapScreenProps = {};
 
 // Component
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
-const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
+const MapScreen: React.FC<MapScreenProps> = () => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const destinations = route.params.destinations;
 
+  const navigation = useNavigation();
+
+  const destinations = []; //route.params.destinations;
+
+  const mapIndex = useRef(0);
   const mapRef = useRef(null);
   const scrollViewRef = useRef(null);
 
-  const mapIndex = useRef(0);
-  let mapAnimation = new Animated.Value(0);
+  const mapAnimation = new Animated.Value(0);
 
   const initialMapState = {
     markers: destinations,
     region: {
-      latitude: _.first(destinations)?.searchResult.geometry.location.lat,
-      longitude: _.first(destinations)?.searchResult.geometry.location.lng,
+      // latitude: _.first(destinations)?.searchResult.geometry.location.lat,
+      // longitude: _.first(destinations)?.searchResult.geometry.location.lng,
+      latitude: 41.0082376,
+      longitude: 28.9783589,
       latitudeDelta: 0.03,
       longitudeDelta: 0.03
     }
   };
 
   const [state] = useState(initialMapState);
+  const [mapTheme, setMapTheme] = useState(theme.dark ? 'dark' : 'light');
+
+  const isDarkTheme = _.isEqual(mapTheme, 'dark');
 
   // Effects
   useEffect(() => {
@@ -68,7 +68,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
   useEffect(() => {
     Platform.OS === 'ios' &&
       scrollViewRef.current &&
-      scrollViewRef.current.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: true });
+      scrollViewRef.current?.scrollTo({ x: -SPACING_FOR_CARD_INSET, y: 0, animated: true });
   }, []);
 
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -83,9 +83,8 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
         if (index >= state.markers.length) {
           index = state.markers.length - 1;
         }
-        if (index <= 0) {
-          index = 0;
-        }
+
+        if (index <= 0) index = 0;
 
         clearTimeout(regionTimeout);
 
@@ -100,6 +99,7 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
                 }
               }
             } = state.markers[index];
+
             mapRef.current &&
               mapRef.current.animateToRegion(
                 {
@@ -120,19 +120,45 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
   /* eslint-enable react-hooks/exhaustive-deps */
 
   // Callbacks
+  const handleToggleMapTheme = () => {
+    setMapTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
   const onMarkerPress = (mapEventData: any) => {
     const markerID = mapEventData._targetInst.return.key;
     let x = markerID * CARD_WIDTH + markerID * 20;
-    if (Platform.OS === 'ios') {
-      x = x - SPACING_FOR_CARD_INSET;
+
+    if (Platform.OS === 'ios') x = x - SPACING_FOR_CARD_INSET;
+
+    scrollViewRef.current && scrollViewRef.current?.scrollTo({ x, y: 0, animated: true });
+  };
+
+  const handleShowCurrentLocation = useCallback(async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+
+    if (status !== 'granted') {
+      console.error('Permission to access location was denied');
+      return;
     }
 
-    scrollViewRef.current && scrollViewRef.current.scrollTo({ x: x, y: 0, animated: true });
-  };
+    let location = await Location.getCurrentPositionAsync({});
+
+    mapRef.current &&
+      mapRef.current.animateToRegion(
+        {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: state.region.latitudeDelta,
+          longitudeDelta: state.region.longitudeDelta
+        },
+        350
+      );
+  }, [state.region.latitudeDelta, state.region.longitudeDelta]);
 
   // Renderer Vars
   const interpolations = state.markers.map((marker, index) => {
     const inputRange = [(index - 1) * CARD_WIDTH, index * CARD_WIDTH, (index + 1) * CARD_WIDTH];
+
     const scale = mapAnimation.interpolate({
       inputRange,
       outputRange: [1, 1.4, 1],
@@ -147,26 +173,44 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        provider={PROVIDER_GOOGLE}
+        showsUserLocation
         style={styles.map}
-        initialRegion={state.region}
-        showsUserLocation>
+        followsUserLocation
+        customMapStyle={
+          isDarkTheme ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
+        }
+        provider={PROVIDER_GOOGLE}
+        initialRegion={state.region}>
         {state.markers.map(
           (marker, index) =>
             marker && (
               <Marker
+                displayDay
                 key={index}
-                marker={marker}
                 index={index}
+                marker={marker}
                 interpolations={interpolations}
                 onMarkerPress={onMarkerPress}
-                displayDay
               />
             )
         )}
       </MapView>
 
-      <BackButton style={styles.backBtn} />
+      <View style={styles.header}>
+        <BackButton style={styles.backBtn} />
+        <IconButton
+          size={ms(18)}
+          style={styles.themeButton}
+          onPress={handleToggleMapTheme}
+          icon={() =>
+            isDarkTheme ? (
+              <SunIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+            ) : (
+              <MoonIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+            )
+          }
+        />
+      </View>
 
       <Animated.ScrollView
         horizontal
@@ -188,10 +232,24 @@ const MapScreen: React.FC<MapScreenProps> = ({ navigation, route }) => {
         //   paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0,
         // }}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: mapAnimation } } }], { useNativeDriver: true })}>
-        {_.map(destinations, (destination, index) => (
-          <LocationCard key={index} location={destination} width={CARD_WIDTH} orientation="horizontal" onMap />
-        ))}
+        <>
+          {_.map(DUMMY_PLACES, (destination, index) => (
+            <LocationCard
+              onMap
+              key={index}
+              width={CARD_WIDTH}
+              isDark={isDarkTheme}
+              location={destination}
+              orientation="horizontal"
+            />
+          ))}
+        </>
       </Animated.ScrollView>
+
+      <View style={styles.actions}>
+        <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleShowCurrentLocation} />
+        <IconButton size={ms(28)} icon={() => <MapLocationIcon />} onPress={handleShowCurrentLocation} />
+      </View>
     </View>
   );
 };

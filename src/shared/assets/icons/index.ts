@@ -74,3 +74,12 @@ export { default as DollarOutlineIcon } from './DollarOutlineIcon';
 export { default as DeleteIcon } from './DeleteIcon';
 
 export { default as DragIcon } from './DragIcon';
+
+// Map
+export { default as MapLocationIcon } from './MapLocationIcon';
+
+export { default as MoonIcon } from './MoonIcon';
+
+export { default as SunIcon } from './SunIcon';
+
+export { default as MapNavigationIcon } from './MapNavigationIcon';

@@ -19,7 +19,7 @@ import { CheckIcon } from '@shared/assets/icons';
 
 interface PlanListItemProps {
   item: PlanProps;
-  setIsSuccess: (success: boolean) => void;
+  setIsSuccess?: (success: boolean) => void;
 }
 
 // Component

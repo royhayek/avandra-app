@@ -5,7 +5,7 @@ module.exports = {
     version: '1.0.3',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
@@ -111,7 +111,13 @@ module.exports = {
         }
       ],
       'expo-apple-authentication',
-      './react-native-maps-plugin'
+      './react-native-maps-plugin',
+      [
+        'expo-location',
+        {
+          locationAlwaysAndWhenInUsePermission: 'Allow Trippify to use your location.'
+        }
+      ]
     ],
     owner: 'royhayek'
   },

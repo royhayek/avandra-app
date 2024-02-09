@@ -10,9 +10,9 @@ import { DownChevron, SearchIcon } from '@shared/assets/icons';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
-import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { dummy_faqs } from './data';
+import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
@@ -64,10 +64,10 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
         <ScrollableTabs tabs={tabs} onTabPress={handleTabPress} activeTab={activeTab} />
         <Input
           name="search"
-          placeholder="Search"
           value={searchText}
           leftIcon={<SearchIcon />}
           inputStyle={styles.search}
+          placeholder={t('common.search')}
           handleChange={handleSearchTextChange}
         />
       </View>
@@ -78,28 +78,35 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <TouchableOpacity style={styles.question} onPress={() => handleQuestionPress(item?._id)}>
-              <Text variant="h6" style={styles.questionText}>
-                {item.question[i18n.locale]}
-              </Text>
-              <DownChevron fill={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]} />
-            </TouchableOpacity>
+        renderItem={({ item }) => {
+          const isExpanded = _.includes(expandedCategories, item?._id);
 
-            {_.includes(expandedCategories, item?._id) && (
-              <>
-                <Divider style={styles.divider} />
+          return (
+            <View style={styles.item}>
+              <TouchableOpacity style={styles.question} onPress={() => handleQuestionPress(item?._id)}>
+                <Text variant="h6" style={styles.questionText}>
+                  {item.question[i18n.locale]}
+                </Text>
+                <DownChevron
+                  fill={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]}
+                  transform={[{ rotateX: isExpanded ? '180deg' : '0deg' }]}
+                />
+              </TouchableOpacity>
 
-                <View style={styles.answer}>
-                  <Text variant="large" style={styles.answerText}>
-                    {item.answer[i18n.locale]}
-                  </Text>
-                </View>
-              </>
-            )}
-          </View>
-        )}
+              {isExpanded && (
+                <>
+                  <Divider style={styles.divider} />
+
+                  <View style={styles.answer}>
+                    <Text variant="large" style={styles.answerText}>
+                      {item.answer[i18n.locale]}
+                    </Text>
+                  </View>
+                </>
+              )}
+            </View>
+          );
+        }}
       />
     </View>
   );

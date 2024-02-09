@@ -4,7 +4,7 @@ import React from 'react';
 
 // Components
 import { Text } from 'react-native-paper';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
@@ -19,18 +19,19 @@ interface TabProps {
 interface ScrollableTabsProps {
   tabs: TabProps[];
   activeTab?: string;
+  style?: StyleProp<ViewStyle>;
   onTabPress: (key: string) => void;
 }
 
 // Component
-const ScrollableTabs: React.FC<ScrollableTabsProps> = ({ tabs, activeTab, onTabPress }) => {
+const ScrollableTabs: React.FC<ScrollableTabsProps> = ({ tabs, activeTab, onTabPress, style }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Effects
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={[styles.container, style]}>
       {_.map(tabs, ({ key, title }) => {
         const isActive = _.isEqual(activeTab, key);
 

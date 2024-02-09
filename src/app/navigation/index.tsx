@@ -24,6 +24,7 @@ import FaqScreen from '@screens/Settings/screens/Faq';
 import PopularScreen from '@screens/Home/screens/Popular';
 import ArticleDetailsScreen from '@screens/ArticleDetails';
 import Billingscreen from '@screens/Settings/screens/Billing';
+import ContactScreen from '@screens/Settings/screens/Contact';
 import TripModificationScreen from '@screens/TripModification';
 import DestinationDetailsScreen from '@screens/DestinationDetails';
 import AppearanceScreen from '@screens/Settings/screens/Appearance';
@@ -190,6 +191,7 @@ const RootNavigation = () => {
       <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="TripDetails" component={TripDetailsScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="Faq" component={FaqScreen} options={{ ...screenOptions, title: _t('faq') }} />
+      <Stack.Screen name="Contact" component={ContactScreen} options={{ ...screenOptions, title: _t('contact') }} />
       <Stack.Screen
         name="TripModification"
         component={TripModificationScreen}

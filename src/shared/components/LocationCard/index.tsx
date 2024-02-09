@@ -16,17 +16,19 @@ import { selectPlaces } from '@redux/places/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import { DUMMY_PLACES } from '@screens/Itinerary/data';
 import { GOOGLE_MAPS_API_KEY } from '@redux/places/thunks';
+import StarRating from 'react-native-star-rating-widget';
 
 // Interfaces
 interface LocationCardProps {
   location: Location;
   width: number;
   onMap: boolean;
+  isDark?: boolean;
   orientation: 'horizontal' | 'vertical';
 }
 
 // Component
-const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, orientation }) => {
+const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, orientation, isDark }) => {
   // Redux
   const itineraryPlacesSelect = useSelector(selectPlaces);
 
@@ -34,7 +36,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
   const isHorizontal = _.isEqual(orientation, 'horizontal');
 
   const theme = useAppTheme();
-  const styles = makeStyles(theme, isHorizontal);
+  const styles = makeStyles(theme, isHorizontal, isDark);
 
   const places = itineraryPlacesSelect?.places || DUMMY_PLACES;
   const { id, place, desc, address, geometry: { location: { lat = '', long = '' } = {} } = {} } = location || {};
@@ -63,16 +65,14 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
 
   // Renderers
   return (
-    <TouchableOpacity key={place} onPress={handleLocationPress} style={(styles.activity, { width })}>
+    <TouchableOpacity key={place} onPress={handleLocationPress} style={[styles.activity, { width }]}>
       <View style={styles.imageContainer}>
         <FastImage source={{ uri: image }} style={styles.image} />
       </View>
       <View style={styles.descriptionContainer}>
-        <Text variant="titleMedium">{place}</Text>
+        <Text variant="xLarge">{place}</Text>
+
         <View style={styles.ratingInfoContainer}>
-          <Text variant="bodyMedium" style={styles.rating}>
-            {rating}
-          </Text>
           {/* <StarRating
             disabled
             maxStars={5}
@@ -87,16 +87,20 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
             starSize={isHorizontal ? ms(14) : ms(16)}
             containerStyle={styles.starRatingContainer}
           /> */}
-          <Text variant="bodySmall" style={styles.userRatingTotal}>
+          <StarRating rating={rating} enableSwiping={false} starSize={16} starStyle={{ marginHorizontal: 0 }} />
+          <Text variant="medium" style={styles.rating}>
+            {rating}
+          </Text>
+          <Text variant="small" style={styles.userRatingTotal}>
             ({formatAmount(user_ratings_total)})
           </Text>
         </View>
         {!onMap && (
-          <Text variant="bodySmall" style={styles.description}>
+          <Text variant="medium" style={styles.description}>
             {desc}
           </Text>
         )}
-        <Text variant="labelSmall" style={styles.address}>
+        <Text variant="medium" style={styles.address}>
           {address}
         </Text>
       </View>

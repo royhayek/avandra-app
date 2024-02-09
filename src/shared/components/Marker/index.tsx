@@ -51,10 +51,11 @@ const Marker: React.FC<MarkerProps> = ({ marker, index, size = 10, onMarkerPress
         <Animated.View style={[styles.markerWrap]}>
           <Animated.Image
             resizeMode="cover"
+            tintColor={theme.colors.primary}
             source={require('@shared/assets/images/map-pin.png')}
             style={[styles.marker, { width: ms(size), height: mvs(size) }, scaleStyle]}
           />
-          <Text variant="labelSmall" style={styles.label}>
+          <Text variant="medium" style={styles.label}>
             {index + 1}
           </Text>
         </Animated.View>

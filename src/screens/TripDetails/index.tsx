@@ -20,6 +20,9 @@ import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
 import { BUDGET_LIST } from '@screens/Planner/components/Step4/data';
 import { PARTNERS_LIST } from '@screens/Planner/components/Step1/data';
+import { DUMMY_PLACES } from '@screens/Itinerary/data';
+import Marker from '@shared/components/Marker';
+import { ms } from 'react-native-size-matters';
 
 // Interfaces
 interface TripDetailsScreenProps {}
@@ -74,18 +77,23 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         <MapView
           style={styles.map}
           scrollEnabled={false}
+          zoomEnabled={false}
+          zoomTapEnabled={false}
           onPress={handleMapPress}
+          customMapStyle={
+            theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
+          }
           provider={PROVIDER_GOOGLE}
           region={{
-            latitudeDelta: 0.025,
-            longitudeDelta: 0.025,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.02,
             latitude: location?.latitude || 0,
             longitude: location?.longitude || 0
           }}>
-          {/* {_.map(
-            places,
+          {_.map(
+            DUMMY_PLACES,
             (place, index) => place && <Marker index={index} marker={place} interpolations={[]} size={ms(28)} />
-          )} */}
+          )}
         </MapView>
       </View>
 

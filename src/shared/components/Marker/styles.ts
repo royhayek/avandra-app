@@ -10,7 +10,8 @@ export default (theme: AppTheme) =>
     label: {
       fontWeight: 'bold',
       position: 'absolute',
-      color: theme.colors.white
+      color: theme.colors.white,
+      fontFamily: 'urbanist-semibold'
     },
     markerWrap: {
       width: ms(55),

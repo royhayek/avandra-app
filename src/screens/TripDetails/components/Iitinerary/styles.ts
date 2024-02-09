@@ -92,5 +92,8 @@ export default (theme: AppTheme) =>
     },
     navigationTitle: {
       fontFamily: 'urbanist-medium'
+    },
+    dateTabs: {
+      marginVertical: mvs(24)
     }
   });

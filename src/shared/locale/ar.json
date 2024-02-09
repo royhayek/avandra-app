@@ -15,6 +15,7 @@
       "yes_continue": "نعم، استمر",
       "save_changes": "حفظ التغييرات",
       "yes_delete": "نعم، حذف",
+      "search": "بحث",
       "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
       "regenerating_your_trip": "جارٍ إعادة إنشاء رحلتك... ({{progress}}%)",
       "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك",
@@ -59,7 +60,8 @@
       "account_and_security": "الحساب والأمن",
       "edit_itinerary": "تعديل مسار الرحلة",
       "upgrade_plan": "ترقية الخطة",
-      "faq": "الأسئلة الشائعة"
+      "faq": "الأسئلة الشائعة",
+      "contact": "تواصل مع الدعم",
     },
     "home": {
       "where_to_go": "إلى أين تريد الذهاب؟",
@@ -225,6 +227,16 @@
     },
     "trip_modifcation": {
       "delete_event": "حذف هذا الحدث؟"
+    },
+    "contact": {
+      "reach_out_to_us": "يمكنك التواصل معنا عن طريق إرسال بريد إلكتروني من خلال هذا النموذج، وسنقوم بالرد عليك في أقرب وقت ممكن",
+      "title": "العنوان",
+      "message": "الرسالة"
+    },
+    "account_deletion": {
+      "account_deletion": "حذف الحساب",
+      "losing_data": "ستفقد جميع بياناتك عن طريق حذف حسابك. هذا الإجراء لا رجعة فيه",
+      "delete_account": "حذف الحساب"
     }
   }
 }

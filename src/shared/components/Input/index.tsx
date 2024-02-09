@@ -4,7 +4,7 @@ import React from 'react';
 import { ms } from 'react-native-size-matters';
 
 // Components
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { TextInput, TextInputProps, Text } from 'react-native-paper';
 
 // Utilities
@@ -15,19 +15,18 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 interface InputProps extends TextInputProps {
-  name?: string;
   placeholder: string;
-  handleChange: Function;
   value: string | undefined;
   leftIcon?: React.ReactNode;
   error?: string | undefined;
   rightIcon?: React.ReactNode;
+  inputStyle?: StyleProp<TextStyle>;
+  handleChange: (text: string) => void;
 }
 
 // Component
 const Input: React.FC<InputProps> = ({
   label,
-  name,
   leftIcon,
   rightIcon,
   placeholder,
@@ -57,8 +56,8 @@ const Input: React.FC<InputProps> = ({
         left={leftIconComponent}
         placeholder={placeholder}
         right={rightIconComponent}
-        theme={{ roundness: ms(10) }}
         onChangeText={handleChange}
+        theme={{ roundness: ms(10) }}
         underlineStyle={styles.underline}
         style={[styles.textInput, inputStyle]}
         placeholderTextColor={theme.colors.gray[500]}

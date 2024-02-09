@@ -5,20 +5,26 @@ import { ms, mvs } from 'react-native-size-matters';
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
-export default (theme: AppTheme, isHorizontal: boolean) =>
+export default (theme: AppTheme, isHorizontal: boolean, isDark: boolean) =>
   StyleSheet.create({
     activity: {
       elevation: 2,
       overflow: 'hidden',
       borderWidth: ms(1),
       borderRadius: ms(8),
+      borderColor: 'transparent',
       paddingHorizontal: ms(12),
       marginBottom: !isHorizontal ? mvs(12) : 0,
       marginHorizontal: !isHorizontal ? 0 : ms(10),
       flexDirection: isHorizontal ? 'row' : 'column',
       paddingVertical: isHorizontal ? mvs(8) : mvs(12),
-      borderColor: theme.dark ? theme.colors.secondary : 'transparent',
-      backgroundColor: theme.dark ? theme.colors.background : theme.colors.card
+      backgroundColor: theme.dark
+        ? isDark
+          ? theme.colors.dark[1]
+          : theme.colors.white
+        : isDark
+          ? theme.colors.dark[1]
+          : theme.colors.background
     },
     descriptionContainer: {
       flex: 1,
@@ -41,7 +47,7 @@ export default (theme: AppTheme, isHorizontal: boolean) =>
       flexDirection: 'row'
     },
     rating: {
-      marginEnd: ms(5),
+      marginStart: ms(5),
       color: theme.colors.secondary
     },
     starRatingContainer: {

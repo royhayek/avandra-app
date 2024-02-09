@@ -1,11 +1,11 @@
 // Packages
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { Text } from 'react-native-paper';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import PlanListItem from '../Subscriptions/components/PlanListItem';
 
 // Utilities
@@ -33,8 +33,6 @@ const Billingscreen = () => {
   const navigation = useNavigation();
 
   const { title } = route?.params as RouteParams;
-
-  const [isSuccess, setIsSuccess] = useState(false);
 
   // Effects
   useEffect(() => {

@@ -165,7 +165,7 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
   // Renderers
   return (
     <>
-      <ScrollableTabs tabs={tabs} activeTab={activeDate} onTabPress={setActiveDate} />
+      <ScrollableTabs tabs={tabs} activeTab={activeDate} onTabPress={setActiveDate} style={styles.dateTabs} />
 
       <View style={styles.paddedContent}>{_.map(activeItineraries, renderItinerary)}</View>
     </>

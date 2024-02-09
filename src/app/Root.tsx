@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import { LayoutChangeEvent } from 'react-native';
+import { LayoutChangeEvent, useColorScheme } from 'react-native';
 import { ref, onValue } from 'firebase/database';
 import { withIAPContext } from 'react-native-iap';
 import { PaperProvider } from 'react-native-paper';
@@ -42,11 +42,12 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const [notification, setNotification] = useState<Notifications.Notification>();
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
   const [loadedData, setLoadedData] = useState<boolean>(false);
+  const colorScheme = useColorScheme();
 
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
-  const isDark = _.isEqual(themeMode, 'dark');
+  const isDark = _.isEqual(themeMode, 'dark') || (_.isEqual(themeMode, 'default') && _.isEqual(colorScheme, 'dark'));
   const theme = isDark ? darkTheme : lightTheme;
 
   // Callbacks
@@ -81,19 +82,19 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   }, [getConfiguration, initAppPurchases, language]);
 
   // Effects
-  useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
-    notificationListener.current = Notifications.addNotificationReceivedListener((noti) => setNotification(noti));
+  // useEffect(() => {
+  //   registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
+  //   notificationListener.current = Notifications.addNotificationReceivedListener((noti) => setNotification(noti));
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) =>
-      console.log(response)
-    );
+  //   responseListener.current = Notifications.addNotificationResponseReceivedListener((response) =>
+  //     console.log(response)
+  //   );
 
-    return () => {
-      notificationListener.current && Notifications.removeNotificationSubscription(notificationListener.current);
-      responseListener.current && Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+  //   return () => {
+  //     notificationListener.current && Notifications.removeNotificationSubscription(notificationListener.current);
+  //     responseListener.current && Notifications.removeNotificationSubscription(responseListener.current);
+  //   };
+  // }, []);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
