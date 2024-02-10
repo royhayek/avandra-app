@@ -86,7 +86,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
 
       toggleOptionsMenu();
     },
-    [handleDeleteHistory, item]
+    [handleDeletePress, toggleOptionsMenu]
   );
 
   // Renderer Vars
@@ -153,6 +153,29 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
     </View>
   );
 
+  const renderVerticalTripCard = (hasDelete = true) => (
+    <View style={styles.container}>
+      <ImageBackground
+        resizeMode="stretch"
+        style={styles.cityImage}
+        imageStyle={{ borderRadius: ms(16) }}
+        source={require('../../../../../assets/paris.jpeg')}>
+        {hasDelete && (
+          <IconButton
+            size={ms(20)}
+            mode="contained"
+            icon={renderDeleteIcon}
+            style={styles.deleteBtn}
+            onPress={handleDeletePress}
+            containerColor={theme.colors.background}
+          />
+        )}
+
+        {renderTripInformation()}
+      </ImageBackground>
+    </View>
+  );
+
   const renderTripCard = () => (
     <View style={styles.tripCard}>
       <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
@@ -160,28 +183,36 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
     </View>
   );
 
-  return small ? (
+  return (
     <>
-      <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
-        <View style={styles.flex1}>{renderTripCard()}</View>
+      {small ? (
+        <>
+          <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
+            <View style={styles.flex1}>{renderTripCard()}</View>
 
-        <Menu
-          items={menuItems}
-          visible={openOptionsMenu}
-          onDismiss={toggleOptionsMenu}
-          onItemPress={handleTripMenuItemPress}
-          anchor={
-            <IconButton
-              size={ms(20)}
-              icon={renderMenuIcon}
-              onPress={toggleOptionsMenu}
-              style={{ borderRadius: ms(8) }}
+            <Menu
+              items={menuItems}
+              visible={openOptionsMenu}
+              onDismiss={toggleOptionsMenu}
+              onItemPress={handleTripMenuItemPress}
+              anchor={
+                <IconButton
+                  size={ms(20)}
+                  icon={renderMenuIcon}
+                  onPress={toggleOptionsMenu}
+                  style={{ borderRadius: ms(8) }}
+                />
+              }
             />
-          }
-        />
-      </TouchableOpacity>
+          </TouchableOpacity>
 
-      <GenerationModal visible={regenerating} regenerating={regenerating} progress={0} />
+          <GenerationModal visible={regenerating} regenerating={regenerating} progress={0} />
+        </>
+      ) : (
+        <TouchableOpacity key={index} onPress={() => handleTextPress(item)}>
+          {renderVerticalTripCard()}
+        </TouchableOpacity>
+      )}
 
       <CustomBottomSheet
         sheetRef={bottomSheetRef}
@@ -190,28 +221,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
         title={t('history.delete_trip')}
         secondaryBtnProps={{ title: t('common.cancel'), onPress: handleSheetClose }}
         primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDeleteHistory }}>
-        {renderTripCard()}
+        {small ? renderTripCard() : renderVerticalTripCard(false)}
       </CustomBottomSheet>
     </>
-  ) : (
-    <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.container}>
-      <ImageBackground
-        resizeMode="stretch"
-        style={styles.cityImage}
-        imageStyle={{ borderRadius: ms(16) }}
-        source={require('../../../../../assets/paris.jpeg')}>
-        <IconButton
-          size={ms(20)}
-          mode="contained"
-          icon={renderDeleteIcon}
-          style={styles.deleteBtn}
-          containerColor={theme.colors.background}
-          onPress={() => handleDeleteHistory(item?.id)}
-        />
-
-        {renderTripInformation()}
-      </ImageBackground>
-    </TouchableOpacity>
   );
 };
 

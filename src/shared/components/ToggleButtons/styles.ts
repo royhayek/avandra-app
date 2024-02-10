@@ -21,7 +21,7 @@ export default (theme: AppTheme) =>
       borderBottomRightRadius: 0,
       borderTopLeftRadius: theme.roundness,
       borderBottomLeftRadius: theme.roundness,
-      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[200]
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },
     activeButtonContainer: {
       flex: 1,
@@ -32,7 +32,7 @@ export default (theme: AppTheme) =>
       borderBottomLeftRadius: 0,
       borderTopRightRadius: theme.roundness,
       borderBottomRightRadius: theme.roundness,
-      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[200]
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },
     button: {
       paddingVertical: mvs(8),

@@ -11,8 +11,7 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     safeAreaView: {
-      flex: 1,
-      paddingBottom: mvs(24),
+      paddingBottom: mvs(8),
       backgroundColor: theme.colors.background,
       direction: i18n.locale === 'ar' ? 'rtl' : 'ltr'
     },

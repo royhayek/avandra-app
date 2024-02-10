@@ -10,7 +10,7 @@ import { Divider, Text } from 'react-native-paper';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
@@ -49,7 +49,7 @@ const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({
           Congratulations!
         </Text>
         <Text variant="xLarge" style={styles.name}>
-          You're now a {name}!
+          You're now a {name[i18n.locale]}!
         </Text>
 
         <Divider style={styles.divider} />
@@ -63,7 +63,7 @@ const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({
             <View style={styles.benefit}>
               <CheckIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
               <Text variant="xLarge" style={styles.benefitText}>
-                {benefit}
+                {benefit[i18n.locale]}
               </Text>
             </View>
           ))}

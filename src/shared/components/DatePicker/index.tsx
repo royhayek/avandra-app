@@ -189,8 +189,8 @@ const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
           width: ms(32),
           marginVertical: 10,
           alignItems: 'center',
-          backgroundColor: theme.colors.primary,
-          borderRadius: theme.roundness
+          borderRadius: theme.roundness,
+          backgroundColor: theme.colors.primary
         }
       }}
     />

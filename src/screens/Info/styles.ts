@@ -1,16 +1,19 @@
 // Packages
 import { StyleSheet } from 'react-native';
-import { ms } from 'react-native-size-matters';
+import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
-    container: {
+    scollView: {
       flex: 1,
-      padding: ms(16),
       direction: 'ltr',
+      paddingHorizontal: ms(16),
       backgroundColor: theme.colors.background
+    },
+    scrollViewContainer: {
+      paddingBottom: mvs(50)
     }
   });

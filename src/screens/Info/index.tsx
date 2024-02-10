@@ -43,7 +43,7 @@ const InfoScreen: React.FC<InfoScreenProps> = ({ route }) => {
 
   // Renderers
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.scollView} contentContainerStyle={styles.scrollViewContainer}>
       <RenderHtml
         source={{ uri }}
         contentWidth={width}

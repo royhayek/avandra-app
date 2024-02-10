@@ -11,10 +11,15 @@ import 'moment-timezone';
 // Utilities
 import i18n from './i18n';
 import { store } from './store';
+import { Platform } from 'react-native';
 // import { logout } from 'shared/utils';
 // import {ROUTES} from 'shared/constants/routes';
 
-const serverApiUrl = process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api';
+const serverApiUrl =
+  process.env.EXPO_PUBLIC_SERVER_API_URL ?? Platform.OS === 'android'
+    ? 'http://172.20.10.14:4000/api'
+    : 'http://localhost:4000/api';
+
 console.debug('[api - serverApiUrl] :: ', serverApiUrl);
 
 export const openAIConfig = new Configuration({ apiKey: process.env.OPENAI_API_KEY });

@@ -17,10 +17,12 @@ import MyTripsScreen from '@screens/MyTrips';
 import { Ionicons } from '@expo/vector-icons';
 import Header from '@shared/components/Header';
 import SettingsScreen from '@screens/Settings';
+import SearchScreen from '@screens/SearchScreen';
 import ItineraryScreen from '@screens/Itinerary';
 import OnBoardingScreen from '@screens/OnBoarding';
 import TripDetailsScreen from '@screens/TripDetails';
 import FaqScreen from '@screens/Settings/screens/Faq';
+import EventAdditionScreen from '@screens/EventAddition';
 import PopularScreen from '@screens/Home/screens/Popular';
 import ArticleDetailsScreen from '@screens/ArticleDetails';
 import Billingscreen from '@screens/Settings/screens/Billing';
@@ -173,7 +175,7 @@ const RootNavigation = () => {
         tabBarItemStyle: {
           borderRadius: ms(30),
           marginHorizontal: ms(2),
-          marginVertical: Platform.OS === 'ios' ? mvs(9) : mvs(16)
+          marginVertical: Platform.OS === 'ios' ? 9 : 16
         }
       })}>
       <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{ title: _t('home') }} />
@@ -186,6 +188,7 @@ const RootNavigation = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeTabs} />
       <Stack.Screen name="Planner" component={PlannerScreen} options={{ ...screenOptions }} />
+      <Stack.Screen name="Search" component={SearchScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="Popular" component={PopularScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="DestinationDetails" component={DestinationDetailsScreen} options={{ ...screenOptions }} />
       <Stack.Screen name="ArticleDetails" component={ArticleDetailsScreen} options={{ ...screenOptions }} />
@@ -196,6 +199,11 @@ const RootNavigation = () => {
         name="TripModification"
         component={TripModificationScreen}
         options={{ ...screenOptions, title: _t('edit_itinerary') }}
+      />
+      <Stack.Screen
+        name="EventAddition"
+        component={EventAdditionScreen}
+        options={{ ...screenOptions, title: _t('add_event') }}
       />
       <Stack.Screen
         name="Subscriptions"

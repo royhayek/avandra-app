@@ -18,7 +18,7 @@ export default (theme: AppTheme) =>
       fontFamily: 'urbanist-regular'
     },
     cancelButton: {
-      lineHeight: 15,
+      lineHeight: mvs(15),
       color: theme.colors.primary,
       fontFamily: 'urbanist-semibold'
     }

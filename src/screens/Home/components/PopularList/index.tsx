@@ -111,6 +111,7 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
         data={data}
         horizontal={isHorizontal}
         keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContainer}
         renderItem={({ item }) => <PopularListItem type={type} item={item} orientation={orientation} />}

@@ -60,17 +60,17 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <Text variant="h2" style={styles.price}>
           {price === 0 ? _t('free') : `${currency} ${price}`}
-          <Text variant="h6">
-            {period && !String(period.en).match(/lifetime|free/) ? ` / ${period[i18n.locale]}` : ''}
-          </Text>
+        </Text>
+        <Text variant="h6">
+          {period && !String(period.en).match(/lifetime|free/) ? ` / ${period[i18n.locale]}` : ''}
         </Text>
       </View>
 
       <Divider style={styles.divider} />
 
       <View style={styles.benefits}>
-        {_.map(benefits, (benefit) => (
-          <View style={styles.benefit}>
+        {_.map(benefits, (benefit, index) => (
+          <View key={index} style={styles.benefit}>
             <CheckIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
             <Text variant="xLarge" style={styles.benefitText}>
               {benefit[i18n.locale]}

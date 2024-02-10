@@ -15,7 +15,8 @@ export default (theme: AppTheme) =>
       paddingTop: mvs(8),
       paddingHorizontal: ms(24)
     },
-    segmentedButtons: {
+    toggleButtons: {
+      marginTop: 0,
       marginBottom: mvs(24),
       marginHorizontal: ms(24)
     },

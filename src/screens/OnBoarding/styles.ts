@@ -22,9 +22,10 @@ export default (theme: AppTheme) =>
       left: 0,
       right: 0,
       bottom: 0,
+      // height: '48%',
       position: 'absolute',
       height:
-        Device.deviceType === Device.DeviceType.PHONE ? (Platform.OS === 'android' ? mvs(415) : mvs(365)) : mvs(330)
+        Device.deviceType === Device.DeviceType.PHONE ? (Platform.OS === 'android' ? mvs(400) : mvs(365)) : mvs(330)
     },
     content: {
       left: 0,

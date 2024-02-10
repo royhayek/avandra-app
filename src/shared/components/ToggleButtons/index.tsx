@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Text } from 'react-native-paper';
-import { TouchableWithoutFeedback, View } from 'react-native';
+import { StyleProp, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
@@ -18,17 +18,18 @@ interface ToggleButtonsProps {
   active: string;
   buttons: Button[];
   setActive: (key: string) => void;
+  containerStyle: StyleProp<ViewStyle>;
 }
 
 // Component
-const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActive }) => {
+const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActive, containerStyle }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {_.map(buttons, (button, index) => {
         const isActive = _.isEqual(button.key, active);
 

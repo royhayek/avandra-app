@@ -54,11 +54,14 @@ export default (theme: AppTheme) =>
     description: {
       marginTop: mvs(16)
     },
+    mapContainer: {
+      marginTop: mvs(24),
+      overflow: 'hidden',
+      borderRadius: theme.roundness
+    },
     map: {
       width: '100%',
-      height: mvs(180),
-      marginTop: mvs(24),
-      borderRadius: theme.roundness
+      height: mvs(180)
     },
     fab: {
       opacity: 0.9,

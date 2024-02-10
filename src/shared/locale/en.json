@@ -61,6 +61,7 @@
       "upgrade_plan": "Upgrade Plan",
       "faq": "FAQ",
       "contact": "Contact Support",
+      "add_event": "Add Event"
     },
     "home": {
       "where_to_go": "Where do you want to go?",
@@ -226,6 +227,9 @@
     },
     "trip_modifcation": {
       "delete_event": "Delete this Event?"
+    },
+    "trip_addition": {
+      "add_more_events": "Add More Events"
     },
     "contact": {
       "reach_out_to_us": "You can reach out to us by sending an email through this form, and we'll get back to you as soon as we can.",

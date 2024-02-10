@@ -8,9 +8,17 @@ export const destination_details = {
   continent: 'Eastern Asia, Asia',
   currency: 'Japanese yen (JPY)',
   gallery: [
-    'https://picsum.photos/300/200?random=2',
-    'https://picsum.photos/300/200?random=3',
-    'https://picsum.photos/300/200?random=4',
-    'https://picsum.photos/300/200?random=5'
+    {
+      uri: 'https://picsum.photos/300/200?random=2'
+    },
+    {
+      uri: 'https://picsum.photos/300/200?random=3'
+    },
+    {
+      uri: 'https://picsum.photos/300/200?random=4'
+    },
+    {
+      uri: 'https://picsum.photos/300/200?random=5'
+    }
   ]
 };

@@ -19,7 +19,7 @@ export const scaledFontSize = (baseFontSize: number) => {
   const heightRatio = Dimensions.get('screen').height / 932;
   const maxRatio = Math.max(widthRatio, heightRatio);
 
-  return Math.round(baseFontSize * maxRatio);
+  return Device.deviceType === Device.DeviceType.PHONE ? Math.round(baseFontSize * maxRatio) : baseFontSize;
 };
 
 export const wait = (timeout: number) => {

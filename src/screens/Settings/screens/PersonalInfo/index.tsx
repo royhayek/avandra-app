@@ -3,11 +3,8 @@ import _ from 'lodash';
 import React, { useCallback, useMemo, useState, useRef } from 'react';
 
 // Components
-import { Text } from 'react-native-paper';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
-import FastImage from 'react-native-fast-image';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import RegularButton from '@shared/components/Buttons/Regular';
 import SquareEditIcon from '@shared/assets/icons/SquareEditIcon';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
@@ -46,7 +43,6 @@ const PersonalInfoScreen = () => {
 
   const formRef = useRef<FormikProps<ProfileFormValues> | null>(null);
 
-  const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
   const formInitialValues = { _id, name, email, country, gender };
@@ -65,8 +61,15 @@ const PersonalInfoScreen = () => {
       console.info('[handleFormSubmit] :: ', { values });
       const response = await dispatchThunk(updateProfileAction(values));
 
-      if (response.payload.success) setIsSuccess(true);
-      else
+      if (response.payload.success) {
+        dispatch(
+          snackbarActions.showSnackbar({
+            type: 'success',
+            title: 'Success',
+            message: 'Profile updated successfully.'
+          })
+        );
+      } else {
         dispatch(
           snackbarActions.showSnackbar({
             type: 'error',
@@ -74,6 +77,7 @@ const PersonalInfoScreen = () => {
             message: 'An error has occured, try again later.'
           })
         );
+      }
     },
     [dispatch, dispatchThunk]
   );
@@ -94,24 +98,6 @@ const PersonalInfoScreen = () => {
     ),
     [commonStyles.footer, loading]
   );
-
-  if (isSuccess) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.successContainer}>
-          <FastImage source={require('@shared/assets/images/SuccessProfileLogo.png')} style={styles.successLogo} />
-          <Text variant="h3" style={styles.title}>
-            {t('profile.success_title')}
-          </Text>
-          <Text variant="xLarge" style={styles.subtitle}>
-            {t('profile.success_desc')}
-          </Text>
-        </View>
-
-        {renderFooter}
-      </SafeAreaView>
-    );
-  }
 
   return (
     <View style={styles.container}>

@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Trippify',
     slug: 'trippify',
-    version: '1.0.3',
+    version: '1.0.5',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
@@ -111,13 +111,7 @@ module.exports = {
         }
       ],
       'expo-apple-authentication',
-      './react-native-maps-plugin',
-      [
-        'expo-location',
-        {
-          locationAlwaysAndWhenInUsePermission: 'Allow Trippify to use your location.'
-        }
-      ]
+      './react-native-maps-plugin'
     ],
     owner: 'royhayek'
   },

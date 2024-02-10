@@ -61,6 +61,7 @@
       "upgrade_plan": "Mettre à niveau le plan",
       "faq": "FAQ",
       "contact": "Contacter l'assistance",
+      "add_event": "Ajouter un événement"
     },
     "home": {
       "where_to_go": "Où voulez vous aller?",
@@ -225,7 +226,10 @@
       "reviews": "avis"
     },
     "trip_modifcation": {
-      "delete_event": "Supprimer l'événement?",
+      "delete_event": "Supprimer l'événement?"
+    },
+    "trip_addition": {
+      "add_more_events": "Ajouter plus d'événements"
     },
     "contact": {
       "reach_out_to_us": "Vous pouvez nous contacter en envoyant un email via ce formulaire, et nous vous répondrons dans les plus brefs délais.",

@@ -68,5 +68,9 @@ export default (theme: AppTheme) =>
       marginTop: mvs(24),
       marginBottom: ms(16),
       paddingHorizontal: ms(24)
+    },
+    modalImage: {
+      width: windowWidth,
+      height: windowWidth
     }
   });

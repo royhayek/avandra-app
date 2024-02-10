@@ -11,7 +11,6 @@ export default (theme: AppTheme) =>
       flex: 1
     },
     rowContent: {
-      flex: 1,
       flexDirection: 'row',
       marginBottom: mvs(24)
     },
@@ -63,6 +62,7 @@ export default (theme: AppTheme) =>
       fontFamily: 'urbanist-medium'
     },
     paddedContent: {
+      flex: 1,
       paddingHorizontal: ms(24)
     },
     navigationIcon: {

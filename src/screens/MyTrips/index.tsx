@@ -16,6 +16,7 @@ import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
 import { savedTrips as savedTripsData } from './data';
+import ToggleButtons from '@shared/components/ToggleButtons';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
@@ -98,16 +99,18 @@ const HistoryScreen = () => {
 
         <HistoryCard item={savedTrips[0]} index={0} refresh={refreshSavedTrips} />
 
-        <SegmentedButtons
-          density="small"
-          value={selectedTab}
-          buttons={segmentedButtons}
-          onValueChange={setSelectedTab}
-          style={styles.segmentedButtons}
+        <ToggleButtons
+          buttons={[
+            { key: 'upcoming', title: _t('upcoming') },
+            { key: 'expired', title: _t('expired') }
+          ]}
+          active={selectedTab}
+          setActive={setSelectedTab}
+          containerStyle={styles.toggleButtons}
         />
       </>
     ),
-    [savedTrips, refreshSavedTrips, selectedTab, segmentedButtons, styles.segmentedButtons]
+    [savedTrips, refreshSavedTrips, selectedTab, styles.toggleButtons]
   );
 
   const renderList = () => (
@@ -115,6 +118,7 @@ const HistoryScreen = () => {
       data={savedTrips}
       refreshing={refreshing}
       keyExtractor={(item) => item.id}
+      showsVerticalScrollIndicator={false}
       refreshControl={renderRefreshControl}
       ListHeaderComponent={renderActiveTrip}
       contentContainerStyle={styles.listContent}

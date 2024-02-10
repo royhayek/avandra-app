@@ -52,8 +52,8 @@ const RegularButton: React.FC<RegularButtonProps> = ({
     return (
       <TouchableOpacity
         onPress={onPress}
-        style={[disabled ? styles.disabledContainer : styles.container, style]}
         disabled={disabled}
+        style={[disabled ? styles.disabledContainer : styles.container, style]}
         {...props}>
         <LinearGradient
           start={{ x: 0, y: 0.75 }}
@@ -73,7 +73,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
   if (_.isEqual(variant, 'text')) {
     return (
       <Button loading={loading} disabled={loading} onPress={onPress} style={[styles.button, style]}>
-        <Text variant="medium" style={textStyle}>
+        <Text variant="medium" style={[styles.buttonLabelStyle, textStyle]}>
           {title}
         </Text>
       </Button>
@@ -87,7 +87,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
         loading={loading}
         disabled={loading}
         style={[styles.button, styles.secondaryButton, style]}>
-        <Text variant="large" style={styles.secondaryButtonLabel}>
+        <Text variant="large" style={[styles.buttonLabelStyle, styles.secondaryButtonLabel]}>
           {title}
         </Text>
       </Button>
@@ -97,7 +97,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
   // Renderers
   return (
     <Button loading={loading} disabled={loading} onPress={onPress} style={[styles.button, styles.primaryButton, style]}>
-      <Text variant="large" style={styles.primaryButtonLabel}>
+      <Text variant="large" style={[styles.buttonLabelStyle, styles.primaryButtonLabel]}>
         {title}
       </Text>
     </Button>
@@ -106,6 +106,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
 
 RegularButton.defaultProps = {
   title: 'Submit',
+  disabled: false,
   fullWidth: false,
   onPress: () => null,
   variant: 'primary' as ButtonVariant

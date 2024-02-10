@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { JapanFlag } from '@shared/assets/icons';
+import ImageView from 'react-native-image-viewing';
 import BackButton from '@shared/components/Buttons/Back';
 import RegularButton from '@shared/components/Buttons/Regular';
 import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
@@ -37,6 +38,8 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
+  const [imageViewState, setImageViewState] = React.useState({ isOpen: false, index: 0 });
+
   const navigation = useNavigation();
 
   const { id, name, image, country, description, gallery, continent, currency } = destination_details;
@@ -47,7 +50,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
     navigation.navigate('Planner');
   }, [country, dispatch, id, image, name, navigation]);
 
-  const handleGalleryImagePress = useCallback(() => {}, []);
+  const handleGalleryImagePress = useCallback((index: number) => setImageViewState({ isOpen: true, index }), []);
 
   // Effects
   useEffect(() => {
@@ -92,8 +95,8 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         contentContainerStyle={styles.galleryList}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
-          <TouchableOpacity onPress={handleGalleryImagePress}>
-            <FastImage key={index} source={{ uri: item }} style={styles.galleryImage} />
+          <TouchableOpacity onPress={() => handleGalleryImagePress(index)}>
+            <FastImage key={index} source={{ uri: item?.uri }} style={styles.galleryImage} />
           </TouchableOpacity>
         )}
       />
@@ -119,6 +122,13 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         {renderStickyHeader()}
         {renderContent()}
       </ScrollView>
+
+      <ImageView
+        images={gallery}
+        visible={imageViewState?.isOpen}
+        imageIndex={imageViewState?.index}
+        onRequestClose={() => setImageViewState({ isOpen: false, index: 0 })}
+      />
 
       <View style={commonStyles.footer}>
         <RegularButton title={_t('start_a_trip')} onPress={handleStartTripPress} fullWidth />

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 const EditIcon = (props) => (
-  <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
+  <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} transform="scale(1.1)" fill="none" {...props}>
     <Path
       fill="#34B27D"
       fillRule="evenodd"

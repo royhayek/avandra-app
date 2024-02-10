@@ -1,6 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
 
 // Components
@@ -19,6 +20,7 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import RegularButton from '@shared/components/Buttons/Regular';
 
 interface TripModificationItemProps {
   item: any;
@@ -31,6 +33,8 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const navigation = useNavigation();
+
   const deleteSheetRef = useRef<BottomSheetMethods>();
 
   const [itineraryData, setItineraryData] = useState(list);
@@ -41,6 +45,11 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
   const handleDeletePress = useCallback(() => deleteSheetRef.current?.expand(), []);
 
   const handleDeleteSheetClose = useCallback(() => deleteSheetRef.current?.close(), []);
+
+  const handleAddMorePress = useCallback(() => {
+    console.debug('Add more events');
+    navigation.navigate('EventAddition');
+  }, [navigation]);
 
   const handleDelete = useCallback(() => {
     handleDeleteSheetClose();
@@ -77,6 +86,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
 
         <NestableDraggableFlatList
           data={itineraryData}
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.list}
           onDragEnd={({ data }) => handleOnDragEnd(data)}
           keyExtractor={(_, index) => `draggable-item-${index}`}
@@ -91,7 +101,11 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
 
               <View style={styles.content}>
                 <Text variant="h6">{item?.name}</Text>
+                <Text variant="medium" style={styles.type}>
+                  {item?.type}
+                </Text>
               </View>
+
               <IconButton
                 size={ms(18)}
                 onPress={handleDeletePress}
@@ -104,6 +118,12 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
               />
             </TouchableOpacity>
           )}
+        />
+        <RegularButton
+          variant="secondary"
+          style={styles.addEventBtn}
+          onPress={handleAddMorePress}
+          title={t('trip_addition.add_more_events')}
         />
       </View>
 

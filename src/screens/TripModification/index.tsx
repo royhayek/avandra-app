@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 
 // Components
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 import TripModificationItem from './components/TripModificationItem';
 import { NestableScrollContainer } from 'react-native-draggable-flatlist';
@@ -51,7 +51,7 @@ const TripModificationScreen = () => {
 
   return (
     <>
-      <NestableScrollContainer contentContainerStyle={styles.content}>
+      <NestableScrollContainer showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
         {_.map(itineraries, (itinerary, index) => (
           <TripModificationItem key={index} item={itinerary} index={index} />
         ))}

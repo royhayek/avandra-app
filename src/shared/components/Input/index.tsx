@@ -49,6 +49,7 @@ const Input: React.FC<InputProps> = ({
       <Text variant="xLarge" style={styles.label}>
         {label}
       </Text>
+
       <TextInput
         value={value}
         numberOfLines={1}
@@ -64,6 +65,7 @@ const Input: React.FC<InputProps> = ({
         contentStyle={{ ...theme.fonts.xLarge, ...styles.contentStyle }}
         {...props}
       />
+
       {error && (
         <Text variant="small" style={styles.errorText}>
           {error}

@@ -1,8 +1,8 @@
 // Packages
 import { StyleSheet } from 'react-native';
 // Types
-import { AppTheme } from '@shared/assets/theme';
 import { ms, mvs } from 'react-native-size-matters';
+import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme, fullWidth: boolean | undefined) =>
   StyleSheet.create({
@@ -27,12 +27,11 @@ export default (theme: AppTheme, fullWidth: boolean | undefined) =>
       marginHorizontal: 8
     },
     button: {
-      padding: ms(6),
       borderRadius: ms(100),
       flex: fullWidth ? 1 : undefined
     },
     buttonLabelStyle: {
-      // color: theme.colors.white,
+      lineHeight: mvs(30)
     },
     primaryButton: {
       backgroundColor: theme.colors.primary

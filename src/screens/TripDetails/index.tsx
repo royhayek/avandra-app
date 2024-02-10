@@ -74,27 +74,35 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           {description}
         </Text>
 
-        <MapView
-          style={styles.map}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          zoomTapEnabled={false}
-          onPress={handleMapPress}
-          customMapStyle={
-            theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
-          }
-          provider={PROVIDER_GOOGLE}
-          region={{
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
-            latitude: location?.latitude || 0,
-            longitude: location?.longitude || 0
-          }}>
-          {_.map(
-            DUMMY_PLACES,
-            (place, index) => place && <Marker index={index} marker={place} interpolations={[]} size={ms(28)} />
-          )}
-        </MapView>
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            focusable={false}
+            zoomEnabled={false}
+            pitchEnabled={false}
+            scrollEnabled={false}
+            rotateEnabled={false}
+            toolbarEnabled={false}
+            zoomTapEnabled={false}
+            loadingEnabled={false}
+            zoomControlEnabled={false}
+            onPress={handleMapPress}
+            customMapStyle={
+              theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
+            }
+            provider={PROVIDER_GOOGLE}
+            region={{
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
+              latitude: location?.latitude || 0,
+              longitude: location?.longitude || 0
+            }}>
+            {_.map(
+              DUMMY_PLACES,
+              (place, index) => place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
+            )}
+          </MapView>
+        </View>
       </View>
 
       <Itinerary data={itineraries} />
@@ -103,7 +111,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   const renderFab = () => (
     <FAB
-      size="small"
+      size="medium"
       style={styles.fab}
       onPress={handleEditItinerary}
       icon={() => <EditIcon fill={theme.colors.white} />}

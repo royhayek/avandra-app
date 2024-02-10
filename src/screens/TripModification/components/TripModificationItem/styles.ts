@@ -35,17 +35,26 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.white
     },
     image: {
-      width: ms(120),
-      height: ms(80),
+      width: ms(115),
+      height: ms(75),
       marginStart: ms(12),
       borderRadius: theme.roundness
     },
     content: {
       flex: 1,
+      gap: mvs(4),
       marginEnd: ms(8),
       marginStart: ms(12)
     },
+    type: {
+      fontFamily: 'urbanist-medium',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[700]
+    },
     name: {
       fontFamily: 'urbanist-bold'
+    },
+    addEventBtn: {
+      marginBottom: mvs(24),
+      marginHorizontal: ms(16)
     }
   });

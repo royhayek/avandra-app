@@ -26,7 +26,6 @@ export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
       display: 'none'
     },
     contentStyle: {
-      lineHeight: 0,
       color: theme.dark ? theme.colors.white : theme.colors.gray[900],
       fontFamily: notEmpty ? 'urbanist-semibold' : 'urbanist-regular'
     },
