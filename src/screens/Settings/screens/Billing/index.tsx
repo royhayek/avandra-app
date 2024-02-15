@@ -1,7 +1,8 @@
 // Packages
 import _ from 'lodash';
 import React, { useEffect } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -30,7 +31,7 @@ const Billingscreen = () => {
   const styles = makeStyles(theme);
 
   const route = useRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { title } = route?.params as RouteParams;
 

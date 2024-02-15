@@ -1,4 +1,4 @@
-export interface Location {
+export interface LocationProps {
   id: string;
   place: string;
   desc: string;

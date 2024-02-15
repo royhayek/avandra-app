@@ -1,6 +1,8 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import FastImage from 'react-native-fast-image';
@@ -18,7 +20,6 @@ import makeCommonStyles from '@shared/assets/styles';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { PlanProps } from '@shared/types/Plan';
-import { useNavigation } from '@react-navigation/native';
 
 interface SuccessUpgradeProps {
   item: PlanProps;
@@ -35,7 +36,7 @@ const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleOkPress = () => navigation.goBack();

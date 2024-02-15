@@ -1,11 +1,13 @@
 import { t } from '../../app/i18n';
 import { store } from '../../app/store';
 import { Platform } from 'react-native';
+import getEnvVars from '../../../environment';
 import { TestIds } from 'react-native-google-mobile-ads';
 
 const state = store.getState();
+const { serverApiUrl } = getEnvVars();
 
-export const publicUrl = process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://172.20.10.14:4000/api';
+export const publicUrl = serverApiUrl;
 
 // Place your rewarded ad unit ids heres
 export const REWARDED_AD_UNIT_ID = Platform.select({

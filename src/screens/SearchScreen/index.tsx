@@ -1,15 +1,16 @@
 // Packages
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
 import { FlatList, View } from 'react-native';
 import SearchItem from './components/SearchItem';
 import BackButton from '@shared/components/Buttons/Back';
+import SearchInput from '@shared/components/SearchInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SearchInput from '@screens/Home/components/SearchInput';
 
 // Utils
 import makeStyles from './styles';
@@ -24,7 +25,7 @@ const SearchScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [searchInput, setSearchInput] = useState('');
 
@@ -42,7 +43,7 @@ const SearchScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <BackButton />
+        <BackButton style={styles.backBtn} />
         <SearchInput
           value={searchInput}
           onChange={handleTextChange}

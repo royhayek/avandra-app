@@ -1,8 +1,9 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState, useRef } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
@@ -36,7 +37,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [regenerating, setRegenerating] = useState(false);
   const [openOptionsMenu, setOpenOptionsMenu] = useState(false);

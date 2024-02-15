@@ -2,6 +2,8 @@
 import _ from 'lodash';
 import React, { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -12,7 +14,6 @@ import { TouchableOpacity, View } from 'react-native';
 // Utils
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { useNavigation } from '@react-navigation/native';
 
 // Interfaces
 interface SearchItemProps {
@@ -25,7 +26,7 @@ const SearchItem: React.FC<SearchItemProps> = ({ item }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleItemPress = useCallback(() => navigation.navigate('Planner'), [navigation]);

@@ -45,17 +45,23 @@ export default function App() {
 
   // Callbacks
   const checkForUpdates = useCallback(async () => {
-    try {
-      const update = await Updates.checkForUpdateAsync();
-
-      if (update.isAvailable) {
-        await Updates.fetchUpdateAsync();
-        // NOTIFY USER HERE
-        Updates.reloadAsync();
-      }
-    } catch (error) {
-      console.debug('[checkForUpdates - error] :: ', { error });
-    }
+    Updates.checkForUpdateAsync()
+      .then(({ isAvailable }) => {
+        if (isAvailable) {
+          Updates.fetchUpdateAsync()
+            .then(({ isNew }) => {
+              console.debug('[checkForUpdates] :: Found a new update. Fetching... ', { isNew });
+              // NOTIFY USER HERE
+              Updates.reloadAsync();
+            })
+            .catch((error) => {
+              console.error('Failed to check for updates :: ', error.nessage);
+            });
+        }
+      })
+      .catch((error) => {
+        console.debug('[checkForUpdates] :: Failed to check for updates ', { error });
+      });
   }, []);
 
   const prepare = useCallback(async () => {

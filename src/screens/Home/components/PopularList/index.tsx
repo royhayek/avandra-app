@@ -1,7 +1,8 @@
 // Packages
 import _ from 'lodash';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -42,7 +43,7 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
   const theme = useAppTheme();
   const styles = makeStyles(theme, isHorizontal);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const title = String(type).match(/destinations/)
     ? _t('popular_destinations')

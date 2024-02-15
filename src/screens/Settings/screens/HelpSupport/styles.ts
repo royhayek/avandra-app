@@ -10,6 +10,10 @@ import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingVertical: mvs(16)
+    },
     iconAndTitle: {
       gap: ms(16),
       alignItems: 'center',

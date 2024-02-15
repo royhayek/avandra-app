@@ -1,12 +1,12 @@
 // Packages
 import React, { useEffect } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import PopularList from '@screens/Home/components/PopularList';
 
 // Interfaces
-import { useNavigation, useRoute } from '@react-navigation/native';
-
 interface PopularScreenProps {}
 
 interface RouteParams {
@@ -18,7 +18,7 @@ interface RouteParams {
 const PopularScreen: React.FC<PopularScreenProps> = () => {
   // Statics
   const route = useRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { title, type } = route?.params as RouteParams;
 

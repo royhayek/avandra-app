@@ -11,7 +11,7 @@ import { View, TouchableOpacity, Platform, Linking } from 'react-native';
 // Utilities
 import makeStyles from './styles';
 import { formatAmount } from '@shared/utils';
-import { Location } from '@shared/types/Location';
+import { LocationProps } from '@shared/types/Location';
 import { selectPlaces } from '@redux/places/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import { DUMMY_PLACES } from '@screens/Itinerary/data';
@@ -20,7 +20,7 @@ import StarRating from 'react-native-star-rating-widget';
 
 // Interfaces
 interface LocationCardProps {
-  location: Location;
+  location: LocationProps;
   width: number;
   onMap: boolean;
   isDark?: boolean;

@@ -28,6 +28,10 @@ export default (theme: AppTheme) =>
     activeButton: {
       borderColor: theme.colors.primary
     },
+    nameAndIcon: {
+      gap: 8,
+      flexDirection: 'row'
+    },
     description: {
       marginTop: mvs(4),
       fontFamily: 'urbanist-medium'

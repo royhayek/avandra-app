@@ -1,7 +1,7 @@
 // Interfaces
 import { Moment } from 'moment';
-import { Destination } from '@shared/types/Destination';
-import { TripPayload } from '@shared/types/TripPayload';
+import { DestinationProps } from '@shared/types/Destination';
+import { TripPayloadProps } from '@shared/types/TripPayload';
 
 export interface DestinationsInitialState {
   isLoading: boolean;
@@ -9,7 +9,7 @@ export interface DestinationsInitialState {
   summary: string | null;
   lastRefresh: Moment | null;
   destinations: any[] | null;
-  payload: TripPayload | null;
+  payload: TripPayloadProps | null;
   error: string | null | undefined;
-  popularDestinations: Destination[] | null;
+  popularDestinations: DestinationProps[] | null;
 }

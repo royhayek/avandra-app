@@ -102,7 +102,7 @@ const AppearanceScreen = () => {
 
   // Renderers
   return (
-    <>
+    <View style={styles.container}>
       {_.map(buttons, ({ key, icon, name, color, onPress, isSwitch, isMenu, switchProps, menuProps }) => (
         <NavigationButton
           key={key}
@@ -160,7 +160,7 @@ const AppearanceScreen = () => {
           <Divider style={styles.divider} />
         </>
       </CustomBottomSheet>
-    </>
+    </View>
   );
 };
 

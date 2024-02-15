@@ -9,11 +9,13 @@ import { ScrollView, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
+import getEnvVars from '../../../environment';
 import { useAppTheme } from '@shared/assets/theme';
 import { getConfiguration } from '@redux/app/slice';
 
 // Interfaces
 import { RouteProp } from '@react-navigation/native';
+import { Text } from 'react-native-paper';
 
 type RootStackParamList = {
   InfoScreen: {
@@ -60,6 +62,8 @@ const InfoScreen: React.FC<InfoScreenProps> = ({ route }) => {
           }
         }}
       />
+      {/* TODO: To be removed when going live */}
+      <Text variant="xSmall">Current Base URL: {getEnvVars().serverApiUrl}</Text>
     </ScrollView>
   );
 };

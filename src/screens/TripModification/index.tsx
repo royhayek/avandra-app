@@ -1,7 +1,8 @@
 // Packages
 import _ from 'lodash';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { View } from 'react-native';
@@ -24,11 +25,12 @@ interface RouteParams {
 // Component
 const TripModificationScreen = () => {
   // Statics
-  const route = useRoute();
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
   const commonStyles = makeCommonStyles(theme);
+  
+  const route = useRoute();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { itineraries } = route?.params as RouteParams;
 

@@ -9,6 +9,7 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: mvs(16),
       backgroundColor: theme.colors.background
     },
     listContent: {

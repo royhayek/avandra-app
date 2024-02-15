@@ -20,6 +20,9 @@ export default (theme: AppTheme) =>
       color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     },
     divider: {
+      marginTop: mvs(16)
+    },
+    content: {
       marginVertical: mvs(24)
     },
     actions: {

@@ -23,4 +23,5 @@ const AvatarPlaceholderLight = (props) => (
     </Defs>
   </Svg>
 );
+
 export default AvatarPlaceholderLight;

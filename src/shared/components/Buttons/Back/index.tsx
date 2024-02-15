@@ -2,17 +2,20 @@
 import _ from 'lodash';
 import React from 'react';
 import { ms } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+// Components
+import { StyleProp, ViewStyle } from 'react-native';
+import LeftChevron from '@shared/assets/icons/LeftChevron';
 import { IconButton, IconButtonProps } from 'react-native-paper';
 
 // Utilities
 import i18n from '@app/i18n';
 import makeStyles from './styles';
-import LeftChevron from '@shared/assets/icons/LeftChevron';
 
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
-import { StyleProp, ViewStyle } from 'react-native';
 
 interface BackButtonProps extends Omit<IconButtonProps, 'icon'> {
   onPress?: () => void;
@@ -24,7 +27,8 @@ const BackButton: React.FC<BackButtonProps> = ({ style, onPressOut, ...props }) 
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Renderers
   return (

@@ -1,23 +1,23 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 // Components
+import { View } from 'react-native';
+import AccountDeletionModal from '../AccountDeletion';
 
 // Utilities
 import { t } from '@app/i18n';
+import makeStyles from './styles';
 import { appName } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
-
-// Interfaces
 import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
-import AccountDeletionModal from '../AccountDeletion';
 
 // Component
 const AccountSecurityScreen = () => {
   // Statics
   const theme = useAppTheme();
+  const styles = makeStyles(theme);
 
   const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState(false);
 
@@ -68,7 +68,7 @@ const AccountSecurityScreen = () => {
 
   // Renderers
   return (
-    <>
+    <View style={styles.container}>
       {_.map(buttons, ({ key, name, color, description, onPress, isSwitch, switchProps }) => (
         <NavigationButton
           key={key}
@@ -82,7 +82,7 @@ const AccountSecurityScreen = () => {
       ))}
 
       <AccountDeletionModal visible={isDeletionModalOpen} onCancel={handleCancelDeletion} />
-    </>
+    </View>
   );
 };
 

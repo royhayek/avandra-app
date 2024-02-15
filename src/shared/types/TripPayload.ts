@@ -1,4 +1,6 @@
-export interface TripPayload {
+import { TravelOptionProps } from './TravelOption';
+
+export interface TripPayloadProps {
   destination: string;
   periodType: string;
   noOfDays: number;
@@ -6,5 +8,6 @@ export interface TripPayload {
   fromDate: string;
   toDate: string;
   interests: string[];
-  whoIsGoing: string;
+  traveler: TravelOptionProps;
+  budget: TravelOptionProps;
 }

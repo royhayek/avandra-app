@@ -9,12 +9,12 @@ import { openAIConfig } from '@app/api';
 import { parseAIResponse } from '@shared/utils';
 
 // Interfaces
-import { TripPayload } from '@shared/types/TripPayload';
+import { TripPayloadProps } from '@shared/types/TripPayload';
 
 // This thunk will make a POST request to the OenAI API with the provided payload
 export const fetchTravelDestinations = createAsyncThunk(
   'travelItinerary/fetch',
-  async (payload: TripPayload, { rejectWithValue }) => {
+  async (payload: TripPayloadProps, { rejectWithValue }) => {
     try {
       const { destination, periodType, noOfDays, selectedMonth, fromDate, toDate, interests, whoIsGoing } = payload;
 
@@ -69,7 +69,7 @@ export const fetchTravelDestinations = createAsyncThunk(
 // This thunk will make a POST request to the OenAI API with the provided payload
 export const fetchTravelSummaryAndTips = createAsyncThunk(
   'travelSummaryAndTips/fetch',
-  async (payload: TripPayload, { rejectWithValue }) => {
+  async (payload: TripPayloadProps, { rejectWithValue }) => {
     try {
       const { destination } = payload;
 

@@ -1,7 +1,8 @@
 // Packages
 import _ from 'lodash';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
@@ -27,7 +28,7 @@ const OnBoarding = () => {
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const swiperRef = useRef<Swiper>(null);
 

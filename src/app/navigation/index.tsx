@@ -237,11 +237,6 @@ const RootNavigation = () => {
         options={({ route }) => ({ title: route.params?.name, ...screenOptions })}
       />
       <Stack.Screen
-        name="Itinerary"
-        component={ItineraryScreen}
-        options={({ route }) => ({ title: route.name, ...screenOptions })}
-      />
-      <Stack.Screen
         name="Map"
         component={MapScreen}
         options={({ route }) => ({ title: route.name, ...screenOptions })}

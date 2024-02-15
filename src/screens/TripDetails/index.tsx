@@ -1,9 +1,12 @@
 // Packages
 import _ from 'lodash';
+import { ms } from 'react-native-size-matters';
 import React, { useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
+import Marker from '@shared/components/Marker';
 import { FAB, Text } from 'react-native-paper';
 import Header from '@shared/components/Header';
 import FastImage from 'react-native-fast-image';
@@ -13,16 +16,14 @@ import { EditIcon } from '@shared/assets/icons';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 // Utilities
-import i18n, { t } from '@app/i18n';
+import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
+import { DUMMY_PLACES } from '@screens/Itinerary/data';
 import { BUDGET_LIST } from '@screens/Planner/components/Step4/data';
 import { PARTNERS_LIST } from '@screens/Planner/components/Step1/data';
-import { DUMMY_PLACES } from '@screens/Itinerary/data';
-import Marker from '@shared/components/Marker';
-import { ms } from 'react-native-size-matters';
 
 // Interfaces
 interface TripDetailsScreenProps {}
@@ -32,7 +33,8 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { name, description, country, date, traveler, budget, location, itineraries } = destination_details;
 
@@ -99,7 +101,8 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
             }}>
             {_.map(
               DUMMY_PLACES,
-              (place, index) => place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
+              (place, index) =>
+                place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
             )}
           </MapView>
         </View>

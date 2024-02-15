@@ -1,31 +1,32 @@
 // Packages
 import _ from 'lodash';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { FlatList, View } from 'react-native';
+import SearchInput from '@shared/components/SearchInput';
 import RegularButton from '@shared/components/Buttons/Regular';
 import EventAdditionItem from './components/EventAdditionItem';
 
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import makeCommonStyles from '@shared/assets/styles';
-
-// Interfaces
 import { useAppTheme } from '@shared/assets/theme';
-import SearchInput from '@screens/Home/components/SearchInput';
+import makeCommonStyles from '@shared/assets/styles';
 import { destination_details } from '@screens/TripDetails/data';
 
+// Interfaces
+
 // Component
-const EventAdditionScreen = () => {
+const EventAdditionScreen: React.FC = () => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [selectedEvents, setSelectedEvents] = useState<any[]>([]);
 

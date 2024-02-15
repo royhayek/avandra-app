@@ -1,14 +1,16 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import FastImage from 'react-native-fast-image';
-import { TouchableOpacity, View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
+import { TouchableOpacity, View } from 'react-native';
 import { DeleteIcon, DragIcon } from '@shared/assets/icons';
+import RegularButton from '@shared/components/Buttons/Regular';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import { NestableDraggableFlatList } from 'react-native-draggable-flatlist';
 
@@ -20,7 +22,6 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import RegularButton from '@shared/components/Buttons/Regular';
 
 interface TripModificationItemProps {
   item: any;
@@ -33,7 +34,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const deleteSheetRef = useRef<BottomSheetMethods>();
 

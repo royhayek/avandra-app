@@ -1,7 +1,8 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { ExportIcon } from '@shared/assets/icons';
@@ -24,7 +25,8 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
   const { width } = useWindowDimensions();
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleShare = useCallback(() => {

@@ -1,8 +1,9 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication';
 import { LoginManager, AuthenticationToken, AccessToken, Profile } from 'react-native-fbsdk-next';
 
@@ -18,17 +19,17 @@ import { AppleIconDark, AppleIconLight, FacebookIcon, GoogleIcon } from '@shared
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { authActions, getAuthLoading } from '@redux/auth/slice';
+import { appName } from '@shared/utils';
+import { useAppTheme } from '@shared/assets/theme';
 import { registerAction } from '@redux/auth/thunks';
+import { authActions, getAuthLoading } from '@redux/auth/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
-import { appName } from '@shared/utils';
-import { useAppTheme } from '@shared/assets/theme';
 import { SocialLoginProps } from '@shared/types/SocialLoginProps';
 
 // Component
-const Login = () => {
+const Login: React.FC = () => {
   // Redux
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
@@ -38,7 +39,8 @@ const Login = () => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleRegisterUser = useCallback(
@@ -89,15 +91,18 @@ const Login = () => {
   const handleFacebookSignIn = useCallback(
     async (type: string) => {
       try {
-        const result = await LoginManager.logInWithPermissions(['public_profile']);
+        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+        console.log('[handleFacebookSignIn - logInWithPermissions] :: ', { result });
+
         let token;
 
         if (Platform.OS === 'ios') {
           const result = await AuthenticationToken.getAuthenticationTokenIOS();
-          if (result) token = result.authenticationToken;
+          console.log('[handleFacebookSignIn - getAuthenticationTokenIOS] :: ', { result });
+          if (result?.authenticationToken) token = result.authenticationToken;
         } else {
           const result = await AccessToken.getCurrentAccessToken();
-          if (result) token = result.accessToken;
+          if (result?.accessToken) token = result.accessToken;
         }
 
         const profile = await Profile.getCurrentProfile();

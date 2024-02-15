@@ -30,7 +30,7 @@ export default (theme: AppTheme) =>
     },
     // Plans
     plansList: {
-      paddingVertical: mvs(16),
+      paddingVertical: mvs(24),
       paddingHorizontal: ms(24)
     },
     plan: {

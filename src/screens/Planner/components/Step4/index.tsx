@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // Components
 import { View } from 'react-native';
 import StepHeader from '../StepHeader';
-import PartnersList from '../Step1/PartnersList';
+import TravelOptionsList from '../TravelOptionsList';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -40,7 +40,7 @@ const Step4 = () => {
   return (
     <View style={styles.container}>
       <StepHeader title={_t('budget_title')} description={_t('budget_desc')} />
-      <PartnersList list={BUDGET_LIST} value={plannerPayload?.budget?.key ?? BUDGET_LIST[0].key} setValue={setBudget} />
+      <TravelOptionsList list={BUDGET_LIST} value={plannerPayload?.budget?.key ?? BUDGET_LIST[0].key} setValue={setBudget} />
     </View>
   );
 };

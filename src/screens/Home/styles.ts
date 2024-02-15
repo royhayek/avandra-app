@@ -7,7 +7,9 @@ export default () =>
     container: {
       paddingBottom: mvs(50)
     },
-    searchInput: {
+    containerStyle: {
+      marginTop: mvs(6),
+      marginBottom: mvs(4),
       marginHorizontal: ms(24)
     }
   });

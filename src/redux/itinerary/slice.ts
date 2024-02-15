@@ -16,7 +16,7 @@ import { AppThunkDispatch, RootState, store } from '@app/store';
 
 // Interfaces
 import { ItineraryInitialState } from './types';
-import { TripPayload } from '@shared/types/TripPayload';
+import { TripPayloadProps } from '@shared/types/TripPayload';
 
 // Slice
 const initialState: ItineraryInitialState = {

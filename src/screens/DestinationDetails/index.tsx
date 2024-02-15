@@ -2,7 +2,8 @@
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -24,6 +25,11 @@ import { plannerActions } from '@redux/planner/slice';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 
+interface ImageViewState {
+  isOpen: boolean;
+  index: number;
+}
+
 interface DestinationDetailsScreenProps {}
 
 // Component
@@ -38,9 +44,9 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const [imageViewState, setImageViewState] = React.useState({ isOpen: false, index: 0 });
+  const [imageViewState, setImageViewState] = React.useState<ImageViewState>({ isOpen: false, index: 0 });
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { id, name, image, country, description, gallery, continent, currency } = destination_details;
 

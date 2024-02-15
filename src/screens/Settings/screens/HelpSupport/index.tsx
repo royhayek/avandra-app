@@ -2,7 +2,8 @@
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
 import React, { useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Ionicons } from '@expo/vector-icons';
@@ -26,7 +27,8 @@ const HelpSupportScreen = () => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const navigateToFaq = useCallback(() => navigation.navigate('Faq'), [navigation]);
@@ -78,37 +80,41 @@ const HelpSupportScreen = () => {
         onPress: handleRateApp
       }
     ],
-    [navigateToSupport, navigateToInfo, handleRateApp]
+    [navigateToFaq, navigateToSupport, handleRateApp, navigateToInfo]
   );
 
   // Renderers
 
-  return _.map(buttons, ({ key, name, value, onPress, isSwitch, isMenu }) => (
-    <TouchableOpacity key={key} style={styles.item} onPress={onPress}>
-      <View style={styles.iconAndTitle}>
-        <Text
-          variant="h6"
-          style={[styles.buttonName, { color: theme.dark ? theme.colors.white : theme.colors.gray[900] }]}>
-          {name}
-        </Text>
-      </View>
+  return (
+    <View style={styles.container}>
+      {_.map(buttons, ({ key, name, value, onPress, isSwitch, isMenu }) => (
+        <TouchableOpacity key={key} style={styles.item} onPress={onPress}>
+          <View style={styles.iconAndTitle}>
+            <Text
+              variant="h6"
+              style={[styles.buttonName, { color: theme.dark ? theme.colors.white : theme.colors.gray[900] }]}>
+              {name}
+            </Text>
+          </View>
 
-      {isSwitch ? (
-        <Switch
-          value={value}
-          onValueChange={onPress}
-          style={{ transform: [{ scaleX: ms(0.8) }, { scaleY: ms(0.8) }] }}
-        />
-      ) : (
-        <Ionicons
-          size={ms(18)}
-          name="chevron-forward"
-          style={styles.arrowIcon}
-          color={theme.dark ? theme.colors.secondary : theme.colors.black}
-        />
-      )}
-    </TouchableOpacity>
-  ));
+          {isSwitch ? (
+            <Switch
+              value={value}
+              onValueChange={onPress}
+              style={{ transform: [{ scaleX: ms(0.8) }, { scaleY: ms(0.8) }] }}
+            />
+          ) : (
+            <Ionicons
+              size={ms(18)}
+              name="chevron-forward"
+              style={styles.arrowIcon}
+              color={theme.dark ? theme.colors.secondary : theme.colors.black}
+            />
+          )}
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 };
 
 export default HelpSupportScreen;

@@ -40,9 +40,6 @@ const Input: React.FC<InputProps> = ({
   const theme = useAppTheme();
   const styles = makeStyles(theme, !_.isEmpty(leftIcon), !_.isEmpty(value));
 
-  const leftIconComponent = leftIcon ? <TextInput.Icon icon={() => leftIcon} disabled /> : null;
-  const rightIconComponent = rightIcon ? <TextInput.Icon icon={() => rightIcon} disabled /> : null;
-
   // Renderers
   return (
     <View>
@@ -50,21 +47,25 @@ const Input: React.FC<InputProps> = ({
         {label}
       </Text>
 
-      <TextInput
-        value={value}
-        numberOfLines={1}
-        error={Boolean(error)}
-        left={leftIconComponent}
-        placeholder={placeholder}
-        right={rightIconComponent}
-        onChangeText={handleChange}
-        theme={{ roundness: ms(10) }}
-        underlineStyle={styles.underline}
-        style={[styles.textInput, inputStyle]}
-        placeholderTextColor={theme.colors.gray[500]}
-        contentStyle={{ ...theme.fonts.xLarge, ...styles.contentStyle }}
-        {...props}
-      />
+      <View style={styles.container}>
+        {leftIcon}
+
+        <TextInput
+          value={value}
+          numberOfLines={1}
+          error={Boolean(error)}
+          placeholder={placeholder}
+          onChangeText={handleChange}
+          theme={{ roundness: ms(10) }}
+          underlineStyle={styles.underline}
+          contentStyle={styles.contentStyle}
+          style={[styles.textInput, inputStyle]}
+          placeholderTextColor={theme.colors.gray[500]}
+          {...props}
+        />
+
+        {rightIcon}
+      </View>
 
       {error && (
         <Text variant="small" style={styles.errorText}>

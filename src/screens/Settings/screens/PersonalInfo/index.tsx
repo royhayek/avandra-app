@@ -5,26 +5,27 @@ import React, { useCallback, useMemo, useState, useRef } from 'react';
 // Components
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
+import Picker from '@shared/components/Picker';
+import { ScrollView, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
-import SquareEditIcon from '@shared/assets/icons/SquareEditIcon';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { DownChevron, MessageIcon } from '@shared/assets/icons';
 import { AvatarPlaceholderDark, AvatarPlaceholderLight } from '@shared/assets/images';
 import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from 'react-native-country-picker-modal';
 
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
 import { getUser, getUserLoading } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
-import { DownChevron, MessageIcon } from '@shared/assets/icons';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
-import { ProfileFormValues } from '@shared/types/ProfileFormProps';
+import { ProfileFormValuesProps } from '@shared/types/ProfileFormProps';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 // Component
 const PersonalInfoScreen = () => {
@@ -41,23 +42,32 @@ const PersonalInfoScreen = () => {
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const formRef = useRef<FormikProps<ProfileFormValues> | null>(null);
+  const genderPickerRef = useRef<BottomSheetMethods>(null);
+  const formRef = useRef<FormikProps<ProfileFormValuesProps> | null>(null);
 
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
   const formInitialValues = { _id, name, email, country, gender };
 
   // Callbacks
-  const handleEditPicture = useCallback(() => {}, []);
+  const handleOpenGenderPicker = useCallback(() => genderPickerRef.current?.expand(), []);
 
-  const hanldeOpenGenderPicker = useCallback(() => setIsOpenCountryPicker(true), []);
+  const handleCloseGenderPicker = useCallback(() => genderPickerRef.current?.close(), []);
 
   const handleOpenCountryPicker = useCallback(() => setIsOpenCountryPicker(true), []);
 
   const handleCloseCountryPicker = useCallback(() => setIsOpenCountryPicker(false), []);
 
+  const handleGenderPress = useCallback(
+    (gender: string) => {
+      formRef.current?.setFieldValue('gender', gender);
+      handleCloseGenderPicker();
+    },
+    [handleCloseGenderPicker]
+  );
+
   const handleFormSubmit = useCallback(
-    async (values: ProfileFormValues) => {
+    async (values: ProfileFormValuesProps) => {
       console.info('[handleFormSubmit] :: ', { values });
       const response = await dispatchThunk(updateProfileAction(values));
 
@@ -83,20 +93,21 @@ const PersonalInfoScreen = () => {
   );
 
   // Renderer vars
+  const genderOptions = [
+    { key: 'male', title: 'Male', onPress: handleGenderPress },
+    { key: 'female', title: 'Female', onPress: handleGenderPress }
+  ];
 
   // Renders
-  const renderFooter = useMemo(
-    () => (
-      <View style={commonStyles.footer}>
-        <RegularButton
-          fullWidth
-          loading={loading}
-          title={t('common.save')}
-          onPress={() => formRef.current?.handleSubmit()}
-        />
-      </View>
-    ),
-    [commonStyles.footer, loading]
+  const renderFooter = () => (
+    <View style={commonStyles.footer}>
+      <RegularButton
+        fullWidth
+        loading={loading}
+        title={t('common.save')}
+        onPress={() => formRef.current?.handleSubmit()}
+      />
+    </View>
   );
 
   return (
@@ -112,10 +123,6 @@ const PersonalInfoScreen = () => {
               <View>
                 <View style={styles.avatarContainer}>
                   {theme.dark ? <AvatarPlaceholderDark /> : <AvatarPlaceholderLight />}
-
-                  <TouchableOpacity onPress={handleEditPicture} style={styles.editIconButton}>
-                    <SquareEditIcon />
-                  </TouchableOpacity>
                 </View>
 
                 <Input
@@ -142,21 +149,22 @@ const PersonalInfoScreen = () => {
                   name="country"
                   error={errors.country}
                   value={values.country}
-                  handleChange={handleChange('country')}
                   label={t('profile.country')}
-                  onFocus={handleOpenCountryPicker}
                   placeholder={t('profile.country')}
+                  onPressOut={handleOpenCountryPicker}
+                  handleChange={handleChange('country')}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 
                 <Input
                   name="gender"
+                  editable={false}
                   error={errors.gender}
-                  value={values.gender}
-                  handleChange={handleChange('gender')}
+                  value={_.find(genderOptions, { key: values.gender })?.title}
                   label={t('profile.gender')}
-                  onFocus={hanldeOpenGenderPicker}
                   placeholder={t('profile.gender')}
+                  onPressOut={handleOpenGenderPicker}
+                  handleChange={handleChange('gender')}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 
@@ -170,13 +178,15 @@ const PersonalInfoScreen = () => {
                     theme={{ ...(theme.dark ? DARK_THEME : DEFAULT_THEME), backgroundColor: theme.colors.background }}
                   />
                 )}
+
+                <Picker sheetRef={genderPickerRef} options={genderOptions} />
               </View>
             )}
           </Formik>
         </View>
       </ScrollView>
 
-      {renderFooter}
+      {renderFooter()}
     </View>
   );
 };

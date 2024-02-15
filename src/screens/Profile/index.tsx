@@ -6,30 +6,30 @@ import React, { useCallback, useMemo, useState, useRef } from 'react';
 import { Text } from 'react-native-paper';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
+import Picker from '@shared/components/Picker';
 import FastImage from 'react-native-fast-image';
+import { ScrollView, View } from 'react-native';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RegularButton from '@shared/components/Buttons/Regular';
-import SquareEditIcon from '@shared/assets/icons/SquareEditIcon';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { AvatarPlaceholderDark, AvatarPlaceholderLight } from '@shared/assets/images';
+import { DownChevron, MessageIcon } from '@shared/assets/icons';
 import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from 'react-native-country-picker-modal';
 
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { authActions } from '@redux/auth/slice';
+import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
 import { getUser, getUserLoading } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
-import { DownChevron, MessageIcon } from '@shared/assets/icons';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
-import { ProfileFormValues } from '@shared/types/ProfileFormProps';
+import { ProfileFormValuesProps } from '@shared/types/ProfileFormProps';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 // Component
 const Profile = () => {
@@ -46,7 +46,8 @@ const Profile = () => {
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const formRef = useRef<FormikProps<ProfileFormValues> | null>(null);
+  const genderPickerRef = useRef<BottomSheetMethods>(null);
+  const formRef = useRef<FormikProps<ProfileFormValuesProps> | null>(null);
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
@@ -54,18 +55,26 @@ const Profile = () => {
   const formInitialValues = { _id, name, email, country: '', gender: '' };
 
   // Callbacks
-  const handleEditPicture = useCallback(() => {}, []);
+  const handleOpenGenderPicker = useCallback(() => genderPickerRef.current?.expand(), []);
+
+  const handleCloseGenderPicker = useCallback(() => genderPickerRef.current?.close(), []);
 
   const handleOpenCountryPicker = useCallback(() => setIsOpenCountryPicker(true), []);
 
-  const handleOpenGenderPicker = useCallback(() => setIsOpenCountryPicker(true), []);
-
   const handleCloseCountryPicker = useCallback(() => setIsOpenCountryPicker(false), []);
 
-  const handleExplorePress = useCallback(() => dispatch(authActions.update({ authenticated: true })), []);
+  const handleExplorePress = useCallback(() => dispatch(authActions.update({ authenticated: true })), [dispatch]);
+
+  const handleGenderPress = useCallback(
+    (gender: string) => {
+      formRef.current?.setFieldValue('gender', gender);
+      handleCloseGenderPicker();
+    },
+    [handleCloseGenderPicker]
+  );
 
   const handleFormSubmit = useCallback(
-    async (values: ProfileFormValues) => {
+    async (values: ProfileFormValuesProps) => {
       console.info('[handleFormSubmit] :: ', { values });
       const response = await dispatchThunk(updateProfileAction(values));
 
@@ -83,6 +92,10 @@ const Profile = () => {
   );
 
   // Renderer vars
+  const genderOptions = [
+    { key: 'male', title: 'Male', onPress: handleGenderPress },
+    { key: 'female', title: 'Female', onPress: handleGenderPress }
+  ];
 
   // Renders
   const renderFooter = useMemo(
@@ -134,15 +147,7 @@ const Profile = () => {
             validationSchema={profileSchema}
             initialValues={formInitialValues}>
             {({ handleChange, values, errors }) => (
-              <View>
-                <View style={styles.avatarContainer}>
-                  {theme.dark ? <AvatarPlaceholderDark /> : <AvatarPlaceholderLight />}
-
-                  <TouchableOpacity onPress={handleEditPicture} style={styles.editIconButton}>
-                    <SquareEditIcon />
-                  </TouchableOpacity>
-                </View>
-
+              <View style={styles.form}>
                 <Input
                   name="name"
                   value={values.name}
@@ -195,6 +200,8 @@ const Profile = () => {
                     theme={{ ...(theme.dark ? DARK_THEME : DEFAULT_THEME), backgroundColor: theme.colors.background }}
                   />
                 )}
+
+                <Picker sheetRef={genderPickerRef} options={genderOptions} />
               </View>
             )}
           </Formik>

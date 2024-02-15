@@ -42,7 +42,7 @@
     "expo-updates": "^0.18.19",
     "firebase": "^10.7.1",
     "formik": "^2.4.5",
-    "i18n-js": "^4.2.0",
+    "i18n-js": "^4.3.2",
     "i18next": "^23.7.11",
     "lodash": "^4.17.21",
     "lottie-react-native": "5.1.6",

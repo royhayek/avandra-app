@@ -2,7 +2,8 @@
 import React, { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
 import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
@@ -30,7 +31,8 @@ const ExitModal: React.FC<ExitModalProps> = ({ visible, toggle }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleLeaveScreen = useCallback(() => navigation.goBack(), [navigation]);

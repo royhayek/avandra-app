@@ -2,13 +2,14 @@
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
 import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
 import Accordion from '@shared/components/Accordion';
 import LocationCard from '@shared/components/LocationCard';
-import { useTheme, Text, List, Button, Badge, Divider } from 'react-native-paper';
+import { Text, List, Button, Badge, Divider } from 'react-native-paper';
 
 // Utilities
 import makeStyles from './styles';
@@ -35,7 +36,7 @@ const DestinationDay: React.FC<DestinationDayProps> = ({ day, index, expanded, s
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [expandedDays, setExpandedDays] = useState<number[]>([day.length]);
 
@@ -46,8 +47,10 @@ const DestinationDay: React.FC<DestinationDayProps> = ({ day, index, expanded, s
   const handleNavigateToMapView = (activities: any[]) => {
     const mapDestinations = _.map(activities ?? destinations.flat(), (i) => {
       const place = _.find(places, { id: i.id });
+
       return { ...i, ...place };
     });
+
     navigation.navigate('Map', { destinations: mapDestinations });
   };
 

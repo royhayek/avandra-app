@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Trippify',
     slug: 'trippify',
-    version: '1.0.5',
+    version: '1.0.8',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
@@ -16,13 +16,11 @@ module.exports = {
     },
     assetBundlePatterns: ['**/*'],
     ios: {
+      buildNumber: '1',
       supportsTablet: true,
       usesAppleSignIn: true,
       bundleIdentifier: 'com.nextgenappsdev.trippify',
       googleServicesFile: './GoogleService-Info.plist',
-      runtimeVersion: {
-        policy: 'appVersion'
-      },
       config: {
         usesNonExemptEncryption: false,
         googleMapsApiKey: '***REMOVED***'
@@ -47,9 +45,13 @@ module.exports = {
       }
     },
     updates: {
-      url: 'https://u.expo.dev/7435fea4-bc85-4a71-8526-db121810f0ed'
+      url: 'https://u.expo.dev/7435fea4-bc85-4a71-8526-db121810f0ed',
+      requestHeaders: {
+        'expo-runtime-version': 'expoVersion',
+        'expo-channel-name': 'production'
+      }
     },
-    runtimeVersion: 'exposdk:44.0.0',
+    runtimeVersion: 'expoVersion',
     android: {
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
@@ -61,8 +63,7 @@ module.exports = {
         }
       },
       package: 'com.nextgenappsdev.trippify',
-      versionCode: 1,
-      runtimeVersion: 'exposdk:44.0.0',
+      versionCode: 2,
       googleServicesFile: './google-services.json',
       permissions: ['android.permission.INTERNET']
     },

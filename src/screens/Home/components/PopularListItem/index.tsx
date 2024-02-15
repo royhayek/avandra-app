@@ -1,7 +1,8 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -9,14 +10,17 @@ import FastImage from 'react-native-fast-image';
 import { TouchableOpacity } from 'react-native';
 
 // Utilities
+import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { publicUrl } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
-import i18n from '@app/i18n';
 
 // Interfaces
+import { ArticleProps } from '@shared/types/Article';
+
 interface PopularListItemProps {
   type: string;
+  item: ArticleProps;
   orientation: string | undefined;
 }
 
@@ -29,7 +33,7 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
   const theme = useAppTheme();
   const styles = makeStyles(theme, isVertical);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleNavigateDetailsScreen = useCallback(() => {

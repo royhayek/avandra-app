@@ -1,4 +1,4 @@
-export interface Destination {
+export interface DestinationProps {
   _id: string;
   name: string;
   image: string;

@@ -26,15 +26,8 @@ export default (theme: AppTheme) =>
     subtitle: {
       textAlign: 'center'
     },
-    avatarContainer: {
-      marginVertical: 24,
-      alignSelf: 'center',
-      alignItems: 'center'
-    },
-    editIconButton: {
-      right: 10,
-      bottom: 10,
-      position: 'absolute'
+    form: {
+      marginTop: mvs(24)
     },
     successLogo: {
       width: ms(100),

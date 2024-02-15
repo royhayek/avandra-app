@@ -2,7 +2,8 @@
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
@@ -36,7 +37,7 @@ const Step6: React.FC<Step5Props> = ({ setActive }) => {
   const destinationsSelect = useAppSelector(selectDestinations);
 
   // Statics
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -56,7 +57,6 @@ const Step6: React.FC<Step5Props> = ({ setActive }) => {
 
   useEffect(() => {
     if (!itinerarySelect.isLoading && !isEmptyDestinations && !isEmptySummaryOrTips && !isEmptyPlaces) {
-      navigation.navigate('Itinerary');
       dispatch(plannerActions.setPayload({}));
       setActive(0);
     }

@@ -1,8 +1,9 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useRef } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -11,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import NavigationButton, { NavigationButtonProps } from './components/NavigationButton';
-import { EyeIcon, StarIcon, PaperIcon, LogoutIcon, PersonIcon, ShieldIcon, CategoryIcon } from '@shared/assets/icons';
+import { EyeIcon, StarIcon, PaperIcon, LogoutIcon, PersonIcon, ShieldIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
@@ -33,7 +34,6 @@ const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, opt
 const SettingsScreen = () => {
   // Redux
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
 
   const ownedSubscription = useAppSelector(getOwnedSubscription);
 
@@ -41,13 +41,12 @@ const SettingsScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   const logoutSheetRef = useRef<BottomSheetMethods>();
 
   // Callbacks
-  const handleUpgradePress = useCallback(
-    () => navigation.navigate('Subscriptions'),
-    [navigation]
-  );
+  const handleUpgradePress = useCallback(() => navigation.navigate('Subscriptions'), [navigation]);
 
   const handleLogoutSheetClose = useCallback(() => logoutSheetRef.current?.close(), []);
 
@@ -150,7 +149,6 @@ const SettingsScreen = () => {
   const renderContent = () => (
     <ScrollView
       overScrollMode="never"
-      style={styles.content}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.contentContainer}>
       {_.map(buttons, ({ key, icon, name, value, color, onPress, isSwitch, isMenu, switchProps, menuProps }) => (

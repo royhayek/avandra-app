@@ -12,14 +12,18 @@ export default (theme: AppTheme) =>
     },
     header: {
       alignItems: 'center',
+      justifyContent: 'center',
       flexDirection: 'row'
     },
     searchContainer: {
       flex: 1,
       marginEnd: 24
     },
+    backBtn: {
+      top: mvs(8),
+      marginHorizontal: ms(16)
+    },
     searchInput: {
-      width: '100%',
       marginTop: 0
     },
     content: {

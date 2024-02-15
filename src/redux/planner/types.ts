@@ -1,7 +1,7 @@
 // Interfaces
-import { TripPayload } from '@shared/types/TripPayload';
+import { TripPayloadProps } from '@shared/types/TripPayload';
 
 export interface PlannerInitialState {
   plannerStep: number;
-  payload: TripPayload | null;
+  payload: TripPayloadProps | null;
 }

@@ -4,14 +4,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
 import { updateUser } from './api';
-import { ProfileFormValues } from '@shared/types/ProfileFormProps';
+import { ProfileFormValuesProps } from '@shared/types/ProfileFormProps';
 import { snackbarActions } from '@redux/snackbar/slice';
 
 // Actions
 
 export const updateProfileAction = createAsyncThunk(
   'user/update',
-  async (payload: ProfileFormValues, { rejectWithValue, dispatch }) => {
+  async (payload: ProfileFormValuesProps, { rejectWithValue, dispatch }) => {
     try {
       const response = await updateUser(payload);
 

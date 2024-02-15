@@ -5,7 +5,14 @@ import React from 'react';
 // Components
 import Input from '@shared/components/Input';
 import { SearchIcon } from '@shared/assets/icons';
-import { NativeSyntheticEvent, NativeTouchEvent, StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  ViewStyle,
+  TextStyle,
+  TouchableOpacity,
+  NativeTouchEvent,
+  NativeSyntheticEvent
+} from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -16,7 +23,7 @@ import { TranslateOptions } from 'i18n-js';
 interface DestinationInputProps {
   value?: string;
   disabled?: boolean;
-  placeholder: string;
+  placeholder?: string;
   inputStyle?: StyleProp<TextStyle>;
   onChange?: (text: string) => void;
   containerStyle?: StyleProp<ViewStyle>;

@@ -23,9 +23,9 @@ const initialState: AppInitialState = {
   plannerStep: 0,
   deviceUuid: null,
   messagesCount: 0,
-  themeMode: 'light',
   subscriptions: [],
   lastSentDate: null,
+  themeMode: 'default',
   lastRewardedDate: null,
   ownedSubscription: null
 };

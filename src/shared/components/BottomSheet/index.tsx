@@ -1,18 +1,19 @@
 // Packages
+import _ from 'lodash';
 import React, { RefObject } from 'react';
 
 // Components
+import RegularButton from '../Buttons/Regular';
+import { useAppTheme } from '@shared/assets/theme';
 import { Divider, Portal, Text } from 'react-native-paper';
+import { Platform, StyleProp, View, ViewStyle } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet';
 
 // Utilities
 import makeStyles from './styles';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import RegularButton from '../Buttons/Regular';
-import { Platform, View } from 'react-native';
 
 interface ButtonProps {
   title: string;
@@ -26,16 +27,18 @@ interface CustomBottomSheetProps {
   children: React.ReactNode;
   primaryBtnProps?: ButtonProps;
   secondaryBtnProps?: ButtonProps;
+  contentStyle?: StyleProp<ViewStyle>;
   sheetRef: RefObject<BottomSheetMethods>;
 }
 
 // Component
 const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
   title,
-  sheetRef,
   onClose,
+  sheetRef,
   children,
   titleColor,
+  contentStyle,
   primaryBtnProps,
   secondaryBtnProps
 }) => {
@@ -60,9 +63,9 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
           <BottomSheetBackdrop
             {...props}
             opacity={0.6}
-            disappearsOnIndex={-1}
             appearsOnIndex={0}
             pressBehavior="close"
+            disappearsOnIndex={-1}
           />
         )}>
         <BottomSheetView style={styles.container}>
@@ -74,21 +77,29 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
 
           <Divider style={styles.divider} />
 
-          {children}
+          <View style={[styles.content, contentStyle]}>
+            {children}
 
-          <View style={styles.actions}>
-            <RegularButton
-              variant="secondary"
-              style={styles.button}
-              title={secondaryBtnProps?.title}
-              onPress={secondaryBtnProps?.onPress}
-            />
-            <RegularButton
-              variant="primary"
-              style={styles.button}
-              title={primaryBtnProps?.title}
-              onPress={primaryBtnProps?.onPress}
-            />
+            {(!_.isFunction(primaryBtnProps) || !_.isFunction(secondaryBtnProps)) && (
+              <View style={styles.actions}>
+                {secondaryBtnProps && (
+                  <RegularButton
+                    variant="secondary"
+                    style={styles.button}
+                    title={secondaryBtnProps?.title}
+                    onPress={secondaryBtnProps?.onPress}
+                  />
+                )}
+                {primaryBtnProps && (
+                  <RegularButton
+                    variant="primary"
+                    style={styles.button}
+                    title={primaryBtnProps?.title}
+                    onPress={primaryBtnProps?.onPress}
+                  />
+                )}
+              </View>
+            )}
           </View>
         </BottomSheetView>
       </BottomSheet>

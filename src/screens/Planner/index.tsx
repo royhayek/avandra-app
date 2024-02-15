@@ -2,8 +2,9 @@
 import _ from 'lodash';
 import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useCallback,  useState, useEffect } from 'react';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
@@ -35,7 +36,7 @@ const PlannerScreen = () => {
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [generating, setGenerating] = useState(false);
 

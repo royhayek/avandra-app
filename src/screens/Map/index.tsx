@@ -1,24 +1,24 @@
 // Packages
 import _ from 'lodash';
 import * as Location from 'expo-location';
-import { useNavigation } from '@react-navigation/native';
+import { ms } from 'react-native-size-matters';
+import { IconButton } from 'react-native-paper';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import Marker from '@shared/components/Marker';
 import BackButton from '@shared/components/Buttons/Back';
 import LocationCard from '@shared/components/LocationCard';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { View, Animated, Dimensions, Platform, TouchableOpacity } from 'react-native';
+import { View, Animated, Dimensions, Platform } from 'react-native';
+import { MapLocationIcon, MapNavigationIcon, MoonIcon, SunIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { MapLocationIcon, MapNavigationIcon, MoonIcon, SunIcon } from '@shared/assets/icons';
-import { markers } from './data';
 import { DUMMY_PLACES } from '@screens/Itinerary/data';
-import { IconButton } from 'react-native-paper';
-import { ms } from 'react-native-size-matters';
 
 // Interfaces
 type MapScreenProps = {};
@@ -33,7 +33,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const destinations = []; //route.params.destinations;
 

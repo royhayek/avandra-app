@@ -27,7 +27,7 @@ export default (theme: AppTheme, isHorizontal: boolean) =>
     flatListContainer: {
       gap: mvs(16),
       paddingHorizontal: ms(24),
-      paddingTop: isHorizontal ? 0 : mvs(20),
+      paddingTop: isHorizontal ? 0 : mvs(24),
       paddingBottom: isHorizontal ? mvs(8) : mvs(20)
     }
   });

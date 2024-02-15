@@ -10,22 +10,29 @@ import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
   StyleSheet.create({
-    textInput: {
-      minHeight: mvs(50),
+    container: {
       marginTop: mvs(8),
-      borderRadius: ms(8),
+      flexDirection: 'row',
+      alignItems: 'center',
       marginBottom: mvs(8),
-      justifyContent: 'center',
+      paddingHorizontal: ms(20),
+      borderRadius: theme.roundness,
       borderWidth: theme.dark ? ms(1) : 0,
-      paddingHorizontal: hasIcon ? ms(6) : 'auto',
-      textAlign: i18n.locale === 'ar' ? 'right' : 'left',
       borderColor: theme.dark ? theme.colors.dark[3] : 'transparent',
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
+    },
+    textInput: {
+      flex: 1,
+      minHeight: mvs(50),
+      backgroundColor: 'transparent',
+      paddingHorizontal: hasIcon ? ms(10) : 0,
+      textAlign: i18n.locale === 'ar' ? 'right' : 'left'
     },
     underline: {
       display: 'none'
     },
     contentStyle: {
+      fontSize: theme.fonts.xLarge.fontSize,
       color: theme.dark ? theme.colors.white : theme.colors.gray[900],
       fontFamily: notEmpty ? 'urbanist-semibold' : 'urbanist-regular'
     },

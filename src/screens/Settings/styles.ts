@@ -9,6 +9,7 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      paddingTop: mvs(16),
       backgroundColor: theme.colors.background
     },
     contentContainer: {
@@ -23,7 +24,7 @@ export default (theme: AppTheme) =>
       color: theme.dark ? theme.colors.white : theme.colors.black
     },
     upgradeContainer: {
-      padding: ms(14),
+      padding: ms(16),
       marginTop: ms(12),
       borderRadius: ms(12),
       flexDirection: 'row',

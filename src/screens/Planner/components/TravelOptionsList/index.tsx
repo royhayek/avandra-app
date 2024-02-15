@@ -7,38 +7,39 @@ import { Text } from 'react-native-paper';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
-import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
+import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import { TravelOptionProps } from '@shared/types/TravelOption';
 
-interface PartnersListProps {
-  list: [];
+interface TravelOptionsListProps {
+  list: TravelOptionProps[];
   value: string;
-  transKey: string;
   setValue: (value: string) => void;
 }
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
 
-const PartnersList: React.FC<PartnersListProps> = ({ list, value, setValue }) => {
+const TravelOptionsList: React.FC<TravelOptionsListProps> = ({ list, value, setValue }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Renderers
-  const renderItem = (item) => {
+  const renderItem = (item: TravelOptionProps) => {
     const isActive = _.isEqual(value, item.key);
 
     return (
       <TouchableOpacity onPress={() => setValue(item.key)} style={[styles.button, isActive && styles.activeButton]}>
         <View>
-          <Text variant="h5">
-            {item.title[i18n.locale]} {item.icon}
-          </Text>
+          <View style={styles.nameAndIcon}>
+            <Text variant="h5">{item.title[i18n.locale]}</Text>
+            <Text variant="h5">{item.icon}</Text>
+          </View>
           <Text variant="medium" style={styles.description}>
             {item.description[i18n.locale]}
           </Text>
@@ -58,4 +59,4 @@ const PartnersList: React.FC<PartnersListProps> = ({ list, value, setValue }) =>
   );
 };
 
-export default PartnersList;
+export default TravelOptionsList;

@@ -1,14 +1,15 @@
 // Packages
 import React, { useCallback } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 
 // Components
 import { ScrollView } from 'react-native';
 import PopularList from './components/PopularList';
-import SearchInput from './components/SearchInput';
+import SearchInput from '@shared/components/SearchInput';
 
 // Utilities
 import makeStyles from './styles';
-import { useNavigation } from '@react-navigation/native';
 
 // Interfaces
 interface HomeScreenProps {}
@@ -17,7 +18,8 @@ interface HomeScreenProps {}
 const HomeScreen: React.FC<HomeScreenProps> = () => {
   // Statics
   const styles = makeStyles();
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleSearchSubmit = useCallback((city: any) => {
@@ -35,8 +37,8 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       <SearchInput
         disabled
         onPressIn={handleInputFocus}
-        inputStyle={styles.searchInput}
         handleSubmit={handleSearchSubmit}
+        containerStyle={styles.containerStyle}
       />
       <PopularList type="destinations" orientation="horizontal" isTitleShown />
       <PopularList type="articles" orientation="horizontal" isTitleShown />
