@@ -13,13 +13,13 @@ import { NestableScrollContainer } from 'react-native-draggable-flatlist';
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
+import { ItineraryItemProps } from '@shared/types/Itinerary';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
-
 interface RouteParams {
-  itineraries: any[];
+  itineraries: ItineraryItemProps[];
 }
 
 // Component
@@ -28,7 +28,7 @@ const TripModificationScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
-  
+
   const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -39,16 +39,11 @@ const TripModificationScreen = () => {
     navigation.goBack();
   }, [navigation]);
 
-  // Renderer vars
-
   // Renders
-  const renderFooter = useMemo(
-    () => (
-      <View style={commonStyles.footer}>
-        <RegularButton fullWidth loading={false} title={t('common.save_changes')} onPress={handleSavePress} />
-      </View>
-    ),
-    [commonStyles.footer, handleSavePress]
+  const renderFooter = () => (
+    <View style={commonStyles.footer}>
+      <RegularButton fullWidth loading={false} title={t('common.save_changes')} onPress={handleSavePress} />
+    </View>
   );
 
   return (
@@ -59,7 +54,7 @@ const TripModificationScreen = () => {
         ))}
       </NestableScrollContainer>
 
-      {renderFooter}
+      {renderFooter()}
     </>
   );
 };

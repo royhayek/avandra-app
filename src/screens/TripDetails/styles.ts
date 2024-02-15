@@ -19,9 +19,9 @@ export default (theme: AppTheme) =>
       height: windowWidth / 1.15
     },
     shareButton: {
-      position: 'absolute',
       top: 40,
       end: 50,
+      position: 'absolute',
       backgroundColor: theme.colors.background
     },
     image: {
@@ -67,8 +67,8 @@ export default (theme: AppTheme) =>
       opacity: 0.9,
       right: ms(24),
       bottom: mvs(30),
-      borderRadius: ms(100),
       position: 'absolute',
+      borderRadius: ms(100),
       backgroundColor: theme.colors.primary
     }
   });

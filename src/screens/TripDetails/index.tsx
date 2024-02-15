@@ -48,9 +48,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   // Effects
   useEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
+    navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
   // Renderers
@@ -89,16 +87,16 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
             loadingEnabled={false}
             zoomControlEnabled={false}
             onPress={handleMapPress}
-            customMapStyle={
-              theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
-            }
             provider={PROVIDER_GOOGLE}
             region={{
               latitudeDelta: 0.02,
               longitudeDelta: 0.02,
               latitude: location?.latitude || 0,
               longitude: location?.longitude || 0
-            }}>
+            }}
+            customMapStyle={
+              theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
+            }>
             {_.map(
               DUMMY_PLACES,
               (place, index) =>

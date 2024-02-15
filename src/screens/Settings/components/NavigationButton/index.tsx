@@ -11,10 +11,9 @@ import { TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
-
-// Interfaces
 import { useAppTheme } from '@shared/assets/theme';
 
+// Interfaces
 interface MenuItemProps {
   item: string;
   title: string;

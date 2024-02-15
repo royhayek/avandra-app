@@ -16,13 +16,6 @@ export default (theme: AppTheme) =>
       marginTop: mvs(16),
       paddingBottom: mvs(30)
     },
-    title: {
-      marginVertical: ms(16),
-      color: theme.colors.secondary
-    },
-    endIcon: {
-      color: theme.dark ? theme.colors.white : theme.colors.black
-    },
     upgradeContainer: {
       padding: ms(16),
       marginTop: ms(12),
@@ -45,10 +38,5 @@ export default (theme: AppTheme) =>
       width: ms(50),
       height: ms(48),
       marginRight: ms(6)
-    },
-    upgradeBtn: {
-      height: mvs(46),
-      borderRadius: ms(8),
-      justifyContent: 'center'
     }
   });

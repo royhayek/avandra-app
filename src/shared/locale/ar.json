@@ -177,6 +177,8 @@
       "delete_account_desc": "قم بإزالة حسابك وبياناتك نهائيًا من {{name}}. التقدم بحذر",
       "choose_language": "اختيار اللغة",
       "choose_theme": "اختيار النمط",
+      "logout_confirmation": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+      "yes_logout": "نعم، تسجيل الخروج",
       "languages": {
         "english": "الإنجليزية",
         "arabic": "العربية",

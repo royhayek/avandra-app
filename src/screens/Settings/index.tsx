@@ -46,24 +46,24 @@ const SettingsScreen = () => {
   const logoutSheetRef = useRef<BottomSheetMethods>();
 
   // Callbacks
-  const handleUpgradePress = useCallback(() => navigation.navigate('Subscriptions'), [navigation]);
-
-  const handleLogoutSheetClose = useCallback(() => logoutSheetRef.current?.close(), []);
-
   const handleLogoutPress = useCallback(() => logoutSheetRef.current?.expand(), []);
-
-  const navigateToPersonalInfo = useCallback(() => navigation.navigate('PersonalInfo'), [navigation]);
-
+  
+  const handleLogoutSheetClose = useCallback(() => logoutSheetRef.current?.close(), []);
+  
   const navigateToAppearance = useCallback(() => navigation.navigate('Appearance'), [navigation]);
+  
+  const handleUpgradePress = useCallback(() => navigation.navigate('Subscriptions'), [navigation]);
+  
+  const navigateToPersonalInfo = useCallback(() => navigation.navigate('PersonalInfo'), [navigation]);
 
   const navigateToHelpAndSupport = useCallback(() => navigation.navigate('HelpSupport'), [navigation]);
 
+  const navigateToAccountAndSecurity = useCallback(() => navigation.navigate('AccountSecurity'), [navigation]);
+  
   const navigateToSubscription = useCallback(
     () => navigation.navigate('Billing', { title: _t('billing_and_subscriptions') }),
     [navigation]
   );
-
-  const navigateToAccountAndSecurity = useCallback(() => navigation.navigate('AccountSecurity'), [navigation]);
 
   const handleLogout = useCallback(() => {
     dispatch(authActions.reset());
@@ -174,10 +174,10 @@ const SettingsScreen = () => {
       sheetRef={logoutSheetRef}
       titleColor={theme.colors.red}
       onClose={handleLogoutSheetClose}
-      primaryBtnProps={{ title: 'Yes, Logout', onPress: handleLogout }}
+      primaryBtnProps={{ title: _t('yes_logout'), onPress: handleLogout }}
       secondaryBtnProps={{ title: t('common.cancel'), onPress: handleLogoutSheetClose }}>
       <Text variant="h5" style={{ textAlign: 'center' }}>
-        Are you sure you want to log out?
+        {_t('logout_confirmation')}
       </Text>
     </CustomBottomSheet>
   );

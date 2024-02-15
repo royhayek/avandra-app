@@ -20,8 +20,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ loadedData }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [showSplash, setShowSplash] = useState(true);
-  const [animationFinished, setAnimationFinished] = useState(false);
+  const [showSplash, setShowSplash] = useState<boolean>(true);
+  const [animationFinished, setAnimationFinished] = useState<boolean>(false);
 
   // Callbacks
   const handleAnimationFinish = useCallback(async () => {

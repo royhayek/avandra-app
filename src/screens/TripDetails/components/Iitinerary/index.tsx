@@ -3,11 +3,6 @@ import _ from 'lodash';
 import React, { useCallback, useState } from 'react';
 
 // Components
-import FastImage from 'react-native-fast-image';
-import { Divider, Text } from 'react-native-paper';
-import { TouchableOpacity, View } from 'react-native';
-import ScrollableTabs from '@shared/components/ScrollableTabs';
-import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import {
   CarIcon,
   TimeIcon,
@@ -20,16 +15,21 @@ import {
   RestaurantIcon,
   DollarOutlineIcon
 } from '@shared/assets/icons';
+import FastImage from 'react-native-fast-image';
+import { Divider, Text } from 'react-native-paper';
+import { TouchableOpacity, View } from 'react-native';
+import ScrollableTabs from '@shared/components/ScrollableTabs';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
-import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 
 interface ItineraryListProps {
   data: ItineraryProps[];
@@ -43,7 +43,7 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [activeDate, setActiveDate] = useState(_.first(data)?.date ?? '');
+  const [activeDate, setActiveDate] = useState<String>(_.first(data)?.date ?? '');
 
   const activeItineraries = _.find(data, { date: activeDate })?.list || [];
 
@@ -53,14 +53,13 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
     console.debug('handleItineraryPress');
   }, []);
 
-  // Effects
-
   // Renderer Vars
   const tabs = _.map(data, (itinerary, index) => ({
     key: itinerary.date,
     title: `Day ${index + 1} (${formatDate(itinerary.date, 'MMM DD')})`
   }));
 
+  // Renderers
   const renderItinerary = ({
     type,
     image,
@@ -162,11 +161,9 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
     );
   };
 
-  // Renderers
   return (
     <>
       <ScrollableTabs tabs={tabs} activeTab={activeDate} onTabPress={setActiveDate} style={styles.dateTabs} />
-
       <View style={styles.paddedContent}>{_.map(activeItineraries, renderItinerary)}</View>
     </>
   );

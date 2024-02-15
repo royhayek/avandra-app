@@ -17,5 +17,5 @@ export interface ItineraryItemProps {
 
 export interface ItineraryProps {
   date: string;
-  list: ItineraryItem[];
+  list: ItineraryItemProps[];
 }

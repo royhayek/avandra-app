@@ -5,13 +5,13 @@ import React, { useCallback, useMemo } from 'react';
 // Components
 import { View } from 'react-native';
 import AccountDeletionModal from '../AccountDeletion';
+import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { appName } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
-import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
 
 // Component
 const AccountSecurityScreen = () => {
@@ -19,15 +19,15 @@ const AccountSecurityScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState(false);
+  const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState<Boolean>(false);
 
   const enabledFaceId = false;
   const enabledBiometricId = false;
 
   // Callbacks
-  const handleBiometricIdToggle = useCallback(() => {}, []);
-
   const handleFaceIdToggle = useCallback(() => {}, []);
+
+  const handleBiometricIdToggle = useCallback(() => {}, []);
 
   const handleDeleteAccount = useCallback(() => setIsDeletionModalOpen(true), []);
 

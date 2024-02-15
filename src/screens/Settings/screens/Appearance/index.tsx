@@ -37,8 +37,8 @@ const AppearanceScreen = () => {
 
   const isDark = _.isEqual(themeMode, 'dark');
 
-  const [theme, setTheme] = useState(themeMode ?? 'default');
-  const [language, setLanguage] = useState(appLanguage ?? 'en');
+  const [theme, setTheme] = useState<string>(themeMode ?? 'default');
+  const [language, setLanguage] = useState<string>(appLanguage ?? 'en');
 
   // Callbacks
   const handleLanguageSheetClose = useCallback(() => languageSheetRef.current?.close(), []);
@@ -109,9 +109,9 @@ const AppearanceScreen = () => {
           icon={icon}
           name={name}
           color={color}
+          isMenu={isMenu}
           onPress={onPress}
           isSwitch={isSwitch}
-          isMenu={isMenu}
           menuProps={menuProps}
           switchProps={switchProps}
         />

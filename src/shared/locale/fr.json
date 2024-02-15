@@ -176,6 +176,8 @@
       "delete_account_desc": "Supprimez définitivement votre compte et vos données de Tripify. Procéder avec prudence.",
       "choose_language": "Choisir la Langue",
       "choose_theme": "Choisir le thème",
+      "logout_confirmation": "Êtes-vous sûr de vouloir vous déconnecter?",
+      "yes_logout": "Oui, déconnexion",
       "languages": {
         "english": "Anglais",
         "arabic": "Arabe",

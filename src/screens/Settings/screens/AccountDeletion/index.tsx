@@ -3,6 +3,7 @@ import _ from 'lodash';
 import React, { useCallback } from 'react';
 
 // Components
+import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Modal, Portal, Text } from 'react-native-paper';
 import RegularButton from '@shared/components/Buttons/Regular';
@@ -14,7 +15,6 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { View } from 'react-native';
 
 interface AccountDeletionModalProps {
   visible: boolean;
@@ -34,8 +34,6 @@ const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({ visible, on
     onCancel();
   }, [onCancel]);
 
-  const handleCancelPress = useCallback(() => onCancel(), [onCancel]);
-
   // Renderers
   return (
     <Portal>
@@ -52,12 +50,7 @@ const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({ visible, on
 
         <View style={styles.actions}>
           <RegularButton onPress={handleDeletePress} title={_t('delete_account')} style={styles.button} />
-          <RegularButton
-            variant="secondary"
-            style={styles.button}
-            title={t('common.cancel')}
-            onPress={handleCancelPress}
-          />
+          <RegularButton variant="secondary" onPress={onCancel} style={styles.button} title={t('common.cancel')} />
         </View>
       </Modal>
     </Portal>

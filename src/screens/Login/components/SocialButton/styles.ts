@@ -31,10 +31,6 @@ export default (theme: AppTheme) =>
       position: 'absolute',
       justifyContent: 'center'
     },
-    icon: {
-      width: ms(26),
-      height: mvs(26)
-    },
     title: {
       fontWeight: 'bold',
       color: theme.dark ? theme.colors.white : theme.colors.gray[900]

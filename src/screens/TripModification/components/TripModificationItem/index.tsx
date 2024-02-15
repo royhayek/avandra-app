@@ -21,10 +21,11 @@ import { formatDate } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
+import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 interface TripModificationItemProps {
-  item: any;
+  item: ItineraryProps;
   index: number;
 }
 
@@ -38,37 +39,35 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
 
   const deleteSheetRef = useRef<BottomSheetMethods>();
 
-  const [itineraryData, setItineraryData] = useState(list);
+  const [itineraryData, setItineraryData] = useState<ItineraryItemProps[]>(list);
 
   // Callbacks
-  const handleOnDragEnd = useCallback((data: []) => setItineraryData(data), []);
-
   const handleDeletePress = useCallback(() => deleteSheetRef.current?.expand(), []);
 
   const handleDeleteSheetClose = useCallback(() => deleteSheetRef.current?.close(), []);
 
-  const handleAddMorePress = useCallback(() => {
-    console.debug('Add more events');
-    navigation.navigate('EventAddition');
-  }, [navigation]);
+  const handleOnDragEnd = useCallback((data: ItineraryItemProps[]) => setItineraryData(data), []);
 
   const handleDelete = useCallback(() => {
+    // TODO: Delete logic
     handleDeleteSheetClose();
   }, [handleDeleteSheetClose]);
+
+  const handleAddMorePress = useCallback(() => navigation.navigate('EventAddition'), [navigation]);
+
   // Renderer vars
 
   // Renders
   const renderDeleteModal = () => (
     <CustomBottomSheet
-      title={t('trip_modifcation.delete_event')}
       sheetRef={deleteSheetRef}
       titleColor={theme.colors.red}
       onClose={handleDeleteSheetClose}
+      title={t('trip_modifcation.delete_event')}
       primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDelete }}
       secondaryBtnProps={{ title: t('common.cancel'), onPress: handleDeleteSheetClose }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <FastImage source={{ uri: list[0]?.image }} style={styles.image} />
-
         <View style={styles.content}>
           <Text variant="h6" style={styles.name}>
             {list[0]?.name}
@@ -87,15 +86,15 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
 
         <NestableDraggableFlatList
           data={itineraryData}
-          showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.list}
+          showsVerticalScrollIndicator={false}
           onDragEnd={({ data }) => handleOnDragEnd(data)}
           keyExtractor={(_, index) => `draggable-item-${index}`}
           renderItem={({ item, drag, isActive }) => (
             <TouchableOpacity
-              style={[styles.rowContainer, isActive && styles.activeRowContainer]}
               onLongPress={drag}
-              disabled={isActive}>
+              disabled={isActive}
+              style={[styles.rowContainer, isActive && styles.activeRowContainer]}>
               <DragIcon fill={theme.dark ? theme.colors.secondary : theme.colors.gray[900]} />
 
               <FastImage source={{ uri: item?.image }} style={styles.image} />

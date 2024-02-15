@@ -175,6 +175,8 @@
       "delete_account_desc": "Permanently remove your account and data from {{name}}. Proceed with caution.",
       "choose_language": "Choose Language",
       "choose_theme": "Choose Theme",
+      "logout_confirmation": "Are you sure you want to log out?",
+      "yes_logout": "Yes, Logout",
       "languages": {
         "english": "English",
         "arabic": "Arabic",

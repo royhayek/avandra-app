@@ -26,7 +26,7 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
 
   const [activeTab, setActiveTab] = useState('general');
   const [searchText, setSearchText] = useState<string>('');
-  const [expandedCategories, setExpandedCategories] = useState([]);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const data = dummy_faqs;
   const activeCategoryFaqs = useMemo(() => _.find(data, { category: activeTab })?.list ?? [], [activeTab, data]);
@@ -34,12 +34,12 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
   // Callbacks
   const handleTabPress = useCallback((tab: string) => setActiveTab(tab), []);
 
+  const handleSearchTextChange = useCallback((text: string) => setSearchText(text), []);
+  
   const handleQuestionPress = useCallback(
     (id: string) => setExpandedCategories(_.xor(expandedCategories, [id])),
     [expandedCategories]
   );
-
-  const handleSearchTextChange = useCallback((text: string) => setSearchText(text), []);
 
   const filteredData = useMemo(
     () =>
@@ -73,8 +73,8 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
       </View>
 
       <FlatList
-        style={styles.list}
         data={filteredData}
+        style={styles.list}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}

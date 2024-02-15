@@ -36,8 +36,8 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
   const formRef = useRef<FormikProps<ContactFormProps> | null>(null);
 
   const formInitialValues = { title: '', message: '' };
-  // Callbacks
 
+  // Callbacks
   const handleFormSubmit = useCallback(async () => {}, []);
 
   // Renderers
