@@ -1,19 +1,21 @@
 // Packages
 import _ from 'lodash';
-import { LayoutChangeEvent, useColorScheme } from 'react-native';
+import * as Updates from 'expo-updates';
 import { ref, onValue } from 'firebase/database';
 import { withIAPContext } from 'react-native-iap';
-import { PaperProvider } from 'react-native-paper';
-import * as Notifications from 'expo-notifications';
+// import * as Notifications from 'expo-notifications';
 import { connectAsync } from 'expo-in-app-purchases';
-import { NavigationContainer } from '@react-navigation/native';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { LayoutChangeEvent, useColorScheme } from 'react-native';
 
 // Components
 import RootNavigation from './navigation';
 import { StatusBar } from 'expo-status-bar';
+import { PaperProvider } from 'react-native-paper';
+import UpdateModal from '@shared/components/UpdateModal';
+import { NavigationContainer } from '@react-navigation/native';
 import CustomSnackbar from '@shared/components/CustomSnackbar';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Utilities
@@ -23,7 +25,7 @@ import { FIREBASE_DB } from '../../firebaseConfig';
 import NetworkInfo from '@shared/services/NetworkInfo';
 import { useAppDispatch, useAppSelector } from './store';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
-import { registerForPushNotificationsAsync } from '@shared/utils';
+// import { registerForPushNotificationsAsync } from '@shared/utils';
 import { appActions, getLanguage, getThemeMode } from '@redux/app/slice';
 
 // Interfaces
@@ -35,22 +37,51 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   // Redux
   const dispatch = useAppDispatch();
 
-  const themeMode = useAppSelector(getThemeMode);
   const language = useAppSelector(getLanguage);
+  const themeMode = useAppSelector(getThemeMode);
 
   // Statics
-  const [notification, setNotification] = useState<Notifications.Notification>();
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
   const [loadedData, setLoadedData] = useState<boolean>(false);
+  const [updateModalVisible, setUpdateModalVisible] = useState(false);
+  // const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
+  // const [notification, setNotification] = useState<Notifications.Notification>();
+
   const colorScheme = useColorScheme();
 
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+  // const notificationListener = useRef<Notifications.Subscription>();
+  // const responseListener = useRef<Notifications.Subscription>();
 
   const isDark = _.isEqual(themeMode, 'dark') || (_.isEqual(themeMode, 'default') && _.isEqual(colorScheme, 'dark'));
   const theme = isDark ? darkTheme : lightTheme;
 
   // Callbacks
+  const checkForUpdates = useCallback(async () => {
+    Updates.checkForUpdateAsync()
+      .then(({ isAvailable }) => {
+        if (isAvailable) {
+          setUpdateModalVisible(true);
+
+          Updates.fetchUpdateAsync()
+            .then(({ isNew }) => {
+              console.debug('[checkForUpdates] :: Found a new update. Fetching... ', { isNew });
+
+              // NOTIFY USER HERE
+              setTimeout(() => {
+                Updates.reloadAsync();
+              }, 5000);
+            })
+            .catch((error) => {
+              console.error('Failed to check for updates :: ', error.nessage);
+            });
+        }
+      })
+      .catch((error) => {
+        console.debug('[checkForUpdates] :: Failed to check for updates ', { error });
+      });
+  }, []);
+
+  const handleDismissUpdateModal = useCallback(() => setUpdateModalVisible(false), []);
+
   const getConfiguration = useCallback(async () => {
     try {
       const configRef = ref(FIREBASE_DB, Firebase.CONFIGURATION_REF);
@@ -99,6 +130,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     (async () => {
+      !__DEV__ && checkForUpdates();
       await initData();
     })();
   }, []);
@@ -116,6 +148,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
             <NetworkInfo />
             {/* <SubscriptionManager /> */}
             <CustomSnackbar />
+            <UpdateModal visible={updateModalVisible} onDismiss={handleDismissUpdateModal} />
           </NavigationContainer>
         </BottomSheetModalProvider>
       </PaperProvider>

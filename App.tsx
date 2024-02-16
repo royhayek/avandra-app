@@ -1,7 +1,6 @@
 // Packages
 import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
-import * as Updates from 'expo-updates';
 import { Settings } from 'react-native-fbsdk-next';
 import * as Notifications from 'expo-notifications';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -44,26 +43,6 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
 
   // Callbacks
-  const checkForUpdates = useCallback(async () => {
-    Updates.checkForUpdateAsync()
-      .then(({ isAvailable }) => {
-        if (isAvailable) {
-          Updates.fetchUpdateAsync()
-            .then(({ isNew }) => {
-              console.debug('[checkForUpdates] :: Found a new update. Fetching... ', { isNew });
-              // NOTIFY USER HERE
-              Updates.reloadAsync();
-            })
-            .catch((error) => {
-              console.error('Failed to check for updates :: ', error.nessage);
-            });
-        }
-      })
-      .catch((error) => {
-        console.debug('[checkForUpdates] :: Failed to check for updates ', { error });
-      });
-  }, []);
-
   const prepare = useCallback(async () => {
     try {
       // Pre-load fonts, make any API calls you need to do here
@@ -92,7 +71,6 @@ export default function App() {
 
   // Effects
   useEffect(() => {
-    !__DEV__ && checkForUpdates();
     prepare();
 
     Settings.initializeSDK();

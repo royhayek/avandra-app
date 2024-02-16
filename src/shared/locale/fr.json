@@ -208,7 +208,7 @@
       "earn": "Regarder la courte publicité"
     },
     "network": {
-      "no_internet_connection": "Pas de connexion Internet",
+      "no_internet_connection": "Nous avons perdu la connexion à Internet, veuillez vérifier votre connexion et réessayer",
       "retry_connecting": "Réessayer"
     },
     "trip": {
@@ -242,6 +242,10 @@
       "account_deletion": "Suppression du compte",
       "losing_data": "Vous perdrez toutes vos données en supprimant votre compte. Cette action est irréversible",
       "delete_account": "Supprimer le compte"
+    },
+    "update": {
+      "downloading": "Téléchargement d'une nouvelle mise à jour...",
+      "app_will_restart": "L'application redémarrera une fois la mise à jour téléchargée."
     }
   }
 }
