@@ -23,10 +23,11 @@ import { changeLocale } from './i18n';
 import { Firebase } from '@shared/constants';
 import { FIREBASE_DB } from '../../firebaseConfig';
 import NetworkInfo from '@shared/services/NetworkInfo';
-import { useAppDispatch, useAppSelector } from './store';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from './store';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
 // import { registerForPushNotificationsAsync } from '@shared/utils';
 import { appActions, getLanguage, getThemeMode } from '@redux/app/slice';
+import { validateTokenAction } from '@redux/auth/thunks';
 
 // Interfaces
 interface RootProps {
@@ -36,6 +37,7 @@ interface RootProps {
 const Root: React.FC<RootProps> = ({ onLayout }) => {
   // Redux
   const dispatch = useAppDispatch();
+  const dispatchThunk = useAppThunkDispatch();
 
   const language = useAppSelector(getLanguage);
   const themeMode = useAppSelector(getThemeMode);
@@ -108,9 +110,10 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
 
   const initData = useCallback(async () => {
     changeLocale(language);
+    await dispatchThunk(validateTokenAction());
     await getConfiguration();
     await initAppPurchases();
-  }, [getConfiguration, initAppPurchases, language]);
+  }, [dispatchThunk, getConfiguration, initAppPurchases, language]);
 
   // Effects
   // useEffect(() => {

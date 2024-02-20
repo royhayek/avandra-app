@@ -17,6 +17,9 @@ import { contactSchema } from 'src/schemas/Contact/ContactSchema';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import Picker from '@shared/components/Picker';
+import { DownChevron } from '@shared/assets/icons';
 
 interface FaqScreenProps {}
 
@@ -33,12 +36,32 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const typePickerRef = useRef<BottomSheetMethods>(null);
   const formRef = useRef<FormikProps<ContactFormProps> | null>(null);
 
-  const formInitialValues = { title: '', message: '' };
+  const formInitialValues = { type: 'inquiry', message: '' };
 
   // Callbacks
+  const handleOpenTypePicker = useCallback(() => typePickerRef.current?.expand(), []);
+
+  const handleCloseTypePicker = useCallback(() => typePickerRef.current?.close(), []);
+
+  const handleTypePress = useCallback(
+    (type: string) => {
+      formRef.current?.setFieldValue('type', type);
+      handleCloseTypePicker();
+    },
+    [handleCloseTypePicker]
+  );
+
   const handleFormSubmit = useCallback(async () => {}, []);
+
+  // Renderer Vars
+  const messageTypeOptions = [
+    { key: 'inquiry', title: _t('inquiry'), onPress: handleTypePress },
+    { key: 'complaint', title: _t('complaint'), onPress: handleTypePress },
+    { key: 'suggestion', title: _t('suggestion'), onPress: handleTypePress }
+  ];
 
   // Renderers
   return (
@@ -55,12 +78,15 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
         {({ handleChange, handleSubmit, values, errors }) => (
           <View style={styles.form}>
             <Input
-              name="title"
-              value={values.title}
-              error={errors.title}
-              label={_t('title')}
-              placeholder={_t('title')}
-              handleChange={handleChange('title')}
+              name="type"
+              editable={false}
+              label={_t('type')}
+              error={errors.type}
+              placeholder={_t('type')}
+              onPressOut={handleOpenTypePicker}
+              handleChange={handleChange('type')}
+              value={_.find(messageTypeOptions, { key: values.type })?.title}
+              rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
             />
 
             <Input
@@ -81,6 +107,8 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
               title={t('common.submit')}
               style={styles.submitButton}
             />
+
+            <Picker sheetRef={typePickerRef} options={messageTypeOptions} />
           </View>
         )}
       </Formik>

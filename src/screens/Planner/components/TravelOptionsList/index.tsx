@@ -7,12 +7,11 @@ import { Text } from 'react-native-paper';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
+import i18n from '@app/i18n';
 import makeStyles from './styles';
-import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
-import { TranslateOptions } from 'i18n-js';
 import { TravelOptionProps } from '@shared/types/TravelOption';
 
 interface TravelOptionsListProps {
@@ -22,8 +21,6 @@ interface TravelOptionsListProps {
 }
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`planner.${key}`, options);
-
 const TravelOptionsList: React.FC<TravelOptionsListProps> = ({ list, value, setValue }) => {
   // Statics
   const theme = useAppTheme();

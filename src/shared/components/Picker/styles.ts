@@ -2,10 +2,7 @@
 import { StyleSheet } from 'react-native';
 import { mvs } from 'react-native-size-matters';
 
-// Utilities
-import { AppTheme } from '../../assets/theme';
-
-export default (theme: AppTheme) =>
+export default () =>
   StyleSheet.create({
     option: {
       paddingVertical: 16

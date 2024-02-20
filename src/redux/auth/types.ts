@@ -4,6 +4,7 @@ export interface AuthInitialState {
   loggedOut: boolean;
   authenticated: boolean;
   loading: boolean;
+  jwtExpired: boolean;
   error: unknown | string | null;
 }
 

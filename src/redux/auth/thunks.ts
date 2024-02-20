@@ -2,7 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
-import { register } from './api';
+import { register, validateToken } from './api';
 import { userActions } from '@redux/user/slice';
 
 // Interfaces
@@ -29,3 +29,15 @@ export const registerAction = createAsyncThunk(
     }
   }
 );
+
+export const validateTokenAction = createAsyncThunk('auth/validateToken', async (args, { rejectWithValue }) => {
+  try {
+    const response = await validateToken();
+
+    console.debug('[validateTokenAction] :: response', response);
+
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response?.data);
+  }
+});

@@ -15,12 +15,12 @@ export default (theme: AppTheme) =>
 
     button: {
       flex: 1,
-      paddingVertical: mvs(12),
-      paddingHorizontal: ms(16),
       borderWidth: ms(1),
       borderRadius: ms(8),
       flexDirection: 'row',
       alignItems: 'center',
+      paddingVertical: mvs(12),
+      paddingHorizontal: ms(16),
       justifyContent: 'space-between',
       borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[200],
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]

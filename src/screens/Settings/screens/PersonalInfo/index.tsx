@@ -160,11 +160,11 @@ const PersonalInfoScreen = () => {
                   name="gender"
                   editable={false}
                   error={errors.gender}
-                  value={_.find(genderOptions, { key: values.gender })?.title}
                   label={t('profile.gender')}
                   placeholder={t('profile.gender')}
                   onPressOut={handleOpenGenderPicker}
                   handleChange={handleChange('gender')}
+                  value={_.find(genderOptions, { key: values.gender })?.title}
                   rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
                 />
 

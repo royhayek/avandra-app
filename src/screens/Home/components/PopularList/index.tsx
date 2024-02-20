@@ -58,38 +58,15 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
 
   // Effects
   useEffect(() => {
-    !!String(type).match(/destinations/) && _.isEmpty(destinationsLastRefresh) && dispatch(fetchDestinations());
-    !!String(type).match(/articles/) && _.isEmpty(destinationsLastRefresh) && dispatch(fetchDestinations());
+    // !!String(type).match(/destinations/) && _.isEmpty(destinationsLastRefresh) && dispatch(fetchDestinations());
+    dispatch(fetchDestinations());
+    // !!String(type).match(/articles/) && _.isEmpty(destinationsLastRefresh) && dispatch(fetchDestinations());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Renderer Vars
   const data = useMemo(
-    () =>
-      String(type).match(/destinations/)
-        ? popularDestinations
-        : [
-            {
-              _id: 1,
-              name: {
-                en: 'Hidden Gems: Uncovering Secret Destinations',
-                fr: 'Trésors cachés : Découvrir des destinations secrètes',
-                ar: 'الجواهر المخفية: الكشف عن وجهات سرية'
-              },
-              image: 'https://picsum.photos/300/200?random=1',
-              date: 'Dec 05, 2023'
-            },
-            {
-              _id: 2,
-              name: {
-                en: 'Packing Hacks: Travel Light, Travel Smart',
-                fr: 'Astuces de conditionnement : Voyager léger, voyager intelligent',
-                ar: 'خدع التعبئة: السفر بخفة، السفر بذكاء'
-              },
-              image: 'https://picsum.photos/300/200?random=2',
-              date: 'Dec 06, 2023'
-            }
-          ],
+    () => (String(type).match(/destinations/) ? popularDestinations : popularDestinations),
     [popularDestinations, type]
   );
 

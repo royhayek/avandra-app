@@ -35,7 +35,7 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
   const handleTabPress = useCallback((tab: string) => setActiveTab(tab), []);
 
   const handleSearchTextChange = useCallback((text: string) => setSearchText(text), []);
-  
+
   const handleQuestionPress = useCallback(
     (id: string) => setExpandedCategories(_.xor(expandedCategories, [id])),
     [expandedCategories]
@@ -62,14 +62,15 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
     <View style={styles.container}>
       <View>
         <ScrollableTabs tabs={tabs} onTabPress={handleTabPress} activeTab={activeTab} />
-        <Input
-          name="search"
-          value={searchText}
-          leftIcon={<SearchIcon />}
-          inputStyle={styles.search}
-          placeholder={t('common.search')}
-          handleChange={handleSearchTextChange}
-        />
+        <View style={styles.content}>
+          <Input
+            name="search"
+            value={searchText}
+            leftIcon={<SearchIcon />}
+            placeholder={t('common.search')}
+            handleChange={handleSearchTextChange}
+          />
+        </View>
       </View>
 
       <FlatList

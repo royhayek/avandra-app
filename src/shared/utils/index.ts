@@ -7,6 +7,7 @@ import { Dimensions, Platform } from 'react-native';
 
 // Utilities
 import { store } from '@app/store';
+import { authActions } from '@redux/auth/slice';
 import { snackbarActions } from '@redux/snackbar/slice';
 
 export const appName = Constants.expoConfig?.name;
@@ -94,3 +95,8 @@ export const hasArabicCharacters = (text: string) => {
 export const formatAmount = (num: number) => (num ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0);
 
 export const formatDate = (date: string, format = 'MMMM DD, YYYY') => moment(date).format(format);
+
+export const logout = (reason: string) => {
+  store.dispatch(authActions.update({ authenticated: false }));
+  console.info(`[Logout] :: Reason: ${reason}`);
+};

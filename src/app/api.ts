@@ -3,7 +3,6 @@ import axios from 'axios';
 import moment from 'moment';
 import { stringify } from 'qs';
 import { Configuration } from 'openai';
-// import Constants from 'expo-constants';
 
 // Utils
 import 'moment-timezone';
@@ -11,9 +10,8 @@ import 'moment-timezone';
 // Utilities
 import i18n from './i18n';
 import { store } from './store';
+import { logout } from '@shared/utils';
 import getEnvVars from '../../environment';
-// import { logout } from 'shared/utils';
-// import {ROUTES} from 'shared/constants/routes';
 
 const { serverApiUrl } = getEnvVars();
 
@@ -37,7 +35,7 @@ axios.interceptors.request.use((req) => {
   req.headers['x-auth-token'] = accessToken ?? '';
 
   // Set language
-  req.headers.language = i18n.locale || process.env.REACT_APP_DEFAULT_LANGUAGE;
+  req.headers.language = i18n.locale || store.getState().app.language;
 
   console.debug('req.baseURL', req.baseURL);
 
@@ -47,12 +45,12 @@ axios.interceptors.request.use((req) => {
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && [401, 403].includes(error.response.status)) {
+    if (error.response && error.response?.data?.jwtExpired) {
       const storeState = store.getState();
       const authenticated = storeState?.auth.authenticated;
 
       if (authenticated) {
-        // logout('User unauthenticated, forced logout');
+        logout('User token expired');
       }
 
       throw error;

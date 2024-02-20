@@ -12,7 +12,7 @@ export default (theme: AppTheme) =>
       paddingHorizontal: ms(24)
     },
     title: {
-      marginTop: mvs(8),
+      marginTop: mvs(24),
       fontFamily: 'urbanist-medium'
     },
     form: {
@@ -20,6 +20,7 @@ export default (theme: AppTheme) =>
       marginTop: mvs(24)
     },
     message: {
+      ...theme.fonts.xLarge,
       minHeight: mvs(170),
       justifyContent: 'flex-start'
     },

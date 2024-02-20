@@ -182,7 +182,7 @@ const Profile = () => {
                 <Input
                   name="gender"
                   error={errors.gender}
-                  value={values.gender}
+                  value={_.find(genderOptions, { key: values.gender })?.title}
                   label={t('profile.gender')}
                   onFocus={handleOpenGenderPicker}
                   placeholder={t('profile.gender')}

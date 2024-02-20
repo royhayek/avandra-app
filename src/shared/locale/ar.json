@@ -16,9 +16,10 @@
       "save_changes": "حفظ التغييرات",
       "yes_delete": "نعم، حذف",
       "search": "بحث",
+      "select_option": "حدد خيارًا",
       "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
       "regenerating_your_trip": "جارٍ إعادة إنشاء رحلتك... ({{progress}}%)",
-      "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك",
+      "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك"
     },
     "onBoarding": {
       "walkthrough_title_1": "اكتشف مغامرتك المقبلة",
@@ -236,8 +237,11 @@
     },
     "contact": {
       "reach_out_to_us": "يمكنك التواصل معنا عن طريق إرسال بريد إلكتروني من خلال هذا النموذج، وسنقوم بالرد عليك في أقرب وقت ممكن",
-      "title": "العنوان",
-      "message": "الرسالة"
+      "type": "النوع",
+      "message": "الرسالة",
+      "inquiry": "استفسار",
+      "complaint": "شكوى",
+      "suggestion": "اقتراح"
     },
     "account_deletion": {
       "account_deletion": "حذف الحساب",

@@ -6,3 +6,5 @@ import { SocialLoginProps } from '@shared/types/SocialLoginProps';
 
 // Calls
 export const register = (payload: SocialLoginProps) => axios.post('register', payload);
+
+export const validateToken = () => axios.get('validateToken');

@@ -18,7 +18,6 @@ import { Ionicons } from '@expo/vector-icons';
 import Header from '@shared/components/Header';
 import SettingsScreen from '@screens/Settings';
 import SearchScreen from '@screens/SearchScreen';
-import ItineraryScreen from '@screens/Itinerary';
 import OnBoardingScreen from '@screens/OnBoarding';
 import TripDetailsScreen from '@screens/TripDetails';
 import FaqScreen from '@screens/Settings/screens/Faq';
@@ -39,7 +38,7 @@ import AccountSecurityScreen from '@screens/Settings/screens/AccountSecurity';
 import i18n, { t } from '@app/i18n';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { getUserAuthenticated } from '@redux/auth/slice';
+import { getHasValidToken, getUserAuthenticated } from '@redux/auth/slice';
 
 // Interfaces
 import { ParamListBase, RouteProp } from '@react-navigation/native';

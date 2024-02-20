@@ -36,7 +36,7 @@ export const authSlice = createSlice({
     builder.addCase(registerAction.fulfilled, (state, action) => {
       state.error = null;
       state.loading = false;
-      // state.authenticated = true;
+      state.jwtExpired = false;
       state.token = action.payload.token;
     });
 

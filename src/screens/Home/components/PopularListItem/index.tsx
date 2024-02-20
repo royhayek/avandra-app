@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import i18n from '@app/i18n';
@@ -46,18 +46,21 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
       <FastImage
         resizeMode="cover"
         style={styles.image}
-        source={{
-          uri: _.includes(item.image, 'http')
-            ? item.image
-            : `${publicUrl?.replace('/api', '')}/uploads/destination/${item.image}`
-        }}
+        source={{ uri: `${publicUrl?.replace('/api', '')}/uploads/destination/image/${item.image}` }}
       />
       <Text numberOfLines={2} variant={isVertical ? 'h5' : 'h6'} style={styles.name}>
-        {item.name[i18n.locale] ?? item.name}
+        {_.find(item.name, { type: i18n.locale })?.content}
       </Text>
-      <Text variant={isVertical ? 'large' : 'medium'} style={styles.country}>
-        {isDestination ? item.country : item.date}
-      </Text>
+      <View style={styles.countryContainer}>
+        <FastImage
+          resizeMode="cover"
+          style={styles.flag}
+          source={{ uri: `${publicUrl?.replace('/api', '')}/uploads/destination/flag/${item.flag}` }}
+        />
+        <Text variant={isVertical ? 'large' : 'medium'} style={styles.country}>
+          {isDestination ? _.find(item.country, { type: i18n.locale })?.content : item.date}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };

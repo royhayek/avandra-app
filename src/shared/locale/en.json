@@ -16,6 +16,7 @@
       "save_changes": "Save Changes",
       "yes_delete": "Yes, Delete",
       "search": "Search",
+      "select_option": "Select an option",
       "generating_your_trip": "Generating your trip... ({{progress}}%)",
       "regenerating_your_trip": "Regenerating your trip... ({{progress}}%)",
       "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
@@ -235,8 +236,11 @@
     },
     "contact": {
       "reach_out_to_us": "You can reach out to us by sending an email through this form, and we'll get back to you as soon as we can.",
-      "title": "Title",
-      "message": "Message"
+      "type": "Type",
+      "message": "Message",
+      "inquiry": "Inquiry",
+      "complaint": "Complaint",
+      "suggestion": "Suggestion"
     },
     "account_deletion": {
       "account_deletion": "Account Deletion",

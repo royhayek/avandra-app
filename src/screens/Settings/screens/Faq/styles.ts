@@ -10,6 +10,9 @@ export default (theme: AppTheme) =>
     container: {
       flex: 1
     },
+    content: {
+      marginHorizontal: ms(24)
+    },
     search: {
       marginHorizontal: ms(24),
       paddingHorizontal: ms(12)
