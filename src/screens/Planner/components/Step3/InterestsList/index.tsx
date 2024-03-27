@@ -9,12 +9,12 @@ import { Chip } from 'react-native-paper';
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import i18n from '@app/i18n';
+import { TravelOptionProps } from '@shared/types/TravelOption';
 
 // Interfaces
 interface InterestsListProps {
   value: string[];
-  setValue: (value: string) => void;
+  setValue: (value: TravelOptionProps) => void;
 }
 
 // Component
@@ -37,7 +37,7 @@ const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, se
         style={[styles.chip, selected && styles.activeChip]}
         textStyle={[styles.textStyle, selected && styles.activeTextStyle]}
         selectedColor={selected ? theme.colors.primary : theme.dark ? theme.colors.white : theme.colors.black}>
-        {item.title[i18n.locale]}
+        {item.title} {item.icon}
       </Chip>
     );
   };
@@ -46,7 +46,7 @@ const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, se
     <FlatList
       data={data}
       numColumns={2}
-      keyExtractor={(item) => item.key}
+      keyExtractor={(item) => item._id}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatList}
       columnWrapperStyle={styles.listColumnWrapper}

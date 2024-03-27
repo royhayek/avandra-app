@@ -24,6 +24,7 @@ axios.interceptors.request.use((req) => {
   req.baseURL = serverApiUrl;
   req.headers.Accept = 'application/json';
   req.headers['timeZone'] = moment.tz.guess();
+  req.headers['Accept-Language'] = i18n.locale;
 
   req.paramsSerializer = {
     serialize: (params) => stringify(params, { skipNulls: true, allowDots: true })
@@ -36,8 +37,6 @@ axios.interceptors.request.use((req) => {
 
   // Set language
   req.headers.language = i18n.locale || store.getState().app.language;
-
-  console.debug('req.baseURL', req.baseURL);
 
   return req;
 });

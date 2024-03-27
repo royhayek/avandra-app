@@ -8,9 +8,10 @@ import authReducer from './auth/slice';
 import userReducer from './user/slice';
 import placesReducer from './places/slice';
 import plannerReducer from './planner/slice';
+import articleReducer from './article/slice';
 import itineraryReducer from './itinerary/slice';
 import snackbarSliceReducer from './snackbar/slice';
-import destinationsReducer from './destinations/slice';
+import destinationReducer from './destination/slice';
 
 const persistStorageConfig = {
   key: 'ai-trip-app',
@@ -37,7 +38,8 @@ export default persistCombineReducers(persistStorageConfig, {
   user: userReducer,
   places: placesReducer,
   planner: plannerReducer,
+  article: articleReducer,
   itinerary: itineraryReducer,
   snackbar: snackbarSliceReducer,
-  destinations: destinationsReducer
+  destination: destinationReducer
 });

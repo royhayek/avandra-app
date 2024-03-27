@@ -1,32 +1,47 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useCallback, useEffect } from 'react';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { ExportIcon } from '@shared/assets/icons';
-import { ScrollView, useWindowDimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PopularListItem from '@screens/Home/components/PopularListItem';
 import RenderHTML, { defaultSystemFonts } from 'react-native-render-html';
+import { SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
-import { article_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
+import { selectArticleDetails } from '@redux/article/slice';
+import { getArticleDetailsAction } from '@redux/article/thunks';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 interface ArticleDetailsScreenProps {}
+
+interface RouteParams {
+  detailsId: string;
+}
 
 // Component
 const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
+  // Redux
+  const dispatchThunk = useAppThunkDispatch();
+
+  const articleDetails = useAppSelector(selectArticleDetails);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
   const { width } = useWindowDimensions();
 
+  const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const { detailsId } = route?.params as RouteParams;
 
   // Callbacks
   const handleShare = useCallback(() => {
@@ -34,6 +49,11 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
   }, []);
 
   // Effects
+  useEffect(() => {
+    if (detailsId) dispatchThunk(getArticleDetailsAction(detailsId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -46,29 +66,31 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
 
   // Renderers
   return (
-    <ScrollView
-      contentContainerStyle={styles.scrollView}
-      keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={false}>
-      <PopularListItem orientation="vertical" type="article" item={article_details} />
+    <SafeAreaView>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
+        <PopularListItem orientation="vertical" type="article" item={articleDetails} disabled noPadding />
 
-      <RenderHTML
-        source={{ uri: article_details?.details }}
-        contentWidth={width}
-        systemFonts={[...defaultSystemFonts, 'urbanist-regular', 'urbanist-bold']}
-        tagsStyles={{
-          strong: {
-            ...theme.fonts.h5,
-            fontFamily: 'urbanist-bold'
-          },
-          body: {
-            ...theme.fonts.xLarge,
-            fontFamily: 'urbanist-regular',
-            color: theme.dark ? theme.colors.white : theme.colors.black
-          }
-        }}
-      />
-    </ScrollView>
+        <RenderHTML
+          source={{ html: articleDetails?.details }}
+          contentWidth={width}
+          systemFonts={[...defaultSystemFonts, 'urbanist-regular', 'urbanist-bold']}
+          tagsStyles={{
+            strong: {
+              ...theme.fonts.h5,
+              fontFamily: 'urbanist-bold'
+            },
+            body: {
+              ...theme.fonts.xLarge,
+              fontFamily: 'urbanist-regular',
+              color: theme.dark ? theme.colors.white : theme.colors.black
+            }
+          }}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

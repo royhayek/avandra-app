@@ -38,7 +38,7 @@ import AccountSecurityScreen from '@screens/Settings/screens/AccountSecurity';
 import i18n, { t } from '@app/i18n';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { getHasValidToken, getUserAuthenticated } from '@redux/auth/slice';
+import { getUserAuthenticated } from '@redux/auth/slice';
 
 // Interfaces
 import { ParamListBase, RouteProp } from '@react-navigation/native';

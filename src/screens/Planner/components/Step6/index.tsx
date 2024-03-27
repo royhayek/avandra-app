@@ -18,7 +18,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import { plannerActions } from '@redux/planner/slice';
 import { clearPlaces, selectPlaces } from '@redux/places/slice';
 import { selectItinerary, submitForm } from '@redux/itinerary/slice';
-import { selectDestinations, destinationsActions } from '@redux/destinations/slice';
+import { selectDestinations, destinationsActions } from '@redux/destination/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';

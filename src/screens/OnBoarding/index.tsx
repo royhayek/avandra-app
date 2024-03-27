@@ -1,6 +1,8 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -12,10 +14,11 @@ import FastImage from 'react-native-fast-image';
 import Indicator from '@shared/components/Indicator';
 import RegularButton from '@shared/components/Buttons/Regular';
 
-// Utils
+// Utilities
 import { t } from '@app/i18n';
-import { data } from './data';
 import makeStyles from './styles';
+import { PUBLIC_URL } from '@shared/constants';
+import { getWalkthrough } from '@redux/app/slice';
 import makeCommonStyles from '@shared/assets/styles';
 
 // Interfaces
@@ -23,6 +26,9 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Component
 const OnBoarding = () => {
+  // Redux
+  const walkthroughList = useSelector(getWalkthrough);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -34,48 +40,66 @@ const OnBoarding = () => {
 
   const [index, setIndex] = useState(0);
 
-  const onBoardingData = data(t);
-
   // Callbacks
+  const navigateToLogin = useCallback(async () => {
+    await AsyncStorage.setItem('seenWalkthrough', 'true');
+    navigation.navigate('Login');
+  }, [navigation]);
+
+  const checkIfSeenWalkthrough = useCallback(async () => {
+    const seenWalkthrough = await AsyncStorage.getItem('seenWalkthrough');
+    if (seenWalkthrough) navigateToLogin();
+  }, [navigateToLogin]);
+
   const handleOnIndexChanged = useCallback((i: number) => setIndex(i), []);
 
   const handleBackOrSkipPress = useCallback(() => {
     if (index === 0) {
-      navigation.navigate('Login');
+      navigateToLogin();
     } else {
       swiperRef.current?.scrollBy(-1, true);
     }
-  }, [index, navigation]);
+  }, [navigateToLogin, index]);
 
   const handleContinuePress = useCallback(() => {
-    if (index === onBoardingData.length - 1) {
-      navigation.navigate('Login');
+    if (index === walkthroughList.length - 1) {
+      navigateToLogin();
     } else {
       swiperRef.current?.scrollBy(1, true);
     }
-  }, [index, navigation, onBoardingData.length]);
+  }, [navigateToLogin, index, walkthroughList.length]);
+
+  // Effects
+  useEffect(() => {
+    checkIfSeenWalkthrough();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Renders
   return (
     <>
       <View style={styles.container}>
-        <FastImage resizeMode="contain" source={onBoardingData[index].background} style={styles.backgroundImg} />
+        <FastImage
+          resizeMode="contain"
+          style={styles.backgroundImg}
+          source={{ uri: `${PUBLIC_URL}/walkthrough/image/${walkthroughList[index]?.image}` }}
+        />
       </View>
 
       <View style={styles.bottomBackground}>
         <FastImage
           resizeMode="stretch"
+          style={styles.contentImage}
           source={
             theme.dark
               ? require('@shared/assets/images/ArcBackgroundDark.png')
               : require('@shared/assets/images/ArcBackgroundLight.png')
           }
-          style={styles.contentImage}
         />
 
         <View style={styles.content}>
           <Swiper ref={swiperRef} pagingEnabled showsPagination loop={false} onIndexChanged={handleOnIndexChanged}>
-            {_.map(onBoardingData, ({ title, description }) => (
+            {_.map(walkthroughList, ({ title, description }) => (
               <View key={title} style={{ flex: 1 }}>
                 <Text variant="h3" style={styles.title}>
                   {title}
@@ -84,7 +108,7 @@ const OnBoarding = () => {
                   {description}
                 </Text>
 
-                <Indicator index={index} length={onBoardingData?.length} style={styles.indicator} />
+                <Indicator index={index} length={walkthroughList?.length} style={styles.indicator} />
 
                 <View style={commonStyles.footer}>
                   <RegularButton

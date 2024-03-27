@@ -7,7 +7,7 @@ import { TestIds } from 'react-native-google-mobile-ads';
 const state = store.getState();
 const { serverApiUrl } = getEnvVars();
 
-export const publicUrl = serverApiUrl;
+export const PUBLIC_URL = `${serverApiUrl?.replace('/api', '')}/uploads`;
 
 // Place your rewarded ad unit ids heres
 export const REWARDED_AD_UNIT_ID = Platform.select({

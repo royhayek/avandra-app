@@ -92,3 +92,8 @@ export { default as MoonIcon } from './MoonIcon';
 export { default as MapLocationIcon } from './MapLocationIcon';
 
 export { default as MapNavigationIcon } from './MapNavigationIcon';
+
+// Destination
+export { default as MapIcon } from './MapIcon';
+
+export { default as CurrencyIcon } from './CurrencyIcon';

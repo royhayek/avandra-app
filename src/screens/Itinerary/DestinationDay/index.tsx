@@ -17,7 +17,7 @@ import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectPlaces } from '@redux/places/slice';
 import { DUMMY_DESTINATIONS, DUMMY_PLACES } from '../data';
-import { selectDestinations } from '@redux/destinations/slice';
+import { selectDestinations } from '@redux/destination/slice';
 
 // Interfaces
 interface DestinationDayProps {

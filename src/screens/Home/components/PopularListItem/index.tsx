@@ -1,6 +1,7 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback } from 'react';
+import { mvs } from 'react-native-size-matters';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -10,9 +11,8 @@ import FastImage from 'react-native-fast-image';
 import { TouchableOpacity, View } from 'react-native';
 
 // Utilities
-import i18n from '@app/i18n';
 import makeStyles from './styles';
-import { publicUrl } from '@shared/constants';
+import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
@@ -21,11 +21,13 @@ import { ArticleProps } from '@shared/types/Article';
 interface PopularListItemProps {
   type: string;
   item: ArticleProps;
+  disabled?: boolean;
+  noPadding?: boolean;
   orientation: string | undefined;
 }
 
 // Component
-const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientation }) => {
+const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientation, noPadding, disabled }) => {
   // Statics
   const isVertical = !!String(orientation).match(/vertical/);
   const isDestination = !!String(type).match(/destination/);
@@ -37,28 +39,35 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
 
   // Callbacks
   const handleNavigateDetailsScreen = useCallback(() => {
-    navigation.navigate(isDestination ? 'DestinationDetails' : 'ArticleDetails', { id: item._id });
-  }, [isDestination, item._id, navigation]);
+    navigation.navigate(isDestination ? 'DestinationDetails' : 'ArticleDetails', { detailsId: item?._id });
+  }, [isDestination, item?._id, navigation]);
 
   // Renderers
   return (
-    <TouchableOpacity key={item._id} onPress={handleNavigateDetailsScreen} style={styles.button}>
+    <TouchableOpacity key={item?._id} onPress={handleNavigateDetailsScreen} style={styles.button} disabled={disabled}>
       <FastImage
         resizeMode="cover"
         style={styles.image}
-        source={{ uri: `${publicUrl?.replace('/api', '')}/uploads/destination/image/${item.image}` }}
+        source={{ uri: `${PUBLIC_URL}/${isDestination ? 'destination' : 'article'}/image/${item?.image}` }}
       />
-      <Text numberOfLines={2} variant={isVertical ? 'h5' : 'h6'} style={styles.name}>
-        {_.find(item.name, { type: i18n.locale })?.content}
+      <Text
+        numberOfLines={2}
+        variant={isVertical ? (noPadding ? 'h4' : 'h5') : 'h6'}
+        style={[styles.name, noPadding && { paddingHorizontal: 0, paddingTop: mvs(6) }]}>
+        {item?.name}
       </Text>
-      <View style={styles.countryContainer}>
-        <FastImage
-          resizeMode="cover"
-          style={styles.flag}
-          source={{ uri: `${publicUrl?.replace('/api', '')}/uploads/destination/flag/${item.flag}` }}
-        />
-        <Text variant={isVertical ? 'large' : 'medium'} style={styles.country}>
-          {isDestination ? _.find(item.country, { type: i18n.locale })?.content : item.date}
+      <View style={styles.subtitleContainer}>
+        {isDestination && (
+          <FastImage
+            resizeMode="cover"
+            style={styles.flag}
+            source={{ uri: `${PUBLIC_URL}/destination/flag/${item?.flag}` }}
+          />
+        )}
+        <Text
+          variant={isVertical ? 'large' : 'medium'}
+          style={[styles.subtitle, noPadding && { paddingHorizontal: 0, paddingVertical: mvs(4) }]}>
+          {isDestination ? item?.country : item?.date}
         </Text>
       </View>
     </TouchableOpacity>
@@ -66,6 +75,8 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
 };
 
 PopularListItem.defaultProps = {
+  disabled: false,
+  noPadding: false,
   orientation: 'horizontal'
 };
 

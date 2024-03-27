@@ -14,9 +14,11 @@ import PopularListItem from '@screens/Home/components/PopularListItem';
 import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
-import { fetchDestinations } from '@redux/destinations/thunks';
+import { selectPopularArticles } from '@redux/article/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import { getDestinationsLastRefresh, selectPopularDestinations } from '@redux/destinations/slice';
+import { getPopularArticlesAction } from '@redux/article/thunks';
+import { getPopularDestinationsAction } from '@redux/destination/thunks';
+import { selectPopularDestinations, getDestinationsLastRefresh } from '@redux/destination/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -34,7 +36,7 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
   // Redux
   const dispatch = useAppThunkDispatch();
 
-  const destinationsLastRefresh = useAppSelector(getDestinationsLastRefresh);
+  const popularArticles = useAppSelector(selectPopularArticles);
   const popularDestinations = useAppSelector(selectPopularDestinations);
 
   // Statics
@@ -58,16 +60,15 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
 
   // Effects
   useEffect(() => {
-    // !!String(type).match(/destinations/) && _.isEmpty(destinationsLastRefresh) && dispatch(fetchDestinations());
-    dispatch(fetchDestinations());
-    // !!String(type).match(/articles/) && _.isEmpty(destinationsLastRefresh) && dispatch(fetchDestinations());
+    dispatch(getPopularDestinationsAction());
+    dispatch(getPopularArticlesAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Renderer Vars
   const data = useMemo(
-    () => (String(type).match(/destinations/) ? popularDestinations : popularDestinations),
-    [popularDestinations, type]
+    () => (String(type).match(/destinations/) ? popularDestinations : popularArticles),
+    [popularArticles, popularDestinations, type]
   );
 
   // Renderers

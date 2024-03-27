@@ -3,10 +3,11 @@ import _ from 'lodash';
 import * as Updates from 'expo-updates';
 import { ref, onValue } from 'firebase/database';
 import { withIAPContext } from 'react-native-iap';
-// import * as Notifications from 'expo-notifications';
 import { connectAsync } from 'expo-in-app-purchases';
+// import * as Notifications from 'expo-notifications';
 import React, { useCallback, useEffect, useState } from 'react';
 import { LayoutChangeEvent, useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Components
 import RootNavigation from './navigation';
@@ -23,11 +24,12 @@ import { changeLocale } from './i18n';
 import { Firebase } from '@shared/constants';
 import { FIREBASE_DB } from '../../firebaseConfig';
 import NetworkInfo from '@shared/services/NetworkInfo';
-import { useAppDispatch, useAppSelector, useAppThunkDispatch } from './store';
+import { validateTokenAction } from '@redux/auth/thunks';
+import { getWalkthroughAction } from '@redux/app/thunks';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
 // import { registerForPushNotificationsAsync } from '@shared/utils';
 import { appActions, getLanguage, getThemeMode } from '@redux/app/slice';
-import { validateTokenAction } from '@redux/auth/thunks';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from './store';
 
 // Interfaces
 interface RootProps {
@@ -110,6 +112,8 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
 
   const initData = useCallback(async () => {
     changeLocale(language);
+    const seenWalkthrough = (await AsyncStorage.getItem('seenWalkthrough')) === 'true';
+    if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
     await dispatchThunk(validateTokenAction());
     await getConfiguration();
     await initAppPurchases();

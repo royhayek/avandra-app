@@ -1,8 +1,11 @@
 // Packages
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
-// Interfaces
+// Utilities
 import { RootState } from '@app/store';
+import { getWalkthroughAction } from './thunks';
+
+// Interfaces
 import { AppInitialState } from './types';
 
 // Slice
@@ -24,6 +27,7 @@ const initialState: AppInitialState = {
   deviceUuid: null,
   messagesCount: 0,
   subscriptions: [],
+  walkthrough: [],
   lastSentDate: null,
   themeMode: 'default',
   lastRewardedDate: null,
@@ -64,6 +68,11 @@ export const appSlice = createSlice({
     updatePlannerStep: (state, action) => {
       state.plannerStep = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getWalkthroughAction.fulfilled, (state, action) => {
+      state.walkthrough = action.payload.result;
+    });
   }
 });
 
@@ -84,6 +93,8 @@ export const getConfiguration = createSelector(_app, (data) => data.config);
 export const getDeviceUuid = createSelector(_app, (data) => data.deviceUuid);
 
 export const getPlannerStep = createSelector(_app, (data) => data.plannerStep);
+
+export const getWalkthrough = createSelector(_app, (data) => data.walkthrough);
 
 export const getMessagesCount = createSelector(_app, (data) => data.messagesCount);
 

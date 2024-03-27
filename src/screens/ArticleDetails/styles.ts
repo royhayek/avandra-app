@@ -1,6 +1,6 @@
 // Packages
-import { Dimensions, StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
+import { Dimensions, StyleSheet } from 'react-native';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
@@ -10,16 +10,18 @@ const windowWidth = Dimensions.get('window').width;
 export default (theme: AppTheme) =>
   StyleSheet.create({
     scrollView: {
-      paddingHorizontal: ms(24)
+      paddingTop: mvs(24),
+      paddingBottom: mvs(50),
+      paddingHorizontal: ms(24),
     },
     shareButton: {
       marginRight: ms(16)
     },
     image: {
       bottom: 0,
-      position: 'absolute',
       width: windowWidth,
       height: windowWidth,
+      position: 'absolute',
       marginLeft: windowWidth / 2
     },
     content: {

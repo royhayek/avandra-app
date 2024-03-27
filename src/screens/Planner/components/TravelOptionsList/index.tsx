@@ -7,7 +7,6 @@ import { Text } from 'react-native-paper';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
-import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
@@ -28,17 +27,17 @@ const TravelOptionsList: React.FC<TravelOptionsListProps> = ({ list, value, setV
 
   // Renderers
   const renderItem = (item: TravelOptionProps) => {
-    const isActive = _.isEqual(value, item.key);
+    const isActive = _.isEqual(value, item._id);
 
     return (
-      <TouchableOpacity onPress={() => setValue(item.key)} style={[styles.button, isActive && styles.activeButton]}>
+      <TouchableOpacity onPress={() => setValue(item._id)} style={[styles.button, isActive && styles.activeButton]}>
         <View>
           <View style={styles.nameAndIcon}>
-            <Text variant="h5">{item.title[i18n.locale]}</Text>
+            <Text variant="h5">{item.title}</Text>
             <Text variant="h5">{item.icon}</Text>
           </View>
           <Text variant="medium" style={styles.description}>
-            {item.description[i18n.locale]}
+            {item.description}
           </Text>
         </View>
       </TouchableOpacity>

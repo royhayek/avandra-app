@@ -2,25 +2,33 @@
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import { JapanFlag } from '@shared/assets/icons';
 import ImageView from 'react-native-image-viewing';
 import BackButton from '@shared/components/Buttons/Back';
+import { CurrencyIcon, MapIcon } from '@shared/assets/icons';
 import RegularButton from '@shared/components/Buttons/Regular';
 import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { destination_details } from './data';
+import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { plannerActions } from '@redux/planner/slice';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { getDestinationDetails, selectOptionsLoading } from '@redux/destination/slice';
+import {
+  getBudgetsAction,
+  getDestinationDetailsAction,
+  getInterestsAction,
+  getTravelersAction
+} from '@redux/destination/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -28,6 +36,10 @@ import { TranslateOptions } from 'i18n-js';
 interface ImageViewState {
   isOpen: boolean;
   index: number;
+}
+
+interface RouteParams {
+  detailsId: string;
 }
 
 interface DestinationDetailsScreenProps {}
@@ -38,6 +50,10 @@ const _t = (key: string, options?: TranslateOptions) => t(`destination_details.$
 const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => {
   // Redux
   const dispatch = useDispatch();
+  const dispatchThunk = useAppThunkDispatch();
+
+  const areOptionsLoading = useAppSelector(selectOptionsLoading);
+  const destinationDetails = useAppSelector(getDestinationDetails);
 
   // Statics
   const theme = useAppTheme();
@@ -46,30 +62,40 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   const [imageViewState, setImageViewState] = React.useState<ImageViewState>({ isOpen: false, index: 0 });
 
+  const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const { id, name, image, country, description, gallery, continent, currency } = destination_details;
+  const { detailsId } = route?.params as RouteParams;
+  const { name, image, country, description, gallery, continent, currency, flag } = destinationDetails || {};
 
   // Callbacks
-  const handleStartTripPress = useCallback(() => {
-    dispatch(plannerActions.setPayload({ destination: { id, name, image, country } }));
+  const handleStartTripPress = useCallback(async () => {
+    dispatch(plannerActions.setPayload({ destination: { id: detailsId, name, image, country } }));
+    // Dispatch travelers list
+    await dispatchThunk(getTravelersAction());
+    await dispatchThunk(getInterestsAction());
+    await dispatchThunk(getBudgetsAction());
     navigation.navigate('Planner');
-  }, [country, dispatch, id, image, name, navigation]);
+  }, [country, detailsId, dispatch, dispatchThunk, image, name, navigation]);
 
   const handleGalleryImagePress = useCallback((index: number) => setImageViewState({ isOpen: true, index }), []);
 
   // Effects
   useEffect(() => {
-    navigation.setOptions({
-      headerShown: false
-    });
-  }, [navigation]);
+    if (detailsId) dispatchThunk(getDestinationDetailsAction(detailsId));
+
+    navigation.setOptions({ headerShown: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Renderer Vars
+  const galleryImages = _.map(gallery, (item) => ({ uri: `${PUBLIC_URL}/destination/gallery/${item}` })) || [];
 
   // Renderers
   const renderStickyHeader = () => (
     <View style={styles.curvedContainer}>
       <View style={styles.stickyHeader}>
-        <FastImage source={require('../../../assets/paris.jpeg')} style={styles.image} />
+        <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />
       </View>
       <BackButton style={{ position: 'absolute', top: 60, start: 20, backgroundColor: theme.colors.background }} />
     </View>
@@ -81,7 +107,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         <Text variant="h3">{name}</Text>
 
         <View style={styles.countryContainer}>
-          <JapanFlag />
+          <FastImage source={{ uri: `${PUBLIC_URL}/destination/flag/${flag}` }} style={styles.flag} />
           <Text variant="xLarge" style={styles.country}>
             {country}
           </Text>
@@ -97,12 +123,12 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       </Text>
       <FlatList
         horizontal
-        data={gallery}
+        data={galleryImages}
         contentContainerStyle={styles.galleryList}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
           <TouchableOpacity onPress={() => handleGalleryImagePress(index)}>
-            <FastImage key={index} source={{ uri: item?.uri }} style={styles.galleryImage} />
+            <FastImage key={index} style={styles.galleryImage} source={item} resizeMode="cover" />
           </TouchableOpacity>
         )}
       />
@@ -111,8 +137,14 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         {_t('additional_info')}
       </Text>
       <View style={styles.paddedContent}>
-        <Text variant="xLarge">{continent}</Text>
-        <Text variant="xLarge">{currency}</Text>
+        <View style={styles.infoRow}>
+          <MapIcon fill={theme.colors.secondary} />
+          <Text variant="xLarge">{continent}</Text>
+        </View>
+        <View style={styles.infoRow}>
+          <CurrencyIcon fill={theme.colors.secondary} />
+          <Text variant="xLarge">{currency}</Text>
+        </View>
       </View>
     </View>
   );
@@ -130,14 +162,19 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       </ScrollView>
 
       <ImageView
-        images={gallery}
+        images={galleryImages}
         visible={imageViewState?.isOpen}
         imageIndex={imageViewState?.index}
         onRequestClose={() => setImageViewState({ isOpen: false, index: 0 })}
       />
 
       <View style={commonStyles.footer}>
-        <RegularButton title={_t('start_a_trip')} onPress={handleStartTripPress} fullWidth />
+        <RegularButton
+          fullWidth
+          title={_t('start_a_trip')}
+          loading={areOptionsLoading}
+          onPress={handleStartTripPress}
+        />
       </View>
     </>
   );

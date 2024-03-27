@@ -19,16 +19,16 @@ export default (theme: AppTheme, isVertical: boolean) =>
       paddingHorizontal: ms(5),
       fontFamily: isVertical ? 'urbanist-semibold' : 'urbanist-bold'
     },
-    countryContainer: {
+    subtitleContainer: {
       alignItems: 'center',
       flexDirection: 'row',
       paddingHorizontal: ms(5)
     },
     flag: {
       width: ms(18),
-      height: ms(14)
+      height: ms(12)
     },
-    country: {
+    subtitle: {
       paddingHorizontal: ms(5),
       color: theme.colors.secondary,
       fontFamily: isVertical ? 'urbanist-medium' : 'urbanist-regular'

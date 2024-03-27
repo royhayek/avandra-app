@@ -1,5 +1,5 @@
 export const destination_details = {
-  id: 1,
+  _id: 1,
   name: 'Tokyo',
   country: 'Japan',
   image: 'https://picsum.photos/300/200?random=1',

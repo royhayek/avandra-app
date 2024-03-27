@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
@@ -11,8 +11,8 @@ import TravelOptionsList from '../TravelOptionsList';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { BUDGET_LIST } from './data';
 import { useAppTheme } from '@shared/assets/theme';
+import { selectBudgetsList } from '@redux/destination/slice';
 import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
@@ -25,6 +25,7 @@ const Step4 = () => {
   // Redux
   const dispatch = useDispatch();
 
+  const budgetsList = useSelector(selectBudgetsList);
   const plannerPayload = useSelector(getPlannerPayload);
 
   // Statics
@@ -32,15 +33,24 @@ const Step4 = () => {
   const styles = makeStyles(theme);
 
   const setBudget = useCallback(
-    (budget) => dispatch(plannerActions.setPayload({ budget: _.find(BUDGET_LIST, { key: budget }) })),
-    [dispatch]
+    (_id: string) => dispatch(plannerActions.setPayload({ budget: _.find(budgetsList, { _id }) })),
+    [budgetsList, dispatch]
   );
+
+  // Effects
+  useEffect(() => {
+    if (!plannerPayload?.budget) dispatch(plannerActions.setPayload({ traveler: budgetsList[0] }));
+  }, [budgetsList, dispatch, plannerPayload?.budget]);
 
   // Renderers
   return (
     <View style={styles.container}>
       <StepHeader title={_t('budget_title')} description={_t('budget_desc')} />
-      <TravelOptionsList list={BUDGET_LIST} value={plannerPayload?.budget?.key ?? BUDGET_LIST[0].key} setValue={setBudget} />
+      <TravelOptionsList
+        list={budgetsList}
+        setValue={setBudget}
+        value={plannerPayload?.budget?._id ?? budgetsList[0]._id}
+      />
     </View>
   );
 };

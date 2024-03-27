@@ -12,7 +12,7 @@ import makeStyles from './styles';
 import { DUMMY_INFO } from '../data';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectDestinations } from '@redux/destinations/slice';
+import { selectDestinations } from '@redux/destination/slice';
 
 // Component
 const ListHeader = () => {

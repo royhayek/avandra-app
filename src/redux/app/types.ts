@@ -1,3 +1,5 @@
+import { WalkthroughProps } from '@shared/types/Walkthrough';
+
 export interface AppInitialState {
   config: {
     ads: {
@@ -20,4 +22,5 @@ export interface AppInitialState {
   lastSentDate: Date | null;
   lastRewardedDate: Date | null;
   ownedSubscription: any | null;
+  walkthrough: WalkthroughProps[];
 }

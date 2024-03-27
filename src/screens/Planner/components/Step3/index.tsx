@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
@@ -11,8 +11,9 @@ import InterestsList from './InterestsList';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { INTEREST_LIST } from './data';
+import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
+import { selectInterestsList } from '@redux/destination/slice';
 import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
@@ -25,7 +26,8 @@ const Step3 = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const plannerPayload = useSelector(getPlannerPayload);
+  const plannerPayload = useAppSelector(getPlannerPayload);
+  const interestsList = useAppSelector(selectInterestsList);
 
   // Statics
   const theme = useAppTheme();
@@ -48,7 +50,7 @@ const Step3 = () => {
       </View>
 
       <View style={styles.interests}>
-        <InterestsList data={INTEREST_LIST} value={plannerPayload?.interests} setValue={handleInterestPress} />
+        <InterestsList data={interestsList} value={plannerPayload?.interests} setValue={handleInterestPress} />
       </View>
     </>
   );

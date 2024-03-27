@@ -30,6 +30,7 @@ import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import GenerationModal from '@shared/components/GenerationModal';
+import { PUBLIC_URL } from '@shared/constants';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step5.${key}`, options);
@@ -86,7 +87,7 @@ const Step5 = ({ setActive, generating }) => {
               {_t('destination')}
             </Text>
             <View style={styles.row}>
-              <FastImage source={{ uri: image }} style={styles.image} />
+              {image && <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />}
               <View>
                 <Text variant="h6">{name}</Text>
                 <View style={styles.countryRow}>
@@ -108,7 +109,7 @@ const Step5 = ({ setActive, generating }) => {
           <View style={styles.flex1}>
             {renderTitle('traveler', _t('party'), () => handleEditPress(0))}
             <Text variant="xLarge" style={styles.value}>
-              {traveler?.title[i18n.locale]}
+              {traveler?.title}
             </Text>
           </View>
         </View>
@@ -145,7 +146,7 @@ const Step5 = ({ setActive, generating }) => {
           <View style={styles.flex1}>
             {renderTitle('bidget', _t('budget'), () => handleEditPress(3))}
             <Text variant="xLarge" style={styles.value}>
-              {budget?.title[i18n.locale]}
+              {budget?.title}
             </Text>
           </View>
         </View>

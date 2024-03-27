@@ -36,17 +36,22 @@ export default (theme: AppTheme) =>
     },
     content: {
       flex: 1,
-      borderRadius: 40,
       paddingTop: mvs(12),
+      borderRadius: ms(40),
       paddingBottom: mvs(50)
     },
     paddedContent: {
+      gap: mvs(8),
       paddingHorizontal: ms(24)
     },
     countryContainer: {
       gap: ms(10),
       alignItems: 'center',
       flexDirection: 'row'
+    },
+    flag: {
+      width: ms(20),
+      height: ms(14)
     },
     country: {
       fontFamily: 'urbanist-medium',
@@ -72,5 +77,10 @@ export default (theme: AppTheme) =>
     modalImage: {
       width: windowWidth,
       height: windowWidth
+    },
+    infoRow: {
+      gap: 10,
+      alignItems: 'center',
+      flexDirection: 'row',
     }
   });
