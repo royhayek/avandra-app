@@ -8,7 +8,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import { TouchableOpacity, View } from 'react-native';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
@@ -17,9 +17,11 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { ArticleProps } from '@shared/types/Article';
+import Shimmer from '@shared/components/Shimmer';
 
 interface PopularListItemProps {
   type: string;
+  isLoading: boolean;
   item: ArticleProps;
   disabled?: boolean;
   noPadding?: boolean;
@@ -27,7 +29,14 @@ interface PopularListItemProps {
 }
 
 // Component
-const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientation, noPadding, disabled }) => {
+const PopularListItem: React.FC<PopularListItemProps> = ({
+  item,
+  type,
+  orientation,
+  noPadding,
+  isLoading,
+  disabled
+}) => {
   // Statics
   const isVertical = !!String(orientation).match(/vertical/);
   const isDestination = !!String(type).match(/destination/);
@@ -43,6 +52,17 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
   }, [isDestination, item?._id, navigation]);
 
   // Renderers
+
+  if (isLoading) {
+    return isVertical ? (
+      <View style={styles.button}>
+        <Shimmer style={styles.shimmerImage} />
+        <Shimmer style={styles.shimmerTitle} />
+        <Shimmer width={80} style={styles.shimmerSubtitle} />
+      </View>
+    ) : null;
+  }
+
   return (
     <TouchableOpacity key={item?._id} onPress={handleNavigateDetailsScreen} style={styles.button} disabled={disabled}>
       <FastImage
@@ -77,6 +97,7 @@ const PopularListItem: React.FC<PopularListItemProps> = ({ item, type, orientati
 PopularListItem.defaultProps = {
   disabled: false,
   noPadding: false,
+  isLoading: false,
   orientation: 'horizontal'
 };
 

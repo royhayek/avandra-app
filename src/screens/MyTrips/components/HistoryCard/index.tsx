@@ -23,17 +23,19 @@ import { PARTNERS_LIST } from '../../../Planner/components/Step1/data';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import Shimmer from '@shared/components/Shimmer';
 
 interface HistoryCardProps {
   index: number;
   item: CardItem; // Assuming 'item' has a specific type. Replace 'CardItem' with the actual type.
   small?: boolean;
+  isLoading?: boolean;
 }
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
 
-const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
+const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -128,59 +130,76 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
 
   const renderTripInformation = () => (
     <View style={small ? styles.horizontalInfoContent : styles.verticalInfoContent}>
-      <Text variant="h6" style={styles.title}>
-        {country}, {city}
-      </Text>
-
-      <View style={styles.rowContainer}>
-        <View style={styles.infoItemContainer}>
-          <Text variant="medium" style={styles.assistant}>
-            {partner?.title[i18n.locale]} {partner?.icon}
-          </Text>
+      {isLoading ? (
+        <View>
+          <Shimmer style={styles.title} width={120} />
+          <Shimmer style={styles.rowContainer} width={100} />
         </View>
-
-        <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
-
-        <View style={styles.infoItemContainer}>
-          <Feather
-            name="calendar"
-            size={ms(small ? ms(15) : ms(18))}
-            color={theme.dark ? theme.colors.white : theme.colors.black}
-          />
-          <Text variant="medium" style={styles.date}>
-            March 6th, 2023
+      ) : (
+        <View>
+          <Text variant="h6" style={styles.title}>
+            {country}, {city}
           </Text>
+
+          <View style={styles.rowContainer}>
+            <View style={styles.infoItemContainer}>
+              <Text variant="medium" style={styles.assistant}>
+                {partner?.title[i18n.locale]} {partner?.icon}
+              </Text>
+            </View>
+
+            <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
+
+            <View style={styles.infoItemContainer}>
+              <Feather
+                name="calendar"
+                size={ms(small ? ms(15) : ms(18))}
+                color={theme.dark ? theme.colors.white : theme.colors.black}
+              />
+              <Text variant="medium" style={styles.date}>
+                March 6th, 2023
+              </Text>
+            </View>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 
   const renderVerticalTripCard = (hasDelete = true) => (
     <View style={styles.container}>
-      <ImageBackground
-        resizeMode="stretch"
-        style={styles.cityImage}
-        imageStyle={{ borderRadius: ms(16) }}
-        source={require('../../../../../assets/paris.jpeg')}>
-        {hasDelete && (
-          <IconButton
-            size={ms(20)}
-            mode="contained"
-            icon={renderDeleteIcon}
-            style={styles.deleteBtn}
-            onPress={handleDeletePress}
-            containerColor={theme.colors.background}
-          />
-        )}
+      {isLoading ? (
+        <Shimmer style={styles.cityImage} />
+      ) : (
+        <ImageBackground
+          resizeMode="stretch"
+          style={styles.cityImage}
+          imageStyle={{ borderRadius: ms(16) }}
+          source={require('../../../../../assets/paris.jpeg')}>
+          {hasDelete && (
+            <IconButton
+              size={ms(20)}
+              mode="contained"
+              icon={renderDeleteIcon}
+              style={styles.deleteBtn}
+              onPress={handleDeletePress}
+              containerColor={theme.colors.background}
+            />
+          )}
 
-        {renderTripInformation()}
-      </ImageBackground>
+          {renderTripInformation()}
+        </ImageBackground>
+      )}
     </View>
   );
 
   const renderTripCard = () => (
     <View style={styles.tripCard}>
-      <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
+      {isLoading ? (
+        <Shimmer style={styles.verticalImage} />
+      ) : (
+        <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
+      )}
       {renderTripInformation()}
     </View>
   );
@@ -192,20 +211,22 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
           <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
             <View style={styles.flex1}>{renderTripCard()}</View>
 
-            <Menu
-              items={menuItems}
-              visible={openOptionsMenu}
-              onDismiss={toggleOptionsMenu}
-              onItemPress={handleTripMenuItemPress}
-              anchor={
-                <IconButton
-                  size={ms(20)}
-                  icon={renderMenuIcon}
-                  onPress={toggleOptionsMenu}
-                  style={{ borderRadius: ms(8) }}
-                />
-              }
-            />
+            {!isLoading && (
+              <Menu
+                items={menuItems}
+                visible={openOptionsMenu}
+                onDismiss={toggleOptionsMenu}
+                onItemPress={handleTripMenuItemPress}
+                anchor={
+                  <IconButton
+                    size={ms(20)}
+                    icon={renderMenuIcon}
+                    onPress={toggleOptionsMenu}
+                    style={{ borderRadius: ms(8) }}
+                  />
+                }
+              />
+            )}
           </TouchableOpacity>
 
           <GenerationModal visible={regenerating} regenerating={regenerating} progress={0} />
@@ -227,6 +248,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index }) => {
       </CustomBottomSheet>
     </>
   );
+};
+
+HistoryCard.defaultProps = {
+  isLoading: false
 };
 
 export default HistoryCard;

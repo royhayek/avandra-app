@@ -64,6 +64,7 @@ export default (theme: AppTheme) =>
     },
     cityImage: {
       flex: 1,
+      width: '100%',
       borderRadius: ms(24)
     },
     dot: {

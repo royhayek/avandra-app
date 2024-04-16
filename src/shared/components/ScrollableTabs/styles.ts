@@ -32,5 +32,18 @@ export default (theme: AppTheme) =>
     },
     activeTitle: {
       color: theme.colors.white
+    },
+    shimmerView: {
+      gap: ms(12),
+      height: mvs(40),
+      flexDirection: 'row',
+      marginVertical: mvs(8),
+      paddingHorizontal: ms(24)
+    },
+    shimmerPlaceholder: {
+      width: ms(130),
+      height: mvs(40),
+      alignItems: 'center',
+      borderRadius: ms(50)
     }
   });

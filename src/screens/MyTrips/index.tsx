@@ -1,12 +1,13 @@
 // Packages
 import _ from 'lodash';
-import { ms, mvs } from 'react-native-size-matters';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { mvs } from 'react-native-size-matters';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
+import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import HistoryCard from './components/HistoryCard';
-import { SegmentedButtons, Text } from 'react-native-paper';
+import ToggleButtons from '@shared/components/ToggleButtons';
 import { FlatList, RefreshControl, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 
@@ -16,7 +17,6 @@ import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
 import { savedTrips as savedTripsData } from './data';
-import ToggleButtons from '@shared/components/ToggleButtons';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
@@ -33,8 +33,7 @@ const HistoryScreen = () => {
 
   // Callbacks
   const refreshSavedTrips = useCallback((isRefreshing?: boolean) => {
-    !isRefreshing && setLoading(true);
-
+    // !isRefreshing && setLoading(true);
     // getConversations().then(() => {
     //   setSavedTrips(savedTripsData);
     //   setRefreshing(false);
@@ -49,33 +48,12 @@ const HistoryScreen = () => {
   }, []);
 
   // Renderer Vars
-  const segmentedButtonStyle = useMemo(
-    () => ({
-      uncheckedColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500],
-      labelStyle: { fontFamily: theme.fonts.large.fontFamily, fontSize: theme.fonts.large.fontSize },
-      style: {
-        borderWidth: 0.5,
-        borderRadius: ms(12),
-        borderColor: theme.dark ? theme.colors.gray[500] : theme.colors.gray[500]
-      }
-    }),
-    [theme.colors.gray, theme.dark, theme.fonts.large]
-  );
-
   const segmentedButtons = useMemo(
     () => [
-      {
-        value: 'upcoming',
-        label: _t('upcoming'),
-        ...segmentedButtonStyle
-      },
-      {
-        value: 'expired',
-        label: _t('expired'),
-        ...segmentedButtonStyle
-      }
+      { key: 'upcoming', title: _t('upcoming') },
+      { key: 'expired', title: _t('expired') }
     ],
-    [segmentedButtonStyle]
+    []
   );
 
   // Renderers
@@ -97,20 +75,17 @@ const HistoryScreen = () => {
           {_t('active_trip')}
         </Text>
 
-        <HistoryCard item={savedTrips[0]} index={0} refresh={refreshSavedTrips} />
+        <HistoryCard isLoading={loading} item={savedTrips[0]} index={0} refresh={refreshSavedTrips} />
 
         <ToggleButtons
-          buttons={[
-            { key: 'upcoming', title: _t('upcoming') },
-            { key: 'expired', title: _t('expired') }
-          ]}
           active={selectedTab}
+          buttons={segmentedButtons}
           setActive={setSelectedTab}
           containerStyle={styles.toggleButtons}
         />
       </>
     ),
-    [savedTrips, refreshSavedTrips, selectedTab, styles.toggleButtons]
+    [loading, savedTrips, refreshSavedTrips, selectedTab, segmentedButtons, styles.toggleButtons]
   );
 
   const renderList = () => (
@@ -122,7 +97,9 @@ const HistoryScreen = () => {
       refreshControl={renderRefreshControl}
       ListHeaderComponent={renderActiveTrip}
       contentContainerStyle={styles.listContent}
-      renderItem={({ item, index }) => <HistoryCard small item={item} index={index} refresh={refreshSavedTrips} />}
+      renderItem={({ item, index }) => (
+        <HistoryCard isLoading={loading} small item={item} index={index} refresh={refreshSavedTrips} />
+      )}
     />
   );
 

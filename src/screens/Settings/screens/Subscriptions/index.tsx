@@ -23,6 +23,7 @@ const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`,
 
 const SubscriptionsScreen = () => {
   // Redux
+  const isLoadingSubscriptions = false;
   const plans = dummy_subscriptions;
 
   // Statics
@@ -58,7 +59,9 @@ const SubscriptionsScreen = () => {
       data={plans}
       keyExtractor={(item) => item._id}
       contentContainerStyle={styles.plansList}
-      renderItem={({ item }) => <PlanListItem key={item._id} item={item} setIsSuccess={setIsSuccess} />}
+      renderItem={({ item }) => (
+        <PlanListItem key={item._id} item={item} setIsSuccess={setIsSuccess} isLoading={isLoadingSubscriptions} />
+      )}
     />
   );
 };

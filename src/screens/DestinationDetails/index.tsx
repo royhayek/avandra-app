@@ -12,7 +12,7 @@ import ImageView from 'react-native-image-viewing';
 import BackButton from '@shared/components/Buttons/Back';
 import { CurrencyIcon, MapIcon } from '@shared/assets/icons';
 import RegularButton from '@shared/components/Buttons/Regular';
-import { FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -22,7 +22,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import { getDestinationDetails, selectOptionsLoading } from '@redux/destination/slice';
+import { getDestinationDetails, selectDestinationLoading, selectOptionsLoading } from '@redux/destination/slice';
 import {
   getBudgetsAction,
   getDestinationDetailsAction,
@@ -32,6 +32,7 @@ import {
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import Shimmer from '@shared/components/Shimmer';
 
 interface ImageViewState {
   isOpen: boolean;
@@ -54,6 +55,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   const areOptionsLoading = useAppSelector(selectOptionsLoading);
   const destinationDetails = useAppSelector(getDestinationDetails);
+  const isLoadingDetails = useAppSelector(selectDestinationLoading);
 
   // Statics
   const theme = useAppTheme();
@@ -92,12 +94,36 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const galleryImages = _.map(gallery, (item) => ({ uri: `${PUBLIC_URL}/destination/gallery/${item}` })) || [];
 
   // Renderers
+  const renderHeaderShimmer = () => (
+    <View style={styles.curvedContainer}>
+      <Shimmer width={Dimensions.get('window').width} style={styles.stickyHeader} />
+    </View>
+  );
+
   const renderStickyHeader = () => (
     <View style={styles.curvedContainer}>
-      <View style={styles.stickyHeader}>
-        <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />
-      </View>
+      {isLoadingDetails ? (
+        renderHeaderShimmer()
+      ) : (
+        <View style={styles.stickyHeader}>
+          <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />
+        </View>
+      )}
       <BackButton style={{ position: 'absolute', top: 60, start: 20, backgroundColor: theme.colors.background }} />
+    </View>
+  );
+
+  const renderContentShimmer = () => (
+    <View style={styles.shimmerView}>
+      <Shimmer style={styles.shimmerCity} />
+      <Shimmer style={styles.shimmerCountry} />
+      <Shimmer style={styles.shimmerDescription} />
+      <Shimmer style={styles.shimmerTitle} />
+      <View style={styles.shimmerGallery}>
+        {_.times(3, (i) => (
+          <Shimmer key={i} style={styles.shimmerGalleryItem} />
+        ))}
+      </View>
     </View>
   );
 
@@ -158,7 +184,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
         {renderStickyHeader()}
-        {renderContent()}
+        {isLoadingDetails ? renderContentShimmer() : renderContent()}
       </ScrollView>
 
       <ImageView

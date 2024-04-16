@@ -14,14 +14,15 @@ import PopularListItem from '@screens/Home/components/PopularListItem';
 import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectPopularArticles } from '@redux/article/slice';
+import { selectPopularArticles, selectPopularLoading } from '@redux/article/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getPopularArticlesAction } from '@redux/article/thunks';
+import { selectPopularDestinations } from '@redux/destination/slice';
 import { getPopularDestinationsAction } from '@redux/destination/thunks';
-import { selectPopularDestinations, getDestinationsLastRefresh } from '@redux/destination/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import Shimmer from '@shared/components/Shimmer';
 
 interface PopularListProps {
   type: string;
@@ -36,6 +37,7 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
   // Redux
   const dispatch = useAppThunkDispatch();
 
+  const isLoading = useAppSelector(selectPopularLoading);
   const popularArticles = useAppSelector(selectPopularArticles);
   const popularDestinations = useAppSelector(selectPopularDestinations);
 
@@ -86,15 +88,27 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
         </View>
       )}
 
-      <FlatList
-        data={data}
-        horizontal={isHorizontal}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatListContainer}
-        renderItem={({ item }) => <PopularListItem type={type} item={item} orientation={orientation} />}
-      />
+      {isLoading ? (
+        <View style={styles.shimmerView}>
+          {_.times(2, (i) => (
+            <View key={i}>
+              <Shimmer style={styles.shimmerImage} />
+              <Shimmer style={styles.shimmerTitle} />
+              <Shimmer width={80} style={styles.shimmerSubtitle} />
+            </View>
+          ))}
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          horizontal={isHorizontal}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContainer}
+          renderItem={({ item }) => <PopularListItem type={type} item={item} orientation={orientation} />}
+        />
+      )}
     </>
   );
 };

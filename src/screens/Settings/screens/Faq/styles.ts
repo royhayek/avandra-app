@@ -8,7 +8,8 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
+      marginTop: mvs(8)
     },
     content: {
       marginHorizontal: ms(24)

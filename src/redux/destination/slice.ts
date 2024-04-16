@@ -145,6 +145,8 @@ export const selectTravelersList = createSelector(_destinations, (data) => data?
 
 export const getDestinationDetails = createSelector(_destinations, (data) => data?.details);
 
+export const selectDestinationLoading = createSelector(_destinations, (data) => data?.isLoading);
+
 export const selectOptionsLoading = createSelector(_destinations, (data) => data?.loadingOptions);
 
 export const getDestinationsLastRefresh = createSelector(_destinations, (data) => data?.lastRefresh);

@@ -59,4 +59,4 @@ export const getUserRole = createSelector(_user, (data) => data?.data?.role);
 
 export const getUserError = createSelector(_user, (data) => data.error);
 
-export const getUserLoading = createSelector(_user, (data) => data.loading);
+export const getUserSubmitting = createSelector(_user, (data) => data.loading);

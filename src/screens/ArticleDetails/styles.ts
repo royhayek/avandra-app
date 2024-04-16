@@ -12,7 +12,7 @@ export default (theme: AppTheme) =>
     scrollView: {
       paddingTop: mvs(24),
       paddingBottom: mvs(50),
-      paddingHorizontal: ms(24),
+      paddingHorizontal: ms(24)
     },
     shareButton: {
       marginRight: ms(16)
@@ -33,5 +33,12 @@ export default (theme: AppTheme) =>
     date: {
       fontFamily: 'urbanist-medium',
       color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
+    },
+    shimmerContent: {
+      marginTop: mvs(20)
+    },
+    shimmerHtmlBody: {
+      width: '100%',
+      marginTop: mvs(12)
     }
   });

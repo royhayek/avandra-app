@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Components
 import RootNavigation from './navigation';
+import SplashScreen from '@screens/Splash';
 import { StatusBar } from 'expo-status-bar';
 import { PaperProvider } from 'react-native-paper';
 import UpdateModal from '@shared/components/UpdateModal';

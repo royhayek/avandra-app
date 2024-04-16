@@ -7,8 +7,9 @@ import appReducer from './app/slice';
 import authReducer from './auth/slice';
 import userReducer from './user/slice';
 import placesReducer from './places/slice';
-import plannerReducer from './planner/slice';
 import articleReducer from './article/slice';
+import plannerReducer from './planner/slice';
+import settingsReducer from './settings/slice';
 import itineraryReducer from './itinerary/slice';
 import snackbarSliceReducer from './snackbar/slice';
 import destinationReducer from './destination/slice';
@@ -39,6 +40,7 @@ export default persistCombineReducers(persistStorageConfig, {
   places: placesReducer,
   planner: plannerReducer,
   article: articleReducer,
+  settings: settingsReducer,
   itinerary: itineraryReducer,
   snackbar: snackbarSliceReducer,
   destination: destinationReducer

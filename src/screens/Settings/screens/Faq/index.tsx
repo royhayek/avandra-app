@@ -1,35 +1,42 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import Input from '@shared/components/Input';
+import Shimmer from '@shared/components/Shimmer';
 import { Divider, Text } from 'react-native-paper';
 import ScrollableTabs from '@shared/components/ScrollableTabs';
 import { DownChevron, SearchIcon } from '@shared/assets/icons';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { dummy_faqs } from './data';
-import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { getFaqCategoriesAction, getFaqQuestionsAction } from '@redux/settings/thunks';
+import { selectFaqCategories, selectFaqCategoriesLoading, selectFaqQuestions } from '@redux/settings/slice';
 
 // Interfaces
 interface FaqScreenProps {}
 
 // Component
 const InfoScreen: React.FC<FaqScreenProps> = () => {
+  // Redux
+  const dispatchThunk = useAppThunkDispatch();
+
+  const faqQuestions = useAppSelector(selectFaqQuestions);
+  const faqCategories = useAppSelector(selectFaqCategories);
+  const isLoadingFaqs = useAppSelector(selectFaqCategoriesLoading);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [activeTab, setActiveTab] = useState('general');
   const [searchText, setSearchText] = useState<string>('');
+  const [activeTab, setActiveTab] = useState(faqCategories[0]?._id ?? '');
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-
-  const data = dummy_faqs;
-  const activeCategoryFaqs = useMemo(() => _.find(data, { category: activeTab })?.list ?? [], [activeTab, data]);
 
   // Callbacks
   const handleTabPress = useCallback((tab: string) => setActiveTab(tab), []);
@@ -43,28 +50,41 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
 
   const filteredData = useMemo(
     () =>
-      _.filter(activeCategoryFaqs, (faq) => {
-        const question = faq?.question[i18n.locale];
+      _.filter(faqQuestions, (faq) => {
+        const question = faq?.question;
 
         return _.includes(_.toLower(question), _.toLower(searchText));
       }),
-    [activeCategoryFaqs, searchText]
+    [faqQuestions, searchText]
   );
 
-  // Renderer Va
-  const tabs = _.map(dummy_faqs, (category) => ({
-    key: category?.category,
-    title: category?.title[i18n.locale] ?? ''
+  // Effects
+  useEffect(() => {
+    dispatchThunk(getFaqCategoriesAction());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (activeTab && !_.isEmpty(faqCategories)) {
+      dispatchThunk(getFaqQuestionsAction(activeTab));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
+  // Renderer Vars
+  const tabs = _.map(faqCategories, (category) => ({
+    key: category?._id,
+    title: category?.name
   }));
 
   // Renderers
   return (
     <View style={styles.container}>
       <View>
-        <ScrollableTabs tabs={tabs} onTabPress={handleTabPress} activeTab={activeTab} />
+        <ScrollableTabs tabs={tabs} onTabPress={handleTabPress} activeTab={activeTab} isLoading={isLoadingFaqs} />
+
         <View style={styles.content}>
           <Input
-            name="search"
             value={searchText}
             leftIcon={<SearchIcon />}
             placeholder={t('common.search')}
@@ -86,7 +106,7 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
             <View style={styles.item}>
               <TouchableOpacity style={styles.question} onPress={() => handleQuestionPress(item?._id)}>
                 <Text variant="h6" style={styles.questionText}>
-                  {item.question[i18n.locale]}
+                  {item.question}
                 </Text>
                 <DownChevron
                   fill={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]}
@@ -100,7 +120,7 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
 
                   <View style={styles.answer}>
                     <Text variant="large" style={styles.answerText}>
-                      {item.answer[i18n.locale]}
+                      {item.answer}
                     </Text>
                   </View>
                 </>

@@ -12,6 +12,7 @@ export default (theme: AppTheme, isVertical: boolean) =>
     },
     image: {
       borderRadius: ms(12),
+      width: isVertical ? '100%' : undefined,
       height: isVertical ? mvs(200) : mvs(140)
     },
     name: {
@@ -32,5 +33,20 @@ export default (theme: AppTheme, isVertical: boolean) =>
       paddingHorizontal: ms(5),
       color: theme.colors.secondary,
       fontFamily: isVertical ? 'urbanist-medium' : 'urbanist-regular'
+    },
+    shimmerImage: {
+      borderRadius: ms(12),
+      width: !isVertical ? ms(200) : '100%',
+      height: !isVertical ? mvs(140) : mvs(200)
+    },
+    shimmerTitle: {
+      height: mvs(23),
+      marginTop: mvs(8),
+      paddingHorizontal: ms(5)
+    },
+    shimmerSubtitle: {
+      height: mvs(16),
+      marginTop: mvs(6),
+      paddingHorizontal: ms(5)
     }
   });

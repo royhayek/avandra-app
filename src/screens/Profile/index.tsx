@@ -23,7 +23,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
-import { getUser, getUserLoading } from '@redux/user/slice';
+import { getUser, getUserSubmitting } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
@@ -37,7 +37,7 @@ const Profile = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const loading = useAppSelector(getUserLoading);
+  const loading = useAppSelector(getUserSubmitting);
   const user = useAppSelector(getUser);
   const { _id, name, email } = user;
 

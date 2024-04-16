@@ -1,7 +1,7 @@
 module.exports = {
   expo: {
-    name: 'Trippify',
-    slug: 'trippify',
+    name: 'Wondrous',
+    slug: 'wondroud',
     version: '1.0.8',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -107,7 +107,7 @@ module.exports = {
         {
           appID: '2319037778292908',
           clientToken: '***REMOVED***',
-          displayName: 'Trippify',
+          displayName: 'Wondrous',
           scheme: 'fb2319037778292908'
         }
       ],

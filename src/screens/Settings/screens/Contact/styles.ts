@@ -2,10 +2,7 @@
 import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
-// Interfaces
-import { AppTheme } from '@shared/assets/theme';
-
-export default (theme: AppTheme) =>
+export default () =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -20,7 +17,6 @@ export default (theme: AppTheme) =>
       marginTop: mvs(24)
     },
     message: {
-      ...theme.fonts.xLarge,
       minHeight: mvs(170),
       justifyContent: 'flex-start'
     },

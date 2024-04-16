@@ -16,9 +16,11 @@ import { useAppTheme } from '@shared/assets/theme';
 import { TranslateOptions } from 'i18n-js';
 import { PlanProps } from '@shared/types/Plan';
 import { CheckIcon } from '@shared/assets/icons';
+import Shimmer from '@shared/components/Shimmer';
 
 interface PlanListItemProps {
   item: PlanProps;
+  isLoading?: boolean;
   setIsSuccess?: (success: boolean) => void;
 }
 
@@ -27,6 +29,7 @@ const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`,
 
 const PlanListItem: React.FC<PlanListItemProps> = ({
   item: { _id, name, best, price, trial, period, popular, currency, benefits },
+  isLoading,
   setIsSuccess
 }) => {
   // Redux
@@ -43,6 +46,24 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
   };
 
   // Renderers
+  if (isLoading) {
+    return (
+      <View style={[styles.plan, styles.shimmerPlan]}>
+        <Shimmer style={styles.shimmerName} width={120} height={26} />
+        <Shimmer style={styles.shimmerPrice} width={80} height={32} />
+        <Shimmer style={styles.divider} />
+        {_.times(5, (i) => (
+          <View style={styles.shimmerBenefitRow}>
+            <Shimmer key={i} width={26} height={24} />
+            <Shimmer key={i} style={styles.shimmerBenefit} width={i % 2 ? 140 : 200} height={24} />
+          </View>
+        ))}
+        <Shimmer style={styles.divider} />
+        <Shimmer style={styles.shimmerName} width={120} height={22} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.plan}>
       {(best || popular) && (
@@ -100,6 +121,10 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
       )}
     </View>
   );
+};
+
+PlanListItem.defaultProps = {
+  isLoading: false
 };
 
 export default PlanListItem;

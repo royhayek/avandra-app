@@ -6,6 +6,7 @@ import { ArticleProps } from '@shared/types/Article';
 
 export interface ArticleInitialState {
   isLoading: boolean;
+  isLoadingArticles: boolean;
   lastRefresh: Moment | null;
   details: ArticleProps | null;
   articles: ArticleProps[] | null;

@@ -74,6 +74,8 @@ export default (theme: AppTheme) =>
       fontFamily: 'urbanist-medium'
     },
     divider: {
+      height: 1,
+      width: '100%',
       marginVertical: mvs(16)
     },
     currentPlan: {
@@ -85,5 +87,24 @@ export default (theme: AppTheme) =>
     },
     button: {
       flex: 1
+    },
+    shimmerPlan: {
+      justifyContent: 'center'
+    },
+    shimmerName: {
+      alignSelf: 'center'
+    },
+    shimmerPrice: {
+      alignSelf: 'center',
+      marginTop: mvs(16)
+    },
+    shimmerBenefitRow: {
+      gap: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: mvs(8)
+    },
+    shimmerBenefit: {
+      marginVertical: mvs(4)
     }
   });

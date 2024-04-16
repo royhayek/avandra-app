@@ -81,6 +81,42 @@ export default (theme: AppTheme) =>
     infoRow: {
       gap: 10,
       alignItems: 'center',
-      flexDirection: 'row',
+      flexDirection: 'row'
+    },
+    shimmerView: {
+      marginTop: mvs(24),
+      paddingHorizontal: ms(24)
+    },
+    shimmerImage: {
+      height: windowWidth / 1.3
+    },
+    shimmerCity: {
+      width: ms(110),
+      height: mvs(30)
+    },
+    shimmerCountry: {
+      width: ms(90),
+      height: mvs(20),
+      marginTop: mvs(10)
+    },
+    shimmerDescription: {
+      width: '100%',
+      height: mvs(145),
+      marginTop: mvs(10)
+    },
+    shimmerTitle: {
+      width: ms(110),
+      height: mvs(28),
+      marginTop: mvs(28)
+    },
+    shimmerGallery: {
+      marginTop: mvs(20),
+      flexDirection: 'row'
+    },
+    shimmerGalleryItem: {
+      width: ms(110),
+      height: ms(110),
+      marginEnd: ms(12),
+      borderRadius: theme.roundness
     }
   });

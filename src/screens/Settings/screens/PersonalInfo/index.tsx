@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 
 // Components
 import { Formik, FormikProps } from 'formik';
@@ -19,7 +19,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
-import { getUser, getUserLoading } from '@redux/user/slice';
+import { getUser, getUserSubmitting } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
@@ -33,8 +33,8 @@ const PersonalInfoScreen = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const loading = useAppSelector(getUserLoading);
   const user = useAppSelector(getUser);
+  const isSubmitting = useAppSelector(getUserSubmitting);
   const { _id, name, email, country, gender } = user;
 
   // Statics
@@ -103,7 +103,7 @@ const PersonalInfoScreen = () => {
     <View style={commonStyles.footer}>
       <RegularButton
         fullWidth
-        loading={loading}
+        loading={isSubmitting}
         title={t('common.save')}
         onPress={() => formRef.current?.handleSubmit()}
       />

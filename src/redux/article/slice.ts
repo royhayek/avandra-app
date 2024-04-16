@@ -15,7 +15,8 @@ const initialState: ArticleInitialState = {
   articles: null,
   isLoading: false,
   lastRefresh: null,
-  popularArticles: null
+  popularArticles: null,
+  isLoadingArticles: false
 };
 
 const articleSlice = createSlice({
@@ -77,6 +78,10 @@ export const selectArticles = createSelector(_article, (data) => data);
 
 export const selectArticleDetails = createSelector(_article, (data) => data?.details);
 
-export const selectPopularArticles = createSelector(_article, (data) => data?.popularArticles);
+export const selectPopularLoading = createSelector(_article, (data) => data?.isLoading);
 
 export const selectArticleLastRefresh = createSelector(_article, (data) => data?.lastRefresh);
+
+export const selectPopularArticles = createSelector(_article, (data) => data?.popularArticles);
+
+export const selectArticlesLoading = createSelector(_article, (data) => data?.isLoadingArticles);
