@@ -1,9 +1,10 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useEffect } from 'react';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
+import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
 import Marker from '@shared/components/Marker';
@@ -16,17 +17,20 @@ import { EditIcon } from '@shared/assets/icons';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 // Utilities
-import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
-import { DUMMY_PLACES } from '@screens/Itinerary/data';
-import { BUDGET_LIST } from '@screens/Planner/components/Step4/data';
-import { PARTNERS_LIST } from '@screens/Planner/components/Step1/data';
 
 // Interfaces
+import { TripPayloadProps } from '@shared/types/TripPayload';
+import Accordion from '@shared/components/Accordion';
+
 interface TripDetailsScreenProps {}
+
+interface RouteParams {
+  trip: TripPayloadProps;
+}
 
 // Component
 const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
@@ -34,15 +38,25 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const { name, description, country, date, traveler, budget, location, itineraries } = destination_details;
+  const { trip } = route?.params as RouteParams;
 
-  const travelerTitle = _.find(PARTNERS_LIST, { key: traveler })?.title[i18n.locale] ?? '';
-  const budgetTitle = _.find(BUDGET_LIST, { key: budget })?.title[i18n.locale] ?? '';
+  const { name, flag, image, description, country, budget, traveler, fromDate, toDate, tips, places } = trip || {};
+  const { itineraries } = destination_details;
+
+  const markers = useMemo(() => {
+    const placesList = _.flatMap(places, (place) => place.list);
+
+    return _.map(placesList, (place) => ({ lat: place.coordinates.lat, lng: place.coordinates.lng }));
+  }, [places]);
 
   // Callbacks
-  const handleMapPress = useCallback(() => navigation.navigate('Map'), [navigation]);
+  const handleMapPress = useCallback(
+    () => navigation.navigate('Map', { markers, places }),
+    [navigation, markers, places]
+  );
 
   const handleEditItinerary = useCallback(() => navigation.navigate('TripModification', { itineraries }), [navigation]);
 
@@ -54,7 +68,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   // Renderers
   const renderHeader = () => (
     <View style={styles.curvedContainer}>
-      <FastImage source={require('../../../assets/paris.jpeg')} style={styles.image} />
+      <FastImage source={{ uri: image }} style={styles.image} />
       <Header back share absolute />
     </View>
   );
@@ -63,15 +77,44 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
     <View style={styles.content}>
       <View style={styles.paddedContent}>
         <Text variant="h3">
-          {name}, {country} 🇯🇵
+          {name}, {country} {flag}
         </Text>
 
         <Text variant="large" style={styles.payload}>
-          {formatDate(date?.from, 'MMM DD')} - {formatDate(date?.to, 'MMM DD, YYYY')} • {travelerTitle} • {budgetTitle}
+          {formatDate(fromDate, 'MMM DD')} - {formatDate(toDate, 'MMM DD, YYYY')} • {traveler?.title} • {budget?.title}
         </Text>
 
-        <Text variant="xLarge" style={styles.description}>
-          {description}
+        <Text variant="h5" style={styles.title}>
+          Overview
+        </Text>
+        <Text variant="xLarge">{description}</Text>
+
+        <Accordion
+          title={
+            <View style={styles.row}>
+              <Text variant="h5">Tips</Text>
+              <MaterialCommunityIcons
+                size={ms(20)}
+                name="lightbulb-on-outline"
+                color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+              />
+            </View>
+          }
+          style={styles.title}>
+          <View style={styles.tipsContent}>
+            {_.map(tips, (tip, index) => (
+              <View key={index} style={styles.tipRow}>
+                <MaterialCommunityIcons name="star-four-points-outline" size={ms(16)} color={theme.colors.secondary} />
+                <Text variant="xLarge" style={{ flex: 1 }}>
+                  {tip}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </Accordion>
+
+        <Text variant="h5" style={styles.title}>
+          Your {name} Journey
         </Text>
 
         <View style={styles.mapContainer}>
@@ -91,14 +134,14 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
             region={{
               latitudeDelta: 0.02,
               longitudeDelta: 0.02,
-              latitude: location?.latitude || 0,
-              longitude: location?.longitude || 0
+              latitude: _.first(markers)?.lat || 0,
+              longitude: _.first(markers)?.lng || 0
             }}
             customMapStyle={
               theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
             }>
             {_.map(
-              DUMMY_PLACES,
+              markers,
               (place, index) =>
                 place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
             )}
@@ -106,7 +149,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </View>
       </View>
 
-      <Itinerary data={itineraries} />
+      <Itinerary data={places} />
     </View>
   );
 

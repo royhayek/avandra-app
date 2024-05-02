@@ -54,5 +54,13 @@ export default (theme: AppTheme) =>
     },
     answerText: {
       fontFamily: 'urbanist-regular'
+    },
+    shimmerView: {
+      marginTop: mvs(16),
+      marginHorizontal: ms(24)
+    },
+    shimmerItem: {
+      width: '100%',
+      marginBottom: mvs(16)
     }
   });

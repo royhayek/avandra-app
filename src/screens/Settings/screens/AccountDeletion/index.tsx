@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // Components
 import { View } from 'react-native';
@@ -15,6 +15,12 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import { useAppDispatch, useAppThunkDispatch } from '@app/store';
+import { deleteAccountAction } from '@redux/user/thunks';
+import { useSelector } from 'react-redux';
+import { getUserId, userActions } from '@redux/user/slice';
+import { snackbarActions } from '@redux/snackbar/slice';
+import { authActions } from '@redux/auth/slice';
 
 interface AccountDeletionModalProps {
   visible: boolean;
@@ -25,14 +31,51 @@ interface AccountDeletionModalProps {
 const _t = (key: string, options?: TranslateOptions) => t(`account_deletion.${key}`, options);
 
 const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({ visible, onCancel }) => {
+  // Redux
+  const dispatch = useAppDispatch();
+  const dispatchThunk = useAppThunkDispatch();
+
+  const userId = useSelector(getUserId);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const [isDeleting, setIsDeleting] = useState(false);
+
   // Callbacks
   const handleDeletePress = useCallback(async () => {
-    onCancel();
-  }, [onCancel]);
+    setIsDeleting(true);
+    const response = await dispatchThunk(deleteAccountAction(userId));
+
+    if (response.payload?.success) {
+      setIsDeleting(false);
+      onCancel();
+
+      dispatch(authActions.reset());
+      dispatch(userActions.reset());
+
+      dispatch(
+        snackbarActions.showSnackbar({
+          delay: 2000,
+          type: 'success',
+          title: 'Success',
+          message: 'Account deleted successfully.'
+        })
+      );
+    } else {
+      setIsDeleting(false);
+
+      dispatch(
+        snackbarActions.showSnackbar({
+          delay: 2000,
+          type: 'error',
+          title: 'Error',
+          message: 'An error occurred while deleting your account. Please try again.'
+        })
+      );
+    }
+  }, [dispatch, dispatchThunk, onCancel, userId]);
 
   // Renderers
   return (
@@ -49,7 +92,12 @@ const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({ visible, on
         </Text>
 
         <View style={styles.actions}>
-          <RegularButton onPress={handleDeletePress} title={_t('delete_account')} style={styles.button} />
+          <RegularButton
+            loading={isDeleting}
+            style={styles.button}
+            onPress={handleDeletePress}
+            title={_t('delete_account')}
+          />
           <RegularButton variant="secondary" onPress={onCancel} style={styles.button} title={t('common.cancel')} />
         </View>
       </Modal>

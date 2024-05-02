@@ -123,20 +123,16 @@ const AppearanceScreen = () => {
         onClose={handleLanguageSheetClose}
         primaryBtnProps={{ title: t('common.ok'), onPress: handleLanguage }}
         secondaryBtnProps={{ title: t('common.cancel'), onPress: handleLanguageSheetClose }}>
-        <>
-          <RadioButton.Group onValueChange={handleLanguageChange} value={language}>
-            {_.map(languageOptions, ({ value, title }) => (
-              <View key={value} style={styles.radioButton}>
-                <RadioButton.Android value={value} />
-                <Text variant="h5" style={styles.radioTitle}>
-                  {title}
-                </Text>
-              </View>
-            ))}
-          </RadioButton.Group>
-
-          <Divider style={styles.divider} />
-        </>
+        <RadioButton.Group onValueChange={handleLanguageChange} value={language}>
+          {_.map(languageOptions, ({ value, title }) => (
+            <View key={value} style={styles.radioButton}>
+              <RadioButton.Android value={value} />
+              <Text variant="h5" style={styles.radioTitle}>
+                {title}
+              </Text>
+            </View>
+          ))}
+        </RadioButton.Group>
       </CustomBottomSheet>
 
       <CustomBottomSheet
@@ -145,20 +141,16 @@ const AppearanceScreen = () => {
         onClose={handleThemeSheetClose}
         primaryBtnProps={{ title: t('common.ok'), onPress: handleTheme }}
         secondaryBtnProps={{ title: t('common.cancel'), onPress: handleThemeSheetClose }}>
-        <>
-          <RadioButton.Group onValueChange={handleThemeChange} value={theme}>
-            {_.map(themeOptions, ({ value, title }) => (
-              <View key={value} style={styles.radioButton}>
-                <RadioButton.Android value={value} />
-                <Text variant="h5" style={styles.radioTitle}>
-                  {title}
-                </Text>
-              </View>
-            ))}
-          </RadioButton.Group>
-
-          <Divider style={styles.divider} />
-        </>
+        <RadioButton.Group onValueChange={handleThemeChange} value={theme}>
+          {_.map(themeOptions, ({ value, title }) => (
+            <View key={value} style={styles.radioButton}>
+              <RadioButton.Android value={value} />
+              <Text variant="h5" style={styles.radioTitle}>
+                {title}
+              </Text>
+            </View>
+          ))}
+        </RadioButton.Group>
       </CustomBottomSheet>
     </View>
   );

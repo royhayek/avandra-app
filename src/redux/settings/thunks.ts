@@ -27,8 +27,6 @@ export const getFaqQuestionsAction = createAsyncThunk('faq/questions', async (pa
   try {
     const response = await getFaqQuestions(payload);
 
-    console.debug('[getFaqQuestionsAction - response] :: ', response.data);
-
     return response.data;
   } catch (error: any) {
     console.error('[getFaqQuestionsAction - error] :: ', error);

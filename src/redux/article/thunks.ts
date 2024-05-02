@@ -22,7 +22,7 @@ export const getArticleDetailsAction = createAsyncThunk('article/details', async
   try {
     const response = await getArticleDetails(_id);
 
-    console.debug('[getArticleDetailsAction - response] :: ', response.data);
+    // console.debug('[getArticleDetailsAction - response] :: ', response.data);
 
     return response.data;
   } catch (error: any) {

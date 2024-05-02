@@ -4,15 +4,21 @@ const localhost = Platform.OS === 'ios' ? 'http://localhost:4000' : 'http://10.0
 
 const ENV = {
   development: {
+    serverUrl: localhost,
     serverApiUrl: `${localhost}/api`,
+    wsUrl: Platform.OS === 'ios' ? 'ws://localhost:4000' : 'ws://10.0.2.2:4000',
     serverAccessToken: '',
+    googleMapsApiKey: '***REMOVED***',
     openaiApiUrl: 'https://api.openai.com/v1/',
     openaiApiKey: '***REMOVED***',
     defaultLanguage: 'EN'
   },
   production: {
-    serverApiUrl: 'https://trip-ai-server.onrender.com/api',
+    serverUrl: 'https://wondrous-app-fs8jj.ondigitalocean.app/',
+    serverApiUrl: 'https://wondrous-app-fs8jj.ondigitalocean.app/api',
+    wsUrl: 'wss://wondrous-app-fs8jj.ondigitalocean.app',
     serverAccessToken: '',
+    googleMapsApiKey: '***REMOVED***',
     openaiApiUrl: 'https://api.openai.com/v1/',
     openaiApiKey: '***REMOVED***',
     defaultLanguage: 'EN'

@@ -46,13 +46,17 @@ export default (theme: AppTheme) =>
       borderEndStartRadius: theme.roundness,
       borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[200]
     },
+    address: {
+      marginBottom: mvs(6),
+      color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
+    },
     ratingContainer: {
       gap: ms(4),
-      marginTop: mvs(4),
       flexDirection: 'row',
       alignItems: 'center'
     },
     ratingText: {
+      fontFamily: 'urbanist-bold',
       color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
     },
     divider: {
@@ -81,7 +85,8 @@ export default (theme: AppTheme) =>
     },
     infoRow: {
       gap: ms(10),
-      marginBottom: mvs(8),
+      marginTop: mvs(3),
+      marginBottom: mvs(3),
       alignItems: 'center',
       flexDirection: 'row'
     },

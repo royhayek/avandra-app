@@ -1,8 +1,8 @@
 module.exports = {
   expo: {
     name: 'Wondrous',
-    slug: 'wondroud',
-    version: '1.0.8',
+    slug: 'trippify',
+    version: '1.1.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',

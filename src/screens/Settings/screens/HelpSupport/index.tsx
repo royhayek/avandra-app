@@ -18,6 +18,8 @@ import { getConfiguration } from '@redux/app/slice';
 
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
+import AccountDeletionModal from '../AccountDeletion';
+import { appName } from '@shared/utils';
 
 // Component
 const HelpSupportScreen = () => {
@@ -28,9 +30,15 @@ const HelpSupportScreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const [isDeletionModalOpen, setIsDeletionModalOpen] = React.useState<boolean>(false);
+
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
+  const handleDeleteAccount = useCallback(() => setIsDeletionModalOpen(true), []);
+
+  const handleCancelDeletion = useCallback(() => setIsDeletionModalOpen(false), []);
+
   const navigateToFaq = useCallback(() => navigation.navigate('Faq'), [navigation]);
 
   const navigateToSupport = useCallback(() => navigation.navigate('Contact'), [navigation]);
@@ -78,23 +86,41 @@ const HelpSupportScreen = () => {
         key: 'rate',
         name: t('settings.rate_us'),
         onPress: handleRateApp
+      },
+      {
+        key: 'delete_account',
+        name: t('settings.delete_account'),
+        description: t('settings.delete_account_desc', { name: appName }),
+        onPress: handleDeleteAccount,
+        color: theme.colors.red
       }
     ],
-    [navigateToFaq, navigateToSupport, handleRateApp, navigateToInfo]
+    [navigateToFaq, navigateToSupport, handleRateApp, handleDeleteAccount, navigateToInfo, theme.colors.red]
   );
 
   // Renderers
 
   return (
     <View style={styles.container}>
-      {_.map(buttons, ({ key, name, value, onPress, isSwitch, isMenu }) => (
+      {_.map(buttons, ({ key, name, color, value, description, onPress, isSwitch }) => (
         <TouchableOpacity key={key} style={styles.item} onPress={onPress}>
-          <View style={styles.iconAndTitle}>
-            <Text
-              variant="h6"
-              style={[styles.buttonName, { color: theme.dark ? theme.colors.white : theme.colors.gray[900] }]}>
-              {name}
-            </Text>
+          <View style={styles.titleAndDesc}>
+            <View style={styles.iconAndTitle}>
+              <Text
+                variant="h6"
+                style={[
+                  styles.buttonName,
+                  { color: color ?? (theme.dark ? theme.colors.white : theme.colors.gray[900]) }
+                ]}>
+                {name}
+              </Text>
+            </View>
+
+            {description && (
+              <Text variant="large" style={styles.description}>
+                {description}
+              </Text>
+            )}
           </View>
 
           {isSwitch ? (
@@ -113,6 +139,8 @@ const HelpSupportScreen = () => {
           )}
         </TouchableOpacity>
       ))}
+
+      <AccountDeletionModal visible={isDeletionModalOpen} onCancel={handleCancelDeletion} />
     </View>
   );
 };

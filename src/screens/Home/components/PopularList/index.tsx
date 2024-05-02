@@ -14,10 +14,10 @@ import PopularListItem from '@screens/Home/components/PopularListItem';
 import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectPopularArticles, selectPopularLoading } from '@redux/article/slice';
+import { selectPopularArticles, selectArticlesLoading, selectDestinationsLoading } from '@redux/article/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getPopularArticlesAction } from '@redux/article/thunks';
-import { selectPopularDestinations } from '@redux/destination/slice';
+import { selectDestinationLoading, selectPopularDestinations } from '@redux/destination/slice';
 import { getPopularDestinationsAction } from '@redux/destination/thunks';
 
 // Interfaces
@@ -37,11 +37,14 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
   // Redux
   const dispatch = useAppThunkDispatch();
 
-  const isLoading = useAppSelector(selectPopularLoading);
   const popularArticles = useAppSelector(selectPopularArticles);
+  const isLoadingArticles = useAppSelector(selectArticlesLoading);
   const popularDestinations = useAppSelector(selectPopularDestinations);
+  const isLoadingDestinations = useAppSelector(selectDestinationLoading);
 
   // Statics
+  const isArticles = !!String(type).match(/articles/);
+  const isDestinations = !!String(type).match(/destinations/);
   const isHorizontal = !!String(orientation).match(/horizontal/);
 
   const theme = useAppTheme();
@@ -49,7 +52,7 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const title = String(type).match(/destinations/)
+  const title = isDestinations
     ? _t('popular_destinations')
     : String(type).match(/articles/)
       ? _t('popular_articles')
@@ -62,15 +65,15 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
 
   // Effects
   useEffect(() => {
-    dispatch(getPopularDestinationsAction());
-    dispatch(getPopularArticlesAction());
+    isDestinations && dispatch(getPopularDestinationsAction());
+    isArticles && dispatch(getPopularArticlesAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Renderer Vars
   const data = useMemo(
-    () => (String(type).match(/destinations/) ? popularDestinations : popularArticles),
-    [popularArticles, popularDestinations, type]
+    () => (isDestinations ? popularDestinations : popularArticles),
+    [isDestinations, popularArticles, popularDestinations]
   );
 
   // Renderers
@@ -88,12 +91,12 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
         </View>
       )}
 
-      {isLoading ? (
+      {isLoadingArticles || isLoadingDestinations ? (
         <View style={styles.shimmerView}>
           {_.times(2, (i) => (
             <View key={i}>
               <Shimmer style={styles.shimmerImage} />
-              <Shimmer style={styles.shimmerTitle} />
+              <Shimmer width={130} style={styles.shimmerTitle} />
               <Shimmer width={80} style={styles.shimmerSubtitle} />
             </View>
           ))}
@@ -102,7 +105,6 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
         <FlatList
           data={data}
           horizontal={isHorizontal}
-          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.flatListContainer}

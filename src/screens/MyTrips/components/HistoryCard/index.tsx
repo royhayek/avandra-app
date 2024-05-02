@@ -9,25 +9,27 @@ import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-
 // Components
 import Menu from '@shared/components/Menu';
 import FastImage from 'react-native-fast-image';
+import Shimmer from '@shared/components/Shimmer';
 import { IconButton, Text } from 'react-native-paper';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import GenerationModal from '@shared/components/GenerationModal';
 import { View, TouchableOpacity, ImageBackground } from 'react-native';
 
 // Utilities
-import i18n, { t } from '@app/i18n';
+import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { formatDate } from '@shared/utils';
+import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { PARTNERS_LIST } from '../../../Planner/components/Step1/data';
+import { deleteTripAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import Shimmer from '@shared/components/Shimmer';
 
 interface HistoryCardProps {
-  index: number;
-  item: CardItem; // Assuming 'item' has a specific type. Replace 'CardItem' with the actual type.
+  index?: number;
+  item?: CardItem; // Assuming 'item' has a specific type. Replace 'CardItem' with the actual type.
   small?: boolean;
   isLoading?: boolean;
 }
@@ -36,6 +38,9 @@ interface HistoryCardProps {
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
 
 const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading }) => {
+  // Redux
+  const dispatchThunk = useAppThunkDispatch();
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -47,9 +52,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
   const bottomSheetRef = useRef<BottomSheetMethods>();
 
-  const { cityImage, city, country, plannedDate, guest, duration } = item;
-
-  const partner = _.find(PARTNERS_LIST, { key: guest.type });
+  const { name, country, image, status, traveler, fromDate } = item || {};
+  const isExpired = !!String(status).match(/expired/i);
 
   // Callbacks
   const handleSheetClose = useCallback(() => bottomSheetRef.current?.close(), []);
@@ -58,16 +62,21 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
   const toggleOptionsMenu = useCallback(() => setOpenOptionsMenu((cur) => !cur), []);
 
-  const handleTextPress = useCallback(() => navigation.navigate('TripDetails'), [navigation]);
+  const handleTextPress = useCallback(() => navigation.navigate('TripDetails', { trip: item }), [item, navigation]);
 
   const handleDeleteHistory = useCallback(async () => {
-    // Call an endpoint to delete the trip in database
-  }, []);
+    await dispatchThunk(deleteTripAction({ tripId: item?._id, userId: item?.user }));
+    handleSheetClose();
+  }, [dispatchThunk, handleSheetClose, item?._id, item?.user]);
 
   const handleTripMenuItemPress = useCallback(
     (index: string) => {
       switch (index) {
-        case '1':
+        case 'view':
+          handleTextPress();
+          break;
+
+        case 'regenerate':
           setRegenerating(true);
           console.debug('Regenerate Trip');
 
@@ -77,11 +86,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
           break;
 
-        case '2':
+        case 'share':
           console.debug('Share Trip');
           break;
 
-        case '3':
+        case 'delete':
           handleDeletePress();
           break;
         default:
@@ -90,27 +99,43 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
       toggleOptionsMenu();
     },
-    [handleDeletePress, toggleOptionsMenu]
+    [handleDeletePress, handleTextPress, toggleOptionsMenu]
   );
 
   // Renderer Vars
   const menuItems = [
+    ...(isExpired
+      ? [
+          {
+            item: 'view',
+            title: 'trip.view',
+            leadingIcon: () => (
+              <Ionicons name="eye-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
+            )
+          }
+        ]
+      : [
+          {
+            item: 'regenerate',
+            title: 'trip.regenerate',
+            leadingIcon: () => (
+              <Ionicons name="refresh" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
+            )
+          },
+          {
+            item: 'share',
+            title: 'trip.share',
+            leadingIcon: () => (
+              <Ionicons
+                name="share-outline"
+                size={ms(22)}
+                color={theme.dark ? theme.colors.white : theme.colors.black}
+              />
+            )
+          }
+        ]),
     {
-      item: '1',
-      title: 'trip.regenerate',
-      leadingIcon: () => (
-        <Ionicons name="refresh" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-      )
-    },
-    {
-      item: '2',
-      title: 'trip.share',
-      leadingIcon: () => (
-        <Ionicons name="share-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-      )
-    },
-    {
-      item: '3',
+      item: 'delete',
       title: 'trip.delete',
       color: theme.colors.red,
       leadingIcon: () => <Ionicons name="trash-outline" size={ms(22)} color={theme.colors.red} />
@@ -138,13 +163,13 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
       ) : (
         <View>
           <Text variant="h6" style={styles.title}>
-            {country}, {city}
+            {name}, {country}
           </Text>
 
           <View style={styles.rowContainer}>
             <View style={styles.infoItemContainer}>
               <Text variant="medium" style={styles.assistant}>
-                {partner?.title[i18n.locale]} {partner?.icon}
+                {traveler?.title} {traveler?.icon}
               </Text>
             </View>
 
@@ -157,7 +182,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
                 color={theme.dark ? theme.colors.white : theme.colors.black}
               />
               <Text variant="medium" style={styles.date}>
-                March 6th, 2023
+                {formatDate(fromDate, 'MMMM DD, YYYY')}
               </Text>
             </View>
           </View>
@@ -172,10 +197,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
         <Shimmer style={styles.cityImage} />
       ) : (
         <ImageBackground
-          resizeMode="stretch"
+          resizeMode="cover"
           style={styles.cityImage}
           imageStyle={{ borderRadius: ms(16) }}
-          source={require('../../../../../assets/paris.jpeg')}>
+          source={{ uri: image, cache: 'force-cache' }}>
           {hasDelete && (
             <IconButton
               size={ms(20)}
@@ -198,7 +223,12 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
       {isLoading ? (
         <Shimmer style={styles.verticalImage} />
       ) : (
-        <FastImage source={require('../../../../../assets/paris.jpeg')} style={styles.verticalImage} />
+        <FastImage
+          source={{ uri: image }}
+          style={styles.verticalImage}
+          // defaultSource={require('../../../../shared/assets/images/EmptyTripsLight.png')}
+          // fallback
+        />
       )}
       {renderTripInformation()}
     </View>
@@ -208,7 +238,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
     <>
       {small ? (
         <>
-          <TouchableOpacity key={index} onPress={() => handleTextPress(item)} style={styles.verticalContainer}>
+          <TouchableOpacity
+            key={index}
+            disabled={isExpired}
+            onPress={() => handleTextPress(item)}
+            style={styles.verticalContainer}>
             <View style={styles.flex1}>{renderTripCard()}</View>
 
             {!isLoading && (
@@ -232,7 +266,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
           <GenerationModal visible={regenerating} regenerating={regenerating} progress={0} />
         </>
       ) : (
-        <TouchableOpacity key={index} onPress={() => handleTextPress(item)}>
+        <TouchableOpacity key={index} disabled={isExpired} onPress={() => handleTextPress(item)}>
           {renderVerticalTripCard()}
         </TouchableOpacity>
       )}

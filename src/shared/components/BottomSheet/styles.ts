@@ -15,15 +15,14 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background
     },
     title: {
-      marginTop: mvs(5),
       textAlign: 'center',
       color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     },
     divider: {
-      marginTop: mvs(16)
+      marginVertical: mvs(8)
     },
     content: {
-      marginVertical: mvs(24)
+      marginVertical: mvs(8)
     },
     actions: {
       gap: ms(16),
@@ -31,6 +30,6 @@ export default (theme: AppTheme) =>
     },
     button: {
       flex: 1,
-      marginTop: mvs(24)
+      marginTop: mvs(8)
     }
   });

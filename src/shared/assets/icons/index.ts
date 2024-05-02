@@ -97,3 +97,5 @@ export { default as MapNavigationIcon } from './MapNavigationIcon';
 export { default as MapIcon } from './MapIcon';
 
 export { default as CurrencyIcon } from './CurrencyIcon';
+
+export { default as LanguageIcon } from './LanguageIcon';

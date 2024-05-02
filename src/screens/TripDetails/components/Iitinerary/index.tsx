@@ -17,19 +17,20 @@ import {
 } from '@shared/assets/icons';
 import FastImage from 'react-native-fast-image';
 import { Divider, Text } from 'react-native-paper';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import ScrollableTabs from '@shared/components/ScrollableTabs';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { formatDate } from '@shared/utils';
+import { formatAmount, formatDate, openMapsWithCoords } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
+import moment from 'moment';
 
 interface ItineraryListProps {
   data: ItineraryProps[];
@@ -49,8 +50,8 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
 
   // Callbacks
 
-  const handleItineraryPress = useCallback(() => {
-    console.debug('handleItineraryPress');
+  const handleItineraryPress = useCallback((name, coordinates) => {
+    openMapsWithCoords(name, coordinates?.lat, coordinates?.lng);
   }, []);
 
   // Renderer Vars
@@ -62,14 +63,20 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
   // Renderers
   const renderItinerary = ({
     type,
-    image,
     name,
+    address,
     rating,
-    reviews,
-    time,
-    estimatedCost,
+    openingHours,
+    userRatingsTotal,
+    coordinates,
+    priceLevel,
+    photoUrl,
     directions
   }: ItineraryItemProps) => {
+    const day = moment(activeDate).format('dddd');
+    const time = _.find(openingHours?.weekday_text, (d) => _.includes(d, day));
+    const priceLevelText = _.times(priceLevel, () => '$').join('');
+
     const iconFillColor = theme.dark ? theme.colors.white : theme.colors.gray[900];
 
     return (
@@ -85,36 +92,44 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
             <View style={styles.verticalLine} />
           </View>
 
-          <TouchableOpacity style={styles.itineraryContent} onPress={handleItineraryPress}>
-            <FastImage source={{ uri: image }} style={styles.itineraryImage} />
+          <TouchableOpacity style={styles.itineraryContent} onPress={() => handleItineraryPress(name, coordinates)}>
+            <FastImage source={{ uri: photoUrl }} style={styles.itineraryImage} />
             <View style={styles.itineraryDetails}>
               <Text variant="h5">{name}</Text>
-              <View style={styles.ratingContainer}>
-                <StarRatingDisplay rating={rating} starSize={20} starStyle={{ marginHorizontal: 0 }} />
-                <Text variant="small" style={styles.ratingText}>
-                  ({rating}) {reviews} {_t('reviews')}
-                </Text>
-              </View>
+              <Text variant="small" style={styles.address}>
+                {address}
+              </Text>
+              {rating ? (
+                <View style={styles.ratingContainer}>
+                  <Text variant="medium" style={styles.ratingText}>
+                    {rating}
+                  </Text>
+                  <StarRatingDisplay rating={rating} starSize={18} starStyle={{ marginHorizontal: 0 }} />
+                  <Text variant="small" style={styles.ratingText}>
+                    ({formatAmount(userRatingsTotal)})
+                  </Text>
+                  {priceLevel ? (
+                    <Text variant="small" style={styles.ratingText}>
+                      {` •  ${priceLevelText}`}
+                    </Text>
+                  ) : null}
+                </View>
+              ) : null}
 
               <Divider style={styles.divider} />
 
-              <View style={styles.infoRow}>
-                <TimeIcon fill={iconFillColor} />
-                <Text variant="large" style={styles.mediumText}>
-                  {time}
-                </Text>
-              </View>
-
-              <View style={styles.infoRow}>
-                <DollarOutlineIcon fill={iconFillColor} />
-                <Text variant="large" style={styles.mediumText}>
-                  ${estimatedCost}
-                </Text>
-              </View>
+              {time ? (
+                <View style={styles.infoRow}>
+                  <TimeIcon fill={iconFillColor} />
+                  <Text variant="medium" style={styles.mediumText}>
+                    {time}
+                  </Text>
+                </View>
+              ) : null}
 
               <View style={styles.infoRow}>
                 <LocationIcon fill={theme.colors.primary} width={20} transform="scale(0.95)" />
-                <Text variant="large" style={[styles.mediumText, { color: theme.colors.primary }]}>
+                <Text variant="medium" style={[styles.mediumText, { color: theme.colors.primary }]}>
                   {_t('view_on_map')}
                 </Text>
               </View>

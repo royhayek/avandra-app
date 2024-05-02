@@ -68,10 +68,17 @@ const Accordion: React.FC<AccordionProps> = ({
   return (
     <View style={style}>
       <TouchableOpacity ref={accordionRef} style={[styles.row, titleStyle]} onPress={toggleExpand}>
-        <Text variant="titleLarge" style={styles.title}>
-          {title}
-        </Text>
-        <Icon name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={ms(26)} />
+        <Text variant="h5">{title}</Text>
+        <View style={styles.row}>
+          <Text variant="medium" style={styles.expandText}>
+            {isExpanded ? 'Collapse' : 'Expand'}
+          </Text>
+          <Icon
+            size={ms(22)}
+            color={theme.dark ? theme.colors.white : theme.colors.black}
+            name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+          />
+        </View>
       </TouchableOpacity>
       <View style={styles.parentHr} />
       {isExpanded && (

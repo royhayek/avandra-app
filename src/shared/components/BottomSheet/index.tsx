@@ -77,30 +77,30 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
 
           <Divider style={styles.divider} />
 
-          <View style={[styles.content, contentStyle]}>
-            {children}
+          <View style={[styles.content, contentStyle]}>{children}</View>
 
-            {(!_.isFunction(primaryBtnProps) || !_.isFunction(secondaryBtnProps)) && (
-              <View style={styles.actions}>
-                {secondaryBtnProps && (
-                  <RegularButton
-                    variant="secondary"
-                    style={styles.button}
-                    title={secondaryBtnProps?.title}
-                    onPress={secondaryBtnProps?.onPress}
-                  />
-                )}
-                {primaryBtnProps && (
-                  <RegularButton
-                    variant="primary"
-                    style={styles.button}
-                    title={primaryBtnProps?.title}
-                    onPress={primaryBtnProps?.onPress}
-                  />
-                )}
-              </View>
-            )}
-          </View>
+          <Divider style={styles.divider} />
+
+          {(!_.isFunction(primaryBtnProps) || !_.isFunction(secondaryBtnProps)) && (
+            <View style={styles.actions}>
+              {secondaryBtnProps && (
+                <RegularButton
+                  variant="secondary"
+                  style={styles.button}
+                  title={secondaryBtnProps?.title}
+                  onPress={secondaryBtnProps?.onPress}
+                />
+              )}
+              {primaryBtnProps && (
+                <RegularButton
+                  variant="primary"
+                  style={styles.button}
+                  title={primaryBtnProps?.title}
+                  onPress={primaryBtnProps?.onPress}
+                />
+              )}
+            </View>
+          )}
         </BottomSheetView>
       </BottomSheet>
     </Portal>

@@ -8,9 +8,8 @@ import { ms, mvs } from 'react-native-size-matters';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      height: mvs(280),
-      borderRadius: ms(16),
-      marginBottom: mvs(24)
+      height: mvs(260),
+      borderRadius: ms(16)
     },
     verticalContainer: {
       flexDirection: 'row',

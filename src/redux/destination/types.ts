@@ -12,8 +12,10 @@ export interface DestinationInitialState {
   destinations: any[] | null;
   details: DestinationProps | null;
   error: string | null | undefined;
+  isLoadingRecentSearches: boolean;
   budgets: TravelOptionProps[] | null;
   interests: TravelOptionProps[] | null;
   travelers: TravelOptionProps[] | null;
+  recentSearches: DestinationProps[] | null;
   popularDestinations: DestinationProps[] | null;
 }

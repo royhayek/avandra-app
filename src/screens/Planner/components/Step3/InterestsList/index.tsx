@@ -46,6 +46,7 @@ const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, se
     <FlatList
       data={data}
       numColumns={2}
+      scrollEnabled={!disabled}
       keyExtractor={(item) => item._id}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatList}

@@ -8,7 +8,8 @@ import {
   getDestinationDetailsAction,
   getTravelersAction,
   getInterestsAction,
-  getBudgetsAction
+  getBudgetsAction,
+  getRecentSearchesAction
 } from './thunks';
 
 // Interfaces
@@ -24,8 +25,10 @@ const initialState: DestinationInitialState = {
   isLoading: false,
   lastRefresh: null,
   destinations: null,
+  recentSearches: null,
   loadingOptions: false,
-  popularDestinations: null
+  popularDestinations: null,
+  isLoadingRecentSearches: false
 };
 
 const destinationsSlice = createSlice({
@@ -124,6 +127,24 @@ const destinationsSlice = createSlice({
       state.loadingOptions = false;
       state.error = action.error.message;
     });
+
+    builder.addCase(getRecentSearchesAction.pending, (state) => {
+      state.recentSearches = null;
+      state.isLoadingRecentSearches = true;
+      state.error = null;
+    });
+
+    builder.addCase(getRecentSearchesAction.fulfilled, (state, action) => {
+      state.recentSearches = action.payload;
+      state.isLoadingRecentSearches = false;
+      state.error = null;
+    });
+
+    builder.addCase(getRecentSearchesAction.rejected, (state, action) => {
+      state.recentSearches = null;
+      state.isLoadingRecentSearches = false;
+      state.error = action.error.message;
+    });
   }
 });
 
@@ -149,6 +170,10 @@ export const selectDestinationLoading = createSelector(_destinations, (data) => 
 
 export const selectOptionsLoading = createSelector(_destinations, (data) => data?.loadingOptions);
 
+export const selectRecentSearches = createSelector(_destinations, (data) => data?.recentSearches);
+
 export const getDestinationsLastRefresh = createSelector(_destinations, (data) => data?.lastRefresh);
 
 export const selectPopularDestinations = createSelector(_destinations, (data) => data?.popularDestinations);
+
+export const selectRecentSearchesLoading = createSelector(_destinations, (data) => data?.isLoadingRecentSearches);

@@ -37,5 +37,12 @@ export default (theme: AppTheme) =>
     arrowIcon: {
       marginStart: ms(3),
       transform: i18n.locale === 'ar' ? [{ rotateY: '180deg' }] : []
+    },
+    titleAndDesc: {
+      flex: 1
+    },
+    description: {
+      marginTop: 4,
+      fontFamily: 'urbanist-regular'
     }
   });

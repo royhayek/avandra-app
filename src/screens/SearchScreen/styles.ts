@@ -11,7 +11,7 @@ export default (theme: AppTheme) =>
       flex: 1
     },
     header: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
       flexDirection: 'row'
     },
@@ -20,8 +20,9 @@ export default (theme: AppTheme) =>
       marginEnd: 24
     },
     backBtn: {
-      top: mvs(8),
-      marginHorizontal: ms(16)
+      top: mvs(12),
+      marginStart: ms(16),
+      marginEnd: ms(8)
     },
     searchInput: {
       marginTop: 0
@@ -31,10 +32,19 @@ export default (theme: AppTheme) =>
       marginTop: ms(12)
     },
     title: {
+      marginTop: mvs(12),
+      marginBottom: mvs(16),
       marginHorizontal: ms(24)
     },
     listContainer: {
-      gap: mvs(16),
-      paddingVertical: mvs(16)
+      gap: mvs(16)
+      // paddingVertical: mvs(16)
+    },
+    shimmerView: {
+      marginHorizontal: ms(24)
+    },
+    shimmerItem: {
+      height: mvs(28),
+      marginBottom: mvs(16)
     }
   });

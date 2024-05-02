@@ -31,7 +31,6 @@ export default (theme: AppTheme, isHorizontal: boolean) =>
       paddingBottom: isHorizontal ? mvs(8) : mvs(20)
     },
     shimmerView: {
-      flex: 1,
       gap: mvs(16),
       paddingHorizontal: ms(24),
       paddingTop: isHorizontal ? 0 : mvs(24),
@@ -44,13 +43,13 @@ export default (theme: AppTheme, isHorizontal: boolean) =>
       height: isHorizontal ? mvs(140) : mvs(200)
     },
     shimmerTitle: {
-      height: mvs(23),
-      marginTop: mvs(6),
-      paddingHorizontal: ms(5)
+      height: mvs(20),
+      marginTop: mvs(8),
+      marginHorizontal: ms(5)
     },
     shimmerSubtitle: {
-      height: mvs(16),
+      height: mvs(14),
       marginTop: mvs(6),
-      paddingHorizontal: ms(5)
+      marginHorizontal: ms(5)
     }
   });

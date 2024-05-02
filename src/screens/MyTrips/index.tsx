@@ -5,41 +5,48 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import { Text } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
 import HistoryCard from './components/HistoryCard';
 import ToggleButtons from '@shared/components/ToggleButtons';
 import { FlatList, RefreshControl, View } from 'react-native';
-import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { TranslateOptions } from 'i18n-js';
+import { getUserId } from '@redux/user/slice';
 import { useAppTheme } from '@shared/assets/theme';
-import { savedTrips as savedTripsData } from './data';
+import { getUserTripsAction } from '@redux/itinerary/thunks';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { selectUserItineraries, selectUserItinerariesLoading } from '@redux/itinerary/slice';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
 
 const HistoryScreen = () => {
+  // Redux
+  const dispatchThunk = useAppThunkDispatch();
+
+  const userId = useAppSelector(getUserId);
+  const trips = useAppSelector(selectUserItineraries);
+  const isLoadingTrips = useAppSelector(selectUserItinerariesLoading);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [loading, setLoading] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState('upcoming');
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [savedTrips, setSavedTrips] = useState(savedTripsData);
+
+  const activeTrip = _.find(trips, { status: 'active' });
+  const hasActiveTrip = !!activeTrip;
+
+  const filteredTrips = _.filter(trips, { status: selectedTab });
 
   // Callbacks
-  const refreshSavedTrips = useCallback((isRefreshing?: boolean) => {
-    // !isRefreshing && setLoading(true);
-    // getConversations().then(() => {
-    //   setSavedTrips(savedTripsData);
-    //   setRefreshing(false);
-    //   !isRefreshing && setLoading(false);
-    // });
-  }, []);
+  const refreshSavedTrips = useCallback(async () => {
+    await dispatchThunk(getUserTripsAction(userId));
+    setRefreshing(false);
+  }, [dispatchThunk, userId]);
 
   // Effects
   useEffect(() => {
@@ -61,21 +68,25 @@ const HistoryScreen = () => {
     () => (
       <RefreshControl
         refreshing={refreshing}
-        onRefresh={() => refreshSavedTrips(true)}
+        onRefresh={refreshSavedTrips}
         tintColor={theme.dark ? theme.colors.white : theme.colors.black}
       />
     ),
     [refreshSavedTrips, refreshing, theme.colors.black, theme.colors.white, theme.dark]
   );
 
-  const renderActiveTrip = useMemo(
+  const renderListHeader = useMemo(
     () => (
       <>
-        <Text variant="h4" style={{ marginBottom: mvs(16) }}>
-          {_t('active_trip')}
-        </Text>
+        {(hasActiveTrip || isLoadingTrips) && (
+          <>
+            <Text variant="h4" style={{ marginBottom: mvs(16) }}>
+              {_t('active_trip')}
+            </Text>
 
-        <HistoryCard isLoading={loading} item={savedTrips[0]} index={0} refresh={refreshSavedTrips} />
+            <HistoryCard isLoading={isLoadingTrips} item={activeTrip} index={0} />
+          </>
+        )}
 
         <ToggleButtons
           active={selectedTab}
@@ -83,50 +94,25 @@ const HistoryScreen = () => {
           setActive={setSelectedTab}
           containerStyle={styles.toggleButtons}
         />
+
+        {isLoadingTrips && <HistoryCard isLoading={isLoadingTrips} small />}
       </>
     ),
-    [loading, savedTrips, refreshSavedTrips, selectedTab, segmentedButtons, styles.toggleButtons]
+    [hasActiveTrip, isLoadingTrips, activeTrip, selectedTab, segmentedButtons, styles.toggleButtons]
   );
 
   const renderList = () => (
     <FlatList
-      data={savedTrips}
+      data={filteredTrips}
       refreshing={refreshing}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
       showsVerticalScrollIndicator={false}
       refreshControl={renderRefreshControl}
-      ListHeaderComponent={renderActiveTrip}
+      ListHeaderComponent={renderListHeader}
       contentContainerStyle={styles.listContent}
-      renderItem={({ item, index }) => (
-        <HistoryCard isLoading={loading} small item={item} index={index} refresh={refreshSavedTrips} />
-      )}
+      renderItem={({ item, index }) => <HistoryCard isLoading={isLoadingTrips} small item={item} index={index} />}
     />
   );
-
-  const renderEmptyLayout = () => (
-    <View style={styles.emptyContainer}>
-      <FastImage
-        resizeMode="contain"
-        style={styles.emptyImage}
-        source={
-          theme.dark
-            ? require('@shared/assets/images/EmptyTripsDark.png')
-            : require('@shared/assets/images/EmptyTripsLight.png')
-        }
-      />
-      <Text variant="h3" style={styles.emptyTitle}>
-        Empty
-      </Text>
-      <Text variant="xLarge" style={styles.emptyDesc}>
-        Let our AI create personalized trip plans just for you. Start planning now!
-      </Text>
-      <RegularButton title="Search Trip" style={styles.searchButton} />
-    </View>
-  );
-
-  if (_.isEmpty(savedTrips)) {
-    return renderEmptyLayout();
-  }
 
   return <View style={styles.container}>{renderList()}</View>;
 };

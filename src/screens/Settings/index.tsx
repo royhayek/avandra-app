@@ -47,19 +47,17 @@ const SettingsScreen = () => {
 
   // Callbacks
   const handleLogoutPress = useCallback(() => logoutSheetRef.current?.expand(), []);
-  
+
   const handleLogoutSheetClose = useCallback(() => logoutSheetRef.current?.close(), []);
-  
+
   const navigateToAppearance = useCallback(() => navigation.navigate('Appearance'), [navigation]);
-  
+
   const handleUpgradePress = useCallback(() => navigation.navigate('Subscriptions'), [navigation]);
-  
+
   const navigateToPersonalInfo = useCallback(() => navigation.navigate('PersonalInfo'), [navigation]);
 
   const navigateToHelpAndSupport = useCallback(() => navigation.navigate('HelpSupport'), [navigation]);
 
-  const navigateToAccountAndSecurity = useCallback(() => navigation.navigate('AccountSecurity'), [navigation]);
-  
   const navigateToSubscription = useCallback(
     () => navigation.navigate('Billing', { title: _t('billing_and_subscriptions') }),
     [navigation]
@@ -80,12 +78,6 @@ const SettingsScreen = () => {
         name: _t('personal_info'),
         icon: <PersonIcon fill={buttonIconColor} />,
         onPress: navigateToPersonalInfo
-      },
-      {
-        key: 'account_and_security',
-        name: _t('account_and_security'),
-        icon: <ShieldIcon fill={buttonIconColor} />,
-        onPress: navigateToAccountAndSecurity
       },
       {
         key: 'manage_subscription',
@@ -120,8 +112,7 @@ const SettingsScreen = () => {
       navigateToAppearance,
       navigateToSubscription,
       navigateToPersonalInfo,
-      navigateToHelpAndSupport,
-      navigateToAccountAndSecurity
+      navigateToHelpAndSupport
     ]
   );
 

@@ -47,15 +47,17 @@ export default (theme: AppTheme) =>
       color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
     },
     payload: {
-      marginTop: mvs(10),
+      marginTop: mvs(4),
+      marginBottom: mvs(12),
       fontFamily: 'urbanist-medium',
       color: theme.dark ? theme.colors.white : theme.colors.gray[700]
     },
-    description: {
-      marginTop: mvs(16)
+    title: {
+      marginBottom: mvs(4),
+      color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     },
     mapContainer: {
-      marginTop: mvs(24),
+      marginTop: mvs(16),
       overflow: 'hidden',
       borderRadius: theme.roundness
     },
@@ -70,5 +72,18 @@ export default (theme: AppTheme) =>
       position: 'absolute',
       borderRadius: ms(100),
       backgroundColor: theme.colors.primary
+    },
+    row: {
+      gap: ms(5),
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    tipsContent: {
+      marginBottom: mvs(8)
+    },
+    tipRow: {
+      gap: ms(10),
+      flexDirection: 'row',
+      alignItems: 'center'
     }
   });

@@ -7,7 +7,7 @@ import { PlannerInitialState } from './types';
 
 // Slice
 const initialState: PlannerInitialState = {
-  payload: {},
+  payload: null,
   plannerStep: 0
 };
 
@@ -22,7 +22,7 @@ export const plannerSlice = createSlice({
       state.plannerStep = action.payload;
     },
     reset: (state) => {
-      state.payload = {};
+      state.payload = null;
       state.plannerStep = 0;
     }
   }

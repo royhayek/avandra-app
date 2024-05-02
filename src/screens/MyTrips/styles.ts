@@ -17,8 +17,7 @@ export default (theme: AppTheme) =>
       paddingHorizontal: ms(24)
     },
     toggleButtons: {
-      marginTop: 0,
-      marginBottom: mvs(24),
+      marginVertical: mvs(24),
       marginHorizontal: ms(24)
     },
     // Empty Layout

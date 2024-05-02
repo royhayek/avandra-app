@@ -12,6 +12,7 @@ export interface SettingsInitialState {
   lastRefresh: Moment | null;
   termsAndConditions: string;
   faqCategoriesLoading: boolean;
+  isLoadingQuestions: boolean;
   error: string | null | undefined;
   faqCategories: FaqCategoryProps[];
 }

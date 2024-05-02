@@ -87,29 +87,16 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
 
   const handleDismissUpdateModal = useCallback(() => setUpdateModalVisible(false), []);
 
-  const getConfiguration = useCallback(async () => {
-    try {
-      const configRef = ref(FIREBASE_DB, Firebase.CONFIGURATION_REF);
+  const getConfiguration = useCallback(async () => {}, []);
 
-      onValue(configRef, (snapshot) => {
-        const data = snapshot.val();
-        dispatch(appActions.setConfig(data));
-        setLoadedData(true);
-        console.info('[InitData] :: Loaded and stored configuration');
-      });
-    } catch (e) {
-      console.error('[getConfiguration] - ERROR :: ', e);
-    }
-  }, [dispatch]);
-
-  const initAppPurchases = useCallback(async () => {
-    try {
-      await connectAsync();
-      console.info('[InitData] :: Initialized in-app purchases');
-    } catch (error) {
-      console.error('[initAppPurchases] - ERROR :: ', error);
-    }
-  }, []);
+  // const initAppPurchases = useCallback(async () => {
+  //   try {
+  //     await connectAsync();
+  //     console.info('[InitData] :: Initialized in-app purchases');
+  //   } catch (error) {
+  //     console.error('[initAppPurchases] - ERROR :: ', error);
+  //   }
+  // }, []);
 
   const initData = useCallback(async () => {
     changeLocale(language);
@@ -117,8 +104,8 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
     if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
     await dispatchThunk(validateTokenAction());
     await getConfiguration();
-    await initAppPurchases();
-  }, [dispatchThunk, getConfiguration, initAppPurchases, language]);
+    // await initAppPurchases();
+  }, [dispatchThunk, getConfiguration, language]);
 
   // Effects
   // useEffect(() => {

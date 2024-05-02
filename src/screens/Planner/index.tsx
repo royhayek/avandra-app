@@ -1,8 +1,9 @@
 // Packages
 import _ from 'lodash';
+import io from 'socket.io-client';
 import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useCallback,  useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -18,16 +19,23 @@ import RegularButton from '@shared/components/Buttons/Regular';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { getUserId } from '@redux/user/slice';
+import { useSocketSetup } from '@shared/utils';
+import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
+import { generateTripAction } from '@redux/itinerary/thunks';
 import { plannerActions, getPlannerStep, getPlannerPayload } from '@redux/planner/slice';
+import GenerationModal from '@shared/components/GenerationModal';
 
 // Component
 const PlannerScreen = () => {
   // Redux
   const dispatch = useDispatch();
+  const dispatchThunk = useAppThunkDispatch();
 
+  const userId = useSelector(getUserId);
   const plannerStep = useSelector(getPlannerStep);
   const plannerPayload = useSelector(getPlannerPayload);
 
@@ -40,9 +48,10 @@ const PlannerScreen = () => {
 
   const [generating, setGenerating] = useState(false);
 
-  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 generating={generating} />];
-
+  const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
   const isLastStep = _.isEqual(plannerStep, steps.length - 1);
+
+  const { isConnected, socketId, progress } = useSocketSetup(isLastStep);
 
   // Callbacks
   const updatePlannerStep = useCallback((step: number) => dispatch(plannerActions.updatePlannerStep(step)), [dispatch]);
@@ -87,23 +96,27 @@ const PlannerScreen = () => {
     }
   }, [dispatch, plannerPayload, plannerStep, updatePlannerStep]);
 
-  const handleSubmitPress = useCallback(() => {
-    setGenerating(true);
+  const handleSubmitPress = useCallback(async () => {
+    let response = null;
 
-    setTimeout(() => {
-      setGenerating(false);
+    console.debug('[handleSubmitPress] :: ', { socketId, isConnected });
+
+    setGenerating(true);
+    response = await dispatchThunk(generateTripAction({ ...plannerPayload, user: userId, socketId }));
+    setGenerating(false);
+
+    if (response?.payload?.success) {
       navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-      navigation.navigate('TripDetails', { tripId: 1 });
+      navigation.navigate('TripDetails', { trip: response?.payload?.result });
       dispatch(plannerActions.reset());
-    }, 3000);
-  }, [dispatch, navigation]);
+    }
+  }, [dispatch, dispatchThunk, isConnected, navigation, plannerPayload, socketId, userId]);
 
   const handleOnBackPress = useCallback(() => {
     dispatch(plannerActions.reset());
     navigation.goBack();
   }, [dispatch, navigation]);
 
-  // Effects
   useEffect(() => {
     navigation.setOptions(
       isLastStep
@@ -157,6 +170,8 @@ const PlannerScreen = () => {
     <View style={styles.container}>
       {steps[plannerStep]}
       {renderFooter()}
+
+      <GenerationModal visible={generating} progress={progress} />
     </View>
   );
 };

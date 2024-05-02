@@ -39,7 +39,7 @@ const Step4 = () => {
 
   // Effects
   useEffect(() => {
-    if (!plannerPayload?.budget) dispatch(plannerActions.setPayload({ traveler: budgetsList[0] }));
+    if (!plannerPayload?.budget) dispatch(plannerActions.setPayload({ budget: budgetsList[0] }));
   }, [budgetsList, dispatch, plannerPayload?.budget]);
 
   // Renderers

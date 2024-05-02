@@ -1,11 +1,13 @@
 // Packages
 import moment from 'moment';
+import { useEffect, useState } from 'react';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions, Linking, Platform } from 'react-native';
 
 // Utilities
+import socket from '@app/socket';
 import { store } from '@app/store';
 import { authActions } from '@redux/auth/slice';
 import { snackbarActions } from '@redux/snackbar/slice';
@@ -99,4 +101,52 @@ export const formatDate = (date: string, format = 'MMMM DD, YYYY') => moment(dat
 export const logout = (reason: string) => {
   store.dispatch(authActions.update({ authenticated: false }));
   console.info(`[Logout] :: Reason: ${reason}`);
+};
+
+export const openMapsWithCoords = (name: string, lat: number, lng: number) => {
+  const scheme = Platform.OS === 'ios' ? 'maps://0,0?q=' : 'geo:0,0?q=';
+  const latLng = `${lat},${lng}`;
+  const label = name;
+
+  const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
+  Linking.openURL(url);
+};
+
+export const useSocketSetup = (enabled: boolean) => {
+  const [isConnected, setIsConnected] = useState(false);
+  const [progress, setProgress] = useState({ message: 'Starting itinerary generation...', progress: 0 });
+
+  useEffect(() => {
+    if (enabled) {
+      console.debug('Connecting to socket io server');
+      socket.connect();
+
+      socket.on('connect', () => {
+        console.debug('Connected to socket io server');
+        setIsConnected(true);
+      });
+
+      socket.on('connect_error', (error) => {
+        console.debug('Failed to connect to socket io server', error);
+      });
+
+      socket.on('progress', (data) => {
+        setProgress(data);
+      });
+
+      socket.on('disconnect', () => {
+        console.debug('Disconnected from socket io server');
+        setIsConnected(false);
+      });
+
+      return () => {
+        socket.off('connect');
+        socket.off('connect_error');
+        socket.off('progress');
+        socket.off('disconnect');
+      };
+    }
+  }, [enabled]);
+
+  return { isConnected, socketId: socket.id, progress };
 };

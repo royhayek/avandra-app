@@ -62,12 +62,12 @@ const OnBoarding = () => {
   }, [navigateToLogin, index]);
 
   const handleContinuePress = useCallback(() => {
-    if (index === walkthroughList.length - 1) {
+    if (index === walkthroughList?.length - 1) {
       navigateToLogin();
     } else {
       swiperRef.current?.scrollBy(1, true);
     }
-  }, [navigateToLogin, index, walkthroughList.length]);
+  }, [navigateToLogin, index, walkthroughList?.length]);
 
   // Effects
   useEffect(() => {

@@ -47,7 +47,7 @@ const TravelOptionsList: React.FC<TravelOptionsListProps> = ({ list, value, setV
   return (
     <FlatList
       data={list}
-      keyExtractor={(item) => item.key}
+      keyExtractor={(item) => item._id}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatList}
       renderItem={({ item }) => renderItem(item)}

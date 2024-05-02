@@ -1,6 +1,15 @@
 // Packages
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getBudgets, getDestinationDetails, getDestinations, getInterests, getTravelers } from './api';
+import {
+  getBudgets,
+  getDestinationDetails,
+  getDestinations,
+  getInterests,
+  getRecentSearches,
+  getTravelers,
+  incrementSearches
+} from './api';
+import { DestinationProps } from '@shared/types/Destination';
 
 // Actions
 
@@ -79,3 +88,34 @@ export const getBudgetsAction = createAsyncThunk('budget/list', async (payload, 
     rejectWithValue(error.response?.data?.message);
   }
 });
+
+export const getRecentSearchesAction = createAsyncThunk('search/recent', async (payload, { rejectWithValue }) => {
+  try {
+    const response = await getRecentSearches();
+
+    // console.debug('[getRecentSearchesAction - response] :: ', response.data);
+
+    return response.data.data;
+  } catch (error: any) {
+    console.error('[getRecentSearchesAction - error] :: ', error);
+
+    rejectWithValue(error.response?.data?.message);
+  }
+});
+
+export const incrementSearchesAction = createAsyncThunk(
+  'search/increment',
+  async (payload: DestinationProps, { rejectWithValue }) => {
+    try {
+      const response = await incrementSearches(payload);
+
+      // console.debug('[getRecentSearchesAction - response] :: ', response.data);
+
+      return response.data.data;
+    } catch (error: any) {
+      console.error('[getRecentSearchesAction - error] :: ', error);
+
+      rejectWithValue(error.response?.data?.message);
+    }
+  }
+);

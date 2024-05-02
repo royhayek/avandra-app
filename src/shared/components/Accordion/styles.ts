@@ -11,9 +11,6 @@ import { MarkedStyles } from 'react-native-marked/dist/typescript/theme/types';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
-    title: {
-      color: theme.colors.black
-    },
     row: {
       height: mvs(56),
       alignItems: 'center',
@@ -21,13 +18,14 @@ export default (theme: AppTheme) =>
       justifyContent: 'space-between'
     },
     parentHr: {
-      height: 1,
       width: '100%',
       color: theme.colors.black
     },
     child: {
-      paddingVertical: mvs(8),
       backgroundColor: theme.colors.background
+    },
+    expandText: {
+      fontFamily: 'urbanist-semibold'
     }
   });
 

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import * as Location from 'expo-location';
 import { ms } from 'react-native-size-matters';
 import { IconButton } from 'react-native-paper';
-import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -18,7 +18,6 @@ import { MapLocationIcon, MapNavigationIcon, MoonIcon, SunIcon } from '@shared/a
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { DUMMY_PLACES } from '@screens/Itinerary/data';
 
 // Interfaces
 type MapScreenProps = {};
@@ -33,9 +32,12 @@ const MapScreen: React.FC<MapScreenProps> = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const destinations = []; //route.params.destinations;
+  const { markers, places } = route?.params as RouteParams;
+
+  const mergedPlaces = _.reduce(places, (r, v) => [...r, ...v.list], []);
 
   const mapIndex = useRef(0);
   const mapRef = useRef(null);
@@ -44,12 +46,10 @@ const MapScreen: React.FC<MapScreenProps> = () => {
   const mapAnimation = new Animated.Value(0);
 
   const initialMapState = {
-    markers: destinations,
+    markers,
     region: {
-      // latitude: _.first(destinations)?.searchResult.geometry.location.lat,
-      // longitude: _.first(destinations)?.searchResult.geometry.location.lng,
-      latitude: 41.0082376,
-      longitude: 28.9783589,
+      latitude: _.first(markers)?.lat,
+      longitude: _.first(markers)?.lng,
       latitudeDelta: 0.03,
       longitudeDelta: 0.03
     }
@@ -92,13 +92,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
           if (mapIndex.current !== index) {
             mapIndex.current = index;
 
-            const {
-              searchResult: {
-                geometry: {
-                  location: { lat, lng }
-                }
-              }
-            } = state.markers[index];
+            const { lat, lng } = state.markers[index];
 
             mapRef.current &&
               mapRef.current.animateToRegion(
@@ -186,6 +180,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
             marker && (
               <Marker
                 displayDay
+                size={24}
                 key={index}
                 index={index}
                 marker={marker}
@@ -233,7 +228,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
         // }}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: mapAnimation } } }], { useNativeDriver: true })}>
         <>
-          {_.map(DUMMY_PLACES, (destination, index) => (
+          {_.map(mergedPlaces, (destination, index) => (
             <LocationCard
               onMap
               key={index}

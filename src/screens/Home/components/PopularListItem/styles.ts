@@ -42,11 +42,11 @@ export default (theme: AppTheme, isVertical: boolean) =>
     shimmerTitle: {
       height: mvs(23),
       marginTop: mvs(8),
-      paddingHorizontal: ms(5)
+      marginHorizontal: ms(5)
     },
     shimmerSubtitle: {
       height: mvs(16),
       marginTop: mvs(6),
-      paddingHorizontal: ms(5)
+      marginHorizontal: ms(5)
     }
   });

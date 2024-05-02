@@ -29,11 +29,7 @@ export default (theme: AppTheme) =>
     content: {
       flex: 1,
       gap: mvs(4),
-      marginEnd: ms(8),
-      marginStart: ms(12)
-    },
-    country: {
-      fontFamily: 'urbanist-semibold'
+      marginEnd: ms(8)
     },
     city: {
       fontFamily: 'urbanist-medium',
@@ -42,5 +38,9 @@ export default (theme: AppTheme) =>
     arrowIcon: {
       marginStart: ms(3),
       transform: i18n.locale === 'ar' ? [{ rotateY: '180deg' }] : []
+    },
+    divider: {
+      marginTop: mvs(8),
+      marginHorizontal: ms(24)
     }
   });

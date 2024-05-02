@@ -41,7 +41,7 @@ const Marker: React.FC<MarkerProps> = ({ marker, index, size = 10, onMarkerPress
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const { lat, lng } = marker?.searchResult?.geometry?.location || {};
+  const { lat, lng } = marker || {};
   const scaleStyle = interpolations && interpolations[index] && { transform: [{ scale: interpolations[index].scale }] };
 
   // Renderers

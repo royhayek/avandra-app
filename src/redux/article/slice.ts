@@ -27,40 +27,40 @@ const articleSlice = createSlice({
     // Popular Articles
     builder.addCase(getPopularArticlesAction.pending, (state) => {
       state.popularArticles = null;
-      state.isLoading = true;
+      state.isLoadingArticles = true;
       state.error = null;
     });
 
     builder.addCase(getPopularArticlesAction.fulfilled, (state, action) => {
       state.popularArticles = action.payload.result;
       state.lastRefresh = moment();
-      state.isLoading = false;
+      state.isLoadingArticles = false;
       state.error = null;
     });
 
     builder.addCase(getPopularArticlesAction.rejected, (state, action) => {
       state.popularArticles = null;
-      state.isLoading = false;
+      state.isLoadingArticles = false;
       state.error = action.error.message;
     });
 
     // Article Details
     builder.addCase(getArticleDetailsAction.pending, (state) => {
       state.details = null;
-      state.isLoading = true;
+      state.isLoadingArticles = true;
       state.error = null;
     });
 
     builder.addCase(getArticleDetailsAction.fulfilled, (state, action) => {
       state.details = action.payload.result;
       state.lastRefresh = moment();
-      state.isLoading = false;
+      state.isLoadingArticles = false;
       state.error = null;
     });
 
     builder.addCase(getArticleDetailsAction.rejected, (state, action) => {
       state.details = null;
-      state.isLoading = false;
+      state.isLoadingArticles = false;
       state.error = action.error.message;
     });
   }
@@ -77,8 +77,6 @@ const _article = (state: RootState) => state.article;
 export const selectArticles = createSelector(_article, (data) => data);
 
 export const selectArticleDetails = createSelector(_article, (data) => data?.details);
-
-export const selectPopularLoading = createSelector(_article, (data) => data?.isLoading);
 
 export const selectArticleLastRefresh = createSelector(_article, (data) => data?.lastRefresh);
 

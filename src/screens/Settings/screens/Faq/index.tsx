@@ -4,8 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import Input from '@shared/components/Input';
-import Shimmer from '@shared/components/Shimmer';
-import { Divider, Text } from 'react-native-paper';
+import { ActivityIndicator, Divider, Text } from 'react-native-paper';
 import ScrollableTabs from '@shared/components/ScrollableTabs';
 import { DownChevron, SearchIcon } from '@shared/assets/icons';
 import { FlatList, TouchableOpacity, View } from 'react-native';
@@ -16,7 +15,13 @@ import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getFaqCategoriesAction, getFaqQuestionsAction } from '@redux/settings/thunks';
-import { selectFaqCategories, selectFaqCategoriesLoading, selectFaqQuestions } from '@redux/settings/slice';
+import {
+  selectFaqQuestions,
+  selectFaqCategories,
+  selectQuestionsLoading,
+  selectFaqCategoriesLoading
+} from '@redux/settings/slice';
+import Shimmer from '@shared/components/Shimmer';
 
 // Interfaces
 interface FaqScreenProps {}
@@ -29,6 +34,7 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
   const faqQuestions = useAppSelector(selectFaqQuestions);
   const faqCategories = useAppSelector(selectFaqCategories);
   const isLoadingFaqs = useAppSelector(selectFaqCategoriesLoading);
+  const isLoadingQuestions = useAppSelector(selectQuestionsLoading);
 
   // Statics
   const theme = useAppTheme();
@@ -92,43 +98,50 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
           />
         </View>
       </View>
+      {isLoadingQuestions ? (
+        <View style={styles.shimmerView}>
+          {_.times(5, (i) => (
+            <Shimmer key={i} style={styles.shimmerItem} height={65} />
+          ))}
+        </View>
+      ) : (
+        <FlatList
+          data={filteredData}
+          style={styles.list}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item }) => {
+            const isExpanded = _.includes(expandedCategories, item?._id);
 
-      <FlatList
-        data={filteredData}
-        style={styles.list}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => {
-          const isExpanded = _.includes(expandedCategories, item?._id);
+            return (
+              <View style={styles.item}>
+                <TouchableOpacity style={styles.question} onPress={() => handleQuestionPress(item?._id)}>
+                  <Text variant="h6" style={styles.questionText}>
+                    {item.question}
+                  </Text>
+                  <DownChevron
+                    fill={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]}
+                    transform={[{ rotateX: isExpanded ? '180deg' : '0deg' }]}
+                  />
+                </TouchableOpacity>
 
-          return (
-            <View style={styles.item}>
-              <TouchableOpacity style={styles.question} onPress={() => handleQuestionPress(item?._id)}>
-                <Text variant="h6" style={styles.questionText}>
-                  {item.question}
-                </Text>
-                <DownChevron
-                  fill={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]}
-                  transform={[{ rotateX: isExpanded ? '180deg' : '0deg' }]}
-                />
-              </TouchableOpacity>
+                {isExpanded && (
+                  <>
+                    <Divider style={styles.divider} />
 
-              {isExpanded && (
-                <>
-                  <Divider style={styles.divider} />
-
-                  <View style={styles.answer}>
-                    <Text variant="large" style={styles.answerText}>
-                      {item.answer}
-                    </Text>
-                  </View>
-                </>
-              )}
-            </View>
-          );
-        }}
-      />
+                    <View style={styles.answer}>
+                      <Text variant="large" style={styles.answerText}>
+                        {item.answer}
+                      </Text>
+                    </View>
+                  </>
+                )}
+              </View>
+            );
+          }}
+        />
+      )}
     </View>
   );
 };

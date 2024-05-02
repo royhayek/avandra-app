@@ -1,14 +1,13 @@
 // Packages
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 // Components
 import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import * as Progress from 'react-native-progress';
 import InterestsList from '../Step3/InterestsList';
-import { Divider, IconButton, Modal, Portal, Text } from 'react-native-paper';
+import { Divider, IconButton, Text } from 'react-native-paper';
 import {
   CalendarIcon,
   EditIcon,
@@ -20,22 +19,21 @@ import {
 } from '@shared/assets/icons';
 
 // Utilities
-import i18n, { t } from '@app/i18n';
+import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { useAppSelector } from '@app/store';
+import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import GenerationModal from '@shared/components/GenerationModal';
-import { PUBLIC_URL } from '@shared/constants';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step5.${key}`, options);
 
-const Step5 = ({ setActive, generating }) => {
+const Step5 = () => {
   // Redux
   const dispatch = useDispatch();
   const plannerPayload = useAppSelector(getPlannerPayload);
@@ -44,14 +42,8 @@ const Step5 = ({ setActive, generating }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const {
-    interests,
-    traveler,
-    budget,
-    fromDate,
-    toDate,
-    destination: { image, name, country }
-  } = plannerPayload;
+  const { interests, traveler, budget, fromDate, toDate, destination } = plannerPayload;
+  const { image = '', name, country } = destination;
 
   // Callbacks
   const handleEditPress = useCallback((step: number) => dispatch(plannerActions.updatePlannerStep(step)), [dispatch]);
@@ -74,7 +66,7 @@ const Step5 = ({ setActive, generating }) => {
     [styles.editIcon, styles.title, styles.titleContainer, theme.colors.primary]
   );
 
-  const renderContent = () => (
+  return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text variant="xLarge">{_t('review_summary_desc')}</Text>
 
@@ -86,18 +78,27 @@ const Step5 = ({ setActive, generating }) => {
             <Text variant="h5" style={styles.title}>
               {_t('destination')}
             </Text>
-            <View style={styles.row}>
-              {image && <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />}
-              <View>
-                <Text variant="h6">{name}</Text>
-                <View style={styles.countryRow}>
-                  <JapanFlag />
-                  <Text variant="medium" style={styles.country}>
-                    {country}
-                  </Text>
+
+            {image ? (
+              <>
+                <View style={styles.row}>
+                  <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />
+
+                  <View>
+                    <Text variant="h6">{name}</Text>
+                    <View style={styles.countryRow}>
+                      <Text variant="medium" style={styles.country}>
+                        {country}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
+              </>
+            ) : (
+              <Text variant="xLarge" style={styles.value}>
+                {name}, {country}
+              </Text>
+            )}
           </View>
         </View>
 
@@ -152,14 +153,6 @@ const Step5 = ({ setActive, generating }) => {
         </View>
       </View>
     </ScrollView>
-  );
-
-  return (
-    <>
-      {renderContent()}
-
-      <GenerationModal visible={generating} />
-    </>
   );
 };
 

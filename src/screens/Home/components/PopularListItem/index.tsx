@@ -8,7 +8,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import { Dimensions, TouchableOpacity, View } from 'react-native';
+import Shimmer from '@shared/components/Shimmer';
+import { TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
@@ -17,7 +18,6 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { ArticleProps } from '@shared/types/Article';
-import Shimmer from '@shared/components/Shimmer';
 
 interface PopularListItemProps {
   type: string;

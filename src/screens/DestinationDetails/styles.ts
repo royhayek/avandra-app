@@ -38,10 +38,10 @@ export default (theme: AppTheme) =>
       flex: 1,
       paddingTop: mvs(12),
       borderRadius: ms(40),
-      paddingBottom: mvs(50)
+      paddingBottom: mvs(30)
     },
     paddedContent: {
-      gap: mvs(8),
+      gap: mvs(12),
       paddingHorizontal: ms(24)
     },
     countryContainer: {
@@ -57,9 +57,6 @@ export default (theme: AppTheme) =>
       fontFamily: 'urbanist-medium',
       color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
     },
-    description: {
-      marginTop: mvs(10)
-    },
     galleryList: {
       paddingHorizontal: ms(24)
     },
@@ -70,7 +67,7 @@ export default (theme: AppTheme) =>
       borderRadius: theme.roundness
     },
     title: {
-      marginTop: mvs(24),
+      marginTop: mvs(16),
       marginBottom: ms(16),
       paddingHorizontal: ms(24)
     },
@@ -79,9 +76,14 @@ export default (theme: AppTheme) =>
       height: windowWidth
     },
     infoRow: {
-      gap: 10,
-      alignItems: 'center',
-      flexDirection: 'row'
+      gap: ms(6),
+      flexDirection: 'row',
+      alignItems: 'flex-start'
+    },
+    infoContentText: {
+      flex: 1,
+      fontFamily: 'urbanist-regular',
+      color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
     },
     shimmerView: {
       marginTop: mvs(24),

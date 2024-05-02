@@ -1,7 +1,9 @@
 export interface ItineraryItemProps {
+  _id: string;
   image: string;
   name: string;
   time: string;
+  description: string;
   estimatedCost: number;
   rating: number;
   reviews: number;

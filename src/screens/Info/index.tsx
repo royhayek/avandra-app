@@ -2,45 +2,35 @@
 import _ from 'lodash';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
 
 // Components
-import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 import { ScrollView, useWindowDimensions } from 'react-native';
+import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 
 // Utilities
 import makeStyles from './styles';
-import getEnvVars from '../../../environment';
 import { useAppTheme } from '@shared/assets/theme';
 import { getConfiguration } from '@redux/app/slice';
 
 // Interfaces
-import { RouteProp } from '@react-navigation/native';
-import { Text } from 'react-native-paper';
-
-type RootStackParamList = {
-  InfoScreen: {
-    type: string;
-  };
-};
-
-type InfoScreenRouteProp = RouteProp<RootStackParamList, 'InfoScreen'>;
-
-interface InfoScreenProps {
-  route: InfoScreenRouteProp;
+interface RouteParams {
+  type: string;
 }
 
 // Component
-const InfoScreen: React.FC<InfoScreenProps> = ({ route }) => {
+const InfoScreen = () => {
   // Redux
   const config = useSelector(getConfiguration);
 
   // Statics
+  const route = useRoute();
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   const { width } = useWindowDimensions();
 
-  const type = route.params.type;
+  const type = (route.params as RouteParams)?.type;
   const uri = _.isEqual(type, 'privacy_policy') ? config?.links?.privacyPolicy : config?.links?.termsAndConditions;
 
   // Renderers
@@ -62,8 +52,6 @@ const InfoScreen: React.FC<InfoScreenProps> = ({ route }) => {
           }
         }}
       />
-      {/* TODO: To be removed when going live */}
-      <Text variant="xSmall">Current Base URL: {getEnvVars().serverApiUrl}</Text>
     </ScrollView>
   );
 };

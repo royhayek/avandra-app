@@ -10,7 +10,7 @@ import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import ImageView from 'react-native-image-viewing';
 import BackButton from '@shared/components/Buttons/Back';
-import { CurrencyIcon, MapIcon } from '@shared/assets/icons';
+import { CurrencyIcon, LanguageIcon, MapIcon } from '@shared/assets/icons';
 import RegularButton from '@shared/components/Buttons/Regular';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 
@@ -22,7 +22,14 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import { getDestinationDetails, selectDestinationLoading, selectOptionsLoading } from '@redux/destination/slice';
+import {
+  getDestinationDetails,
+  selectBudgetsList,
+  selectDestinationLoading,
+  selectInterestsList,
+  selectOptionsLoading,
+  selectTravelersList
+} from '@redux/destination/slice';
 import {
   getBudgetsAction,
   getDestinationDetailsAction,
@@ -53,6 +60,9 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const dispatch = useDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
+  const budgets = useAppSelector(selectBudgetsList);
+  const travelers = useAppSelector(selectTravelersList);
+  const interests = useAppSelector(selectInterestsList);
   const areOptionsLoading = useAppSelector(selectOptionsLoading);
   const destinationDetails = useAppSelector(getDestinationDetails);
   const isLoadingDetails = useAppSelector(selectDestinationLoading);
@@ -68,17 +78,19 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { detailsId } = route?.params as RouteParams;
-  const { name, image, country, description, gallery, continent, currency, flag } = destinationDetails || {};
+
+  const { name, image, country, description, gallery, continent, currency, flag, spokenLang, bestTime } =
+    destinationDetails || {};
 
   // Callbacks
   const handleStartTripPress = useCallback(async () => {
     dispatch(plannerActions.setPayload({ destination: { id: detailsId, name, image, country } }));
     // Dispatch travelers list
-    await dispatchThunk(getTravelersAction());
-    await dispatchThunk(getInterestsAction());
-    await dispatchThunk(getBudgetsAction());
+    _.isEmpty(travelers) && (await dispatchThunk(getTravelersAction()));
+    _.isEmpty(interests) && (await dispatchThunk(getInterestsAction()));
+    _.isEmpty(budgets) && (await dispatchThunk(getBudgetsAction()));
     navigation.navigate('Planner');
-  }, [country, detailsId, dispatch, dispatchThunk, image, name, navigation]);
+  }, [budgets, country, detailsId, dispatch, dispatchThunk, image, interests, name, navigation, travelers]);
 
   const handleGalleryImagePress = useCallback((index: number) => setImageViewState({ isOpen: true, index }), []);
 
@@ -139,9 +151,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
           </Text>
         </View>
 
-        <Text variant="xLarge" style={styles.description}>
-          {description}
-        </Text>
+        <Text variant="xLarge">{description}</Text>
       </View>
 
       <Text variant="h5" style={styles.title}>
@@ -163,13 +173,45 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         {_t('additional_info')}
       </Text>
       <View style={styles.paddedContent}>
+        {bestTime && (
+          <View style={styles.infoRow}>
+            <LanguageIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+            <View style={{ flex: 1 }}>
+              <Text variant="large">Best Time to Go</Text>
+              <Text variant="large" style={styles.infoContentText}>
+                {bestTime}
+              </Text>
+            </View>
+          </View>
+        )}
+        {spokenLang && (
+          <View style={styles.infoRow}>
+            <LanguageIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+            <View>
+              <Text variant="large">Spoken Language(s)</Text>
+              <Text variant="large" style={styles.infoContentText}>
+                {spokenLang}
+              </Text>
+            </View>
+          </View>
+        )}
         <View style={styles.infoRow}>
-          <MapIcon fill={theme.colors.secondary} />
-          <Text variant="xLarge">{continent}</Text>
+          <CurrencyIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+          <View>
+            <Text variant="large">Currency</Text>
+            <Text variant="large" style={styles.infoContentText}>
+              {currency}
+            </Text>
+          </View>
         </View>
         <View style={styles.infoRow}>
-          <CurrencyIcon fill={theme.colors.secondary} />
-          <Text variant="xLarge">{currency}</Text>
+          <MapIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+          <View>
+            <Text variant="large">Continent</Text>
+            <Text variant="large" style={styles.infoContentText}>
+              {continent}
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -177,12 +219,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   return (
     <>
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        style={styles.scrollView}
-        stickyHeaderHiddenOnScroll
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.scrollView} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         {renderStickyHeader()}
         {isLoadingDetails ? renderContentShimmer() : renderContent()}
       </ScrollView>

@@ -2,7 +2,6 @@
 import axios from 'axios';
 import moment from 'moment';
 import { stringify } from 'qs';
-import { Configuration } from 'openai';
 
 // Utils
 import 'moment-timezone';
@@ -16,8 +15,6 @@ import getEnvVars from '../../environment';
 const { serverApiUrl } = getEnvVars();
 
 console.debug('[api - serverApiUrl] :: ', serverApiUrl);
-
-export const openAIConfig = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 
 axios.interceptors.request.use((req) => {
   // Set common config

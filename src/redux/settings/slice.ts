@@ -17,6 +17,7 @@ const initialState: SettingsInitialState = {
   lastRefresh: null,
   privacyPolicy: '',
   termsAndConditions: '',
+  isLoadingQuestions: false,
   faqCategoriesLoading: false
 };
 
@@ -46,20 +47,20 @@ const settingsSlice = createSlice({
 
     builder.addCase(getFaqQuestionsAction.pending, (state) => {
       state.faq = [];
-      state.loading = true;
+      state.isLoadingQuestions = true;
       state.error = null;
     });
 
     builder.addCase(getFaqQuestionsAction.fulfilled, (state, action) => {
       state.faq = action.payload.result;
       state.lastRefresh = moment();
-      state.loading = false;
+      state.isLoadingQuestions = false;
       state.error = null;
     });
 
     builder.addCase(getFaqQuestionsAction.rejected, (state, action) => {
       state.faq = [];
-      state.loading = false;
+      state.isLoadingQuestions = false;
       state.error = action.error.message;
     });
 
@@ -96,5 +97,7 @@ export const selectSettingsError = createSelector(_settings, (data) => data?.err
 export const selectSettingsLoading = createSelector(_settings, (data) => data?.loading);
 
 export const selectFaqCategories = createSelector(_settings, (data) => data.faqCategories);
+
+export const selectQuestionsLoading = createSelector(_settings, (data) => data?.isLoadingQuestions);
 
 export const selectFaqCategoriesLoading = createSelector(_settings, (data) => data?.faqCategoriesLoading);

@@ -8,8 +8,9 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: ms(24),
-      paddingBottom: mvs(50)
+      paddingTop: mvs(16),
+      paddingBottom: mvs(50),
+      paddingHorizontal: ms(24)
     },
     section: {
       flex: 1,
