@@ -1,7 +1,6 @@
 // Packages
 import axios from 'axios';
 import moment from 'moment';
-import { stringify } from 'qs';
 
 // Utils
 import 'moment-timezone';
@@ -24,7 +23,7 @@ axios.interceptors.request.use((req) => {
   req.headers['Accept-Language'] = i18n.locale;
 
   req.paramsSerializer = {
-    serialize: (params) => stringify(params, { skipNulls: true, allowDots: true })
+    serialize: (params) => JSON.stringify(params)
   };
 
   // Set auth token if applicable

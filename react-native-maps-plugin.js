@@ -19,7 +19,7 @@ const withPlugin = (expoConfig) => {
       const addCode = generateCode.mergeContents({
         newSrc: googleMapsIosSiliconWorkaroundPodCode,
         tag: 'withGoogleMapsIOSWorkaroundPlugin',
-        anchor: /\s*get_default_flags\(\)/i,
+        anchor: /\s*use_native_modules!\s*/i,
         src: contents,
         comment: '#',
         offset: 2

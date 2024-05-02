@@ -96,7 +96,7 @@ module.exports = {
           },
           ios: {
             useFrameworks: 'static',
-            deploymentTarget: '13.0'
+            deploymentTarget: '15.0'
           }
         }
       ],
@@ -112,7 +112,7 @@ module.exports = {
         }
       ],
       'expo-apple-authentication',
-      './react-native-maps-plugin'
+      // './react-native-maps-plugin'
     ],
     owner: 'royhayek'
   },
