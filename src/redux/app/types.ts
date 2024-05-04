@@ -2,16 +2,8 @@ import { WalkthroughProps } from '@shared/types/Walkthrough';
 
 export interface AppInitialState {
   config: {
-    ads: {
-      rewarded: {
-        android: string;
-        ios: string;
-      };
-    };
-    links: {
-      privacyPolicy: string;
-      termsAndConditions: string;
-    };
+    privacyPolicy: string;
+    termsAndConditions: string;
   };
   language: string;
   themeMode: string;

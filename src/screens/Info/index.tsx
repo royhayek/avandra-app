@@ -5,13 +5,14 @@ import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 
 // Components
-import { ScrollView, useWindowDimensions } from 'react-native';
+import { Dimensions, ScrollView, View, useWindowDimensions } from 'react-native';
 import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { getConfiguration } from '@redux/app/slice';
+import Shimmer from '@shared/components/Shimmer';
 
 // Interfaces
 interface RouteParams {
@@ -31,14 +32,28 @@ const InfoScreen = () => {
   const { width } = useWindowDimensions();
 
   const type = (route.params as RouteParams)?.type;
-  const uri = _.isEqual(type, 'privacy_policy') ? config?.links?.privacyPolicy : config?.links?.termsAndConditions;
+  const uri = _.isEqual(type, 'privacy_policy') ? config?.privacyPolicy : config?.termsAndConditions;
 
   // Renderers
+  const renderLoading = () => (
+    <View style={{ marginVertical: 32 }}>
+      {_.times(15, (i) => (
+        <Shimmer
+          key={i}
+          width={Math.floor(Math.random() * (Dimensions.get('screen').width - 240 + 1)) + 200}
+          height={22}
+          style={{ marginBottom: 12 }}
+        />
+      ))}
+    </View>
+  );
+
   return (
     <ScrollView style={styles.scollView} contentContainerStyle={styles.scrollViewContainer}>
       <RenderHtml
         source={{ uri }}
         contentWidth={width}
+        remoteLoadingView={renderLoading}
         systemFonts={[...defaultSystemFonts, 'urbanist-regular', 'urbanist-bold']}
         tagsStyles={{
           strong: {

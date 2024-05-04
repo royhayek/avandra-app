@@ -14,6 +14,7 @@ import Step2 from './components/Step2';
 import Step3 from './components/Step3';
 import Step4 from './components/Step4';
 import Step5 from './components/Step5';
+import { Ionicons } from '@expo/vector-icons';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
@@ -113,16 +114,46 @@ const PlannerScreen = () => {
   }, [dispatch, dispatchThunk, isConnected, navigation, plannerPayload, socketId, userId]);
 
   const handleOnBackPress = useCallback(() => {
+    if (plannerStep === 0) {
+      dispatch(plannerActions.reset());
+      navigation.goBack();
+    } else {
+      updatePlannerStep(plannerStep - 1);
+    }
+  }, [dispatch, navigation, plannerStep, updatePlannerStep]);
+
+  const handleOnCancelPress = useCallback(() => {
     dispatch(plannerActions.reset());
     navigation.goBack();
   }, [dispatch, navigation]);
 
+  const handleResetNavigation = useCallback(() => dispatch(plannerActions.reset()), [dispatch]);
+
+  const renderCancelButton = useCallback(
+    () => (
+      <Ionicons
+        name="close"
+        size={24}
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+        onPress={handleOnCancelPress}
+        style={{ marginRight: 20 }}
+      />
+    ),
+    [handleOnCancelPress, theme.colors.gray, theme.colors.white, theme.dark]
+  );
+
+  // Effects
   useEffect(() => {
     navigation.setOptions(
       isLastStep
-        ? { onBackPress: handleOnBackPress, title: t('planner.step5.review_summary') }
+        ? {
+            onBackPress: handleOnBackPress,
+            headerRight: renderCancelButton,
+            title: t('planner.step5.review_summary')
+          }
         : {
             onBackPress: handleOnBackPress,
+            headerRight: renderCancelButton,
             headerTitle: () => (
               <Progress.Bar
                 width={200}
@@ -143,13 +174,12 @@ const PlannerScreen = () => {
     isLastStep,
     navigation,
     plannerStep,
-    handleOnBackPress,
     theme.colors.dark,
     theme.colors.gray,
+    renderCancelButton,
+    handleOnCancelPress,
     theme.colors.primary
   ]);
-
-  const handleResetNavigation = useCallback(() => dispatch(plannerActions.reset()), [dispatch]);
 
   useEffect(() => {
     navigation.addListener('beforeRemove', handleResetNavigation);

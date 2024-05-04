@@ -8,15 +8,7 @@ import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import InterestsList from '../Step3/InterestsList';
 import { Divider, IconButton, Text } from 'react-native-paper';
-import {
-  CalendarIcon,
-  EditIcon,
-  JapanFlag,
-  LocationIcon,
-  MoneyBagIcon,
-  StarIcon,
-  UsersIcon
-} from '@shared/assets/icons';
+import { CalendarIcon, EditIcon, LocationIcon, MoneyBagIcon, StarIcon, UsersIcon } from '@shared/assets/icons';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -42,8 +34,12 @@ const Step5 = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const { interests, traveler, budget, fromDate, toDate, destination } = plannerPayload;
+  const { interests, traveler, budget, fromDate, toDate, destination, periodType, noOfDays, selectedMonth } =
+    plannerPayload;
+
   const { image = '', name, country } = destination;
+
+  const byDate = _.isEqual(periodType, 'date');
 
   // Callbacks
   const handleEditPress = useCallback((step: number) => dispatch(plannerActions.updatePlannerStep(step)), [dispatch]);
@@ -110,7 +106,7 @@ const Step5 = () => {
           <View style={styles.flex1}>
             {renderTitle('traveler', _t('party'), () => handleEditPress(0))}
             <Text variant="xLarge" style={styles.value}>
-              {traveler?.title}
+              {traveler?.title} {traveler?.icon}
             </Text>
           </View>
         </View>
@@ -123,7 +119,9 @@ const Step5 = () => {
           <View style={styles.flex1}>
             {renderTitle('date', _t('trip_dates'), () => handleEditPress(1))}
             <Text variant="xLarge" style={styles.value}>
-              {formatDate(fromDate, 'MMM DD')} {_t('to')} {formatDate(toDate, 'MMM DD, YYYY')}
+              {byDate
+                ? `${formatDate(fromDate, 'MMM DD')} ${_t('to')} ${formatDate(toDate, 'MMM DD, YYYY')}`
+                : `${noOfDays} ${_t('days')} ${_t('in')} ${selectedMonth}`}
             </Text>
           </View>
         </View>
@@ -147,7 +145,7 @@ const Step5 = () => {
           <View style={styles.flex1}>
             {renderTitle('bidget', _t('budget'), () => handleEditPress(3))}
             <Text variant="xLarge" style={styles.value}>
-              {budget?.title}
+              {budget?.title} {budget?.icon}
             </Text>
           </View>
         </View>

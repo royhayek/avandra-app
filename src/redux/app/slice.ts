@@ -3,7 +3,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 // Utilities
 import { RootState } from '@app/store';
-import { getWalkthroughAction } from './thunks';
+import { getConfigurationAction, getWalkthroughAction } from './thunks';
 
 // Interfaces
 import { AppInitialState } from './types';
@@ -11,16 +11,8 @@ import { AppInitialState } from './types';
 // Slice
 const initialState: AppInitialState = {
   config: {
-    ads: {
-      rewarded: {
-        ios: '',
-        android: ''
-      }
-    },
-    links: {
-      privacyPolicy: '',
-      termsAndConditions: ''
-    }
+    privacyPolicy: '',
+    termsAndConditions: ''
   },
   language: 'en',
   plannerStep: 0,
@@ -72,6 +64,10 @@ export const appSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getWalkthroughAction.fulfilled, (state, action) => {
       state.walkthrough = action.payload.result;
+    });
+
+    builder.addCase(getConfigurationAction.fulfilled, (state, action) => {
+      state.config = action.payload.data;
     });
   }
 });

@@ -26,7 +26,7 @@ import { Firebase } from '@shared/constants';
 import { FIREBASE_DB } from '../../firebaseConfig';
 import NetworkInfo from '@shared/services/NetworkInfo';
 import { validateTokenAction } from '@redux/auth/thunks';
-import { getWalkthroughAction } from '@redux/app/thunks';
+import { getConfigurationAction, getWalkthroughAction } from '@redux/app/thunks';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
 // import { registerForPushNotificationsAsync } from '@shared/utils';
 import { appActions, getLanguage, getThemeMode } from '@redux/app/slice';
@@ -87,7 +87,9 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
 
   const handleDismissUpdateModal = useCallback(() => setUpdateModalVisible(false), []);
 
-  const getConfiguration = useCallback(async () => {}, []);
+  const getConfiguration = useCallback(async () => {
+    await dispatchThunk(getConfigurationAction());
+  }, [dispatchThunk]);
 
   // const initAppPurchases = useCallback(async () => {
   //   try {

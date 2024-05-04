@@ -1,7 +1,7 @@
 // Packages
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import DateInput from './DateInput';
@@ -10,8 +10,8 @@ import StepHeader from '../StepHeader';
 import MonthPicker from './MonthPicker';
 import { Text } from 'react-native-paper';
 import { ScrollView, View } from 'react-native';
-import ToggleButtons from '@shared/components/ToggleButtons';
 import DatePicker from '@shared/components/DatePicker';
+import ToggleButtons from '@shared/components/ToggleButtons';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -67,6 +67,13 @@ const Step2 = () => {
     [dispatch, activeButton]
   );
 
+  // Effects
+  useEffect(() => {
+    if (plannerPayload?.periodType) {
+      setActiveButton(plannerPayload.periodType);
+    }
+  }, [plannerPayload]);
+
   // Renderer Vars
   const toggleButtons = [
     { key: 'date', title: _t('dates_mm_dd') },
@@ -95,8 +102,8 @@ const Step2 = () => {
               </Text>
             </View>
             <MonthPicker
-              value={plannerPayload?.selectedMonth ?? _t(String(moment().format('MMMM')).toLocaleLowerCase())}
               setValue={setSelectedMonth}
+              value={plannerPayload?.selectedMonth ?? _t(String(moment().format('MMMM')).toLocaleLowerCase())}
             />
           </>
         );
@@ -111,7 +118,7 @@ const Step2 = () => {
                 `${formatMonthDay(plannerPayload?.fromDate)} - ${formatMonthDay(plannerPayload?.toDate)}`
               }
             />
-            <DatePicker defaultValue={plannerPayload?.pickerState} onSuccess={handleDatePickerSuccess} />
+            <DatePicker onSuccess={handleDatePickerSuccess} defaultValue={plannerPayload?.pickerState} />
           </View>
         );
     }

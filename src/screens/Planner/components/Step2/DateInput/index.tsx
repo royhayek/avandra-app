@@ -1,5 +1,6 @@
 // Packages
 import _ from 'lodash';
+import { ms } from 'react-native-size-matters';
 import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
@@ -48,7 +49,7 @@ const DateInput: React.FC<DateInputProps> = ({ defaultValue }) => {
           disabled
           icon="calendar-blank-outline"
           color={theme.colors.secondary}
-          style={{ transform: i18n.locale === 'ar' ? [{ scaleX: -1 }] : undefined }}
+          style={{ transform: i18n.locale === 'ar' ? [{ scaleX: -1 }] : undefined, marginEnd: ms(16) }}
         />
       }
     />

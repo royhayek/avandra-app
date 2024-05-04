@@ -140,7 +140,9 @@
         "interest": "{{number}} centres d'intérêt",
         "budget": "Budget",
         "build_my_trip": "Construire mon voyage",
-        "to": "à"
+        "to": "à",
+        "days": "jours",
+        "in": "dans"
       }
     },
     "history": {

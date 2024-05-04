@@ -140,7 +140,9 @@
         "interest": "{{number}} interests",
         "budget": "Budget",
         "build_my_trip": "Build My Trip",
-        "to": "to"
+        "to": "to",
+        "days": "days",
+        "in": "in"
       }
     },
     "history": {

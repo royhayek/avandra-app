@@ -10,6 +10,7 @@ export default (theme: AppTheme) =>
     scollView: {
       flex: 1,
       direction: 'ltr',
+      marginTop: mvs(8),
       paddingHorizontal: ms(16),
       backgroundColor: theme.colors.background
     },
