@@ -24,15 +24,20 @@ export default (theme: AppTheme) =>
       marginEnd: ms(8),
       marginStart: ms(12)
     },
-    type: {
-      fontFamily: 'urbanist-medium',
-      color: theme.dark ? theme.colors.white : theme.colors.gray[700]
-    },
     name: {
       fontFamily: 'urbanist-bold'
     },
     addEventBtn: {
       marginBottom: mvs(24),
       marginHorizontal: ms(16)
+    },
+    ratingContainer: {
+      gap: ms(4),
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    ratingText: {
+      fontFamily: 'urbanist-bold',
+      color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
     }
   });

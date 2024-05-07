@@ -11,13 +11,13 @@ export default (theme: AppTheme) =>
       flex: 1
     },
     header: {
-      alignItems: 'flex-start',
+      marginEnd: ms(24),
+      flexDirection: 'row',
       justifyContent: 'center',
-      flexDirection: 'row'
+      alignItems: 'flex-start'
     },
     searchContainer: {
-      flex: 1,
-      marginEnd: 24
+      flex: 1
     },
     backBtn: {
       top: mvs(12),

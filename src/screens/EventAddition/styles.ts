@@ -2,11 +2,12 @@
 import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
-// Interfaces
-import { AppTheme } from '@shared/assets/theme';
-
-export default (theme: AppTheme) =>
+export default () =>
   StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingVertical: mvs(16)
+    },
     searchInput: {
       marginHorizontal: ms(24)
     },

@@ -9,16 +9,16 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     list: {
       gap: mvs(16),
-      paddingVertical: mvs(24)
+      paddingVertical: mvs(16)
     },
     date: {
       marginTop: mvs(8),
       paddingHorizontal: ms(16)
     },
     rowContainer: {
+      paddingStart: ms(2),
       alignItems: 'center',
       flexDirection: 'row',
-      paddingStart: ms(6),
       paddingVertical: mvs(6),
       marginHorizontal: ms(6)
     },
@@ -35,14 +35,15 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.white
     },
     image: {
-      width: ms(115),
+      width: ms(105),
       height: ms(75),
       marginStart: ms(12),
-      borderRadius: theme.roundness
+      borderRadius: theme.roundness,
+      backgroundColor: theme.colors.backdrop
     },
     content: {
       flex: 1,
-      gap: mvs(4),
+      gap: mvs(2),
       marginEnd: ms(8),
       marginStart: ms(12)
     },
@@ -51,10 +52,20 @@ export default (theme: AppTheme) =>
       color: theme.dark ? theme.colors.white : theme.colors.gray[700]
     },
     name: {
+      lineHeight: mvs(18),
       fontFamily: 'urbanist-bold'
     },
     addEventBtn: {
       marginBottom: mvs(24),
       marginHorizontal: ms(16)
+    },
+    ratingContainer: {
+      gap: ms(4),
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    ratingText: {
+      fontFamily: 'urbanist-bold',
+      color: theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]
     }
   });

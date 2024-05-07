@@ -1,8 +1,9 @@
 // Packages
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
@@ -12,25 +13,40 @@ import { TouchableOpacity, View } from 'react-native';
 import { DeleteIcon, DragIcon } from '@shared/assets/icons';
 import RegularButton from '@shared/components/Buttons/Regular';
 import CustomBottomSheet from '@shared/components/BottomSheet';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { NestableDraggableFlatList } from 'react-native-draggable-flatlist';
 
 // Utils
 import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
-import { formatDate } from '@shared/utils';
+import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
+import { formatAmount, formatDate } from '@shared/utils';
+import { deleteTripPlaceAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { itineraryActions } from '@redux/itinerary/slice';
 
 interface TripModificationItemProps {
-  item: ItineraryProps;
   index: number;
+  tripId: string;
+  location: object;
+  item: ItineraryProps;
 }
 
 // Component
-const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item: { date, list } }) => {
+const TripModificationItem: React.FC<TripModificationItemProps> = ({
+  index,
+  tripId,
+  location,
+  item: { date, list }
+}) => {
+  // Redux
+  const dispatch = useDispatch();
+  const dispatchThunk = useAppThunkDispatch();
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -40,24 +56,97 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
   const deleteSheetRef = useRef<BottomSheetMethods>();
 
   const [itineraryData, setItineraryData] = useState<ItineraryItemProps[]>(list);
+  const [deletionIndex, setDeletionIndex] = useState<number>(0);
 
   // Callbacks
-  const handleDeletePress = useCallback(() => deleteSheetRef.current?.expand(), []);
+  const handleDeletePress = useCallback((index: number) => {
+    setDeletionIndex(index);
+    deleteSheetRef.current?.expand();
+  }, []);
 
   const handleDeleteSheetClose = useCallback(() => deleteSheetRef.current?.close(), []);
 
-  const handleOnDragEnd = useCallback((data: ItineraryItemProps[]) => setItineraryData(data), []);
+  const handleOnDragEnd = useCallback(
+    (data: ItineraryItemProps[]) => {
+      setItineraryData(data);
+      dispatch(itineraryActions.setPlaces({ date, places: data }));
+    },
+    [date, dispatch]
+  );
 
   const handleDelete = useCallback(() => {
-    // TODO: Delete logic
+    dispatchThunk(deleteTripPlaceAction({ tripId, placeId: itineraryData[deletionIndex]?._id, date }));
+    dispatch(itineraryActions.setPlaces({ date, places: itineraryData.filter((_, index) => index !== deletionIndex) }));
+
     handleDeleteSheetClose();
-  }, [handleDeleteSheetClose]);
+  }, [date, deletionIndex, dispatch, dispatchThunk, handleDeleteSheetClose, itineraryData, tripId]);
 
-  const handleAddMorePress = useCallback(() => navigation.navigate('EventAddition'), [navigation]);
+  const handleAddMorePress = useCallback(
+    () => navigation.navigate('EventAddition', { tripId, date, location }),
+    [date, location, navigation, tripId]
+  );
 
-  // Renderer vars
+  // Effects
+  useEffect(() => {
+    setItineraryData(list);
+  }, [list]);
 
-  // Renders
+  // Renderers
+  const renderItem = ({
+    item,
+    drag,
+    isActive,
+    ...props
+  }: {
+    item: ItineraryItemProps;
+    drag: () => number | undefined;
+    isActive: boolean;
+  }) => {
+    return (
+      <TouchableOpacity
+        onLongPress={drag}
+        disabled={isActive || !_.isFunction(drag)}
+        style={[styles.rowContainer, isActive && styles.activeRowContainer]}>
+        {_.isFunction(drag) && <DragIcon fill={theme.dark ? theme.colors.secondary : theme.colors.gray[900]} />}
+
+        <FastImage source={{ uri: item?.photoUrl }} style={styles.image} />
+
+        <View style={styles.content}>
+          <Text variant="h6" style={styles.name}>
+            {item?.name}
+          </Text>
+          {item?.rating ? (
+            <View style={styles.ratingContainer}>
+              <Text variant="medium" style={styles.ratingText}>
+                {item?.rating}
+              </Text>
+              <StarRatingDisplay rating={item?.rating} starSize={14} starStyle={{ marginHorizontal: 0 }} />
+              <Text variant="small" style={styles.ratingText}>
+                ({formatAmount(item?.userRatingsTotal)})
+              </Text>
+            </View>
+          ) : null}
+          <Text variant="medium" style={styles.type}>
+            {item?.type}
+          </Text>
+        </View>
+
+        {_.isFunction(drag) && (
+          <IconButton
+            size={ms(18)}
+            onPress={() => handleDeletePress(props?.getIndex())}
+            icon={() => (
+              <DeleteIcon
+                fill={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
+              />
+            )}
+          />
+        )}
+      </TouchableOpacity>
+    );
+  };
+
   const renderDeleteModal = () => (
     <CustomBottomSheet
       sheetRef={deleteSheetRef}
@@ -66,14 +155,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
       title={t('trip_modifcation.delete_event')}
       primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDelete }}
       secondaryBtnProps={{ title: t('common.cancel'), onPress: handleDeleteSheetClose }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <FastImage source={{ uri: list[0]?.image }} style={styles.image} />
-        <View style={styles.content}>
-          <Text variant="h6" style={styles.name}>
-            {list[0]?.name}
-          </Text>
-        </View>
-      </View>
+      {renderItem({ item: itineraryData?.[deletionIndex], drag: null, isActive: false })}
     </CustomBottomSheet>
   );
 
@@ -84,41 +166,17 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({ index, item
           Day {index + 1}: {formatDate(date, 'MMMM Do')}
         </Text>
 
-        <NestableDraggableFlatList
-          data={itineraryData}
-          contentContainerStyle={styles.list}
-          showsVerticalScrollIndicator={false}
-          onDragEnd={({ data }) => handleOnDragEnd(data)}
-          keyExtractor={(_, index) => `draggable-item-${index}`}
-          renderItem={({ item, drag, isActive }) => (
-            <TouchableOpacity
-              onLongPress={drag}
-              disabled={isActive}
-              style={[styles.rowContainer, isActive && styles.activeRowContainer]}>
-              <DragIcon fill={theme.dark ? theme.colors.secondary : theme.colors.gray[900]} />
+        {itineraryData && (
+          <NestableDraggableFlatList
+            data={itineraryData}
+            renderItem={renderItem}
+            contentContainerStyle={styles.list}
+            showsVerticalScrollIndicator={false}
+            onDragEnd={({ data }) => handleOnDragEnd(data)}
+            keyExtractor={(_, index) => `draggable-item-${index}`}
+          />
+        )}
 
-              <FastImage source={{ uri: item?.image }} style={styles.image} />
-
-              <View style={styles.content}>
-                <Text variant="h6">{item?.name}</Text>
-                <Text variant="medium" style={styles.type}>
-                  {item?.type}
-                </Text>
-              </View>
-
-              <IconButton
-                size={ms(18)}
-                onPress={handleDeletePress}
-                icon={() => (
-                  <DeleteIcon
-                    fill={theme.dark ? theme.colors.white : theme.colors.gray[900]}
-                    style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
-                  />
-                )}
-              />
-            </TouchableOpacity>
-          )}
-        />
         <RegularButton
           variant="secondary"
           style={styles.addEventBtn}

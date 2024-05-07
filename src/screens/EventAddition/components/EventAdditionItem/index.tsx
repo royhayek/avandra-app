@@ -11,22 +11,27 @@ import { CircleAddDarkIcon, CircleAddLightIcon, CircleCheckIcon } from '@shared/
 
 // Utils
 import makeStyles from './styles';
+import getEnvVars from 'environment';
+import { formatAmount } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 // Interfaces
 interface EventAdditionItemProps {
   item: any;
-  selected: boolean;
   onAddPress: (item: any) => void;
 }
 
 // Component
-const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress, selected }) => {
+const { googleMapsApiKey } = getEnvVars();
+
+const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  // Callbacks
+  const firstPhotoReference = _.first(item.photos)?.photo_reference;
+  const photo_url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1024&photoreference=${firstPhotoReference}&key=${googleMapsApiKey}`;
 
   // Renderer vars
   const iconProps = {
@@ -36,20 +41,28 @@ const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress,
   // Renders
   return (
     <TouchableOpacity style={styles.rowContainer}>
-      <FastImage source={{ uri: item?.image }} style={styles.image} />
+      <FastImage source={{ uri: photo_url }} style={styles.image} />
 
       <View style={styles.content}>
         <Text variant="h6">{item?.name}</Text>
-        <Text variant="medium" style={styles.type}>
-          {item?.type}
-        </Text>
+        {item?.rating ? (
+          <View style={styles.ratingContainer}>
+            <Text variant="medium" style={styles.ratingText}>
+              {item?.rating}
+            </Text>
+            <StarRatingDisplay rating={item?.rating} starSize={14} starStyle={{ marginHorizontal: 0 }} />
+            <Text variant="small" style={styles.ratingText}>
+              ({formatAmount(item?.user_ratings_total)})
+            </Text>
+          </View>
+        ) : null}
       </View>
 
       <IconButton
         size={ms(18)}
         onPress={() => onAddPress(item)}
         icon={() =>
-          selected ? (
+          item?.selected ? (
             <CircleCheckIcon />
           ) : theme.dark ? (
             <CircleAddDarkIcon {...iconProps} />

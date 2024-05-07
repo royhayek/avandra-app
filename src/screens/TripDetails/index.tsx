@@ -43,8 +43,8 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   const { trip } = route?.params as RouteParams;
 
-  const { name, flag, image, description, country, budget, traveler, fromDate, toDate, tips, places } = trip || {};
-  const { itineraries } = destination_details;
+  const { _id, name, flag, image, description, country, budget, traveler, fromDate, toDate, tips, places, location } =
+    trip || {};
 
   const markers = useMemo(() => {
     const placesList = _.flatMap(places, (place) => place.list);
@@ -58,7 +58,10 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
     [navigation, markers, places]
   );
 
-  const handleEditItinerary = useCallback(() => navigation.navigate('TripModification', { itineraries }), [navigation]);
+  const handleEditItinerary = useCallback(
+    () => navigation.navigate('TripModification', { tripId: _id, places, location }),
+    [_id, location, navigation, places]
+  );
 
   // Effects
   useEffect(() => {

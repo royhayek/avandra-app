@@ -137,7 +137,7 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.rowContent}>
+        {/* <View style={styles.rowContent}>
           <View style={styles.navigationIcon}>
             <NavigationIcon fill={iconFillColor} />
           </View>
@@ -171,7 +171,7 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> */}
       </View>
     );
   };

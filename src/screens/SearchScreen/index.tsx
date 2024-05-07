@@ -1,5 +1,7 @@
 // Packages
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
+import { ms, mvs } from 'react-native-size-matters';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -9,27 +11,23 @@ import { GooglePlaceData, GooglePlacesAutocomplete } from 'react-native-google-p
 import { Text } from 'react-native-paper';
 import { FlatList, View } from 'react-native';
 import SearchItem from './components/SearchItem';
+import Shimmer from '@shared/components/Shimmer';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Utilities
-import makeStyles from './styles';
-import getEnvVars from 'environment';
-import { dummy_search } from './data';
-import { useAppTheme } from '@shared/assets/theme';
-import { ms, mvs } from 'react-native-size-matters';
 import i18n from '@app/i18n';
-import { useDispatch } from 'react-redux';
+import makeStyles from './styles';
+import { useAppTheme } from '@shared/assets/theme';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getRecentSearchesAction, incrementSearchesAction } from '@redux/destination/thunks';
 import { selectRecentSearches, selectRecentSearchesLoading } from '@redux/destination/slice';
-import Shimmer from '@shared/components/Shimmer';
+import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
 
 // Interfaces
 
 // Component
-const { googleMapsApiKey } = getEnvVars();
 
 const SearchScreen = () => {
   // Redux
@@ -84,44 +82,13 @@ const SearchScreen = () => {
       <View style={styles.header}>
         <BackButton style={styles.backBtn} />
 
-        <GooglePlacesAutocomplete
-          placeholder="Search"
-          enablePoweredByContainer={false}
-          textInputProps={{
-            onChangeText: handleTextChange
-          }}
-          styles={{
-            container: {
-              flex: 1,
-              marginTop: mvs(8),
-              marginEnd: ms(20)
-            },
-            textInput: {
-              ...theme.fonts.xLarge,
-              flex: 1,
-              minHeight: mvs(50),
-              paddingBottom: mvs(10),
-              paddingHorizontal: 0,
-              backgroundColor: 'transparent',
-              textAlign: i18n.locale === 'ar' ? 'right' : 'left'
-            },
-            textInputContainer: {
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingHorizontal: ms(20),
-              borderRadius: theme.roundness,
-              borderWidth: theme.dark ? ms(1) : 0,
-              borderColor: theme.dark ? theme.colors.dark[3] : 'transparent',
-              backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
-            }
-          }}
-          onPress={handlePlacePress}
-          query={{
-            key: googleMapsApiKey,
-            language: 'en',
-            type: '(cities)'
-          }}
-        />
+        <View style={styles.searchContainer}>
+          <PlacesAutocomplete
+            query={{ type: '(cities)' }}
+            handlePlacePress={handlePlacePress}
+            handleTextChange={handleTextChange}
+          />
+        </View>
       </View>
 
       <View style={styles.content}>

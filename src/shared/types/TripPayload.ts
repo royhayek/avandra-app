@@ -9,6 +9,7 @@ export interface TripPayloadProps {
   fromDate: string;
   toDate: string;
   byDate?: boolean;
+  location: object;
   duration?: number;
   socketId: string | undefined;
   interests: string | string[];
