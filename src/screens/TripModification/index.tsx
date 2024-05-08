@@ -15,7 +15,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
-import { getTripPlacesAction, updateTripPlacesAction } from '@redux/itinerary/thunks';
+import { getTripAction, getTripPlacesAction, updateTripPlacesAction } from '@redux/itinerary/thunks';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 import { selectTripPlaces, selectTripPlacesLoading } from '@redux/itinerary/slice';
 
@@ -60,6 +60,7 @@ const TripModificationScreen = () => {
 
     try {
       await dispatchThunk(updateTripPlacesAction({ tripId, places }));
+      await dispatchThunk(getTripAction(tripId));
       navigation.goBack();
     } catch (error) {
       dispatch(snackbarActions.showSnackbar({ message: error }));

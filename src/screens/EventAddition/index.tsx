@@ -2,7 +2,6 @@
 import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -10,17 +9,21 @@ import { FlatList, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 import EventAdditionItem from './components/EventAdditionItem';
 import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
+import { getTripPlacesAction, getTripPopularPlacesAction, saveAdditionalEventsAction } from '@redux/itinerary/thunks';
 
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import getEnvVars from 'environment';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
+import { snackbarActions } from '@redux/snackbar/slice';
+import { selectTripPlaces } from '@redux/itinerary/slice';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
-import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import { getTripPlacesAction, getTripPopularPlacesAction, saveAdditionalEventsAction } from '@redux/itinerary/thunks';
 
 interface RouteParams {
   tripId: string;
@@ -32,9 +35,14 @@ interface RouteParams {
 }
 
 // Component
+const { googleMapsApiKey } = getEnvVars();
+
 const EventAdditionScreen: React.FC = () => {
   // Redux
+  const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
+
+  const places = useAppSelector(selectTripPlaces);
 
   // Statics
   const theme = useAppTheme();
@@ -47,16 +55,16 @@ const EventAdditionScreen: React.FC = () => {
   const { tripId, date, location } = route?.params as RouteParams;
 
   const [searchInput, setSearchInput] = useState<string | undefined>();
-  const [selectedEvents, setSelectedEvents] = useState<any[]>([]);
+  const [popularPlaces, setPopularPlaces] = useState<any[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [popularPlaces, setPopularPlaces] = useState([]);
 
   // Callbacks
   const handleSavePress = useCallback(async () => {
     setIsSaving(true);
 
     try {
-      await dispatchThunk(saveAdditionalEventsAction({ tripId, payload: { date, list: selectedEvents } }));
+      const selectedPlaces = popularPlaces.filter((place) => place.selected);
+      await dispatchThunk(saveAdditionalEventsAction({ tripId, payload: { date, list: selectedPlaces } }));
       await dispatchThunk(getTripPlacesAction(tripId));
       navigation.goBack();
     } catch (error) {
@@ -64,20 +72,17 @@ const EventAdditionScreen: React.FC = () => {
     } finally {
       setIsSaving(false);
     }
-  }, [date, dispatchThunk, navigation, selectedEvents, tripId]);
+  }, [date, dispatchThunk, navigation, popularPlaces, tripId]);
 
   const handleAddPress = useCallback(
     (item: any) => {
-      // change selected bool property of this place in popularPlaces to true
-      const updatedPopularPlaces = popularPlaces.map((place) => {
-        if (place.place_id === item.place_id) {
-          return { ...place, selected: !item.selected };
-        }
-
-        return place;
-      });
-
-      setPopularPlaces(updatedPopularPlaces);
+      if (!_.find(popularPlaces, { placeId: item.placeId })) {
+        setPopularPlaces((prev) => [{ ...item, selected: true }, ...prev]);
+      } else {
+        setPopularPlaces((prev) =>
+          prev.map((place) => (place.placeId === item.placeId ? { ...place, selected: !place.selected } : place))
+        );
+      }
     },
     [popularPlaces]
   );
@@ -88,10 +93,31 @@ const EventAdditionScreen: React.FC = () => {
 
   const handlePlacePress = useCallback(
     (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-      setSearchInput(undefined);
-      setSelectedEvents(_.xor(selectedEvents, [{ ...details, selected: true }]));
+      const formattedDetails = {
+        selected: true,
+        name: details?.name,
+        rating: details?.rating,
+        placeId: details?.place_id,
+        priceLevel: details?.price_level,
+        address: details?.formatted_address,
+        coordinates: details?.geometry.location,
+        userRatingsTotal: details?.user_ratings_total,
+        openingHours: details?.opening_hours?.weekday_text,
+        internationalPhone: details?.international_phone_number,
+        type: _.includes(details?.types, 'restaurant') ? 'restaurant' : 'landmark',
+        photoUrl: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1024&photoreference=${details?.photos?.[0].photo_reference}&key=${googleMapsApiKey}`
+      };
+
+      if (_.find(popularPlaces, { placeId: formattedDetails.placeId })) {
+        dispatch(snackbarActions.showSnackbar({ message: t('trip_details.place_already_added') }));
+
+        return;
+      }
+
+      setPopularPlaces((prev) => [formattedDetails, ...prev]);
+      setSearchInput('');
     },
-    [selectedEvents]
+    [dispatch, popularPlaces]
   );
 
   const fetchPopularPlaces = useCallback(async () => {
@@ -140,7 +166,7 @@ const EventAdditionScreen: React.FC = () => {
       {_.isEmpty(searchInput) && (
         <>
           <FlatList
-            data={[...selectedEvents, ...popularPlaces]}
+            data={popularPlaces}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
             renderItem={({ item }) => <EventAdditionItem key={item.name} item={item} onAddPress={handleAddPress} />}

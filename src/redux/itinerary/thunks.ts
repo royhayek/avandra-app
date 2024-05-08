@@ -8,6 +8,7 @@ import {
   deleteTrip,
   deleteTripPlace,
   generateTrip,
+  getTrip,
   getTripPlaces,
   getTripPopularPlaces,
   getUserTrips,
@@ -142,6 +143,20 @@ export const deleteTripPlaceAction = createAsyncThunk(
     }
   }
 );
+
+export const getTripAction = createAsyncThunk('itinerary/getTrip', async (tripId: string, { rejectWithValue }) => {
+  try {
+    const response = await getTrip(tripId);
+
+    // console.debug('[getTripAction - response] :: ', response.data);
+
+    return response.data;
+  } catch (error: any) {
+    console.debug('[getTripAction - error] :: ', error.response?.data?.message);
+
+    return rejectWithValue(error.response?.data?.message);
+  }
+});
 
 export const updateTripPlacesAction = createAsyncThunk(
   'itinerary/updateTripPlaces',

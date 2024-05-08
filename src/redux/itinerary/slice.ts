@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 // Utilities
-import { generateTripAction, getTripPlacesAction, getUserTripsAction } from './thunks';
+import { generateTripAction, getTripAction, getTripPlacesAction, getUserTripsAction } from './thunks';
 
 // Interfaces
 import { RootState } from '@app/store';
@@ -13,9 +13,11 @@ import { ItineraryInitialState } from './types';
 const initialState: ItineraryInitialState = {
   error: null,
   places: [],
+  trip: null,
   itinerary: null,
   itineraries: [],
   isLoading: false,
+  isLoadingTrip: false,
   isLoadingPlaces: false,
   isLoadingItineraries: false
 };
@@ -86,6 +88,24 @@ export const itinerarySlice = createSlice({
     builder.addCase(getTripPlacesAction.rejected, (state, action) => {
       state.places = [];
       state.isLoadingPlaces = false;
+      state.error = action.error.message;
+    });
+
+    builder.addCase(getTripAction.pending, (state) => {
+      state.trip = null;
+      state.isLoadingTrip = true;
+      state.error = null;
+    });
+
+    builder.addCase(getTripAction.fulfilled, (state, action) => {
+      state.trip = action.payload.result;
+      state.isLoadingTrip = false;
+      state.error = null;
+    });
+
+    builder.addCase(getTripAction.rejected, (state, action) => {
+      state.trip = null;
+      state.isLoadingTrip = false;
       state.error = action.error.message;
     });
   }

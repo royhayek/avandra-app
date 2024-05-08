@@ -51,9 +51,12 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
       enablePoweredByContainer={false}
       styles={autocompleteStyles(theme)}
       renderRow={renderRow ?? undefined}
+      keepResultsAfterBlur={false}
+      
       placeholder={placeholder ?? 'Search'}
       textInputProps={{
         value,
+        defaultValue: value,
         onChangeText: handleTextChange,
         cursorColor: theme.colors.secondary,
         placeholderTextColor: theme.colors.secondary

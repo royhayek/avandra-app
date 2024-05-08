@@ -23,3 +23,5 @@ export const updateTripPlaces = (tripId: string, places: TripPayloadProps[]) =>
   axios.patch(`trip/places/${tripId}`, { places });
 
 export const getTripPopularPlaces = (tripId: string) => axios.get(`trip/places/popular/${tripId}`);
+
+export const getTrip = (tripId: string) => axios.get(`trip/read/${tripId}`);
