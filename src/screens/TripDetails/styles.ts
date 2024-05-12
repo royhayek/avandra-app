@@ -16,7 +16,8 @@ export default (theme: AppTheme) =>
       overflow: 'hidden',
       alignSelf: 'center',
       width: windowWidth,
-      height: windowWidth / 1.15
+      height: windowWidth / 1.15,
+      backgroundColor: theme.colors.gray[200]
     },
     shareButton: {
       top: 40,
@@ -84,6 +85,46 @@ export default (theme: AppTheme) =>
     tipRow: {
       gap: ms(10),
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'flex-start'
+    },
+    tipIcon: {
+      marginTop: mvs(5)
+    },
+    // Shimmer
+    shimmerBody: {
+      padding: ms(24)
+    },
+    shimmerTitle: {
+      width: ms(200),
+      height: mvs(30)
+    },
+    shimmerDate: {
+      width: ms(250),
+      height: mvs(20),
+      marginTop: mvs(8)
+    },
+    shimmerSubtitle: {
+      width: ms(110),
+      height: mvs(25),
+      marginTop: mvs(24)
+    },
+    shimmerOverview: {
+      width: '100%',
+      height: mvs(150),
+      marginTop: mvs(16)
+    },
+    shimmerTipsView: {
+      marginTop: mvs(16),
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between'
+    },
+    shimmerTipsTitle: {
+      width: ms(90),
+      height: mvs(25)
+    },
+    shimmerTipsBtn: {
+      width: ms(50),
+      height: mvs(25)
     }
   });

@@ -13,6 +13,7 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background
     },
     listContent: {
+      flex: 1,
       paddingTop: mvs(8),
       paddingHorizontal: ms(24)
     },
@@ -24,15 +25,21 @@ export default (theme: AppTheme) =>
     emptyContainer: {
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      marginHorizontal: ms(24)
     },
     emptyImage: {
-      width: ms(100),
-      height: mvs(100)
+      width: ms(85),
+      height: ms(85),
+      marginBottom: mvs(16)
     },
     emptyTitle: {
       marginTop: mvs(24),
-      fontFamily: 'urbanist-bold'
+      textAlign: 'center',
+      fontFamily: 'urbanist-semibold'
+    },
+    startPlanningBtn: {
+      marginTop: mvs(24)
     },
     emptyDesc: {
       marginTop: mvs(16),
@@ -43,5 +50,22 @@ export default (theme: AppTheme) =>
     },
     searchButton: {
       paddingHorizontal: 16
+    },
+    // Shimmer
+    shimmerView: {
+      flex: 1,
+      padding: ms(24)
+    },
+    shimmerItems: {
+      marginTop: mvs(16)
+    },
+    shimmerToggleBtns: {
+      marginHorizontal: ms(24)
+    },
+    shimmerToggleBtn: {
+      width: '100%',
+      height: mvs(45),
+      marginTop: mvs(24),
+      borderRadius: theme.roundness
     }
   });

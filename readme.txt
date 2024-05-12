@@ -26,7 +26,7 @@ To build the app on expo and ship it to the stores: (Remember to increment the v
 eas build --profile production --platform ios --auto-submit 
 
 To update the app using eas update
-EXPO_PUBLIC_SERVER_API_URL="https://trip-ai-server.onrender.com/api" eas update --branch production --message " "
+eas update --branch production --message " "
 
 To run in release mode
-EXPO_PUBLIC_SERVER_API_URL="https://trip-ai-server.onrender.com/api" npx expo run:ios --device 00008110-000411A92285801E --configuration release
+npx expo run:ios --device 00008110-000411A92285801E --configuration release

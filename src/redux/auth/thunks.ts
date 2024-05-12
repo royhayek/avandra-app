@@ -34,7 +34,7 @@ export const validateTokenAction = createAsyncThunk('auth/validateToken', async 
   try {
     const response = await validateToken();
 
-    console.debug('[validateTokenAction] :: response', response);
+    // console.debug('[validateTokenAction] :: response', response);
 
     return response.data;
   } catch (error: any) {

@@ -75,6 +75,8 @@ const OnBoarding = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (_.isEmpty(walkthroughList)) return null;
+
   // Renders
   return (
     <>

@@ -10,7 +10,7 @@ export const getWalkthroughAction = createAsyncThunk('walkthrough/list', async (
   try {
     const response = await getWalkthrough();
 
-    console.debug('[getWalkthroughAction - response] :: ', response.data);
+    // console.debug('[getWalkthroughAction - response] :: ', response.data);
 
     return response.data;
   } catch (error: any) {
@@ -24,7 +24,7 @@ export const getConfigurationAction = createAsyncThunk('app/config', async (payl
   try {
     const response = await getConfig();
 
-    console.debug('[getConfigurationAction - response] :: ', response.data);
+    // console.debug('[getConfigurationAction - response] :: ', response.data);
 
     return response.data;
   } catch (error: any) {

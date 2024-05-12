@@ -77,15 +77,31 @@ const TripModificationScreen = () => {
 
   // Renders
   if (isLoadingPlaces) {
-    return _.times(2, (i) => (
-      <View key={i} style={styles.shimmerView}>
-        <Shimmer style={styles.shimmerDate} />
-        {_.times(5, (i) => (
-          <Shimmer key={i} style={styles.shimmerItem} />
+    return (
+      <View style={styles.shimmerView}>
+        {_.times(2, (i) => (
+          <View key={i} style={styles.shimmerItemView}>
+            <Shimmer style={styles.shimmerDate} />
+            {_.times(5, (i) => (
+              <View key={i} style={styles.shimmerItem}>
+                <Shimmer style={styles.shimmerDrag} />
+
+                <View style={styles.shimmerRow}>
+                  <Shimmer style={styles.shimmerImage} />
+                  <View>
+                    <Shimmer style={styles.shimmerName} />
+                    <Shimmer width={90} height={20} />
+                  </View>
+                </View>
+
+                <Shimmer style={styles.shimmerBtn} />
+              </View>
+            ))}
+            <Shimmer style={styles.shimmerButton} />
+          </View>
         ))}
-        <Shimmer key={i} style={styles.shimmerButton} />
       </View>
-    ));
+    );
   }
 
   return (

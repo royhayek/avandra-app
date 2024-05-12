@@ -4,6 +4,7 @@ import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { Platform } from 'react-native';
 
 export const autocompleteStyles = (theme: AppTheme) => ({
   container: {
@@ -13,10 +14,10 @@ export const autocompleteStyles = (theme: AppTheme) => ({
     ...theme.fonts.xLarge,
     flex: 1,
     minHeight: mvs(50),
-    paddingBottom: mvs(10),
     paddingHorizontal: 0,
     backgroundColor: 'transparent',
-    textAlign: i18n.locale === 'ar' ? 'right' : 'left'
+    textAlign: i18n.locale === 'ar' ? 'right' : 'left',
+    paddingBottom: Platform.OS === 'android' ? 0 : mvs(6)
   },
   textInputContainer: {
     flexDirection: 'row',
@@ -28,10 +29,10 @@ export const autocompleteStyles = (theme: AppTheme) => ({
     backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
   },
   listView: {
-    backgroundColor: theme.colors.backdrop,
-    borderRadius: theme.roundness,
+    marginTop: mvs(6),
     paddingHorizontal: ms(12),
-    paddingVertical: mvs(12)
+    borderRadius: theme.roundness,
+    backgroundColor: theme.dark ? theme.colors.backdrop : theme.colors.gray[50]
   },
   description: {
     ...theme.fonts.large,
@@ -39,7 +40,9 @@ export const autocompleteStyles = (theme: AppTheme) => ({
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: mvs(14),
+    backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]
   },
   loader: {
     marginHorizontal: ms(20),
@@ -50,7 +53,6 @@ export const autocompleteStyles = (theme: AppTheme) => ({
   },
   separator: {
     height: 0.5,
-    marginVertical: mvs(12),
     backgroundColor: theme.colors.gray[300]
   }
 });

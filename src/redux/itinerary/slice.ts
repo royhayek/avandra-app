@@ -120,9 +120,13 @@ export default itinerarySlice.reducer;
 // Selectors
 const _itinerary = (state: RootState) => state.itinerary;
 
+export const selectTrip = createSelector(_itinerary, (data) => data.trip);
+
 export const selectTripPlaces = createSelector(_itinerary, (data) => data.places);
 
 export const selectItinerary = createSelector(_itinerary, (data) => data.itinerary);
+
+export const selectTripLoading = createSelector(_itinerary, (data) => data.isLoadingTrip);
 
 export const selectUserItineraries = createSelector(_itinerary, (data) => data.itineraries);
 

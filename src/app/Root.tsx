@@ -1,9 +1,7 @@
 // Packages
 import _ from 'lodash';
 import * as Updates from 'expo-updates';
-import { ref, onValue } from 'firebase/database';
 import { withIAPContext } from 'react-native-iap';
-import { connectAsync } from 'expo-in-app-purchases';
 // import * as Notifications from 'expo-notifications';
 import React, { useCallback, useEffect, useState } from 'react';
 import { LayoutChangeEvent, useColorScheme } from 'react-native';
@@ -11,26 +9,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Components
 import RootNavigation from './navigation';
-import SplashScreen from '@screens/Splash';
 import { StatusBar } from 'expo-status-bar';
 import { PaperProvider } from 'react-native-paper';
 import UpdateModal from '@shared/components/UpdateModal';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomSnackbar from '@shared/components/CustomSnackbar';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import NetworkErrorModal from '@shared/components/NetworkErrorModal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Utilities
 import { changeLocale } from './i18n';
-import { Firebase } from '@shared/constants';
-import { FIREBASE_DB } from '../../firebaseConfig';
 import NetworkInfo from '@shared/services/NetworkInfo';
 import { validateTokenAction } from '@redux/auth/thunks';
 import { getConfigurationAction, getWalkthroughAction } from '@redux/app/thunks';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
-// import { registerForPushNotificationsAsync } from '@shared/utils';
-import { appActions, getLanguage, getThemeMode } from '@redux/app/slice';
-import { useAppDispatch, useAppSelector, useAppThunkDispatch } from './store';
+import { useAppSelector, useAppThunkDispatch } from './store';
+import { getLanguage, getThemeMode, selectNetworkError } from '@redux/app/slice';
 
 // Interfaces
 interface RootProps {
@@ -39,14 +34,13 @@ interface RootProps {
 
 const Root: React.FC<RootProps> = ({ onLayout }) => {
   // Redux
-  const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
   const language = useAppSelector(getLanguage);
   const themeMode = useAppSelector(getThemeMode);
+  const networkError = useAppSelector(selectNetworkError);
 
   // Statics
-  const [loadedData, setLoadedData] = useState<boolean>(false);
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
   // const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
   // const [notification, setNotification] = useState<Notifications.Notification>();
@@ -146,6 +140,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
             {/* <SubscriptionManager /> */}
             <CustomSnackbar />
             <UpdateModal visible={updateModalVisible} onDismiss={handleDismissUpdateModal} />
+            {networkError && <NetworkErrorModal />}
           </NavigationContainer>
         </BottomSheetModalProvider>
       </PaperProvider>

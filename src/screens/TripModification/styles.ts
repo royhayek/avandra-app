@@ -15,8 +15,11 @@ export default (theme: AppTheme) =>
     },
     // Shimmer
     shimmerView: {
-      marginHorizontal: ms(24),
-      marginTop: mvs(16)
+      paddingVertical: mvs(16)
+    },
+    shimmerItemView: {
+      marginTop: mvs(16),
+      marginHorizontal: ms(16)
     },
     shimmerDate: {
       width: ms(125),
@@ -25,15 +28,40 @@ export default (theme: AppTheme) =>
       marginBottom: mvs(10)
     },
     shimmerItem: {
-      width: '100%',
-      height: mvs(65),
-      marginVertical: mvs(8)
+      alignItems: 'center',
+      flexDirection: 'row',
+      paddingVertical: mvs(12),
+      justifyContent: 'space-between'
+    },
+    shimmerDrag: {
+      width: ms(25),
+      height: ms(40)
+    },
+    shimmerRow: {
+      gap: ms(16),
+      alignItems: 'center',
+      flexDirection: 'row'
+    },
+    shimmerImage: {
+      width: ms(105),
+      height: ms(75),
+      borderRadius: theme.roundness
+    },
+    shimmerName: {
+      width: ms(110),
+      height: ms(20),
+      marginBottom: mvs(8)
+    },
+    shimmerBtn: {
+      width: ms(30),
+      height: ms(30),
+      borderRadius: ms(50)
     },
     shimmerButton: {
       width: '100%',
-      height: mvs(40),
-      borderRadius: ms(100),
+      height: mvs(45),
       marginTop: mvs(12),
-      marginBottom: mvs(8)
+      marginBottom: mvs(8),
+      borderRadius: ms(100)
     }
   });

@@ -7,7 +7,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
-import Menu from '@shared/components/Menu';
 import FastImage from 'react-native-fast-image';
 import Shimmer from '@shared/components/Shimmer';
 import { IconButton, Text } from 'react-native-paper';
@@ -18,14 +17,16 @@ import { View, TouchableOpacity, ImageBackground } from 'react-native';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { formatDate } from '@shared/utils';
+import { formatDate, useSocketSetup } from '@shared/utils';
 import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { deleteTripAction } from '@redux/itinerary/thunks';
+import { deleteTripAction, generateTripAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { PUBLIC_URL } from '@shared/constants';
+import Picker from '@shared/components/Picker';
 
 interface HistoryCardProps {
   index?: number;
@@ -35,34 +36,40 @@ interface HistoryCardProps {
 }
 
 // Component
-const _t = (key: string, options?: TranslateOptions) => t(`planner.step1.${key}`, options);
+const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
 
 const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading }) => {
   // Redux
   const dispatchThunk = useAppThunkDispatch();
 
   // Statics
+  const { user, image, payload, status } = item || {};
+  const { name, country, traveler, fromDate } = payload || {};
+
+  const isExpired = !!String(status).match(/expired/i);
+
   const theme = useAppTheme();
-  const styles = makeStyles(theme);
+  const styles = makeStyles(theme, isExpired);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [regenerating, setRegenerating] = useState(false);
-  const [openOptionsMenu, setOpenOptionsMenu] = useState(false);
 
   const bottomSheetRef = useRef<BottomSheetMethods>();
+  const optionsPickerRef = useRef<BottomSheetMethods>(null);
 
-  const { name, country, image, status, traveler, fromDate } = item || {};
-  const isExpired = !!String(status).match(/expired/i);
+  const { socketId, progress } = useSocketSetup(true);
 
   // Callbacks
   const handleSheetClose = useCallback(() => bottomSheetRef.current?.close(), []);
 
   const handleDeletePress = useCallback(() => bottomSheetRef.current?.expand(), []);
 
-  const toggleOptionsMenu = useCallback(() => setOpenOptionsMenu((cur) => !cur), []);
+  const handleOpenOptionsMenu = useCallback(() => optionsPickerRef.current?.expand(), []);
 
-  const handleTextPress = useCallback(() => navigation.navigate('TripDetails', { trip: item }), [item, navigation]);
+  const handleCloseOptionsMenu = useCallback(() => optionsPickerRef.current?.collapse(), []);
+
+  const handleTextPress = useCallback(() => navigation.navigate('TripDetails', { _id: item._id }), [item, navigation]);
 
   const handleDeleteHistory = useCallback(async () => {
     await dispatchThunk(deleteTripAction({ tripId: item?._id, userId: item?.user }));
@@ -70,19 +77,27 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
   }, [dispatchThunk, handleSheetClose, item?._id, item?.user]);
 
   const handleTripMenuItemPress = useCallback(
-    (index: string) => {
-      switch (index) {
+    async (key: string) => {
+      handleCloseOptionsMenu();
+
+      switch (key) {
         case 'view':
           handleTextPress();
           break;
 
         case 'regenerate':
           setRegenerating(true);
-          console.debug('Regenerate Trip');
 
-          setTimeout(() => {
-            setRegenerating(false);
-          }, 5000);
+          // eslint-disable-next-line no-case-declarations
+          const response = await dispatchThunk(
+            generateTripAction({ ...payload, _id: item._id, user, regenerate: true, socketId })
+          );
+
+          setRegenerating(false);
+
+          if (response?.payload?.success) {
+            navigation.navigate('TripDetails', { _id: response?.payload?.result._id });
+          }
 
           break;
 
@@ -93,39 +108,49 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
         case 'delete':
           handleDeletePress();
           break;
+
         default:
           break;
       }
-
-      toggleOptionsMenu();
     },
-    [handleDeletePress, handleTextPress, toggleOptionsMenu]
+    [
+      user,
+      payload,
+      socketId,
+      item?._id,
+      navigation,
+      dispatchThunk,
+      handleTextPress,
+      handleDeletePress,
+      handleCloseOptionsMenu
+    ]
   );
 
   // Renderer Vars
-  const menuItems = [
+  const menuOptions = [
     ...(isExpired
       ? [
           {
-            item: 'view',
-            title: 'trip.view',
-            leadingIcon: () => (
+            key: 'view',
+            title: _t('view'),
+            onPress: () => handleTripMenuItemPress('view'),
+            icon: (
               <Ionicons name="eye-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
             )
           }
         ]
       : [
           {
-            item: 'regenerate',
-            title: 'trip.regenerate',
-            leadingIcon: () => (
-              <Ionicons name="refresh" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
-            )
+            key: 'regenerate',
+            title: _t('regenerate'),
+            onPress: () => handleTripMenuItemPress('regenerate'),
+            icon: <Ionicons name="refresh" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
           },
           {
-            item: 'share',
-            title: 'trip.share',
-            leadingIcon: () => (
+            key: 'share',
+            title: _t('share'),
+            onPress: () => handleTripMenuItemPress('share'),
+            icon: (
               <Ionicons
                 name="share-outline"
                 size={ms(22)}
@@ -135,10 +160,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
           }
         ]),
     {
-      item: 'delete',
-      title: 'trip.delete',
+      key: 'delete',
+      title: _t('delete'),
       color: theme.colors.red,
-      leadingIcon: () => <Ionicons name="trash-outline" size={ms(22)} color={theme.colors.red} />
+      onPress: () => handleTripMenuItemPress('delete'),
+      icon: <Ionicons name="trash-outline" size={ms(22)} color={theme.colors.red} />
     }
   ];
 
@@ -179,7 +205,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
               <Feather
                 name="calendar"
                 size={ms(small ? ms(15) : ms(18))}
-                color={theme.dark ? theme.colors.white : theme.colors.black}
+                color={isExpired ? theme.colors.gray[400] : theme.dark ? theme.colors.white : theme.colors.black}
               />
               <Text variant="medium" style={styles.date}>
                 {formatDate(fromDate, 'MMMM DD, YYYY')}
@@ -224,10 +250,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
         <Shimmer style={styles.verticalImage} />
       ) : (
         <FastImage
-          source={{ uri: image }}
           style={styles.verticalImage}
-          // defaultSource={require('../../../../shared/assets/images/EmptyTripsLight.png')}
-          // fallback
+          source={{ uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}` }}
         />
       )}
       {renderTripInformation()}
@@ -245,31 +269,28 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
             style={styles.verticalContainer}>
             <View style={styles.flex1}>{renderTripCard()}</View>
 
-            {!isLoading && (
-              <Menu
-                items={menuItems}
-                visible={openOptionsMenu}
-                onDismiss={toggleOptionsMenu}
-                onItemPress={handleTripMenuItemPress}
-                anchor={
-                  <IconButton
-                    size={ms(20)}
-                    icon={renderMenuIcon}
-                    onPress={toggleOptionsMenu}
-                    style={{ borderRadius: ms(8) }}
-                  />
-                }
+            {isLoading ? (
+              <Shimmer width={ms(26)} height={ms(26)} style={styles.shimmerMenu} />
+            ) : (
+              <IconButton
+                size={ms(20)}
+                disabled={isLoading}
+                icon={renderMenuIcon}
+                onPress={handleOpenOptionsMenu}
+                style={{ borderRadius: ms(8) }}
               />
             )}
           </TouchableOpacity>
 
-          <GenerationModal visible={regenerating} regenerating={regenerating} progress={0} />
+          <GenerationModal visible={regenerating} regenerating={regenerating} progress={progress} />
         </>
       ) : (
         <TouchableOpacity key={index} disabled={isExpired} onPress={() => handleTextPress(item)}>
           {renderVerticalTripCard()}
         </TouchableOpacity>
       )}
+
+      <Picker sheetRef={optionsPickerRef} options={menuOptions} />
 
       <CustomBottomSheet
         sheetRef={bottomSheetRef}

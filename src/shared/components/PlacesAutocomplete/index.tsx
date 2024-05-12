@@ -1,12 +1,13 @@
 // Packages
 import _ from 'lodash';
-import React from 'react';
+import React, { MutableRefObject, RefObject } from 'react';
 
 // Components
 import {
   GooglePlaceData,
   GooglePlaceDetail,
   GooglePlacesAutocomplete,
+  GooglePlacesAutocompleteRef,
   Query
 } from 'react-native-google-places-autocomplete';
 
@@ -18,13 +19,14 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 interface PlacesAutocompleteProps {
-  value: string | null;
+  value?: string | null;
   query: Query | object;
   placeholder?: string;
   fetchDetails?: boolean;
-  handleTextChange: (text: string) => void;
+  handleTextChange?: (text: string) => void;
   renderRow?: ((data: GooglePlaceData, index: number) => JSX.Element) | null;
   handlePlacePress: (data: GooglePlaceData, details: GooglePlaceDetail | null) => void;
+  inputRef: RefObject<GooglePlacesAutocompleteRef> | MutableRefObject<GooglePlacesAutocompleteRef>;
 }
 
 // Component
@@ -33,6 +35,7 @@ const { googleMapsApiKey } = getEnvVars();
 const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
   value,
   query,
+  inputRef,
   renderRow,
   placeholder,
   fetchDetails,
@@ -45,17 +48,18 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
   // Renderers
   return (
     <GooglePlacesAutocomplete
+      ref={inputRef}
       suppressDefaultStyles
       onPress={handlePlacePress}
       fetchDetails={fetchDetails}
+      keepResultsAfterBlur={false}
       enablePoweredByContainer={false}
       styles={autocompleteStyles(theme)}
       renderRow={renderRow ?? undefined}
-      keepResultsAfterBlur={false}
-      
       placeholder={placeholder ?? 'Search'}
       textInputProps={{
         value,
+        blurOnSubmit: true,
         defaultValue: value,
         onChangeText: handleTextChange,
         cursorColor: theme.colors.secondary,

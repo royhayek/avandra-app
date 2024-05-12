@@ -1,6 +1,7 @@
 import { TravelOptionProps } from './TravelOption';
 
 export interface TripPayloadProps {
+  _id: string;
   user: string;
   destination: string;
   periodType: string;

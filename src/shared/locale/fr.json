@@ -236,6 +236,14 @@
     "trip_addition": {
       "add_more_events": "Ajouter plus d'événements"
     },
+    "event_addition": {
+      "selected_places": "Lieux sélectionnés",
+      "popular_places": "Lieux populaires à visiter"
+    },
+    "my_trips": {
+      "no_trips": "Vous n'avez pas encore créé de voyages. Commencez à planifier votre prochaine aventure dès maintenant!",
+      "start_planning": "Commencez à planifier"
+    },
     "contact": {
       "reach_out_to_us": "Vous pouvez nous contacter en envoyant un email via ce formulaire, et nous vous répondrons dans les plus brefs délais.",
       "type": "Type",

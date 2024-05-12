@@ -21,6 +21,7 @@ const initialState: AppInitialState = {
   subscriptions: [],
   walkthrough: [],
   lastSentDate: null,
+  networkError: null,
   themeMode: 'default',
   lastRewardedDate: null,
   ownedSubscription: null
@@ -59,15 +60,21 @@ export const appSlice = createSlice({
     },
     updatePlannerStep: (state, action) => {
       state.plannerStep = action.payload;
+    },
+    setNetworkError: (state, action) => {
+      state.networkError = action.payload;
+    },
+    clearNetworkError: (state) => {
+      state.networkError = null;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(getWalkthroughAction.fulfilled, (state, action) => {
-      state.walkthrough = action.payload.result;
+      state.walkthrough = action.payload?.result;
     });
 
     builder.addCase(getConfigurationAction.fulfilled, (state, action) => {
-      state.config = action.payload.data;
+      state.config = action.payload?.data;
     });
   }
 });
@@ -95,5 +102,7 @@ export const getWalkthrough = createSelector(_app, (data) => data.walkthrough);
 export const getMessagesCount = createSelector(_app, (data) => data.messagesCount);
 
 export const getSubscriptions = createSelector(_app, (data) => data.subscriptions);
+
+export const selectNetworkError = createSelector(_app, (data) => data.networkError);
 
 export const getOwnedSubscription = createSelector(_app, (data) => data.ownedSubscription);

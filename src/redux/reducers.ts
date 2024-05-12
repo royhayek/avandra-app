@@ -23,7 +23,15 @@ const persistStorageConfig = {
 const appPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['config', 'messagesCount', 'lastSentDate', 'subProducts', 'subscriptions', 'ownedSubscriptions']
+  blacklist: [
+    'config',
+    'messagesCount',
+    'lastSentDate',
+    'subProducts',
+    'subscriptions',
+    'ownedSubscriptions',
+    'networkError'
+  ]
 };
 
 const persistSessionConfig = {

@@ -5,6 +5,10 @@ export interface AppInitialState {
     privacyPolicy: string;
     termsAndConditions: string;
   };
+  networkError: {
+    message: string;
+    status: number;
+  } | null;
   language: string;
   themeMode: string;
   plannerStep: number;

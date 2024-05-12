@@ -11,9 +11,8 @@ export default (theme: AppTheme, isVertical: boolean) =>
       width: isVertical ? '100%' : ms(200)
     },
     image: {
-      borderRadius: ms(12),
-      width: isVertical ? '100%' : undefined,
-      height: isVertical ? mvs(200) : mvs(140)
+      aspectRatio: '11/8',
+      borderRadius: ms(12)
     },
     name: {
       marginTop: mvs(6),

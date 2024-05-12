@@ -108,7 +108,7 @@ const PlannerScreen = () => {
 
     if (response?.payload?.success) {
       navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-      navigation.navigate('TripDetails', { trip: response?.payload?.result });
+      navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
       dispatch(plannerActions.reset());
     }
   }, [dispatch, dispatchThunk, isConnected, navigation, plannerPayload, socketId, userId]);

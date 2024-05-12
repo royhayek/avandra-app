@@ -1,11 +1,11 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { Text } from 'react-native-paper';
-import { FlatList, View } from 'react-native';
+import { FlatList, ScrollView, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 import EventAdditionItem from './components/EventAdditionItem';
 import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
@@ -18,12 +18,16 @@ import getEnvVars from 'environment';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
-import { selectTripPlaces } from '@redux/itinerary/slice';
-import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
+import { useAppDispatch, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { GooglePlaceData, GooglePlaceDetail } from 'react-native-google-places-autocomplete';
+import {
+  GooglePlaceData,
+  GooglePlaceDetail,
+  GooglePlacesAutocompleteRef
+} from 'react-native-google-places-autocomplete';
+import Shimmer from '@shared/components/Shimmer';
 
 interface RouteParams {
   tripId: string;
@@ -42,11 +46,9 @@ const EventAdditionScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const places = useAppSelector(selectTripPlaces);
-
   // Statics
   const theme = useAppTheme();
-  const styles = makeStyles();
+  const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
   const route = useRoute();
@@ -54,16 +56,20 @@ const EventAdditionScreen: React.FC = () => {
 
   const { tripId, date, location } = route?.params as RouteParams;
 
-  const [searchInput, setSearchInput] = useState<string | undefined>();
-  const [popularPlaces, setPopularPlaces] = useState<any[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [popularPlaces, setPopularPlaces] = useState<any[]>([]);
+
+  const inputRef = useRef<GooglePlacesAutocompleteRef>();
+
+  const unselectedPlaces = popularPlaces.filter((place) => !place.selected);
+  const selectedPlaces = popularPlaces.filter((place) => place.selected);
 
   // Callbacks
   const handleSavePress = useCallback(async () => {
     setIsSaving(true);
 
     try {
-      const selectedPlaces = popularPlaces.filter((place) => place.selected);
       await dispatchThunk(saveAdditionalEventsAction({ tripId, payload: { date, list: selectedPlaces } }));
       await dispatchThunk(getTripPlacesAction(tripId));
       navigation.goBack();
@@ -72,7 +78,7 @@ const EventAdditionScreen: React.FC = () => {
     } finally {
       setIsSaving(false);
     }
-  }, [date, dispatchThunk, navigation, popularPlaces, tripId]);
+  }, [date, dispatchThunk, navigation, selectedPlaces, tripId]);
 
   const handleAddPress = useCallback(
     (item: any) => {
@@ -86,10 +92,6 @@ const EventAdditionScreen: React.FC = () => {
     },
     [popularPlaces]
   );
-
-  const handleTextChange = useCallback(async (text: string) => {
-    setSearchInput(text);
-  }, []);
 
   const handlePlacePress = useCallback(
     (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
@@ -115,15 +117,19 @@ const EventAdditionScreen: React.FC = () => {
       }
 
       setPopularPlaces((prev) => [formattedDetails, ...prev]);
-      setSearchInput('');
+      inputRef?.current?.blur();
+      inputRef?.current?.clear();
+      inputRef?.current?.setAddressText('');
     },
     [dispatch, popularPlaces]
   );
 
   const fetchPopularPlaces = useCallback(async () => {
+    setIsLoading(true);
     const data = await dispatchThunk(getTripPopularPlacesAction(tripId));
     const places = data?.payload.map((place) => ({ ...place, selected: false }));
     setPopularPlaces(places);
+    setIsLoading(false);
   }, [dispatchThunk, tripId]);
 
   // Effects
@@ -146,14 +152,31 @@ const EventAdditionScreen: React.FC = () => {
     </Text>
   );
 
+  const renderShimmer = () => (
+    <View style={styles.shimmerView}>
+      {_.times(6, (i) => (
+        <View key={i} style={styles.shimmerItem}>
+          <View style={styles.shimmerRow}>
+            <Shimmer style={styles.shimmerImage} />
+            <View>
+              <Shimmer style={styles.shimmerName} />
+              <Shimmer width={100} height={20} />
+            </View>
+          </View>
+
+          <Shimmer style={styles.shimmerBtn} />
+        </View>
+      ))}
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.searchInput}>
         <PlacesAutocomplete
           fetchDetails
-          value={searchInput}
+          inputRef={inputRef}
           renderRow={renderRow}
-          handleTextChange={handleTextChange}
           handlePlacePress={handlePlacePress}
           query={{
             type: 'establishment', // Search for places only
@@ -163,18 +186,43 @@ const EventAdditionScreen: React.FC = () => {
         />
       </View>
 
-      {_.isEmpty(searchInput) && (
-        <>
+      <ScrollView style={styles.scrollView}>
+        {!_.isEmpty(selectedPlaces) ? (
+          <>
+            <Text variant="h5" style={styles.title}>
+              {t('event_addition.selected_places')}
+            </Text>
+
+            <FlatList
+              data={selectedPlaces}
+              disableVirtualization
+              scrollEnabled={false}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.listContainer}
+              renderItem={({ item }) => <EventAdditionItem key={item.name} item={item} onAddPress={handleAddPress} />}
+            />
+          </>
+        ) : null}
+
+        <Text variant="h5" style={styles.title}>
+          {t('event_addition.popular_places')}
+        </Text>
+
+        {isLoading ? (
+          renderShimmer()
+        ) : (
           <FlatList
-            data={popularPlaces}
+            disableVirtualization
+            scrollEnabled={false}
+            data={unselectedPlaces}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
             renderItem={({ item }) => <EventAdditionItem key={item.name} item={item} onAddPress={handleAddPress} />}
           />
+        )}
+      </ScrollView>
 
-          {renderFooter()}
-        </>
-      )}
+      {renderFooter()}
     </View>
   );
 };

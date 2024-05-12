@@ -118,7 +118,6 @@ export const useSocketSetup = (enabled: boolean) => {
 
   useEffect(() => {
     if (enabled) {
-      console.debug('Connecting to socket io server');
       socket.connect();
 
       socket.on('connect', () => {

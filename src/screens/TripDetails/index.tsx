@@ -1,10 +1,10 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
-import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
 import Marker from '@shared/components/Marker';
@@ -14,26 +14,39 @@ import FastImage from 'react-native-fast-image';
 import Itinerary from './components/Iitinerary';
 import { ScrollView, View } from 'react-native';
 import { EditIcon } from '@shared/assets/icons';
+import Shimmer from '@shared/components/Shimmer';
+import Accordion from '@shared/components/Accordion';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 // Utilities
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
-import { destination_details } from './data';
 import { useAppTheme } from '@shared/assets/theme';
+import { getTripAction } from '@redux/itinerary/thunks';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { selectTrip, selectTripLoading } from '@redux/itinerary/slice';
+import { PUBLIC_URL } from '@shared/constants';
 
 // Interfaces
-import { TripPayloadProps } from '@shared/types/TripPayload';
-import Accordion from '@shared/components/Accordion';
-
 interface TripDetailsScreenProps {}
 
 interface RouteParams {
-  trip: TripPayloadProps;
+  trip: {
+    _id: string;
+  };
 }
 
 // Component
 const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
+  // Redux
+  const dispatchThunk = useAppThunkDispatch();
+
+  const trip = useAppSelector(selectTrip);
+  const isLoadingTrip = useAppSelector(selectTripLoading);
+
+  const { flag, image, description, payload, tips, places, location } = trip || {};
+  const { name, country, budget, traveler, fromDate, toDate } = payload || {};
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -41,10 +54,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const { trip } = route?.params as RouteParams;
-
-  const { _id, name, flag, image, description, country, budget, traveler, fromDate, toDate, tips, places, location } =
-    trip || {};
+  const { _id } = route?.params as RouteParams;
 
   const markers = useMemo(() => {
     const placesList = _.flatMap(places, (place) => place.list);
@@ -63,15 +73,27 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
     [_id, location, navigation, places]
   );
 
+  const fetchTrip = useCallback(() => {
+    dispatchThunk(getTripAction(_id));
+  }, [_id, dispatchThunk]);
+
   // Effects
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
+  useEffect(() => {
+    fetchTrip();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Renderers
   const renderHeader = () => (
     <View style={styles.curvedContainer}>
-      <FastImage source={{ uri: image }} style={styles.image} />
+      <FastImage
+        style={styles.image}
+        source={{ uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}` }}
+      />
       <Header back share absolute />
     </View>
   );
@@ -107,7 +129,12 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           <View style={styles.tipsContent}>
             {_.map(tips, (tip, index) => (
               <View key={index} style={styles.tipRow}>
-                <MaterialCommunityIcons name="star-four-points-outline" size={ms(16)} color={theme.colors.secondary} />
+                <MaterialCommunityIcons
+                  name="star-four-points-outline"
+                  size={ms(16)}
+                  color={theme.colors.secondary}
+                  style={styles.tipIcon}
+                />
                 <Text variant="xLarge" style={{ flex: 1 }}>
                   {tip}
                 </Text>
@@ -121,7 +148,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </Text>
 
         <View style={styles.mapContainer}>
-          <MapView
+          {/* <MapView
             style={styles.map}
             focusable={false}
             zoomEnabled={false}
@@ -148,7 +175,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
               (place, index) =>
                 place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
             )}
-          </MapView>
+          </MapView> */}
         </View>
       </View>
 
@@ -164,6 +191,27 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
       icon={() => <EditIcon fill={theme.colors.white} />}
     />
   );
+
+  if (isLoadingTrip) {
+    return (
+      <View>
+        <Shimmer style={styles.curvedContainer} />
+        <Header back share absolute />
+        <View style={styles.shimmerBody}>
+          <Shimmer style={styles.shimmerTitle} />
+          <Shimmer style={styles.shimmerDate} />
+          <Shimmer style={styles.shimmerSubtitle} />
+          <Shimmer style={styles.shimmerOverview} />
+          <View style={styles.shimmerTipsView}>
+            <Shimmer style={styles.shimmerTipsTitle} />
+            <Shimmer style={styles.shimmerTipsBtn} />
+          </View>
+          <Shimmer style={styles.shimmerSubtitle} />
+          <Shimmer style={styles.shimmerOverview} />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <>

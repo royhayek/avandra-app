@@ -1,5 +1,5 @@
 // Packages
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import moment from 'moment';
 import { stringify } from 'qs';
 
@@ -11,10 +11,11 @@ import i18n from './i18n';
 import { store } from './store';
 import { logout } from '@shared/utils';
 import getEnvVars from '../../environment';
+import { appActions } from '@redux/app/slice';
 
 const { serverApiUrl } = getEnvVars();
 
-console.debug('[api - serverApiUrl] :: ', serverApiUrl);
+__DEV__ && console.info('[api - serverApiUrl] :: ', serverApiUrl);
 
 axios.interceptors.request.use((req) => {
   // Set common config
@@ -40,7 +41,18 @@ axios.interceptors.request.use((req) => {
 
 axios.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error: AxiosError) => {
+    console.info('[api - error] :: response: ', error.response);
+    // console.info('[api - error] :: code: ', error.code);
+    console.info('[api - error] :: message: ', error.message);
+    console.info('[api - error] :: status', error.status);
+    console.info('-------------------------------------------------');
+
+    if (error.code === 'ERR_NETWORK') {
+      store.dispatch(appActions.setNetworkError({ message: error.message, status: error.code }));
+      throw error;
+    }
+
     if (error.response && error.response?.data?.jwtExpired) {
       const storeState = store.getState();
       const authenticated = storeState?.auth.authenticated;

@@ -24,16 +24,16 @@ export const generateTripAction = createAsyncThunk(
   'itinerary/generate',
   async (payload: TripPayloadProps, { rejectWithValue }) => {
     try {
-      const { periodType, noOfDays, fromDate, toDate, interests, traveler, budget } = payload;
+      const { _id, periodType, noOfDays, fromDate, toDate, interests, traveler, budget } = payload;
 
       // Process payload
       const byDate = _.isEqual(periodType, 'date');
       const joinedInterests = _.map(interests as string[], (i) => i.title).join(', ');
-      console.debug('joinedInterests', joinedInterests);
       const duration = noOfDays || moment(toDate, 'YYYY-MM-DD').diff(moment(fromDate, 'YYYY-MM-DD'), 'days');
 
       const requestData = {
         ...payload,
+        _id,
         byDate,
         duration,
         budget: budget._id,

@@ -25,6 +25,7 @@ module.exports = {
         usesNonExemptEncryption: false,
         googleMapsApiKey: '***REMOVED***'
       },
+      associatedDomains: ['applinks:wondrous-app-fs8jj.ondigitalocean.app'],
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           'This app users your location information while the app is running in the foreground.',
@@ -65,7 +66,21 @@ module.exports = {
       package: 'com.nextgenappsdev.trippify',
       versionCode: 2,
       googleServicesFile: './google-services.json',
-      permissions: ['android.permission.INTERNET']
+      permissions: ['android.permission.INTERNET', 'android.permission.ACCESS_NETWORK_STATE'],
+      intentFilters: [
+        {
+          action: 'VIEW',
+          data: [
+            {
+              scheme: 'https',
+              host: 'wondrous-app-fs8jj.ondigitalocean.app',
+              pathPrefix: '/'
+            }
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+          autoVerify: true // required to work on newer android versions
+        }
+      ]
     },
     web: {
       favicon: './assets/favicon.png'
@@ -92,7 +107,8 @@ module.exports = {
           android: {
             compileSdkVersion: 33,
             targetSdkVersion: 33,
-            buildToolsVersion: '33.0.0'
+            buildToolsVersion: '33.0.0',
+            usesCleartextTraffic: true
           },
           ios: {
             useFrameworks: 'static',
@@ -112,7 +128,8 @@ module.exports = {
         }
       ],
       'expo-apple-authentication',
-      './react-native-maps-plugin'
+      './react-native-maps-plugin',
+      './plugins/trust-local-certs'
     ],
     owner: 'royhayek'
   },

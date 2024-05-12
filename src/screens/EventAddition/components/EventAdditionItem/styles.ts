@@ -16,7 +16,8 @@ export default (theme: AppTheme) =>
     image: {
       width: ms(115),
       height: ms(75),
-      borderRadius: theme.roundness
+      borderRadius: theme.roundness,
+      backgroundColor: theme.colors.backdrop
     },
     content: {
       flex: 1,

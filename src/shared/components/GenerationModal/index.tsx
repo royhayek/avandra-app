@@ -16,8 +16,11 @@ import { TranslateOptions } from 'i18n-js';
 
 interface GenerationModalProps {
   visible: boolean;
-  progress: string;
   regenerating?: boolean;
+  progress: {
+    message: string;
+    percent: number;
+  };
 }
 
 // Component
@@ -34,7 +37,7 @@ const GenerationModal: React.FC<GenerationModalProps> = ({ visible, progress, re
       <Modal visible={visible} dismissable={false} contentContainerStyle={styles.modalContainer}>
         <Progress.Circle indeterminate size={60} borderWidth={5} color={theme.colors.primary} />
         <Text variant="h5" style={styles.generate_title}>
-          {progress?.message} ({progress?.percent}%)
+          {progress?.message} ({progress?.percent ?? 0}%)
           {/* {_t(regenerating ? 'regenerating_your_trip' : 'generating_your_trip', { progress: `${progress?.percent}%` })} */}
         </Text>
         <Text variant="medium" style={styles.generate_desc}>

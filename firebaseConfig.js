@@ -5,12 +5,12 @@ import { getDatabase } from 'firebase/database';
 const firebaseConfig = {
   apiKey: '***REMOVED***',
   authDomain: 'trippify-4c3bd.firebaseapp.com',
+  databaseURL: 'https://trippify-4c3bd-default-rtdb.firebaseio.com',
   projectId: 'trippify-4c3bd',
   storageBucket: 'trippify-4c3bd.appspot.com',
   messagingSenderId: '1056052970187',
   appId: '1:1056052970187:web:4830cee2eacabb5f4a914e',
-  measurementId: 'G-9NE22K3RYB',
-  databaseURL: 'https://trippify-4c3bd-default-rtdb.firebaseio.com/'
+  measurementId: 'G-9NE22K3RYB'
 };
 
 // Initialize Firebase

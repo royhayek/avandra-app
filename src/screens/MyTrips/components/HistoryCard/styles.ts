@@ -5,7 +5,7 @@ import { AppTheme } from '@shared/assets/theme';
 // Interfaces
 import { ms, mvs } from 'react-native-size-matters';
 
-export default (theme: AppTheme) =>
+export default (theme: AppTheme, isExpired: boolean) =>
   StyleSheet.create({
     container: {
       height: mvs(260),
@@ -19,7 +19,8 @@ export default (theme: AppTheme) =>
     verticalImage: {
       width: ms(70),
       height: ms(70),
-      borderRadius: ms(16)
+      borderRadius: ms(16),
+      opacity: isExpired ? 0.3 : 1
     },
     verticalInfoContent: {
       left: 0,
@@ -53,13 +54,16 @@ export default (theme: AppTheme) =>
     title: {
       marginBottom: mvs(6),
       alignSelf: 'flex-start',
+      opacity: isExpired ? 0.3 : 1,
       color: theme.dark ? theme.colors.white : theme.colors.black
     },
     assistant: {
-      marginVertical: mvs(1)
+      marginVertical: mvs(1),
+      opacity: isExpired ? 0.3 : 1
     },
     date: {
-      marginTop: mvs(1)
+      marginTop: mvs(1),
+      opacity: isExpired ? 0.3 : 1
     },
     cityImage: {
       flex: 1,
@@ -68,7 +72,7 @@ export default (theme: AppTheme) =>
     },
     dot: {
       marginHorizontal: ms(2),
-      color: theme.dark ? theme.colors.white : theme.colors.black
+      color: isExpired ? theme.colors.gray[400] : theme.dark ? theme.colors.white : theme.colors.black
     },
     rowContainer: {
       alignItems: 'center',
@@ -79,5 +83,9 @@ export default (theme: AppTheme) =>
       gap: ms(5),
       alignItems: 'center',
       flexDirection: 'row'
+    },
+    // Shimmer
+    shimmerMenu: {
+      marginEnd: ms(16)
     }
   });

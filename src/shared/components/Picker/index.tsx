@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import { Divider, Text } from 'react-native-paper';
+import { Divider, Text, useTheme } from 'react-native-paper';
 import React, { RefObject, useCallback } from 'react';
 
 // Components
@@ -28,6 +28,7 @@ interface PickerProps {
 // Component
 const Picker: React.FC<PickerProps> = ({ sheetRef, options }) => {
   // Statics
+  const theme = useTheme();
   const styles = makeStyles();
 
   // Callbacks
@@ -37,13 +38,16 @@ const Picker: React.FC<PickerProps> = ({ sheetRef, options }) => {
   return (
     <CustomBottomSheet
       sheetRef={sheetRef}
-      title={t('common.select_option')}
       onClose={handleClosePicker}
+      title={t('common.select_option')}
       contentStyle={styles.contentStyle}>
-      {_.map(options, ({ key, title, onPress }, index) => (
+      {_.map(options, ({ key, title, icon, color, onPress }, index) => (
         <View key={key}>
           <TouchableOpacity key={key} style={styles.option} onPress={() => onPress(key)}>
-            <Text variant="xLarge">{title}</Text>
+            {icon}
+            <Text variant="xLarge" style={[styles.title, { color: color ?? theme.fonts.xLarge.color }]}>
+              {title}
+            </Text>
           </TouchableOpacity>
           {!_.isEqual(index, options?.length - 1) && <Divider />}
         </View>
