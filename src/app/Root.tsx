@@ -2,10 +2,10 @@
 import _ from 'lodash';
 import * as Updates from 'expo-updates';
 import { withIAPContext } from 'react-native-iap';
-// import * as Notifications from 'expo-notifications';
+import * as Notifications from 'expo-notifications';
 import React, { useCallback, useEffect, useState } from 'react';
-import { LayoutChangeEvent, useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LayoutChangeEvent, useColorScheme, Platform } from 'react-native';
 
 // Components
 import RootNavigation from './navigation';
@@ -22,9 +22,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { changeLocale } from './i18n';
 import NetworkInfo from '@shared/services/NetworkInfo';
 import { validateTokenAction } from '@redux/auth/thunks';
-import { getConfigurationAction, getWalkthroughAction } from '@redux/app/thunks';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
 import { useAppSelector, useAppThunkDispatch } from './store';
+import { getConfigurationAction, getWalkthroughAction } from '@redux/app/thunks';
 import { getLanguage, getThemeMode, selectNetworkError } from '@redux/app/slice';
 
 // Interfaces
@@ -42,13 +42,12 @@ const Root: React.FC<RootProps> = ({ onLayout, linking }) => {
 
   // Statics
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
-  // const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
-  // const [notification, setNotification] = useState<Notifications.Notification>();
 
   const colorScheme = useColorScheme();
 
-  // const notificationListener = useRef<Notifications.Subscription>();
-  // const responseListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
+  const notificationListener = useRef<Notifications.Subscription>();
+
 
   const isDark = _.isEqual(themeMode, 'dark') || (_.isEqual(themeMode, 'default') && _.isEqual(colorScheme, 'dark'));
   const theme = isDark ? darkTheme : lightTheme;
@@ -64,10 +63,8 @@ const Root: React.FC<RootProps> = ({ onLayout, linking }) => {
             .then(({ isNew }) => {
               console.debug('[checkForUpdates] :: Found a new update. Fetching... ', { isNew });
 
-              // NOTIFY USER HERE
-              setTimeout(() => {
-                Updates.reloadAsync();
-              }, 5000);
+              // Notify user for 3 seconds before reloading
+              setTimeout(() => { Updates.reloadAsync(); }, 3000);
             })
             .catch((error) => {
               console.error('Failed to check for updates :: ', error.nessage);
@@ -95,37 +92,90 @@ const Root: React.FC<RootProps> = ({ onLayout, linking }) => {
   // }, []);
 
   const initData = useCallback(async () => {
+    !__DEV__ && checkForUpdates();
     changeLocale(language);
     const seenWalkthrough = (await AsyncStorage.getItem('seenWalkthrough')) === 'true';
     if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
     await dispatchThunk(validateTokenAction());
     await getConfiguration();
+    initPushNotifications();
     // await initAppPurchases();
   }, [dispatchThunk, getConfiguration, language]);
 
-  // Effects
-  // useEffect(() => {
-  //   registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
-  //   notificationListener.current = Notifications.addNotificationReceivedListener((noti) => setNotification(noti));
+  const registerForPushNotificationsAsync = useCallback(async () => {
+    let token;
 
-  //   responseListener.current = Notifications.addNotificationResponseReceivedListener((response) =>
-  //     console.log(response)
-  //   );
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        lightColor: '#FF231F7C',
+        vibrationPattern: [0, 250, 250, 250],
+        importance: Notifications.AndroidImportance.MAX,
+      });
+    }
 
-  //   return () => {
-  //     notificationListener.current && Notifications.removeNotificationSubscription(notificationListener.current);
-  //     responseListener.current && Notifications.removeNotificationSubscription(responseListener.current);
-  //   };
-  // }, []);
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
 
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    (async () => {
-      !__DEV__ && checkForUpdates();
-      await initData();
-    })();
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus === 'undetermined') {
+        console.error('Undetermined push notification status');
+      }
+      if (finalStatus !== 'granted') {
+        console.error('Failed to get push token for push notification!');
+        return;
+      }
+
+      token = await Notifications.getDevicePushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId
+      });
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    return token.data;
   }, []);
-  /* eslint-enable react-hooks/exhaustive-deps */
+
+  const initPushNotifications = useCallback(() => {
+    registerForPushNotificationsAsync().then(async token => {
+      console.info('[initPushNotifications] :: Your device push token is', token);
+    });
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(data => {
+      console.debug('[initPushNotifications] :: Received notification', data);
+
+      const notification = Platform.select({
+        android: data.request.trigger.remoteMessage,
+        ios: data.request.content
+      });
+
+      // if (String(notification?.data?.category).match(/otp/i)) {
+      //   const otp = Platform.select({ android: notification?.notification?.data, ios: notification?.data }).otp;
+      //   if (otp) {
+      //     parentWebviewRef.current?.sendJSON({ key: messages.otp_code, data: { code: otp } });
+      //   }
+      // }
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  // Effects
+  useEffect(() => {
+    initData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Renderers
   return (
