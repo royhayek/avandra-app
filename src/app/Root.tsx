@@ -91,17 +91,6 @@ const Root: React.FC<RootProps> = ({ onLayout, linking }) => {
   //   }
   // }, []);
 
-  const initData = useCallback(async () => {
-    !__DEV__ && checkForUpdates();
-    changeLocale(language);
-    const seenWalkthrough = (await AsyncStorage.getItem('seenWalkthrough')) === 'true';
-    if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
-    await dispatchThunk(validateTokenAction());
-    await getConfiguration();
-    initPushNotifications();
-    // await initAppPurchases();
-  }, [dispatchThunk, getConfiguration, language]);
-
   const registerForPushNotificationsAsync = useCallback(async () => {
     let token;
 
@@ -170,6 +159,17 @@ const Root: React.FC<RootProps> = ({ onLayout, linking }) => {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+  
+  const initData = useCallback(async () => {
+    !__DEV__ && checkForUpdates();
+    changeLocale(language);
+    const seenWalkthrough = (await AsyncStorage.getItem('seenWalkthrough')) === 'true';
+    if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
+    await dispatchThunk(validateTokenAction());
+    await getConfiguration();
+    initPushNotifications();
+    // await initAppPurchases();
+  }, [dispatchThunk, getConfiguration, language]);
 
   // Effects
   useEffect(() => {
