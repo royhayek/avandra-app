@@ -1,6 +1,7 @@
 // Packages
 import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
+import * as Linking from 'expo-linking';
 import { Settings } from 'react-native-fbsdk-next';
 import * as Notifications from 'expo-notifications';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -16,6 +17,7 @@ import './src/app/api';
 import './src/app/i18n';
 import 'react-native-url-polyfill/auto';
 import { persistor, store } from './src/app/store';
+import { snackbarActions } from '@redux/snackbar/slice';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -38,9 +40,22 @@ const fetchFonts = () => {
   });
 };
 
+const prefix = Linking.makeUrl('/');
+
 export default function App() {
   // Statics
   const [appIsReady, setAppIsReady] = useState(false);
+  const [deepLinkData, setDeepLinkData] = useState(null);
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        Home: 'home',
+        SettingsStack: 'settings'
+      }
+    }
+  }
 
   // Callbacks
   const prepare = useCallback(async () => {
@@ -69,6 +84,12 @@ export default function App() {
     }
   }, [appIsReady]);
 
+  const handleDeepLink = useCallback((event) => {
+    const data = Linking.parse(event.url);
+    dispatchEvent(snackbarActions.showSnackbar({ title: 'Opened using deeplink: ', message: data }))
+    setDeepLinkData(data);
+  }, [])
+
   // Effects
   useEffect(() => {
     prepare();
@@ -84,6 +105,22 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const getInitialUrl = async () => {
+      const initialURL = await Linking.getInitialURL();
+      if (initialURL) setDeepLinkData(Linking.parse(initialURL));
+    }
+
+    Linking.addEventListener('url', handleDeepLink);
+    if (!data) {
+      getInitialUrl();
+    }
+
+    return () => {
+      Linking.removeEventListener('url');
+    }
+  }, [])
+
   // Renderers
   if (!appIsReady) {
     return null;
@@ -92,7 +129,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Root onLayout={onLayoutRootView} />
+        <Root onLayout={onLayoutRootView} linking={linking} />
       </PersistGate>
     </Provider>
   );

@@ -3,6 +3,7 @@ module.exports = {
     name: 'Wondrous',
     slug: 'trippify',
     version: '1.1.0',
+    scheme: "wondrous",
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',

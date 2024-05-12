@@ -32,7 +32,7 @@ interface RootProps {
   onLayout: ((event: LayoutChangeEvent) => void) | undefined;
 }
 
-const Root: React.FC<RootProps> = ({ onLayout }) => {
+const Root: React.FC<RootProps> = ({ onLayout, linking }) => {
   // Redux
   const dispatchThunk = useAppThunkDispatch();
 
@@ -132,7 +132,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayout}>
       <PaperProvider theme={theme}>
         <BottomSheetModalProvider>
-          <NavigationContainer>
+          <NavigationContainer linking={linking}>
             <StatusBar style={theme.dark ? 'light' : 'dark'} />
             <RootNavigation />
             {/* <SplashScreen loadedData={loadedData} /> */}
