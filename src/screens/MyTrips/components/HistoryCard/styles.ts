@@ -72,7 +72,12 @@ export default (theme: AppTheme, isExpired: boolean) =>
     },
     dot: {
       marginHorizontal: ms(2),
-      color: isExpired ? theme.colors.gray[400] : theme.dark ? theme.colors.white : theme.colors.black
+      opacity: isExpired ? 0.3 : 1,
+      color: theme.dark ? theme.colors.white : theme.colors.black
+    },
+    calendarIcon: {
+      opacity: isExpired ? 0.3 : 1,
+      color: theme.dark ? theme.colors.white : theme.colors.black
     },
     rowContainer: {
       alignItems: 'center',

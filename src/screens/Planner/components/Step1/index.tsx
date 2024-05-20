@@ -40,7 +40,7 @@ const Step1 = () => {
 
   // Effects
   useEffect(() => {
-    if (!plannerPayload?.traveler) dispatch(plannerActions.setPayload({ traveler: travelersList[0] }));
+    if (!plannerPayload?.traveler) dispatch(plannerActions.setPayload({ traveler: _.first(travelersList) }));
   }, [dispatch, plannerPayload?.traveler, travelersList]);
 
   // Renderers
@@ -50,7 +50,7 @@ const Step1 = () => {
       <TravelOptionsList
         list={travelersList}
         setValue={setTraveler}
-        value={plannerPayload?.traveler?._id ?? travelersList[0]._id}
+        value={plannerPayload?.traveler?._id ?? _.first(travelersList)?._id}
       />
     </View>
   );

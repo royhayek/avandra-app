@@ -8,10 +8,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
+import Shimmer from '@shared/components/Shimmer';
 import ImageView from 'react-native-image-viewing';
 import BackButton from '@shared/components/Buttons/Back';
-import { CurrencyIcon, LanguageIcon, MapIcon } from '@shared/assets/icons';
 import RegularButton from '@shared/components/Buttons/Regular';
+import { CurrencyIcon, LanguageIcon, MapIcon } from '@shared/assets/icons';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
@@ -34,12 +35,14 @@ import {
   getBudgetsAction,
   getDestinationDetailsAction,
   getInterestsAction,
+  getTravelPreferencesAction,
   getTravelersAction
 } from '@redux/destination/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import Shimmer from '@shared/components/Shimmer';
+import Header from '@shared/components/Header';
+import { ShareDataProps } from '@shared/types/ShareDataProps';
 
 interface ImageViewState {
   isOpen: boolean;
@@ -79,18 +82,15 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   const { detailsId } = route?.params as RouteParams;
 
-  const { name, image, country, description, gallery, continent, currency, flag, spokenLang, bestTime } =
+  const { _id, name, image, country, description, gallery, continent, currency, flag, spokenLang, bestTime } =
     destinationDetails || {};
 
   // Callbacks
   const handleStartTripPress = useCallback(async () => {
     dispatch(plannerActions.setPayload({ destination: { id: detailsId, name, image, country } }));
-    // Dispatch travelers list
-    _.isEmpty(travelers) && (await dispatchThunk(getTravelersAction()));
-    _.isEmpty(interests) && (await dispatchThunk(getInterestsAction()));
-    _.isEmpty(budgets) && (await dispatchThunk(getBudgetsAction()));
+    await dispatchThunk(getTravelPreferencesAction());
     navigation.navigate('Planner');
-  }, [budgets, country, detailsId, dispatch, dispatchThunk, image, interests, name, navigation, travelers]);
+  }, [country, detailsId, dispatch, dispatchThunk, image, name, navigation]);
 
   const handleGalleryImagePress = useCallback((index: number) => setImageViewState({ isOpen: true, index }), []);
 
@@ -103,6 +103,11 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   }, []);
 
   // Renderer Vars
+  const shareData: ShareDataProps = {
+    message: `Generate a trip to ${name}!`,
+    deepLink: `https://avandraapp.com/share/destination/${_id}`
+  };
+
   const galleryImages = _.map(gallery, (item) => ({ uri: `${PUBLIC_URL}/destination/gallery/${item}` })) || [];
 
   // Renderers
@@ -121,7 +126,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
           <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />
         </View>
       )}
-      <BackButton style={{ position: 'absolute', top: 60, start: 20, backgroundColor: theme.colors.background }} />
+      <Header back absolute share shareData={shareData} />
     </View>
   );
 

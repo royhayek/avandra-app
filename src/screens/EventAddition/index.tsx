@@ -5,6 +5,7 @@ import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native
 
 // Components
 import { Text } from 'react-native-paper';
+import Shimmer from '@shared/components/Shimmer';
 import { FlatList, ScrollView, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 import EventAdditionItem from './components/EventAdditionItem';
@@ -14,8 +15,8 @@ import { getTripPlacesAction, getTripPopularPlacesAction, saveAdditionalEventsAc
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import getEnvVars from 'environment';
 import { useAppTheme } from '@shared/assets/theme';
+import { GOOGLE_MAPS_API_KEY } from '@shared/utils';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { useAppDispatch, useAppThunkDispatch } from '@app/store';
@@ -27,7 +28,6 @@ import {
   GooglePlaceDetail,
   GooglePlacesAutocompleteRef
 } from 'react-native-google-places-autocomplete';
-import Shimmer from '@shared/components/Shimmer';
 
 interface RouteParams {
   tripId: string;
@@ -39,8 +39,6 @@ interface RouteParams {
 }
 
 // Component
-const { googleMapsApiKey } = getEnvVars();
-
 const EventAdditionScreen: React.FC = () => {
   // Redux
   const dispatch = useAppDispatch();
@@ -107,7 +105,7 @@ const EventAdditionScreen: React.FC = () => {
         openingHours: details?.opening_hours?.weekday_text,
         internationalPhone: details?.international_phone_number,
         type: _.includes(details?.types, 'restaurant') ? 'restaurant' : 'landmark',
-        photoUrl: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1024&photoreference=${details?.photos?.[0].photo_reference}&key=${googleMapsApiKey}`
+        photoUrl: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1024&photoreference=${details?.photos?.[0].photo_reference}&key=${GOOGLE_MAPS_API_KEY}`
       };
 
       if (_.find(popularPlaces, { placeId: formattedDetails.placeId })) {

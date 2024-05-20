@@ -13,9 +13,9 @@ import {
 
 // Utilities
 import i18n from '@app/i18n';
-import getEnvVars from 'environment';
 import { autocompleteStyles } from './styles';
 import { useAppTheme } from '@shared/assets/theme';
+import { GOOGLE_PLACES_API_KEY } from '@shared/constants';
 
 // Interfaces
 interface PlacesAutocompleteProps {
@@ -30,8 +30,6 @@ interface PlacesAutocompleteProps {
 }
 
 // Component
-const { googleMapsApiKey } = getEnvVars();
-
 const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
   value,
   query,
@@ -66,7 +64,7 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
         placeholderTextColor: theme.colors.secondary
       }}
       query={{
-        key: googleMapsApiKey,
+        key: GOOGLE_PLACES_API_KEY,
         language: i18n.locale,
         ...query
       }}

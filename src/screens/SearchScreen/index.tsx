@@ -2,10 +2,10 @@
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { ms, mvs } from 'react-native-size-matters';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { GooglePlaceData, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlaceData, GooglePlacesAutocompleteRef } from 'react-native-google-places-autocomplete';
 
 // Components
 import { Text } from 'react-native-paper';
@@ -16,12 +16,15 @@ import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Utilities
-import i18n from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import { getRecentSearchesAction, incrementSearchesAction } from '@redux/destination/thunks';
+import {
+  getRecentSearchesAction,
+  getTravelPreferencesAction,
+  incrementSearchesAction
+} from '@redux/destination/thunks';
 import { selectRecentSearches, selectRecentSearchesLoading } from '@redux/destination/slice';
 import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
 
@@ -45,17 +48,20 @@ const SearchScreen = () => {
 
   const [searchInput, setSearchInput] = useState('');
 
+  const inputRef = useRef<GooglePlacesAutocompleteRef>();
+
   // Callbacks
   const handleTextChange = React.useCallback(async (text: string) => {
     setSearchInput(text);
   }, []);
 
   const handlePlacePress = useCallback(
-    (data: GooglePlaceData) => {
+    async (data: GooglePlaceData) => {
       if (data && data.structured_formatting) {
         const name = data.structured_formatting.main_text;
         const country = data.terms[data.terms.length - 1].value;
 
+        console.debug('SearchScreen: handlePlacePress: name:', name, 'country:', country);
         dispatchThunk(incrementSearchesAction({ name, country }));
         dispatchThunk(getRecentSearchesAction());
 
@@ -73,6 +79,7 @@ const SearchScreen = () => {
 
   useEffect(() => {
     _.isEmpty(recentSearches) && dispatchThunk(getRecentSearchesAction());
+    dispatchThunk(getTravelPreferencesAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,6 +91,7 @@ const SearchScreen = () => {
 
         <View style={styles.searchContainer}>
           <PlacesAutocomplete
+            inputRef={inputRef}
             query={{ type: '(cities)' }}
             handlePlacePress={handlePlacePress}
             handleTextChange={handleTextChange}

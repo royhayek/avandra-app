@@ -4,13 +4,12 @@ import { getDatabase } from 'firebase/database';
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: '***REMOVED***',
-  authDomain: 'trippify-4c3bd.firebaseapp.com',
-  databaseURL: 'https://trippify-4c3bd-default-rtdb.firebaseio.com',
-  projectId: 'trippify-4c3bd',
-  storageBucket: 'trippify-4c3bd.appspot.com',
-  messagingSenderId: '1056052970187',
-  appId: '1:1056052970187:web:4830cee2eacabb5f4a914e',
-  measurementId: 'G-9NE22K3RYB'
+  authDomain: 'avandra-f6c62.firebaseapp.com',
+  projectId: 'avandra-f6c62',
+  storageBucket: 'avandra-f6c62.appspot.com',
+  messagingSenderId: '860918187904',
+  appId: '1:860918187904:web:d7e09d71bb27ed6c8ba365',
+  measurementId: 'G-P0CVVNRK3F'
 };
 
 // Initialize Firebase

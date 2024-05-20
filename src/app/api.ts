@@ -42,8 +42,6 @@ axios.interceptors.request.use((req) => {
 axios.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    console.info('[api - error] :: response: ', error.response);
-    // console.info('[api - error] :: code: ', error.code);
     console.info('[api - error] :: message: ', error.message);
     console.info('[api - error] :: status', error.status);
     console.info('-------------------------------------------------');

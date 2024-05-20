@@ -3,31 +3,43 @@ import _ from 'lodash';
 import React, { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
 import { StyleProp, ViewStyle } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import Share, { ShareOptions } from 'react-native-share';
+
+// Components
+import { ExportIcon } from '@shared/assets/icons';
 import { IconButton, IconButtonProps } from 'react-native-paper';
 
 // Utilities
 import i18n from '@app/i18n';
 import makeStyles from './styles';
-import { ExportIcon } from '@shared/assets/icons';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
+import { ShareDataProps } from '@shared/types/ShareDataProps';
+
 interface ShareButtonProps extends Omit<IconButtonProps, 'icon'> {
+  data: ShareDataProps;
   style?: StyleProp<ViewStyle>;
 }
 
 // Component
-const ShareButton: React.FC<ShareButtonProps> = ({ style, ...props }) => {
+const ShareButton: React.FC<ShareButtonProps> = ({ data, style, ...props }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
   // Callbacks
-  const handleOnSharePress = useCallback(() => {
-    // Handle share trip logic
-    console.debug('Share button pressed');
-  }, []);
+  const handleOnSharePress = useCallback(async () => {
+    const { deepLink, message } = data;
+
+    const shareOptions: ShareOptions = {
+      message: `${message}\n${deepLink}`,
+      failOnCancel: false
+    };
+
+    // Share the content
+    Share.open(shareOptions);
+  }, [data]);
 
   // Renderers
   return (

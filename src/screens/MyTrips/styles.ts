@@ -13,7 +13,6 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.background
     },
     listContent: {
-      flex: 1,
       paddingTop: mvs(8),
       paddingHorizontal: ms(24)
     },

@@ -1,4 +1,5 @@
 import { WalkthroughProps } from '@shared/types/Walkthrough';
+import { ParsedURL } from 'expo-linking';
 
 export interface AppInitialState {
   config: {
@@ -18,5 +19,6 @@ export interface AppInitialState {
   lastSentDate: Date | null;
   lastRewardedDate: Date | null;
   ownedSubscription: any | null;
+  deepLinkData: ParsedURL | null;
   walkthrough: WalkthroughProps[];
 }

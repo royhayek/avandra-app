@@ -1,22 +1,27 @@
 // Packages
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
 import * as Notifications from 'expo-notifications';
 import { Dimensions, Linking, Platform } from 'react-native';
 
 // Utilities
-import socket from '@app/socket';
 import { store } from '@app/store';
 import { authActions } from '@redux/auth/slice';
-import { snackbarActions } from '@redux/snackbar/slice';
+import { DEVICE_ID_KEY } from '@shared/constants';
 
+// Helpers
 export const appName = Constants.expoConfig?.name;
 
 export const isAndroid = Platform.OS === 'android';
 
-// Helpers
+export const GOOGLE_MAPS_API_KEY = Platform.select({
+  ios: Constants.expoConfig?.ios?.config?.googleMapsApiKey,
+  android: Constants.expoConfig?.android?.config?.googleMaps?.apiKey
+});
+
 export const scaledFontSize = (baseFontSize: number) => {
   const widthRatio = Dimensions.get('screen').width / 430;
   const heightRatio = Dimensions.get('screen').height / 932;
@@ -31,60 +36,73 @@ export const wait = (timeout: number) => {
   });
 };
 
-export const registerForPushNotificationsAsync = async () => {
+export const getDeviceId = async () => {
   try {
-    let token;
+    // Check if the deviceId already exists in SecureStore
+    let deviceId = await SecureStore.getItemAsync(DEVICE_ID_KEY);
 
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C'
-      });
+    // If deviceId doesn't exist, create a new one and store it
+    if (!deviceId) {
+      deviceId = uuidv4();
+      await SecureStore.setItemAsync(DEVICE_ID_KEY, deviceId);
     }
 
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
+    return deviceId;
+  } catch (error) {
+    console.error('Failed to get or create the deviceId:', error);
+    throw new Error('Could not get or create deviceId');
+  }
+};
 
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        console.info('[PushNotifications] :: status ', status);
-        finalStatus = status;
-      }
+export const registerForPushNotificationsAsync = async () => {
+  let token;
 
-      if (finalStatus !== 'granted') {
-        console.error('Failed to get push token for push notification!');
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C'
+    });
+  }
 
-        return;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+
+      return;
+    }
+
+    try {
+      const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
+
+      if (!projectId) {
+        throw new Error('Project ID not found');
       }
 
       token = (
         await Notifications.getExpoPushTokenAsync({
-          projectId: Constants.expoConfig?.extra?.eas?.projectId ?? '7435fea4-bc85-4a71-8526-db121810f0ed'
+          projectId
         })
       ).data;
 
-      const fcmToken = (await Notifications.getDevicePushTokenAsync()).data;
-      console.info('[expoToken] :: ', token);
-      console.info('[fcmToken] :: ', fcmToken);
-    } else {
-      console.info('[PushNotifications] :: Must use physical device for Push Notifications');
+      console.log(token);
+    } catch (e) {
+      token = `${e}`;
     }
-
-    return token;
-  } catch (error) {
-    console.error('[PushNotifications] :: error ', error);
-
-    store.dispatch(
-      snackbarActions.showSnackbar({
-        type: 'error',
-        title: 'Push Notifications Error',
-        message: error
-      })
-    );
+  } else {
+    // alert('Must use physical device for Push Notifications');
   }
+
+  return token;
 };
 
 export const hasArabicCharacters = (text: string) => {
@@ -110,42 +128,4 @@ export const openMapsWithCoords = (name: string, lat: number, lng: number) => {
 
   const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
   Linking.openURL(url);
-};
-
-export const useSocketSetup = (enabled: boolean) => {
-  const [isConnected, setIsConnected] = useState(false);
-  const [progress, setProgress] = useState({ message: 'Starting itinerary generation...', progress: 0 });
-
-  useEffect(() => {
-    if (enabled) {
-      socket.connect();
-
-      socket.on('connect', () => {
-        console.debug('Connected to socket io server');
-        setIsConnected(true);
-      });
-
-      socket.on('connect_error', (error) => {
-        console.debug('Failed to connect to socket io server', error);
-      });
-
-      socket.on('progress', (data) => {
-        setProgress(data);
-      });
-
-      socket.on('disconnect', () => {
-        console.debug('Disconnected from socket io server');
-        setIsConnected(false);
-      });
-
-      return () => {
-        socket.off('connect');
-        socket.off('connect_error');
-        socket.off('progress');
-        socket.off('disconnect');
-      };
-    }
-  }, [enabled]);
-
-  return { isConnected, socketId: socket.id, progress };
 };

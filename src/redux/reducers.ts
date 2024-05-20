@@ -6,7 +6,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import appReducer from './app/slice';
 import authReducer from './auth/slice';
 import userReducer from './user/slice';
-import placesReducer from './places/slice';
 import articleReducer from './article/slice';
 import plannerReducer from './planner/slice';
 import settingsReducer from './settings/slice';
@@ -45,7 +44,6 @@ export default persistCombineReducers(persistStorageConfig, {
   app: persistReducer(appPersistConfig, appReducer),
   auth: persistReducer(persistSessionConfig, authReducer),
   user: userReducer,
-  places: placesReducer,
   planner: plannerReducer,
   article: articleReducer,
   settings: settingsReducer,

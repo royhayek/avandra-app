@@ -34,7 +34,7 @@
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_SERVER_API_URL": "https://trip-ai-server.onrender.com/api"
+        "EXPO_PUBLIC_SERVER_API_URL": "https://avandraapp.com/api"
       },
       "channel": "production"
     }
@@ -42,12 +42,12 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "./trippify-411809-bdd413c2cd28.json",
+        "serviceAccountKeyPath": "./avandra-f6c62-46b819cce5fd.json",
         "track": "internal"
       },
       "ios": {
         "appleId": "royhayek27@gmail.com",
-        "ascAppId": "6476438006",
+        "ascAppId": "6502790120",
         "appleTeamId": "DVGN5DN5ST"
       }
     }

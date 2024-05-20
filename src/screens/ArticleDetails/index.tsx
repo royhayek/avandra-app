@@ -14,12 +14,15 @@ import { SafeAreaView, ScrollView, View, useWindowDimensions } from 'react-nativ
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
+import { appActions, selectDeepLinkData } from '@redux/app/slice';
 import { getArticleDetailsAction } from '@redux/article/thunks';
-import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 import { selectArticleDetails, selectArticlesLoading } from '@redux/article/slice';
 
 // Interfaces
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Header from '@shared/components/Header';
+import { ShareDataProps } from '@shared/types/ShareDataProps';
 
 interface ArticleDetailsScreenProps {}
 
@@ -30,8 +33,10 @@ interface RouteParams {
 // Component
 const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
   // Redux
+  const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
+  const deepLinkData = useAppSelector(selectDeepLinkData);
   const articleDetails = useAppSelector(selectArticleDetails);
   const isLoadingArticles = useAppSelector(selectArticlesLoading);
 
@@ -45,6 +50,8 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
 
   const { detailsId } = route?.params as RouteParams;
 
+  const [articleId, setArticleId] = React.useState<string>(detailsId);
+
   // Callbacks
   const handleShare = useCallback(() => {
     console.debug('[handleShare] :: article');
@@ -52,23 +59,38 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
 
   // Effects
   useEffect(() => {
-    if (detailsId) dispatchThunk(getArticleDetailsAction(detailsId));
+    if (articleId) dispatchThunk(getArticleDetailsAction(articleId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    // extract trip id from deep link data, path looks like this "trip/:id"
+    if (deepLinkData) {
+      const path = deepLinkData?.path;
+      const id = _.last(_.split(path, '/'));
+
+      if (id) {
+        setArticleId(id);
+        dispatch(appActions.clearDeepLinkData());
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deepLinkData?.path]);
+
   React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={handleShare} style={styles.shareButton}>
-          <ExportIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-        </TouchableOpacity>
-      )
-    });
+    navigation.setOptions({ headerShown: false });
   }, [handleShare, navigation, styles.shareButton, theme.colors.gray, theme.colors.white, theme.dark]);
+
+  // Renderers Vars
+  const shareData: ShareDataProps = {
+    message: `Read this article "${articleDetails?.name}"!`,
+    deepLink: `https://avandraapp.com/share/article/${articleId}`
+  };
 
   // Renderers
   return (
-    <SafeAreaView>
+    <>
+      <Header back share shareData={shareData} />
       <ScrollView
         contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled"
@@ -108,7 +130,7 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
           />
         )}
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 

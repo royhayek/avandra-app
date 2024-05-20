@@ -1,14 +1,19 @@
 // Packages
+import _ from 'lodash';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
+// Utilities
 import {
   getBudgets,
-  getDestinationDetails,
-  getDestinations,
-  getInterests,
-  getRecentSearches,
   getTravelers,
-  incrementSearches
+  getInterests,
+  getDestinations,
+  incrementSearches,
+  getRecentSearches,
+  getDestinationDetails
 } from './api';
+
+// Interfaces
 import { DestinationProps } from '@shared/types/Destination';
 
 // Actions
@@ -88,6 +93,34 @@ export const getBudgetsAction = createAsyncThunk('budget/list', async (payload, 
     rejectWithValue(error.response?.data?.message);
   }
 });
+
+export const getTravelPreferencesAction = createAsyncThunk(
+  'travel/preferences',
+  async (payload, { rejectWithValue, dispatch, getState }) => {
+    try {
+      let response = null;
+
+      const { destination } = getState();
+      const { travelers, interests, budgets } = destination;
+
+      if (_.isEmpty(travelers) || _.isEmpty(interests) || _.isEmpty(budgets)) {
+        response = await Promise.all([
+          dispatch(getTravelersAction()),
+          dispatch(getInterestsAction()),
+          dispatch(getBudgetsAction())
+        ]);
+      }
+
+      console.debug('[getTravelPreferencesAction - response] :: ', response);
+
+      return response;
+    } catch (error: any) {
+      console.error('[getTravelersAction - error] :: ', error);
+
+      rejectWithValue(error.response?.data?.message);
+    }
+  }
+);
 
 export const getRecentSearchesAction = createAsyncThunk('search/recent', async (payload, { rejectWithValue }) => {
   try {

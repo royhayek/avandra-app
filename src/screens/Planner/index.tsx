@@ -21,7 +21,6 @@ import RegularButton from '@shared/components/Buttons/Regular';
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { getUserId } from '@redux/user/slice';
-import { useSocketSetup } from '@shared/utils';
 import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
@@ -51,8 +50,6 @@ const PlannerScreen = () => {
 
   const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
   const isLastStep = _.isEqual(plannerStep, steps.length - 1);
-
-  const { isConnected, socketId, progress } = useSocketSetup(isLastStep);
 
   // Callbacks
   const updatePlannerStep = useCallback((step: number) => dispatch(plannerActions.updatePlannerStep(step)), [dispatch]);
@@ -97,21 +94,23 @@ const PlannerScreen = () => {
     }
   }, [dispatch, plannerPayload, plannerStep, updatePlannerStep]);
 
-  const handleSubmitPress = useCallback(async () => {
-    let response = null;
+  const generateTrip = useCallback(
+    async (socketId: string) => {
+      const response = await dispatchThunk(generateTripAction({ ...plannerPayload, user: userId, socketId }));
+      setGenerating(false);
 
-    console.debug('[handleSubmitPress] :: ', { socketId, isConnected });
+      if (response?.payload?.success) {
+        navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+        navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
+        dispatch(plannerActions.reset());
+      }
+    },
+    [dispatch, dispatchThunk, navigation, plannerPayload, userId]
+  );
 
+  const handleSubmitPress = useCallback(() => {
     setGenerating(true);
-    response = await dispatchThunk(generateTripAction({ ...plannerPayload, user: userId, socketId }));
-    setGenerating(false);
-
-    if (response?.payload?.success) {
-      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-      navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
-      dispatch(plannerActions.reset());
-    }
-  }, [dispatch, dispatchThunk, isConnected, navigation, plannerPayload, socketId, userId]);
+  }, []);
 
   const handleOnBackPress = useCallback(() => {
     if (plannerStep === 0) {
@@ -176,6 +175,7 @@ const PlannerScreen = () => {
     plannerStep,
     theme.colors.dark,
     theme.colors.gray,
+    handleOnBackPress,
     renderCancelButton,
     handleOnCancelPress,
     theme.colors.primary
@@ -201,7 +201,7 @@ const PlannerScreen = () => {
       {steps[plannerStep]}
       {renderFooter()}
 
-      <GenerationModal visible={generating} progress={progress} />
+      {generating && <GenerationModal onGenerate={generateTrip} />}
     </View>
   );
 };

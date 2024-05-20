@@ -4,6 +4,7 @@
          <domain includeSubdomains="true">localhost</domain>
          <domain includeSubdomains="true">0.0.0.1</domain>
          <domain includeSubdomains="true">172.20.10.14</domain>
+        <domain includeSubdomains="true">avandraapp.com</domain>
         <domain includeSubdomains="true">wondrous-app-fs8jj.ondigitalocean.app</domain>
     </domain-config>
 

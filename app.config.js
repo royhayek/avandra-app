@@ -1,9 +1,9 @@
 module.exports = {
   expo: {
-    name: 'Wondrous',
-    slug: 'trippify',
-    version: '1.1.0',
-    scheme: "wondrous",
+    name: 'Avandra',
+    slug: 'avandra',
+    version: '1.0.0',
+    scheme: 'avandra',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
@@ -20,19 +20,19 @@ module.exports = {
       buildNumber: '1',
       supportsTablet: true,
       usesAppleSignIn: true,
-      bundleIdentifier: 'com.nextgenappsdev.trippify',
+      bundleIdentifier: 'com.avandraapp.avandra',
       googleServicesFile: './GoogleService-Info.plist',
       config: {
         usesNonExemptEncryption: false,
         googleMapsApiKey: '***REMOVED***'
       },
-      associatedDomains: ['applinks:wondrous-app-fs8jj.ondigitalocean.app'],
+      associatedDomains: ['applinks:avandraapp.com', 'applinks:avandra-cms-cqt25.ondigitalocean.app'],
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
-          'This app users your location information while the app is running in the foreground.',
+          'This app uses your location information while the app is running in the foreground.',
         CFBundleURLTypes: [
           {
-            CFBundleURLSchemes: ['com.googleusercontent.apps.48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v']
+            CFBundleURLSchemes: ['com.googleusercontent.apps.860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu', 'avandra']
           }
         ],
         ExpoLocalization_supportsRTL: true,
@@ -47,7 +47,7 @@ module.exports = {
       }
     },
     updates: {
-      url: 'https://u.expo.dev/7435fea4-bc85-4a71-8526-db121810f0ed',
+      url: 'https://u.expo.dev/b3677f11-1da4-4381-b67d-2229f6e0ba34',
       requestHeaders: {
         'expo-runtime-version': 'expoVersion',
         'expo-channel-name': 'production'
@@ -64,8 +64,8 @@ module.exports = {
           apiKey: '***REMOVED***'
         }
       },
-      package: 'com.nextgenappsdev.trippify',
-      versionCode: 2,
+      package: 'com.avandraapp.avandra',
+      versionCode: 1,
       googleServicesFile: './google-services.json',
       permissions: ['android.permission.INTERNET', 'android.permission.ACCESS_NETWORK_STATE'],
       intentFilters: [
@@ -74,7 +74,7 @@ module.exports = {
           data: [
             {
               scheme: 'https',
-              host: 'wondrous-app-fs8jj.ondigitalocean.app',
+              host: 'avandraapp.com',
               pathPrefix: '/'
             }
           ],
@@ -87,10 +87,10 @@ module.exports = {
       favicon: './assets/favicon.png'
     },
     extra: {
-      googleMapsApiKey: '***REMOVED***',
+      // googleMapsApiKey: '***REMOVED***',
       supportsRTL: true,
       eas: {
-        projectId: '7435fea4-bc85-4a71-8526-db121810f0ed'
+        projectId: 'b3677f11-1da4-4381-b67d-2229f6e0ba34'
       },
       apiUrl: process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api'
     },
@@ -124,7 +124,7 @@ module.exports = {
         {
           appID: '2319037778292908',
           clientToken: '***REMOVED***',
-          displayName: 'Wondrous',
+          displayName: 'Avandra',
           scheme: 'fb2319037778292908'
         }
       ],

@@ -5,9 +5,9 @@ import getEnvVars from '../../../environment';
 import { TestIds } from 'react-native-google-mobile-ads';
 
 const state = store.getState();
-const { serverApiUrl } = getEnvVars();
+const { serverUrl } = getEnvVars();
 
-export const PUBLIC_URL = `${serverApiUrl?.replace('/api', '')}/uploads`;
+export const PUBLIC_URL = `${serverUrl}/uploads`;
 
 // Place your rewarded ad unit ids heres
 export const REWARDED_AD_UNIT_ID = Platform.select({
@@ -23,3 +23,7 @@ export const Endpoints = {
   TEXT_COMPLETIONS: 'completions',
   TEXT_COMPLETIONS_TURBO: 'chat/completions'
 };
+
+export const DEVICE_ID_KEY = 'deviceId';
+
+export const GOOGLE_PLACES_API_KEY = '***REMOVED***';

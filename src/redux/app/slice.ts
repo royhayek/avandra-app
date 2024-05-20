@@ -16,10 +16,11 @@ const initialState: AppInitialState = {
   },
   language: 'en',
   plannerStep: 0,
+  walkthrough: [],
   deviceUuid: null,
   messagesCount: 0,
   subscriptions: [],
-  walkthrough: [],
+  deepLinkData: null,
   lastSentDate: null,
   networkError: null,
   themeMode: 'default',
@@ -66,6 +67,12 @@ export const appSlice = createSlice({
     },
     clearNetworkError: (state) => {
       state.networkError = null;
+    },
+    setDeepLinkData: (state, action) => {
+      state.deepLinkData = action.payload;
+    },
+    clearDeepLinkData: (state) => {
+      state.deepLinkData = null;
     }
   },
   extraReducers: (builder) => {
@@ -102,6 +109,8 @@ export const getWalkthrough = createSelector(_app, (data) => data.walkthrough);
 export const getMessagesCount = createSelector(_app, (data) => data.messagesCount);
 
 export const getSubscriptions = createSelector(_app, (data) => data.subscriptions);
+
+export const selectDeepLinkData = createSelector(_app, (data) => data.deepLinkData);
 
 export const selectNetworkError = createSelector(_app, (data) => data.networkError);
 

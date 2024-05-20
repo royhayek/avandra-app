@@ -1,6 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
+import Share, { ShareOptions } from 'react-native-share';
 import React, { useCallback, useState, useRef } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -17,7 +18,7 @@ import { View, TouchableOpacity, ImageBackground } from 'react-native';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { formatDate, useSocketSetup } from '@shared/utils';
+import { formatDate } from '@shared/utils';
 import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { deleteTripAction, generateTripAction } from '@redux/itinerary/thunks';
@@ -43,7 +44,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
   const dispatchThunk = useAppThunkDispatch();
 
   // Statics
-  const { user, image, payload, status } = item || {};
+  const { _id, user, image, payload, status } = item || {};
   const { name, country, traveler, fromDate } = payload || {};
 
   const isExpired = !!String(status).match(/expired/i);
@@ -58,8 +59,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
   const bottomSheetRef = useRef<BottomSheetMethods>();
   const optionsPickerRef = useRef<BottomSheetMethods>(null);
 
-  const { socketId, progress } = useSocketSetup(true);
-
   // Callbacks
   const handleSheetClose = useCallback(() => bottomSheetRef.current?.close(), []);
 
@@ -67,14 +66,29 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
   const handleOpenOptionsMenu = useCallback(() => optionsPickerRef.current?.expand(), []);
 
-  const handleCloseOptionsMenu = useCallback(() => optionsPickerRef.current?.collapse(), []);
+  const handleCloseOptionsMenu = useCallback(() => optionsPickerRef.current?.close(), []);
 
-  const handleTextPress = useCallback(() => navigation.navigate('TripDetails', { _id: item._id }), [item, navigation]);
+  const handleTextPress = useCallback(() => navigation.navigate('TripDetails', { _id: item?._id }), [item, navigation]);
 
   const handleDeleteHistory = useCallback(async () => {
     await dispatchThunk(deleteTripAction({ tripId: item?._id, userId: item?.user }));
     handleSheetClose();
   }, [dispatchThunk, handleSheetClose, item?._id, item?.user]);
+
+  const onGenerate = useCallback(
+    async (socketId: string) => {
+      const response = await dispatchThunk(
+        generateTripAction({ ...payload, _id: item?._id, user, regenerate: true, socketId })
+      );
+
+      setRegenerating(false);
+
+      if (response?.payload?.success) {
+        navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
+      }
+    },
+    [dispatchThunk, item?._id, navigation, payload, user]
+  );
 
   const handleTripMenuItemPress = useCallback(
     async (key: string) => {
@@ -88,21 +102,22 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
         case 'regenerate':
           setRegenerating(true);
 
-          // eslint-disable-next-line no-case-declarations
-          const response = await dispatchThunk(
-            generateTripAction({ ...payload, _id: item._id, user, regenerate: true, socketId })
-          );
-
-          setRegenerating(false);
-
-          if (response?.payload?.success) {
-            navigation.navigate('TripDetails', { _id: response?.payload?.result._id });
-          }
-
           break;
 
         case 'share':
-          console.debug('Share Trip');
+          /* eslint-disable no-case-declarations */
+          const message = `Join my planned trip to ${name}!`;
+          const deepLink = `https://avandraapp.com/share/trip/${_id}`;
+
+          const shareOptions: ShareOptions = {
+            message: `${message}\n${deepLink}`,
+            failOnCancel: false
+          };
+
+          // Share the content
+          Share.open(shareOptions);
+          /* eslint-enable no-case-declarations */
+
           break;
 
         case 'delete':
@@ -113,17 +128,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
           break;
       }
     },
-    [
-      user,
-      payload,
-      socketId,
-      item?._id,
-      navigation,
-      dispatchThunk,
-      handleTextPress,
-      handleDeletePress,
-      handleCloseOptionsMenu
-    ]
+    [_id, name, handleTextPress, handleDeletePress, handleCloseOptionsMenu]
   );
 
   // Renderer Vars
@@ -202,11 +207,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
             <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
 
             <View style={styles.infoItemContainer}>
-              <Feather
-                name="calendar"
-                size={ms(small ? ms(15) : ms(18))}
-                color={isExpired ? theme.colors.gray[400] : theme.dark ? theme.colors.white : theme.colors.black}
-              />
+              <Feather name="calendar" style={styles.calendarIcon} size={ms(small ? ms(15) : ms(18))} />
               <Text variant="medium" style={styles.date}>
                 {formatDate(fromDate, 'MMMM DD, YYYY')}
               </Text>
@@ -226,7 +227,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
           resizeMode="cover"
           style={styles.cityImage}
           imageStyle={{ borderRadius: ms(16) }}
-          source={{ uri: image, cache: 'force-cache' }}>
+          source={{
+            uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}`,
+            cache: 'force-cache'
+          }}>
           {hasDelete && (
             <IconButton
               size={ms(20)}
@@ -282,7 +286,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
             )}
           </TouchableOpacity>
 
-          <GenerationModal visible={regenerating} regenerating={regenerating} progress={progress} />
+          {regenerating && <GenerationModal regenerating={regenerating} onGenerate={onGenerate} />}
         </>
       ) : (
         <TouchableOpacity key={index} disabled={isExpired} onPress={() => handleTextPress(item)}>

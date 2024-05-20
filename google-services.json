@@ -1,18 +1,31 @@
 {
   "project_info": {
-    "project_number": "1056052970187",
-    "project_id": "trippify-4c3bd",
-    "storage_bucket": "trippify-4c3bd.appspot.com"
+    "project_number": "860918187904",
+    "project_id": "avandra-f6c62",
+    "storage_bucket": "avandra-f6c62.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1056052970187:android:4df78d329d798f8e4a914e",
+        "mobilesdk_app_id": "1:860918187904:android:c44c1100b248f8798ba365",
         "android_client_info": {
-          "package_name": "com.nextgenappsdev.trippify"
+          "package_name": "com.avandraapp.avandra"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "860918187904-hl9b5h4n8a62b6vaesirg54h330as3cp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.avandraapp.avandra",
+            "certificate_hash": "a8acc98f3bea6e050b1122a3c96705e74da0bf87"
+          }
+        },
+        {
+          "client_id": "860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "***REMOVED***"
@@ -20,7 +33,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "860918187904-d1n6oe50a2ucr06h5c72kuuha0encn3j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.avandraapp.avandra",
+                "app_store_id": "6502790120"
+              }
+            }
+          ]
         }
       }
     }

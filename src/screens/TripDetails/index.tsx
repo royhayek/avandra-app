@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import { ms } from 'react-native-size-matters';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -21,31 +21,31 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 // Utilities
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
+import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 import { getTripAction } from '@redux/itinerary/thunks';
-import { useAppSelector, useAppThunkDispatch } from '@app/store';
+import { appActions, selectDeepLinkData } from '@redux/app/slice';
 import { selectTrip, selectTripLoading } from '@redux/itinerary/slice';
-import { PUBLIC_URL } from '@shared/constants';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
+import { ShareDataProps } from '@shared/types/ShareData';
+
 interface TripDetailsScreenProps {}
 
 interface RouteParams {
-  trip: {
-    _id: string;
-  };
+  _id: string;
 }
 
 // Component
 const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   // Redux
+  const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
   const trip = useAppSelector(selectTrip);
+  const deepLinkData = useAppSelector(selectDeepLinkData);
   const isLoadingTrip = useAppSelector(selectTripLoading);
-
-  const { flag, image, description, payload, tips, places, location } = trip || {};
-  const { name, country, budget, traveler, fromDate, toDate } = payload || {};
 
   // Statics
   const theme = useAppTheme();
@@ -55,6 +55,13 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const { _id } = route?.params as RouteParams;
+
+  const [tripId, setTripId] = useState<string>(_id);
+
+  const { flag, image, description, payload, tips, places, location, status } = trip || {};
+  const { name, country, budget, traveler, fromDate, toDate } = payload || {};
+
+  const isExpired = !!String(status).match(/expired/i);
 
   const markers = useMemo(() => {
     const placesList = _.flatMap(places, (place) => place.list);
@@ -69,13 +76,9 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   );
 
   const handleEditItinerary = useCallback(
-    () => navigation.navigate('TripModification', { tripId: _id, places, location }),
-    [_id, location, navigation, places]
+    () => navigation.navigate('TripModification', { tripId, places, location }),
+    [location, navigation, places, tripId]
   );
-
-  const fetchTrip = useCallback(() => {
-    dispatchThunk(getTripAction(_id));
-  }, [_id, dispatchThunk]);
 
   // Effects
   useEffect(() => {
@@ -83,9 +86,29 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   }, [navigation]);
 
   useEffect(() => {
-    fetchTrip();
+    if (tripId) dispatchThunk(getTripAction(tripId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [tripId]);
+
+  useEffect(() => {
+    // extract trip id from deep link data, path looks like this "trip/:id"
+    if (deepLinkData) {
+      const path = deepLinkData?.path;
+      const id = _.last(_.split(path, '/'));
+
+      if (id) {
+        setTripId(id);
+        dispatch(appActions.clearDeepLinkData());
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deepLinkData?.path]);
+
+  // Renderers Vars
+  const shareData: ShareDataProps = {
+    message: `Join my planned trip to ${name}!`,
+    deepLink: `https://avandraapp.com/share/trip/${tripId}`
+  };
 
   // Renderers
   const renderHeader = () => (
@@ -94,7 +117,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         style={styles.image}
         source={{ uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}` }}
       />
-      <Header back share absolute />
+      <Header back share absolute shareData={shareData} />
     </View>
   );
 
@@ -148,7 +171,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </Text>
 
         <View style={styles.mapContainer}>
-          {/* <MapView
+          <MapView
             style={styles.map}
             focusable={false}
             zoomEnabled={false}
@@ -175,7 +198,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
               (place, index) =>
                 place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
             )}
-          </MapView> */}
+          </MapView>
         </View>
       </View>
 
@@ -196,7 +219,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
     return (
       <View>
         <Shimmer style={styles.curvedContainer} />
-        <Header back share absolute />
+        <Header back share absolute shareData={shareData} />
         <View style={styles.shimmerBody}>
           <Shimmer style={styles.shimmerTitle} />
           <Shimmer style={styles.shimmerDate} />
@@ -220,7 +243,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         {renderContent()}
       </ScrollView>
 
-      {renderFab()}
+      {!isExpired && renderFab()}
     </>
   );
 };

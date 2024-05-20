@@ -1,7 +1,7 @@
 // Packages
 import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
-import * as Linking from 'expo-linking';
+import 'react-native-get-random-values';
 import { Settings } from 'react-native-fbsdk-next';
 import * as Notifications from 'expo-notifications';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -12,12 +12,11 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import Root from './src/app/Root';
 import * as SplashScreen from 'expo-splash-screen';
 
-// Utils
+// Utilities
 import './src/app/api';
 import './src/app/i18n';
 import 'react-native-url-polyfill/auto';
 import { persistor, store } from './src/app/store';
-import { snackbarActions } from '@redux/snackbar/slice';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -40,22 +39,9 @@ const fetchFonts = () => {
   });
 };
 
-const prefix = Linking.makeUrl('/');
-
 export default function App() {
   // Statics
   const [appIsReady, setAppIsReady] = useState(false);
-  const [deepLinkData, setDeepLinkData] = useState(null);
-
-  const linking = {
-    prefixes: [prefix],
-    config: {
-      screens: {
-        Home: 'home',
-        SettingsStack: 'settings'
-      }
-    }
-  }
 
   // Callbacks
   const prepare = useCallback(async () => {
@@ -84,12 +70,6 @@ export default function App() {
     }
   }, [appIsReady]);
 
-  const handleDeepLink = useCallback((event) => {
-    const data = Linking.parse(event.url);
-    dispatchEvent(snackbarActions.showSnackbar({ title: 'Opened using deeplink: ', message: data }))
-    setDeepLinkData(data);
-  }, [])
-
   // Effects
   useEffect(() => {
     prepare();
@@ -98,28 +78,12 @@ export default function App() {
 
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
-      webClientId: '48273391374-2q2gchl5vo804peqimv5f50mgu3l21qs.apps.googleusercontent.com',
-      iosClientId: '48273391374-hldk5edn4i23k67oa9pcmv6aieb8014v.apps.googleusercontent.com', // Taken from google cloud console
+      webClientId: '860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu.apps.googleusercontent.com',
+      iosClientId: '860918187904-d1n6oe50a2ucr06h5c72kuuha0encn3j.apps.googleusercontent.com', // Taken from google cloud console
       offlineAccess: false
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const getInitialUrl = async () => {
-      const initialURL = await Linking.getInitialURL();
-      if (initialURL) setDeepLinkData(Linking.parse(initialURL));
-    }
-
-    Linking.addEventListener('url', handleDeepLink);
-    if (!data) {
-      getInitialUrl();
-    }
-
-    return () => {
-      Linking.removeEventListener('url');
-    }
-  }, [])
 
   // Renderers
   if (!appIsReady) {
@@ -129,7 +93,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Root onLayout={onLayoutRootView} linking={linking} />
+        <Root onLayout={onLayoutRootView} />
       </PersistGate>
     </Provider>
   );

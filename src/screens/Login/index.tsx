@@ -45,7 +45,7 @@ const Login: React.FC = () => {
   // Callbacks
   const handleRegisterUser = useCallback(
     async (type: string, payload: SocialLoginProps, socialId: string | null | undefined) => {
-      console.info(`[handleSignInPress - ${type}] ::`, { payload });
+      // console.info(`[handleSignInPress - ${type}] ::`, { payload });
 
       const response = await dispatchThunk(registerAction(payload));
 
