@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { View } from 'react-native';
@@ -11,6 +11,7 @@ import TravelOptionsList from '../TravelOptionsList';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectBudgetsList } from '@redux/destination/slice';
 import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
@@ -25,8 +26,8 @@ const Step4 = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const budgetsList = useSelector(selectBudgetsList);
-  const plannerPayload = useSelector(selectPlannerPayload);
+  const budgetsList = useAppSelector(selectBudgetsList);
+  const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();

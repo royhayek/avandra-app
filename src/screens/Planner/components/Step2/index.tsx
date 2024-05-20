@@ -1,6 +1,6 @@
 // Packages
 import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
@@ -16,6 +16,7 @@ import ToggleButtons from '@shared/components/ToggleButtons';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
 
@@ -29,7 +30,7 @@ const Step2 = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const plannerPayload = useSelector(selectPlannerPayload);
+  const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();

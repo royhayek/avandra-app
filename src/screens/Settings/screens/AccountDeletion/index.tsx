@@ -1,6 +1,5 @@
 // Packages
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
 import React, { useCallback, useState } from 'react';
 
 // Components
@@ -17,7 +16,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { deleteAccountAction } from '@redux/user/thunks';
 import { selectUserId, userActions } from '@redux/user/slice';
-import { useAppDispatch, useAppThunkDispatch } from '@app/store';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -35,7 +34,7 @@ const AccountDeletionModal: React.FC<AccountDeletionModalProps> = ({ visible, on
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const userId = useSelector(selectUserId);
+  const userId = useAppSelector(selectUserId);
 
   // Statics
   const theme = useAppTheme();

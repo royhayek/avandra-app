@@ -1,7 +1,6 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 
 // Components
@@ -11,6 +10,7 @@ import { Dimensions, ScrollView, View, useWindowDimensions } from 'react-native'
 
 // Utilities
 import makeStyles from './styles';
+import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectConfiguration } from '@redux/app/slice';
 
@@ -22,7 +22,7 @@ interface RouteParams {
 // Component
 const InfoScreen = () => {
   // Redux
-  const config = useSelector(selectConfiguration);
+  const config = useAppSelector(selectConfiguration);
 
   // Statics
   const route = useRoute();

@@ -1,10 +1,11 @@
 // Packages
+import { useDispatch } from 'react-redux';
 import React, { useCallback } from 'react';
 import { Snackbar, Text } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
 
 // Utilities
 import makeStyles from './styles';
+import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { snackbarActions, selectSnackBar } from '@redux/snackbar/slice';
 
@@ -13,7 +14,7 @@ const CustomSnackbar = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const snackbarSelect = useSelector(selectSnackBar);
+  const snackbarSelect = useAppSelector(selectSnackBar);
 
   // Statics
   const theme = useAppTheme();

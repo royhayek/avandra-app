@@ -1,6 +1,5 @@
 // Packages
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
@@ -17,17 +16,16 @@ import RegularButton from '@shared/components/Buttons/Regular';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppSelector } from '@app/store';
 import { PUBLIC_URL } from '@shared/constants';
+import { useAppTheme } from '@shared/assets/theme';
 import { selectWalkthrough } from '@redux/app/slice';
 import makeCommonStyles from '@shared/assets/styles';
-
-// Interfaces
-import { useAppTheme } from '@shared/assets/theme';
 
 // Component
 const OnBoarding = () => {
   // Redux
-  const walkthroughList = useSelector(selectWalkthrough);
+  const walkthroughList = useAppSelector(selectWalkthrough);
 
   // Statics
   const theme = useAppTheme();

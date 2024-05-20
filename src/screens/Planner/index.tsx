@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
+import { useDispatch } from 'react-redux';
 import * as Progress from 'react-native-progress';
-import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback, useState, useEffect } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -21,11 +21,11 @@ import GenerationModal from '@shared/components/GenerationModal';
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { selectUserId } from '@redux/user/slice';
-import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { generateTripAction } from '@redux/itinerary/thunks';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { plannerActions, selectPlannerStep, selectPlannerPayload } from '@redux/planner/slice';
 
 // Component
@@ -34,9 +34,9 @@ const PlannerScreen = () => {
   const dispatch = useDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const userId = useSelector(selectUserId);
-  const plannerStep = useSelector(selectPlannerStep);
-  const plannerPayload = useSelector(selectPlannerPayload);
+  const userId = useAppSelector(selectUserId);
+  const plannerStep = useAppSelector(selectPlannerStep);
+  const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
