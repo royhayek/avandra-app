@@ -11,26 +11,26 @@ export const dummy_faqs = [
       {
         _id: '1',
         question: {
-          en: 'What is Tripify?',
-          fr: "Qu'est-ce que Tripify?",
+          en: 'What is Avandra?',
+          fr: "Qu'est-ce que Avandra?",
           ar: 'ما هو تريبيفاي؟'
         },
         answer: {
-          en: 'Tripify is a travel planning and exploration platform that helps you discover, plan, and organize your dream trips and adventures.',
-          fr: "Tripify est une plateforme de planification et d'exploration de voyages qui vous aide à découvrir, planifier et organiser vos voyages et aventures de rêve.",
+          en: 'Avandra is a travel planning and exploration platform that helps you discover, plan, and organize your dream trips and adventures.',
+          fr: "Avandra est une plateforme de planification et d'exploration de voyages qui vous aide à découvrir, planifier et organiser vos voyages et aventures de rêve.",
           ar: 'تريبيفاي هو منصة تخطيط واستكشاف السفر تساعدك على اكتشاف وتخطيط وتنظيم رحلاتك ومغامراتك الحلم.'
         }
       },
       {
         _id: '2',
         question: {
-          en: 'Is Tripify free to use?',
-          fr: 'Est-ce que Tripify est gratuit?',
+          en: 'Is Avandra free to use?',
+          fr: 'Est-ce que Avandra est gratuit?',
           ar: 'هل تريبيفاي مجاني للاستخدام؟'
         },
         answer: {
-          en: 'Yes, Tripify is free to use. You can start planning your trips and exploring new destinations without any cost. However, we offer premium features and services that you can subscribe to.',
-          fr: 'Oui, Tripify est gratuit. Vous pouvez commencer à planifier vos voyages et à découvrir de nouvelles destinations sans aucun coût. Cependant, nous proposons des fonctionnalités et services premium auxquels vous pouvez vous abonner.',
+          en: 'Yes, Avandra is free to use. You can start planning your trips and exploring new destinations without any cost. However, we offer premium features and services that you can subscribe to.',
+          fr: 'Oui, Avandra est gratuit. Vous pouvez commencer à planifier vos voyages et à découvrir de nouvelles destinations sans aucun coût. Cependant, nous proposons des fonctionnalités et services premium auxquels vous pouvez vous abonner.',
           ar: 'نعم، تريبيفاي مجاني للاستخدام. يمكنك البدء في تخطيط رحلاتك واستكشاف وجهات جديدة دون أي تكلفة. ومع ذلك، نقدم ميزات وخدمات متميزة يمكنك الاشتراك فيها.'
         }
       },
@@ -226,39 +226,39 @@ export const dummy_faqs = [
       {
         _id: '1',
         question: {
-          en: 'What is Tripify Premium?',
-          fr: "Qu'est-ce que Tripify Premium?",
+          en: 'What is Avandra Premium?',
+          fr: "Qu'est-ce que Avandra Premium?",
           ar: 'ما هو تريبيفاي بريميوم؟'
         },
         answer: {
-          en: 'Tripify Premium is a subscription-based service that offers premium features and services to its users. You can subscribe to Tripify Premium to access exclusive features and services.',
-          fr: "Tripify Premium est un service basé sur l'abonnement qui propose des fonctionnalités et des services premium à ses utilisateurs. Vous pouvez vous abonner à Tripify Premium pour accéder à des fonctionnalités et services exclusifs.",
+          en: 'Avandra Premium is a subscription-based service that offers premium features and services to its users. You can subscribe to Avandra Premium to access exclusive features and services.',
+          fr: "Avandra Premium est un service basé sur l'abonnement qui propose des fonctionnalités et des services premium à ses utilisateurs. Vous pouvez vous abonner à Avandra Premium pour accéder à des fonctionnalités et services exclusifs.",
           ar: 'تريبيفاي بريميوم هو خدمة تعتمد على الاشتراك تقدم ميزات وخدمات متميزة لمستخدميها. يمكنك الاشتراك في تريبيفاي بريميوم للوصول إلى ميزات وخدمات حصرية.'
         }
       },
       {
         _id: '2',
         question: {
-          en: 'How can I subscribe to Tripify Premium?',
-          fr: "Comment puis-je m'abonner à Tripify Premium?",
+          en: 'How can I subscribe to Avandra Premium?',
+          fr: "Comment puis-je m'abonner à Avandra Premium?",
           ar: 'كيف يمكنني الاشتراك في تريبيفاي بريميوم؟'
         },
         answer: {
-          en: 'You can subscribe to Tripify Premium by going to the settings page and clicking on the subscribe button. You can choose a subscription plan and make the payment to activate your premium subscription.',
-          fr: "Vous pouvez vous abonner à Tripify Premium en allant sur la page des paramètres et en cliquant sur le bouton s'abonner. Vous pouvez choisir un plan d'abonnement et effectuer le paiement pour activer votre abonnement premium.",
+          en: 'You can subscribe to Avandra Premium by going to the settings page and clicking on the subscribe button. You can choose a subscription plan and make the payment to activate your premium subscription.',
+          fr: "Vous pouvez vous abonner à Avandra Premium en allant sur la page des paramètres et en cliquant sur le bouton s'abonner. Vous pouvez choisir un plan d'abonnement et effectuer le paiement pour activer votre abonnement premium.",
           ar: 'يمكنك الاشتراك في تريبيفاي بريميوم عن طريق الانتقال إلى صفحة الإعدادات والنقر على زر الاشتراك. يمكنك اختيار خطة الاشتراك وإجراء الدفع لتفعيل اشتراكك الرئيسي.'
         }
       },
       {
         _id: '3',
         question: {
-          en: 'How can I cancel my Tripify Premium subscription?',
-          fr: 'Comment puis-je annuler mon abonnement à Tripify Premium?',
+          en: 'How can I cancel my Avandra Premium subscription?',
+          fr: 'Comment puis-je annuler mon abonnement à Avandra Premium?',
           ar: 'كيف يمكنني إلغاء اشتراكي في تريبيفاي بريميوم؟'
         },
         answer: {
-          en: 'You can cancel your Tripify Premium subscription by going to the settings page and clicking on the cancel subscription button. Please note that you will lose access to premium features and services after canceling your subscription.',
-          fr: "Vous pouvez annuler votre abonnement à Tripify Premium en allant sur la page des paramètres et en cliquant sur le bouton d'annulation de l'abonnement. Veuillez noter que vous perdrez l'accès aux fonctionnalités et services premium après l'annulation de votre abonnement.",
+          en: 'You can cancel your Avandra Premium subscription by going to the settings page and clicking on the cancel subscription button. Please note that you will lose access to premium features and services after canceling your subscription.',
+          fr: "Vous pouvez annuler votre abonnement à Avandra Premium en allant sur la page des paramètres et en cliquant sur le bouton d'annulation de l'abonnement. Veuillez noter que vous perdrez l'accès aux fonctionnalités et services premium après l'annulation de votre abonnement.",
           ar: 'يمكنك إلغاء اشتراكك في تريبيفاي بريميوم عن طريق الانتقال إلى صفحة الإعدادات والنقر على زر إلغاء الاشتراك. يرجى ملاحظة أنك ستفقد الوصول إلى ميزات وخدمات الاشتراك بريميوم بعد إلغاء الاشتراك.'
         }
       }

@@ -1,6 +1,6 @@
 // Packages
-import { persistCombineReducers, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { persistCombineReducers, persistReducer } from 'redux-persist';
 
 // Slices
 import appReducer from './app/slice';
@@ -14,7 +14,7 @@ import snackbarSliceReducer from './snackbar/slice';
 import destinationReducer from './destination/slice';
 
 const persistStorageConfig = {
-  key: 'ai-trip-app',
+  key: 'avandra-app',
   storage: AsyncStorage,
   timeout: 0
 };
@@ -24,12 +24,12 @@ const appPersistConfig = {
   storage: AsyncStorage,
   blacklist: [
     'config',
-    'messagesCount',
-    'lastSentDate',
-    'subProducts',
-    'subscriptions',
-    'ownedSubscriptions',
-    'networkError'
+    'plannerStep',
+    'walkthrough',
+    'deepLinkData',
+    'networkError',
+    'currentOffering',
+    'subscriptionState',
   ]
 };
 

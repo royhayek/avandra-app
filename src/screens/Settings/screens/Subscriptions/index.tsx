@@ -8,12 +8,14 @@ import LottieView from 'lottie-react-native';
 import { FlatList, View } from 'react-native';
 import PlanListItem from './components/PlanListItem';
 import SuccessUpgrade from './components/SuccessUpgrade';
+import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { dummy_subscriptions } from './data';
+import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
+import { selectCurrentOfferings } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -22,9 +24,8 @@ import { TranslateOptions } from 'i18n-js';
 const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`, options);
 
 const SubscriptionsScreen = () => {
-  // Redux
-  const isLoadingSubscriptions = false;
-  const plans = dummy_subscriptions;
+  // Redux  
+  const currentOfferings = useAppSelector(selectCurrentOfferings);
 
   // Statics
   const theme = useAppTheme();
@@ -32,8 +33,20 @@ const SubscriptionsScreen = () => {
 
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Callbacks
+  const handleRestorePurchase = () => {
+    try {
+      const restore = await Purchases.restorePurchases();
+      // ... check restored purchaserInfo to see if entitlement is now active
+    } catch (e) {
+      console.error('[handleRestorePurchase - error] :: ', error);
+    }
+  };
+
   // Renderers
-  if (_.isEmpty(plans)) {
+  const renderListHeader = () => <RegularButton title={_t('restore_purchase')} onPress={handleRestorePurchase} />;
+
+  if (_.isEmpty(currentOfferings)) {
     return (
       <View style={styles.emptyContainer}>
         <LottieView
@@ -51,16 +64,17 @@ const SubscriptionsScreen = () => {
   }
 
   if (isSuccess) {
-    return <SuccessUpgrade item={plans[0]} />;
+    return <SuccessUpgrade item={currentOfferings[0]} />;
   }
 
   return (
     <FlatList
-      data={plans}
+      data={currentOfferings}
       keyExtractor={(item) => item._id}
+      ListHeaderComponent={renderListHeader()}
       contentContainerStyle={styles.plansList}
       renderItem={({ item }) => (
-        <PlanListItem key={item._id} item={item} setIsSuccess={setIsSuccess} isLoading={isLoadingSubscriptions} />
+        <PlanListItem key={item._id} item={item} setIsSuccess={setIsSuccess}  />
       )}
     />
   );

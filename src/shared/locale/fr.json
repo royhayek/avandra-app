@@ -23,10 +23,10 @@
     },
     "onBoarding": {
       "walkthrough_title_1": "Découvrez votre prochaine aventure",
-      "walkthrough_desc_1": "Tripify organise des joyaux de voyage juste pour vous. Obtenez des recommandations de destinations personnalisées et commencez à construire le voyage de vos rêves.",
+      "walkthrough_desc_1": "Avandra organise des joyaux de voyage juste pour vous. Obtenez des recommandations de destinations personnalisées et commencez à construire le voyage de vos rêves.",
       "walkthrough_title_2": "Sauvegardez et planifiez vos aventures",
-      "walkthrough_desc_2": "Vous avez trouvé la destination de vos rêves ? Ajoutez-le à votre liste enregistrée pour plus tard. Tripify garde vos rêves de voyage organisés et à portée de main.",
-      "walkthrough_title_3": "Planification de voyage intelligente avec Tripify AI",
+      "walkthrough_desc_2": "Vous avez trouvé la destination de vos rêves ? Ajoutez-le à votre liste enregistrée pour plus tard. Avandra garde vos rêves de voyage organisés et à portée de main.",
+      "walkthrough_title_3": "Planification de voyage intelligente avec Avandra AI",
       "walkthrough_desc_3": "Laissez notre IA planifier un voyage détaillé adapté à vos préférences. Planification facile pour votre expérience inoubliable."
     },
     "login": {
@@ -46,7 +46,7 @@
       "male": "Masculin",
       "female": "Feminin",
       "success_title": "Vous êtes prêt!",
-      "success_desc": "Toutes nos félicitations! Vous faites désormais partie de la communauté Tripify. Vos expériences de voyage personnalisées vous attendent.",
+      "success_desc": "Toutes nos félicitations! Vous faites désormais partie de la communauté Avandra. Vos expériences de voyage personnalisées vous attendent.",
       "explore_destinations": "Explorer les destinations"
     },
     "navigation": {
@@ -158,7 +158,6 @@
       "subscription": "Abonnement",
       "saved_trips": "Voyages sauvegardés",
       "personal_info": "Information personnelle",
-      "restore_purchase": "Restaurer l'achat",
       "account_and_security": "Compte & Sécurité",
       "billing_and_subscriptions": "Facturation & Abonnements",
       "manage_subscription": "Facturation & Abonnements",
@@ -176,7 +175,7 @@
       "biometric_id": "ID biométrique",
       "face_id": "Identification faciale",
       "delete_account": "Supprimer le compte",
-      "delete_account_desc": "Supprimez définitivement votre compte et vos données de Tripify. Procéder avec prudence.",
+      "delete_account_desc": "Supprimez définitivement votre compte et vos données de Avandra. Procéder avec prudence.",
       "choose_language": "Choisir la Langue",
       "choose_theme": "Choisir le thème",
       "logout_confirmation": "Êtes-vous sûr de vouloir vous déconnecter?",
@@ -193,6 +192,7 @@
       }
     },
     "subscription": {
+      "restore_purchase": "Restaurer l'achat",
       "your_current_plan": "Votre plan actuel",
       "popular": "Populaire",
       "best_value": "Meilleure valeur",

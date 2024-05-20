@@ -15,6 +15,13 @@ export const REWARDED_AD_UNIT_ID = Platform.select({
   android: __DEV__ ? TestIds.REWARDED : state.app.config?.ads?.rewarded.android || ''
 });
 
+export const REVENUECAT_API_KEYS =  {
+  apple: "your_revenuecat_apple_api_key",
+  google: "your_revenuecat_google_api_key",
+} 
+
+export const ENTITLEMENT_ID = 'pro';
+
 export const Firebase = {
   CONFIGURATION_REF: 'configuration'
 };

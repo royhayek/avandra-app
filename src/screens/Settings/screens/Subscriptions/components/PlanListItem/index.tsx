@@ -1,22 +1,24 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
+import Purchases from 'react-native-purchases';
 
 // Components
 import { View } from 'react-native';
+import Shimmer from '@shared/components/Shimmer';
+import { CheckIcon } from '@shared/assets/icons';
 import { Divider, Text } from 'react-native-paper';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
-import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
+import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
+import { ENTITLEMENT_ID } from '@shared/constants';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { PlanProps } from '@shared/types/Plan';
-import { CheckIcon } from '@shared/assets/icons';
-import Shimmer from '@shared/components/Shimmer';
 
 interface PlanListItemProps {
   item: PlanProps;
@@ -41,8 +43,17 @@ const PlanListItem: React.FC<PlanListItemProps> = ({
 
   // Callbacks
   const handleSelectPlan = async () => {
-    console.info('[handleSelectPlan] :: pressed');
-    setIsSuccess(true);
+    try {
+      const { customerInfo } = await Purchases.purchasePackage(item);
+      if (typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined') {
+        // Unlock that great "pro" content
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      if (!error.userCancelled) {
+        console.debug('[handleSelectPlan - error] :: ', error);
+      }
+    }
   };
 
   // Renderers

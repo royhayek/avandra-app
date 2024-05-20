@@ -71,9 +71,9 @@ export const dummy_subscriptions: PlanProps[] = [
         ar: 'الوصول الحصري إلى مقالات ودليل السفر.'
       },
       {
-        en: 'Early access to new Tripify features and updates.',
-        fr: 'Accès anticipé aux nouvelles fonctionnalités et mises à jour de Tripify.',
-        ar: 'الوصول المبكر إلى ميزات وتحديثات Tripify الجديدة.'
+        en: 'Early access to new Avandra features and updates.',
+        fr: 'Accès anticipé aux nouvelles fonctionnalités et mises à jour de Avandra.',
+        ar: 'الوصول المبكر إلى ميزات وتحديثات Avandra الجديدة.'
       }
     ]
   },
@@ -196,9 +196,9 @@ export const dummy_subscriptions: PlanProps[] = [
         ar: 'جميع فوائد الهوى المتجول المحترف.'
       },
       {
-        en: "Lifetime access to Tripify's premium features.",
-        fr: 'Accès à vie aux fonctionnalités premium de Tripify.',
-        ar: 'الوصول مدى الحياة إلى ميزات Tripify الراقية.'
+        en: "Lifetime access to Avandra's premium features.",
+        fr: 'Accès à vie aux fonctionnalités premium de Avandra.',
+        ar: 'الوصول مدى الحياة إلى ميزات Avandra الراقية.'
       },
       {
         en: 'Never worry about subscription renewals.',

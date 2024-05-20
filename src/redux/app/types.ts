@@ -1,7 +1,16 @@
-import { WalkthroughProps } from '@shared/types/Walkthrough';
 import { ParsedURL } from 'expo-linking';
+import { PurchasesOffering } from 'react-native-purchases';
+import { WalkthroughProps } from '@shared/types/Walkthrough';
+import { SubscriptionStateProps } from "@shared/types/SubscriptionState";
 
 export interface AppInitialState {
+  language: string;
+  themeMode: string;
+  plannerStep: number;
+  deepLinkData: ParsedURL | null;
+  walkthrough: WalkthroughProps[];
+  currentOffering: PurchasesOffering | null;
+  subscriptionState: SubscriptionStateProps | null;
   config: {
     privacyPolicy: string;
     termsAndConditions: string;
@@ -10,15 +19,4 @@ export interface AppInitialState {
     message: string;
     status: number;
   } | null;
-  language: string;
-  themeMode: string;
-  plannerStep: number;
-  subscriptions: any[];
-  messagesCount: number;
-  deviceUuid: string | null;
-  lastSentDate: Date | null;
-  lastRewardedDate: Date | null;
-  ownedSubscription: any | null;
-  deepLinkData: ParsedURL | null;
-  walkthrough: WalkthroughProps[];
 }

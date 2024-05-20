@@ -73,7 +73,7 @@ const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({
         <Divider style={styles.divider} />
 
         <Text variant="large" style={styles.acknowledge}>
-          Thank you for upgrading to our Premium Adventurer plan. Your journey with Tripify just got even more exciting!
+          Thank you for upgrading to our Premium Adventurer plan. Your journey with Avandra just got even more exciting!
         </Text>
       </ScrollView>
 
