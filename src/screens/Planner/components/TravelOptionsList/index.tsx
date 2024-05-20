@@ -14,8 +14,8 @@ import { useAppTheme } from '@shared/assets/theme';
 import { TravelOptionProps } from '@shared/types/TravelOption';
 
 interface TravelOptionsListProps {
-  list: TravelOptionProps[];
   value: string;
+  list: TravelOptionProps[];
   setValue: (value: string) => void;
 }
 

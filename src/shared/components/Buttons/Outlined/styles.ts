@@ -1,6 +1,9 @@
+// Packages
+import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
+
+// Interfaces
 import { AppTheme } from '@shared/assets/theme';
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({

@@ -10,7 +10,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
 import { CircleAddDarkIcon, CircleAddLightIcon, CircleCheckIcon } from '@shared/assets/icons';
 
-// Utils
+// Utilities
 import makeStyles from './styles';
 import { formatAmount } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';

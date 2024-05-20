@@ -36,7 +36,6 @@ const BackButton: React.FC<BackButtonProps> = ({ style, onPressOut, ...props }) 
       size={ms(18)}
       style={[styles.container, style]}
       onPressOut={_.isFunction(onPressOut) ? onPressOut : () => navigation.goBack()}
-      // onPress={() => navigation.goBack()}
       icon={() => (
         <LeftChevron
           color={theme.dark ? theme.colors.white : theme.colors.black}

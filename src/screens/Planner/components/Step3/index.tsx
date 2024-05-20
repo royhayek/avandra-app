@@ -14,7 +14,7 @@ import makeStyles from './styles';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectInterestsList } from '@redux/destination/slice';
-import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
+import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -26,8 +26,8 @@ const Step3 = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const plannerPayload = useAppSelector(getPlannerPayload);
   const interestsList = useAppSelector(selectInterestsList);
+  const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();

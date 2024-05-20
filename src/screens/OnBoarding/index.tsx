@@ -1,24 +1,24 @@
 // Packages
 import _ from 'lodash';
 import { useSelector } from 'react-redux';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
 import Swiper from 'react-native-swiper';
-import Text from '@shared/components/Text';
+import { Text } from 'react-native-paper';
+import Indicator from './components/Indicator';
 import FastImage from 'react-native-fast-image';
-import Indicator from '@shared/components/Indicator';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { PUBLIC_URL } from '@shared/constants';
-import { getWalkthrough } from '@redux/app/slice';
+import { selectWalkthrough } from '@redux/app/slice';
 import makeCommonStyles from '@shared/assets/styles';
 
 // Interfaces
@@ -27,7 +27,7 @@ import { useAppTheme } from '@shared/assets/theme';
 // Component
 const OnBoarding = () => {
   // Redux
-  const walkthroughList = useSelector(getWalkthrough);
+  const walkthroughList = useSelector(selectWalkthrough);
 
   // Statics
   const theme = useAppTheme();

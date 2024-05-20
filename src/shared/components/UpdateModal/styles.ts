@@ -21,8 +21,8 @@ export default (theme: AppTheme) =>
       color: theme.colors.primary
     },
     description: {
-      textAlign: 'center',
-      fontFamily: 'urbanist-regular',
       marginTop: mvs(10),
+      textAlign: 'center',
+      fontFamily: 'urbanist-regular'
     }
   });

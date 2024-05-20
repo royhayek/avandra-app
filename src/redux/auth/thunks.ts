@@ -17,9 +17,7 @@ export const registerAction = createAsyncThunk(
 
       // console.debug('[registerAction] :: response', response);
 
-      if (response.data.success) {
-        dispatch(userActions.update({ data: response.data.user }));
-      }
+      if (response.data.success) dispatch(userActions.update({ data: response.data.user }));
 
       return response.data;
     } catch (error: any) {

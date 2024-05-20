@@ -4,11 +4,11 @@ import React, { MutableRefObject, RefObject } from 'react';
 
 // Components
 import {
+  Query,
   GooglePlaceData,
   GooglePlaceDetail,
   GooglePlacesAutocomplete,
-  GooglePlacesAutocompleteRef,
-  Query
+  GooglePlacesAutocompleteRef
 } from 'react-native-google-places-autocomplete';
 
 // Utilities

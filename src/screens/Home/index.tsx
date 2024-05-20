@@ -1,18 +1,19 @@
 // Packages
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useCallback } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 
 // Components
 import { ScrollView } from 'react-native';
 import PopularList from './components/PopularList';
-import SearchInput from '@shared/components/SearchInput';
+import SearchInput from './components/SearchInput';
 
 // Utilities
 import makeStyles from './styles';
 
 // Interfaces
 interface HomeScreenProps {}
+
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Component
 const HomeScreen: React.FC<HomeScreenProps> = () => {
@@ -22,10 +23,6 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
-  const handleSearchSubmit = useCallback((city: any) => {
-    console.info('[handleSearchSubmit] :: ', city);
-  }, []);
-
   const handleInputFocus = useCallback(() => navigation.navigate('Search'), [navigation]);
 
   // Renderers
@@ -34,12 +31,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}>
-      <SearchInput
-        disabled
-        onPressIn={handleInputFocus}
-        handleSubmit={handleSearchSubmit}
-        containerStyle={styles.containerStyle}
-      />
+      <SearchInput disabled handleSubmit={null} onPressIn={handleInputFocus} containerStyle={styles.containerStyle} />
       <PopularList type="destinations" orientation="horizontal" isTitleShown />
       <PopularList type="articles" orientation="horizontal" isTitleShown />
     </ScrollView>

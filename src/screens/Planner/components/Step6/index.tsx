@@ -66,17 +66,18 @@ const Step6: React.FC<Step5Props> = ({ setActive }) => {
   return (
     <View style={styles.container}>
       <LottieView
-        autoPlay
         loop
+        autoPlay
         style={styles.lottie}
-        source={require('../../../../../assets/planning-animation.json')}
+        source={require('@shared/assets/lottie/planning-animation.json')}
       />
+
       <Text variant="large" style={styles.information}>
         {isEmptyDestinations
           ? "We're curating your adventure! 🌍 Please wait while we gather exciting destinations for your trip"
           : isEmptySummaryOrTips
-            ? 'Trip planning in progress! 🗺️ Sit tight while we prepare a summary of your adventure and suggest exciting trips'
-            : "Exploring the details! 🏞️ We're fetching places, opening hours, and more details. Just a moment, please!"}
+          ? 'Trip planning in progress! 🗺️ Sit tight while we prepare a summary of your adventure and suggest exciting trips'
+          : "Exploring the details! 🏞️ We're fetching places, opening hours, and more details. Just a moment, please!"}
       </Text>
     </View>
   );

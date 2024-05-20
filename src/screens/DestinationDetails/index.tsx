@@ -2,15 +2,15 @@
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
-import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { Text } from 'react-native-paper';
+import Header from '@shared/components/Header';
 import FastImage from 'react-native-fast-image';
 import Shimmer from '@shared/components/Shimmer';
 import ImageView from 'react-native-image-viewing';
-import BackButton from '@shared/components/Buttons/Back';
 import RegularButton from '@shared/components/Buttons/Regular';
 import { CurrencyIcon, LanguageIcon, MapIcon } from '@shared/assets/icons';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
@@ -23,25 +23,11 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import {
-  getDestinationDetails,
-  selectBudgetsList,
-  selectDestinationLoading,
-  selectInterestsList,
-  selectOptionsLoading,
-  selectTravelersList
-} from '@redux/destination/slice';
-import {
-  getBudgetsAction,
-  getDestinationDetailsAction,
-  getInterestsAction,
-  getTravelPreferencesAction,
-  getTravelersAction
-} from '@redux/destination/thunks';
+import { getTravelPreferencesAction, getDestinationDetailsAction } from '@redux/destination/thunks';
+import { selectOptionsLoading, selectDestinationDetails, selectDestinationLoading } from '@redux/destination/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import Header from '@shared/components/Header';
 import { ShareDataProps } from '@shared/types/ShareDataProps';
 
 interface ImageViewState {
@@ -63,12 +49,9 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const dispatch = useDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const budgets = useAppSelector(selectBudgetsList);
-  const travelers = useAppSelector(selectTravelersList);
-  const interests = useAppSelector(selectInterestsList);
   const areOptionsLoading = useAppSelector(selectOptionsLoading);
-  const destinationDetails = useAppSelector(getDestinationDetails);
   const isLoadingDetails = useAppSelector(selectDestinationLoading);
+  const destinationDetails = useAppSelector(selectDestinationDetails);
 
   // Statics
   const theme = useAppTheme();
@@ -165,8 +148,8 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       <FlatList
         horizontal
         data={galleryImages}
-        contentContainerStyle={styles.galleryList}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.galleryList}
         renderItem={({ item, index }) => (
           <TouchableOpacity onPress={() => handleGalleryImagePress(index)}>
             <FastImage key={index} style={styles.galleryImage} source={item} resizeMode="cover" />

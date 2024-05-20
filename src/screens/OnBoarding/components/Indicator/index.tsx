@@ -7,8 +7,6 @@ import { View, TouchableOpacityProps } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
-
-// Interfaces
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces

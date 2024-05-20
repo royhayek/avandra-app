@@ -11,7 +11,3 @@ export const getFaqCategories = () => axios.get('faqcategory/list');
 export const getFaqQuestions = (_id: string) => axios.get(`faq/list/${_id}`);
 
 export const submitMessage = (payload: MessageProps) => axios.post('message/create', payload);
-
-export const getPrivacyPolicy = () => axios.get('settings/privacyPolicy');
-
-export const getTermsAndConditions = () => axios.get('settings/termsAndConditions');

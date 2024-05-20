@@ -1,10 +1,10 @@
 // Packages
 import i18n from '@app/i18n';
+import { Platform } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
-import { Platform } from 'react-native';
 
 export const autocompleteStyles = (theme: AppTheme) => ({
   container: {
@@ -39,14 +39,14 @@ export const autocompleteStyles = (theme: AppTheme) => ({
     color: theme.colors.gray[600]
   },
   row: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     paddingVertical: mvs(14),
     backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]
   },
   loader: {
+    marginTop: mvs(8),
     marginHorizontal: ms(20),
-    marginTop: mvs(8)
   },
   predefinedPlacesDescription: {
     color: theme.colors.gray[600]

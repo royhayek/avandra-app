@@ -13,8 +13,8 @@ export default (theme: AppTheme) =>
       borderWidth: ms(1),
       borderRadius: ms(50),
       justifyContent: 'center',
+      backgroundColor: theme.dark ? theme.colors.dark[3] : 'transparent',
       borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[200],
-      backgroundColor: theme.dark ? theme.colors.dark[3] : 'transparent'
     },
     content: {
       width: '100%',

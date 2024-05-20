@@ -3,7 +3,6 @@ import _ from 'lodash';
 import * as Device from 'expo-device';
 import * as Updates from 'expo-updates';
 import * as Linking from 'expo-linking';
-import { withIAPContext } from 'react-native-iap';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -19,18 +18,19 @@ import CustomSnackbar from '@shared/components/CustomSnackbar';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import NetworkErrorModal from '@shared/components/NetworkErrorModal';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import SubscriptionManager from '@shared/services/SubscriptionManager';
 
 // Utilities
 import { changeLocale } from './i18n';
-import { getUserId } from '@redux/user/slice';
+import { selectUserId } from '@redux/user/slice';
 import deepLinkingOptions from './navigation/linking';
 import NetworkInfo from '@shared/services/NetworkInfo';
 import { validateTokenAction } from '@redux/auth/thunks';
-import { getUserAuthenticated } from '@redux/auth/slice';
+import { selectIsAuthenticated } from '@redux/auth/slice';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
-import { useAppDispatch, useAppSelector, useAppThunkDispatch } from './store';
 import { getDeviceId, registerForPushNotificationsAsync } from '@shared/utils';
-import { appActions, getLanguage, getThemeMode, selectNetworkError } from '@redux/app/slice';
+import { useAppDispatch, useAppSelector, useAppThunkDispatch } from './store';
+import { appActions, selectLanguage, selectThemeMode, selectNetworkError } from '@redux/app/slice';
 import { getConfigurationAction, getWalkthroughAction, storeDeviceInfoAction } from '@redux/app/thunks';
 
 // Interfaces
@@ -45,18 +45,18 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const userId = useAppSelector(getUserId);
-  const language = useAppSelector(getLanguage);
-  const themeMode = useAppSelector(getThemeMode);
+  const userId = useAppSelector(selectUserId);
+  const language = useAppSelector(selectLanguage);
+  const themeMode = useAppSelector(selectThemeMode);
   const networkError = useAppSelector(selectNetworkError);
-  const isAuthenticated = useAppSelector(getUserAuthenticated);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   // Statics
   const [pushToken, setPushToken] = useState<string | undefined>();
-  const [updateModalVisible, setUpdateModalVisible] = useState(false);
+  const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
 
-  const colorScheme = useColorScheme();
   const url = Linking.useURL();
+  const colorScheme = useColorScheme();
 
   const responseListener = useRef<Notifications.Subscription>();
   const notificationListener = useRef<Notifications.Subscription>();
@@ -95,15 +95,6 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const getConfiguration = useCallback(async () => {
     await dispatchThunk(getConfigurationAction());
   }, [dispatchThunk]);
-
-  // const initAppPurchases = useCallback(async () => {
-  //   try {
-  //     await connectAsync();
-  //     console.info('[InitData] :: Initialized in-app purchases');
-  //   } catch (error) {
-  //     console.error('[initAppPurchases] - ERROR :: ', error);
-  //   }
-  // }, []);
 
   const initPushNotifications = useCallback(() => {
     registerForPushNotificationsAsync().then(async (token) => {
@@ -153,7 +144,6 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
     await dispatchThunk(validateTokenAction());
     await getConfiguration();
     initPushNotifications();
-    // await initAppPurchases();
   }, [checkForUpdates, dispatchThunk, getConfiguration, initPushNotifications, language]);
 
   const handleDeepLink = useCallback(
@@ -210,7 +200,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
             <RootNavigation />
             {/* <SplashScreen loadedData={loadedData} /> */}
             <NetworkInfo />
-            {/* <SubscriptionManager /> */}
+            <SubscriptionManager />
             <CustomSnackbar />
             <UpdateModal visible={updateModalVisible} onDismiss={handleDismissUpdateModal} />
             {networkError && <NetworkErrorModal />}
@@ -221,4 +211,4 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   );
 };
 
-export default withIAPContext(Root);
+export default Root;

@@ -5,9 +5,9 @@ import { ms, mvs } from 'react-native-size-matters';
 export default () =>
   StyleSheet.create({
     option: {
-      paddingVertical: mvs(16),
+      gap: ms(8),
       flexDirection: 'row',
-      gap: ms(8)
+      paddingVertical: mvs(16)
     },
     title: {
       fontFamily: 'urbanist-semibold'

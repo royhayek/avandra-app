@@ -4,8 +4,8 @@ import React, { useCallback, useRef, useState } from 'react';
 
 // Components
 import { View } from 'react-native';
+import { RadioButton, Text } from 'react-native-paper';
 import CustomBottomSheet from '@shared/components/BottomSheet';
-import { Divider, RadioButton, Text } from 'react-native-paper';
 import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
 
 // Utilities
@@ -13,7 +13,7 @@ import makeStyles from './styles';
 import { changeLanguage, t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
 import { useAppDispatch, useAppSelector } from '@app/store';
-import { appActions, getLanguage, getThemeMode } from '@redux/app/slice';
+import { appActions, selectLanguage, selectThemeMode } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -25,8 +25,8 @@ const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, opt
 const AppearanceScreen = () => {
   // Redux
   const dispatch = useAppDispatch();
-  const themeMode = useAppSelector(getThemeMode);
-  const appLanguage = useAppSelector(getLanguage);
+  const themeMode = useAppSelector(selectThemeMode);
+  const appLanguage = useAppSelector(selectLanguage);
 
   const themeSheetRef = useRef<BottomSheetMethods>(null);
   const languageSheetRef = useRef<BottomSheetMethods>(null);

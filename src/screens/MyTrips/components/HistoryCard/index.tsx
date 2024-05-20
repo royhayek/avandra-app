@@ -5,20 +5,22 @@ import Share, { ShareOptions } from 'react-native-share';
 import React, { useCallback, useState, useRef } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Components
+import Picker from '@shared/components/Picker';
 import FastImage from 'react-native-fast-image';
 import Shimmer from '@shared/components/Shimmer';
 import { IconButton, Text } from 'react-native-paper';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import GenerationModal from '@shared/components/GenerationModal';
 import { View, TouchableOpacity, ImageBackground } from 'react-native';
+import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
+import { PUBLIC_URL } from '@shared/constants';
 import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { deleteTripAction, generateTripAction } from '@redux/itinerary/thunks';
@@ -26,12 +28,10 @@ import { deleteTripAction, generateTripAction } from '@redux/itinerary/thunks';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { PUBLIC_URL } from '@shared/constants';
-import Picker from '@shared/components/Picker';
 
 interface HistoryCardProps {
   index?: number;
-  item?: CardItem; // Assuming 'item' has a specific type. Replace 'CardItem' with the actual type.
+  item?: CardItem;
   small?: boolean;
   isLoading?: boolean;
 }

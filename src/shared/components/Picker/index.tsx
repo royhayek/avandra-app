@@ -1,11 +1,11 @@
 // Packages
 import _ from 'lodash';
-import { Divider, Text, useTheme } from 'react-native-paper';
 import React, { RefObject, useCallback } from 'react';
 
 // Components
 import CustomBottomSheet from '../BottomSheet';
 import { TouchableOpacity, View } from 'react-native';
+import { Divider, Text, useTheme } from 'react-native-paper';
 
 // Utilities
 import { t } from '@app/i18n';

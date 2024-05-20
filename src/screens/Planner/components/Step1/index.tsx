@@ -14,7 +14,7 @@ import makeStyles from './styles';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectTravelersList } from '@redux/destination/slice';
-import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
+import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -27,12 +27,13 @@ const Step1 = () => {
   const dispatch = useDispatch();
 
   const travelersList = useAppSelector(selectTravelersList);
-  const plannerPayload = useAppSelector(getPlannerPayload);
+  const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  // Callbacks
   const setTraveler = useCallback(
     (_id: string) => dispatch(plannerActions.setPayload({ traveler: _.find(travelersList, { _id }) })),
     [dispatch, travelersList]
@@ -47,6 +48,7 @@ const Step1 = () => {
   return (
     <View style={styles.container}>
       <StepHeader title={_t('who_is_going')} description={_t('lets_start')} />
+
       <TravelOptionsList
         list={travelersList}
         setValue={setTraveler}

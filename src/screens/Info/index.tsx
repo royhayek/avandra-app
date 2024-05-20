@@ -5,14 +5,14 @@ import { useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 
 // Components
-import { Dimensions, ScrollView, View, useWindowDimensions } from 'react-native';
+import Shimmer from '@shared/components/Shimmer';
 import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
+import { Dimensions, ScrollView, View, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { getConfiguration } from '@redux/app/slice';
-import Shimmer from '@shared/components/Shimmer';
+import { selectConfiguration } from '@redux/app/slice';
 
 // Interfaces
 interface RouteParams {
@@ -22,7 +22,7 @@ interface RouteParams {
 // Component
 const InfoScreen = () => {
   // Redux
-  const config = useSelector(getConfiguration);
+  const config = useSelector(selectConfiguration);
 
   // Statics
   const route = useRoute();

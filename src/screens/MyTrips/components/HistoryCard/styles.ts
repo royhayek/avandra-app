@@ -82,7 +82,6 @@ export default (theme: AppTheme, isExpired: boolean) =>
     rowContainer: {
       alignItems: 'center',
       flexDirection: 'row'
-      // justifyContent: 'space-between',
     },
     infoItemContainer: {
       gap: ms(5),

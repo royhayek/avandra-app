@@ -44,6 +44,12 @@ export const appSlice = createSlice({
     updatePlannerStep: (state, action) => {
       state.plannerStep = action.payload;
     },
+    setCurrentOffering: (state, action) => {
+      state.currentOffering = action.payload;
+    },
+    setSubscriptionState: (state, action) => {
+      state.subscriptionState = action.payload;
+    },
     setNetworkError: (state, action) => {
       state.networkError = action.payload;
     },
@@ -55,12 +61,6 @@ export const appSlice = createSlice({
     },
     clearDeepLinkData: (state) => {
       state.deepLinkData = null;
-    },
-    setCurrentOffering: (state, action) => {
-      state.currentOffering = action.payload;
-    },
-    setSubscriptionState: (state, action) => {
-      state.subscriptionState = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -82,15 +82,15 @@ export default appSlice.reducer;
 // Selectors
 const _app = (state: RootState) => state.app;
 
-export const getLanguage = createSelector(_app, (data) => data.language);
+export const selectLanguage = createSelector(_app, (data) => data.language);
 
-export const getThemeMode = createSelector(_app, (data) => data.themeMode);
+export const selectThemeMode = createSelector(_app, (data) => data.themeMode);
 
-export const getConfiguration = createSelector(_app, (data) => data.config);
+export const selectConfiguration = createSelector(_app, (data) => data.config);
 
-export const getPlannerStep = createSelector(_app, (data) => data.plannerStep);
+export const selectPlannerStep = createSelector(_app, (data) => data.plannerStep);
 
-export const getWalkthrough = createSelector(_app, (data) => data.walkthrough);
+export const selectWalkthrough = createSelector(_app, (data) => data.walkthrough);
 
 export const selectDeepLinkData = createSelector(_app, (data) => data.deepLinkData);
 

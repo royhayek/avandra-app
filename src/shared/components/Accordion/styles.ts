@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 // Utilities
-import { AppTheme } from '../../assets/theme';
 import { scaledFontSize } from '@shared/utils';
 
-// Types
+// Interfaces
+import { AppTheme } from '../../assets/theme';
 import { MarkedStyles } from 'react-native-marked/dist/typescript/theme/types';
 
 export default (theme: AppTheme) =>
@@ -38,7 +38,6 @@ export const markdownStyles = (theme: AppTheme, isRTL?: boolean): MarkedStyles =
   blockquote: {
     ...theme.fonts.large,
     direction: isRTL ? 'rtl' : 'ltr'
-    // color: theme.dark ? theme.colors.white : theme.colors.black
   },
   em: {
     ...theme.fonts.bodySmall,

@@ -1,4 +1,7 @@
+// Packages
 import { StyleSheet } from 'react-native';
+
+// Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>

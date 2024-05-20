@@ -13,7 +13,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectBudgetsList } from '@redux/destination/slice';
-import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
+import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -26,7 +26,7 @@ const Step4 = () => {
   const dispatch = useDispatch();
 
   const budgetsList = useSelector(selectBudgetsList);
-  const plannerPayload = useSelector(getPlannerPayload);
+  const plannerPayload = useSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
@@ -46,6 +46,7 @@ const Step4 = () => {
   return (
     <View style={styles.container}>
       <StepHeader title={_t('budget_title')} description={_t('budget_desc')} />
+
       <TravelOptionsList
         list={budgetsList}
         setValue={setBudget}

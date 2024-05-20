@@ -2,15 +2,15 @@
 import _ from 'lodash';
 import * as Location from 'expo-location';
 import { ms } from 'react-native-size-matters';
-import { IconButton } from 'react-native-paper';
-import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import Marker from '@shared/components/Marker';
+import { IconButton } from 'react-native-paper';
+import LocationCard from './components/LocationCard';
 import BackButton from '@shared/components/Buttons/Back';
-import LocationCard from '@shared/components/LocationCard';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { View, Animated, Dimensions, Platform } from 'react-native';
 import { MapLocationIcon, MapNavigationIcon, MoonIcon, SunIcon } from '@shared/assets/icons';
@@ -163,88 +163,99 @@ const MapScreen: React.FC<MapScreenProps> = () => {
   });
 
   // Renderers
+  const renderMapView = () => (
+    <MapView
+      ref={mapRef}
+      showsUserLocation
+      style={styles.map}
+      followsUserLocation
+      customMapStyle={isDarkTheme ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')}
+      provider={PROVIDER_GOOGLE}
+      initialRegion={state.region}>
+      {state.markers.map(
+        (marker, index) =>
+          marker && (
+            <Marker
+              displayDay
+              size={24}
+              key={index}
+              index={index}
+              marker={marker}
+              interpolations={interpolations}
+              onMarkerPress={onMarkerPress}
+            />
+          )
+      )}
+    </MapView>
+  );
+
+  const renderAbsoluteHeader = () => (
+    <View style={styles.header}>
+      <BackButton style={styles.backBtn} />
+      <IconButton
+        size={ms(18)}
+        style={styles.themeButton}
+        onPress={handleToggleMapTheme}
+        icon={() =>
+          isDarkTheme ? (
+            <SunIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+          ) : (
+            <MoonIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+          )
+        }
+      />
+    </View>
+  );
+
+  const renderLocationsList = () => (
+    <Animated.ScrollView
+      horizontal
+      pagingEnabled
+      ref={scrollViewRef}
+      decelerationRate="fast"
+      snapToAlignment="center"
+      scrollEventThrottle={100}
+      style={styles.scrollView}
+      snapToInterval={CARD_WIDTH + 20}
+      showsHorizontalScrollIndicator={false}
+      contentInset={{
+        top: 0,
+        left: SPACING_FOR_CARD_INSET,
+        bottom: 0,
+        right: SPACING_FOR_CARD_INSET
+      }}
+      // contentContainerStyle={{
+      //   paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0,
+      // }}
+      onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: mapAnimation } } }], { useNativeDriver: true })}>
+      <>
+        {_.map(mergedPlaces, (destination, index) => (
+          <LocationCard
+            onMap
+            key={index}
+            width={CARD_WIDTH}
+            isDark={isDarkTheme}
+            location={destination}
+            orientation="horizontal"
+          />
+        ))}
+      </>
+    </Animated.ScrollView>
+  );
+
+  const renderMapActions = () => (
+    <View style={styles.actions}>
+      <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleShowCurrentLocation} />
+      <IconButton size={ms(28)} icon={() => <MapLocationIcon />} onPress={handleShowCurrentLocation} />
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        showsUserLocation
-        style={styles.map}
-        followsUserLocation
-        customMapStyle={
-          isDarkTheme ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
-        }
-        provider={PROVIDER_GOOGLE}
-        initialRegion={state.region}>
-        {state.markers.map(
-          (marker, index) =>
-            marker && (
-              <Marker
-                displayDay
-                size={24}
-                key={index}
-                index={index}
-                marker={marker}
-                interpolations={interpolations}
-                onMarkerPress={onMarkerPress}
-              />
-            )
-        )}
-      </MapView>
-
-      <View style={styles.header}>
-        <BackButton style={styles.backBtn} />
-        <IconButton
-          size={ms(18)}
-          style={styles.themeButton}
-          onPress={handleToggleMapTheme}
-          icon={() =>
-            isDarkTheme ? (
-              <SunIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-            ) : (
-              <MoonIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-            )
-          }
-        />
-      </View>
-
-      <Animated.ScrollView
-        horizontal
-        pagingEnabled
-        ref={scrollViewRef}
-        decelerationRate="fast"
-        snapToAlignment="center"
-        scrollEventThrottle={100}
-        style={styles.scrollView}
-        snapToInterval={CARD_WIDTH + 20}
-        showsHorizontalScrollIndicator={false}
-        contentInset={{
-          top: 0,
-          left: SPACING_FOR_CARD_INSET,
-          bottom: 0,
-          right: SPACING_FOR_CARD_INSET
-        }}
-        // contentContainerStyle={{
-        //   paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0,
-        // }}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: mapAnimation } } }], { useNativeDriver: true })}>
-        <>
-          {_.map(mergedPlaces, (destination, index) => (
-            <LocationCard
-              onMap
-              key={index}
-              width={CARD_WIDTH}
-              isDark={isDarkTheme}
-              location={destination}
-              orientation="horizontal"
-            />
-          ))}
-        </>
-      </Animated.ScrollView>
-
-      <View style={styles.actions}>
-        <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleShowCurrentLocation} />
-        <IconButton size={ms(28)} icon={() => <MapLocationIcon />} onPress={handleShowCurrentLocation} />
-      </View>
+      {renderMapView()}
+      {renderAbsoluteHeader()}
+      {renderLocationsList()}
+      {renderMapActions}
     </View>
   );
 };

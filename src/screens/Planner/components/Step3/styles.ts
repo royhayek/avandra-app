@@ -12,10 +12,10 @@ export default (theme: AppTheme) =>
     },
     title: {
       marginTop: mvs(20),
-      marginBottom: mvs(10),
-      paddingHorizontal: ms(24),
       fontWeight: 'bold',
-      textAlign: 'center'
+      textAlign: 'center',
+      marginBottom: mvs(10),
+      paddingHorizontal: ms(24)
     },
     subtitle: {
       textAlign: 'center',

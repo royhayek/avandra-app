@@ -1,28 +1,26 @@
 // Packages
 import _ from 'lodash';
-import { useSelector } from 'react-redux';
 import React, { useCallback } from 'react';
 
 // Components
 import { Text } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import { View, TouchableOpacity } from 'react-native';
+import StarRating from 'react-native-star-rating-widget';
 
 // Utilities
 import makeStyles from './styles';
-import { formatAmount, openMapsWithCoords } from '@shared/utils';
-import { LocationProps } from '@shared/types/Location';
-import { selectPlaces } from '@redux/places/slice';
 import { useAppTheme } from '@shared/assets/theme';
-import { DUMMY_PLACES } from '@screens/Itinerary/data';
-import StarRating from 'react-native-star-rating-widget';
+import { formatAmount, openMapsWithCoords } from '@shared/utils';
 
 // Interfaces
+import { LocationProps } from '@shared/types/Location';
+
 interface LocationCardProps {
-  location: LocationProps;
   width: number;
   onMap: boolean;
   isDark?: boolean;
+  location: LocationProps;
   orientation: 'horizontal' | 'vertical';
 }
 
@@ -35,13 +33,12 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
   const styles = makeStyles(theme, isHorizontal, isDark);
 
   const {
-    id,
     name,
-    photoUrl,
     desc,
-    address,
-    userRatingsTotal,
     rating,
+    address,
+    photoUrl,
+    userRatingsTotal,
     coordinates: { lat = '', lng = '' } = {}
   } = location || {};
 
@@ -54,6 +51,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
       <View style={styles.imageContainer}>
         <FastImage source={{ uri: photoUrl }} style={styles.image} />
       </View>
+
       <View style={styles.descriptionContainer}>
         <Text variant="xLarge">{name}</Text>
 
@@ -69,11 +67,13 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
             </Text>
           </View>
         ) : null}
+
         {!onMap && (
           <Text variant="medium" style={styles.description}>
             {desc}
           </Text>
         )}
+
         <Text variant="medium" style={styles.address}>
           {address}
         </Text>

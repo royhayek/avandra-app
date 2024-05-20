@@ -4,12 +4,12 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 // Thunks
 import {
-  getPopularDestinationsAction,
-  getDestinationDetailsAction,
+  getBudgetsAction,
   getTravelersAction,
   getInterestsAction,
-  getBudgetsAction,
-  getRecentSearchesAction
+  getRecentSearchesAction,
+  getDestinationDetailsAction,
+  getPopularDestinationsAction,
 } from './thunks';
 
 // Interfaces
@@ -164,7 +164,7 @@ export const selectInterestsList = createSelector(_destinations, (data) => data?
 
 export const selectTravelersList = createSelector(_destinations, (data) => data?.travelers);
 
-export const getDestinationDetails = createSelector(_destinations, (data) => data?.details);
+export const selectDestinationDetails = createSelector(_destinations, (data) => data?.details);
 
 export const selectDestinationLoading = createSelector(_destinations, (data) => data?.isLoading);
 
@@ -172,7 +172,7 @@ export const selectOptionsLoading = createSelector(_destinations, (data) => data
 
 export const selectRecentSearches = createSelector(_destinations, (data) => data?.recentSearches);
 
-export const getDestinationsLastRefresh = createSelector(_destinations, (data) => data?.lastRefresh);
+export const selectDestinationsLastRefresh = createSelector(_destinations, (data) => data?.lastRefresh);
 
 export const selectPopularDestinations = createSelector(_destinations, (data) => data?.popularDestinations);
 

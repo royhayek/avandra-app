@@ -36,6 +36,6 @@ export default plannerSlice.reducer;
 // Selectors
 const _planner = (state: RootState) => state.planner;
 
-export const getPlannerPayload = createSelector(_planner, (data) => data.payload);
+export const selectPlannerStep = createSelector(_planner, (data) => data.plannerStep);
 
-export const getPlannerStep = createSelector(_planner, (data) => data.plannerStep);
+export const selectPlannerPayload = createSelector(_planner, (data) => data.payload);

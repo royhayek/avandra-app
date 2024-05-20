@@ -24,7 +24,6 @@ const PopularScreen: React.FC<PopularScreenProps> = () => {
 
   // Effects
   useEffect(() => {
-    // Change the screen name when the component mounts
     navigation.setOptions({ title });
   }, [navigation, title]);
 

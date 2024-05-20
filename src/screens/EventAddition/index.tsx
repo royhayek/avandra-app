@@ -10,7 +10,6 @@ import { FlatList, ScrollView, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
 import EventAdditionItem from './components/EventAdditionItem';
 import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
-import { getTripPlacesAction, getTripPopularPlacesAction, saveAdditionalEventsAction } from '@redux/itinerary/thunks';
 
 // Utils
 import { t } from '@app/i18n';
@@ -20,6 +19,7 @@ import { GOOGLE_MAPS_API_KEY } from '@shared/utils';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { useAppDispatch, useAppThunkDispatch } from '@app/store';
+import { getTripPlacesAction, getTripPopularPlacesAction, saveAdditionalEventsAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -60,8 +60,8 @@ const EventAdditionScreen: React.FC = () => {
 
   const inputRef = useRef<GooglePlacesAutocompleteRef>();
 
-  const unselectedPlaces = popularPlaces.filter((place) => !place.selected);
   const selectedPlaces = popularPlaces.filter((place) => place.selected);
+  const unselectedPlaces = popularPlaces.filter((place) => !place.selected);
 
   // Callbacks
   const handleSavePress = useCallback(async () => {
@@ -150,6 +150,22 @@ const EventAdditionScreen: React.FC = () => {
     </Text>
   );
 
+  const renderSearch = () => (
+    <View style={styles.searchInput}>
+      <PlacesAutocomplete
+        fetchDetails
+        inputRef={inputRef}
+        renderRow={renderRow}
+        handlePlacePress={handlePlacePress}
+        query={{
+          type: 'establishment', // Search for places only
+          location: `${location?.lat},${location?.lng}`, // Coordinates of the city center
+          radius: '50000' // Search within 50 kilometers of the city center
+        }}
+      />
+    </View>
+  );
+
   const renderShimmer = () => (
     <View style={styles.shimmerView}>
       {_.times(6, (i) => (
@@ -168,58 +184,48 @@ const EventAdditionScreen: React.FC = () => {
     </View>
   );
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchInput}>
-        <PlacesAutocomplete
-          fetchDetails
-          inputRef={inputRef}
-          renderRow={renderRow}
-          handlePlacePress={handlePlacePress}
-          query={{
-            type: 'establishment', // Search for places only
-            location: `${location?.lat},${location?.lng}`, // Coordinates of the city center
-            radius: '50000' // Search within 50 kilometers of the city center
-          }}
-        />
-      </View>
+  const renderEvents = () => (
+    <ScrollView style={styles.scrollView}>
+      {!_.isEmpty(selectedPlaces) ? (
+        <>
+          <Text variant="h5" style={styles.title}>
+            {t('event_addition.selected_places')}
+          </Text>
 
-      <ScrollView style={styles.scrollView}>
-        {!_.isEmpty(selectedPlaces) ? (
-          <>
-            <Text variant="h5" style={styles.title}>
-              {t('event_addition.selected_places')}
-            </Text>
-
-            <FlatList
-              data={selectedPlaces}
-              disableVirtualization
-              scrollEnabled={false}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.listContainer}
-              renderItem={({ item }) => <EventAdditionItem key={item.name} item={item} onAddPress={handleAddPress} />}
-            />
-          </>
-        ) : null}
-
-        <Text variant="h5" style={styles.title}>
-          {t('event_addition.popular_places')}
-        </Text>
-
-        {isLoading ? (
-          renderShimmer()
-        ) : (
           <FlatList
+            data={selectedPlaces}
             disableVirtualization
             scrollEnabled={false}
-            data={unselectedPlaces}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
             renderItem={({ item }) => <EventAdditionItem key={item.name} item={item} onAddPress={handleAddPress} />}
           />
-        )}
-      </ScrollView>
+        </>
+      ) : null}
 
+      <Text variant="h5" style={styles.title}>
+        {t('event_addition.popular_places')}
+      </Text>
+
+      {isLoading ? (
+        renderShimmer()
+      ) : (
+        <FlatList
+          disableVirtualization
+          scrollEnabled={false}
+          data={unselectedPlaces}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContainer}
+          renderItem={({ item }) => <EventAdditionItem key={item.name} item={item} onAddPress={handleAddPress} />}
+        />
+      )}
+    </ScrollView>
+  );
+
+  return (
+    <View style={styles.container}>
+      {renderSearch}
+      {renderEvents}
       {renderFooter()}
     </View>
   );

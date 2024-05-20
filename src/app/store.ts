@@ -1,8 +1,11 @@
-import rootReducer from '../redux/reducers';
+// Packages
 import { persistStore } from 'redux-persist';
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
+// Reducers
+import rootReducer from '../redux/reducers';
 
 export const store = configureStore({
   reducer: rootReducer,

@@ -14,6 +14,6 @@ export interface ProfileModelProps {
   role?: string;
   status?: boolean;
   password?: string | undefined;
-  currentPassword?: string | undefined;
   confPassword?: string | undefined;
+  currentPassword?: string | undefined;
 }

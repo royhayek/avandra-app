@@ -23,8 +23,8 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
-import { getUser, getUserSubmitting } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
+import { selectUser, selectUserSubmitting } from '@redux/user/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
@@ -37,9 +37,8 @@ const Profile = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const loading = useAppSelector(getUserSubmitting);
-  const user = useAppSelector(getUser);
-  const { _id, name, email } = user;
+  const user = useAppSelector(selectUser);
+  const loading = useAppSelector(selectUserSubmitting);
 
   // Statics
   const theme = useAppTheme();
@@ -52,6 +51,7 @@ const Profile = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
+  const { _id, name, email } = user;
   const formInitialValues = { _id, name, email, country: '', gender: '' };
 
   // Callbacks
@@ -98,18 +98,91 @@ const Profile = () => {
   ];
 
   // Renders
-  const renderFooter = useMemo(
-    () => (
-      <View style={commonStyles.footer}>
-        <RegularButton
-          fullWidth
-          loading={loading}
-          title={isSuccess ? t('profile.explore_destinations') : t('common.continue')}
-          onPress={() => (isSuccess ? handleExplorePress() : formRef.current?.handleSubmit())}
-        />
+  const renderForm = () => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.content}>
+        <Text variant="h3" style={styles.title}>
+          {t('profile.title')}
+        </Text>
+        <Text variant="xLarge">{t('profile.description')}</Text>
+
+        <Formik
+          innerRef={formRef}
+          onSubmit={handleFormSubmit}
+          validationSchema={profileSchema}
+          initialValues={formInitialValues}>
+          {({ handleChange, values, errors }) => (
+            <View style={styles.form}>
+              <Input
+                name="name"
+                value={values.name}
+                error={errors.name}
+                label={t('profile.full_name')}
+                handleChange={handleChange('name')}
+                placeholder={t('profile.full_name')}
+              />
+
+              <Input
+                name="email"
+                error={errors.email}
+                value={values.email}
+                label={t('profile.email')}
+                keyboardType="email-address"
+                placeholder={t('profile.email')}
+                handleChange={handleChange('email')}
+                leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              <Input
+                name="country"
+                error={errors.country}
+                value={values.country}
+                label={t('profile.country')}
+                onFocus={handleOpenCountryPicker}
+                placeholder={t('profile.country')}
+                handleChange={handleChange('country')}
+                rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              <Input
+                name="gender"
+                error={errors.gender}
+                label={t('profile.gender')}
+                onFocus={handleOpenGenderPicker}
+                placeholder={t('profile.gender')}
+                handleChange={handleChange('gender')}
+                value={_.find(genderOptions, { key: values.gender })?.title}
+                rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              {isOpenCountryPicker && (
+                <CountryPicker
+                  withFilter
+                  countryCode="AD"
+                  visible={isOpenCountryPicker}
+                  onClose={handleCloseCountryPicker}
+                  onSelect={(country: Country) => formRef.current?.setFieldValue('country', country.name)}
+                  theme={{ ...(theme.dark ? DARK_THEME : DEFAULT_THEME), backgroundColor: theme.colors.background }}
+                />
+              )}
+
+              <Picker sheetRef={genderPickerRef} options={genderOptions} />
+            </View>
+          )}
+        </Formik>
       </View>
-    ),
-    [commonStyles.footer, handleExplorePress, isSuccess, loading]
+    </ScrollView>
+  );
+
+  const renderFooter = () => (
+    <View style={commonStyles.footer}>
+      <RegularButton
+        fullWidth
+        loading={loading}
+        title={isSuccess ? t('profile.explore_destinations') : t('common.continue')}
+        onPress={() => (isSuccess ? handleExplorePress() : formRef.current?.handleSubmit())}
+      />
+    </View>
   );
 
   if (isSuccess) {
@@ -125,7 +198,7 @@ const Profile = () => {
           </Text>
         </View>
 
-        {renderFooter}
+        {renderFooter()}
       </SafeAreaView>
     );
   }
@@ -133,82 +206,8 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <Text variant="h3" style={styles.title}>
-            {t('profile.title')}
-          </Text>
-          <Text variant="xLarge">{t('profile.description')}</Text>
-
-          <Formik
-            innerRef={formRef}
-            onSubmit={handleFormSubmit}
-            validationSchema={profileSchema}
-            initialValues={formInitialValues}>
-            {({ handleChange, values, errors }) => (
-              <View style={styles.form}>
-                <Input
-                  name="name"
-                  value={values.name}
-                  error={errors.name}
-                  label={t('profile.full_name')}
-                  handleChange={handleChange('name')}
-                  placeholder={t('profile.full_name')}
-                />
-
-                <Input
-                  name="email"
-                  error={errors.email}
-                  value={values.email}
-                  label={t('profile.email')}
-                  keyboardType="email-address"
-                  placeholder={t('profile.email')}
-                  handleChange={handleChange('email')}
-                  leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
-                />
-
-                <Input
-                  name="country"
-                  error={errors.country}
-                  value={values.country}
-                  label={t('profile.country')}
-                  onFocus={handleOpenCountryPicker}
-                  placeholder={t('profile.country')}
-                  handleChange={handleChange('country')}
-                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
-                />
-
-                <Input
-                  name="gender"
-                  error={errors.gender}
-                  value={_.find(genderOptions, { key: values.gender })?.title}
-                  label={t('profile.gender')}
-                  onFocus={handleOpenGenderPicker}
-                  placeholder={t('profile.gender')}
-                  handleChange={handleChange('gender')}
-                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
-                />
-
-                {isOpenCountryPicker && (
-                  <CountryPicker
-                    withFilter
-                    countryCode="AD"
-                    visible={isOpenCountryPicker}
-                    onClose={handleCloseCountryPicker}
-                    onSelect={(country: Country) => formRef.current?.setFieldValue('country', country.name)}
-                    theme={{ ...(theme.dark ? DARK_THEME : DEFAULT_THEME), backgroundColor: theme.colors.background }}
-                  />
-                )}
-
-                <Picker sheetRef={genderPickerRef} options={genderOptions} />
-              </View>
-            )}
-          </Formik>
-        </View>
-      </ScrollView>
-
-      {renderFooter}
+      {renderForm()}
+      {renderFooter()}
     </SafeAreaView>
   );
 };

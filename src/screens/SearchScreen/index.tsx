@@ -1,37 +1,33 @@
 // Packages
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import { ms, mvs } from 'react-native-size-matters';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { GooglePlaceData, GooglePlacesAutocompleteRef } from 'react-native-google-places-autocomplete';
 
 // Components
 import { Text } from 'react-native-paper';
 import { FlatList, View } from 'react-native';
-import SearchItem from './components/SearchItem';
 import Shimmer from '@shared/components/Shimmer';
+import SearchItem from './components/SearchItem';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
-import {
-  getRecentSearchesAction,
-  getTravelPreferencesAction,
-  incrementSearchesAction
-} from '@redux/destination/thunks';
 import { selectRecentSearches, selectRecentSearchesLoading } from '@redux/destination/slice';
-import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
-
-// Interfaces
+import {
+  incrementSearchesAction,
+  getRecentSearchesAction,
+  getTravelPreferencesAction
+} from '@redux/destination/thunks';
 
 // Component
-
 const SearchScreen = () => {
   // Redux
   const dispatch = useDispatch();
@@ -61,10 +57,8 @@ const SearchScreen = () => {
         const name = data.structured_formatting.main_text;
         const country = data.terms[data.terms.length - 1].value;
 
-        console.debug('SearchScreen: handlePlacePress: name:', name, 'country:', country);
         dispatchThunk(incrementSearchesAction({ name, country }));
         dispatchThunk(getRecentSearchesAction());
-
         dispatch(plannerActions.setPayload({ destination: { name, country } }));
         navigation.navigate('Planner', { destination: { name, country } });
       }
@@ -84,45 +78,52 @@ const SearchScreen = () => {
   }, []);
 
   // Renders
+  const renderHeader = () => (
+    <View style={styles.header}>
+      <BackButton style={styles.backBtn} />
+
+      <View style={styles.searchContainer}>
+        <PlacesAutocomplete
+          inputRef={inputRef}
+          query={{ type: '(cities)' }}
+          handlePlacePress={handlePlacePress}
+          handleTextChange={handleTextChange}
+        />
+      </View>
+    </View>
+  );
+
+  const renderPopularList = () => (
+    <View style={styles.content}>
+      {_.isEmpty(searchInput) && (
+        <>
+          <Text variant="h5" style={styles.title}>
+            Most Popular Searches
+          </Text>
+
+          {isLoadingRecentSearches ? (
+            <View style={styles.shimmerView}>
+              {_.times(5, (i) => (
+                <Shimmer key={i} style={[styles.shimmerItem, { width: i % 2 ? 180 : i % 3 ? 220 : 200 }]} />
+              ))}
+            </View>
+          ) : (
+            <FlatList
+              style={styles.list}
+              data={recentSearches}
+              contentContainerStyle={styles.listContainer}
+              renderItem={({ item, index }) => <SearchItem key={index} item={item} />}
+            />
+          )}
+        </>
+      )}
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <BackButton style={styles.backBtn} />
-
-        <View style={styles.searchContainer}>
-          <PlacesAutocomplete
-            inputRef={inputRef}
-            query={{ type: '(cities)' }}
-            handlePlacePress={handlePlacePress}
-            handleTextChange={handleTextChange}
-          />
-        </View>
-      </View>
-
-      <View style={styles.content}>
-        {_.isEmpty(searchInput) && (
-          <>
-            <Text variant="h5" style={styles.title}>
-              Most Popular Searches
-            </Text>
-
-            {isLoadingRecentSearches ? (
-              <View style={styles.shimmerView}>
-                {_.times(5, (i) => (
-                  <Shimmer key={i} style={[styles.shimmerItem, { width: i % 2 ? 180 : i % 3 ? 220 : 200 }]} />
-                ))}
-              </View>
-            ) : (
-              <FlatList
-                style={styles.list}
-                data={recentSearches}
-                contentContainerStyle={styles.listContainer}
-                renderItem={({ item, index }) => <SearchItem key={index} item={item} />}
-              />
-            )}
-          </>
-        )}
-      </View>
+      {renderHeader()}
+      {renderPopularList()}
     </SafeAreaView>
   );
 };

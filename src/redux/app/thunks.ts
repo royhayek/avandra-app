@@ -3,6 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
 import { getConfig, getWalkthrough, storeDeviceInfo } from '@redux/app/api';
+
+// Interfaces
 import { DeviceDataProps } from '@shared/types/DeviceInfo';
 
 // Actions

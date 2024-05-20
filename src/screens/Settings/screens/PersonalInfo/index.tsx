@@ -19,7 +19,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
-import { getUser, getUserSubmitting } from '@redux/user/slice';
+import { selectUser, selectUserSubmitting } from '@redux/user/slice';
 import { profileSchema } from 'src/schemas/User/ProfileSchema';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
@@ -33,8 +33,8 @@ const PersonalInfoScreen = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const user = useAppSelector(getUser);
-  const isSubmitting = useAppSelector(getUserSubmitting);
+  const user = useAppSelector(selectUser);
+  const isSubmitting = useAppSelector(selectUserSubmitting);
   const { _id, name, email, country, gender } = user;
 
   // Statics

@@ -1,11 +1,12 @@
 // Packages
-// import { toast } from 'react-toastify';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
 import { deleteUser, updateUser } from './api';
-import { ProfileFormValuesProps } from '@shared/types/ProfileFormProps';
 import { snackbarActions } from '@redux/snackbar/slice';
+
+// Interfaces
+import { ProfileFormValuesProps } from '@shared/types/ProfileFormProps';
 
 // Actions
 
@@ -15,7 +16,7 @@ export const updateProfileAction = createAsyncThunk(
     try {
       const response = await updateUser(payload);
 
-      console.debug('[updateProfileAction] :: ', { response });
+      // console.debug('[updateProfileAction] :: ', { response });
 
       return response.data;
     } catch (error: any) {
@@ -41,7 +42,7 @@ export const deleteAccountAction = createAsyncThunk(
     try {
       const response = await deleteUser(userId);
 
-      console.debug('[deleteAccountAction - response] :: ', response);
+      // console.debug('[deleteAccountAction - response] :: ', response);
 
       return response.data;
     } catch (error: any) {

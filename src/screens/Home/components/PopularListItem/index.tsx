@@ -21,8 +21,8 @@ import { ArticleProps } from '@shared/types/Article';
 
 interface PopularListItemProps {
   type: string;
-  isLoading: boolean;
   item: ArticleProps;
+  isLoading: boolean;
   disabled?: boolean;
   noPadding?: boolean;
   orientation: string | undefined;
@@ -32,10 +32,10 @@ interface PopularListItemProps {
 const PopularListItem: React.FC<PopularListItemProps> = ({
   item,
   type,
-  orientation,
+  disabled,
   noPadding,
   isLoading,
-  disabled
+  orientation,
 }) => {
   // Statics
   const isVertical = !!String(orientation).match(/vertical/);
@@ -52,7 +52,6 @@ const PopularListItem: React.FC<PopularListItemProps> = ({
   }, [isDestination, item?._id, navigation]);
 
   // Renderers
-
   if (isLoading) {
     return isVertical ? (
       <View style={styles.button}>

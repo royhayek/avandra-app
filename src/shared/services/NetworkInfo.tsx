@@ -78,7 +78,7 @@ const NetworkInfo = () => {
     return (
       <Modal visible dismissable={false}>
         <View style={styles.container}>
-          <FastImage source={require('../../../assets/no-internet.png')} style={styles.icon} />
+          <FastImage source={require('@shared/assets/images/no-internet.png')} style={styles.icon} />
 
           <Text variant="large" style={styles.text}>
             {_t('no_internet_connection')}

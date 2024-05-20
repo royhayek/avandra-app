@@ -9,13 +9,13 @@ import Markdown from 'react-native-marked';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   View,
-  TouchableOpacity,
-  LayoutAnimation,
   Platform,
   UIManager,
   StyleProp,
   ViewStyle,
-  TextStyle
+  TextStyle,
+  LayoutAnimation,
+  TouchableOpacity
 } from 'react-native';
 
 // Utilities
@@ -37,11 +37,11 @@ interface AccordionProps {
 const Accordion: React.FC<AccordionProps> = ({
   title,
   style,
+  markdown,
   expanded,
-  setExpanded,
   children,
   titleStyle,
-  markdown
+  setExpanded
 }) => {
   // Statics
   const theme = useAppTheme();
@@ -80,7 +80,9 @@ const Accordion: React.FC<AccordionProps> = ({
           />
         </View>
       </TouchableOpacity>
+
       <View style={styles.parentHr} />
+
       {isExpanded && (
         <View style={styles.child}>
           {markdown ? (

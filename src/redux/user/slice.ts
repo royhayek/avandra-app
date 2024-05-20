@@ -2,14 +2,16 @@
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
 
 // Utilities
+import { updateProfileAction } from './thunks';
+
+// Interfaces
 import { RootState } from '@app/store';
 import { UserInitialState } from './types';
-import { updateProfileAction } from './thunks';
 
 export const initialState: UserInitialState = {
   data: {},
+  error: null,
   loading: false,
-  error: null
 };
 
 export const userSlice = createSlice({
@@ -51,12 +53,12 @@ export default userSlice.reducer;
 // ------------------------------------------------------------ //
 const _user = (state: RootState) => state.user;
 
-export const getUser = createSelector(_user, (data) => data.data);
+export const selectUser = createSelector(_user, (data) => data.data);
 
-export const getUserId = createSelector(_user, (data) => data?.data?._id);
+export const selectUserError = createSelector(_user, (data) => data.error);
 
-export const getUserRole = createSelector(_user, (data) => data?.data?.role);
+export const selectUserId = createSelector(_user, (data) => data?.data?._id);
 
-export const getUserError = createSelector(_user, (data) => data.error);
+export const selectUserRole = createSelector(_user, (data) => data?.data?.role);
 
-export const getUserSubmitting = createSelector(_user, (data) => data.loading);
+export const selectUserSubmitting = createSelector(_user, (data) => data.loading);

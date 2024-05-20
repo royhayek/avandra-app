@@ -15,7 +15,7 @@ import { ParamListBase, useNavigation } from '@react-navigation/native';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { getUserId } from '@redux/user/slice';
+import { selectUserId } from '@redux/user/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { submitMessageAction } from '@redux/settings/thunks';
@@ -39,7 +39,7 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const userId = useAppSelector(getUserId);
+  const userId = useAppSelector(selectUserId);
   const loading = useAppSelector(selectSettingsLoading);
 
   // Statics

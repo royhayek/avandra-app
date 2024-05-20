@@ -5,7 +5,7 @@ import { ms, mvs } from 'react-native-size-matters';
 // Utilities
 import i18n from '@app/i18n';
 
-// Types
+// Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
@@ -33,15 +33,15 @@ export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
     },
     contentStyle: {
       fontSize: theme.fonts.xLarge.fontSize,
-      color: theme.dark ? theme.colors.white : theme.colors.gray[900],
-      fontFamily: notEmpty ? 'urbanist-semibold' : 'urbanist-regular'
+      fontFamily: notEmpty ? 'urbanist-semibold' : 'urbanist-regular',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     },
     label: {
       fontFamily: 'urbanist-semibold'
     },
     errorText: {
-      color: theme.colors.error,
       marginTop: mvs(-2),
-      marginBottom: mvs(6)
+      marginBottom: mvs(6),
+      color: theme.colors.error
     }
   });

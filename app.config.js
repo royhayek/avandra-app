@@ -95,7 +95,6 @@ module.exports = {
       apiUrl: process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api'
     },
     plugins: [
-      'react-native-iap',
       [
         'expo-updates',
         {

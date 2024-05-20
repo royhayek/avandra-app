@@ -30,7 +30,7 @@ import i18n, { t } from '@app/i18n';
 import { useAppSelector } from '@app/store';
 import { getScreenOptions } from './options';
 import { useAppTheme } from '@shared/assets/theme';
-import { getUserAuthenticated } from '@redux/auth/slice';
+import { selectIsAuthenticated } from '@redux/auth/slice';
 
 // Interfaces
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack/lib/typescript/src/types';
@@ -42,7 +42,7 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigation = () => {
   // Redux
-  const isAuthenticated = useAppSelector(getUserAuthenticated);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   // Statics
   const theme = useAppTheme();

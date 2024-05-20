@@ -4,18 +4,17 @@ import React from 'react';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 
 // Components
-import { View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { LinearGradient } from 'expo-linear-gradient';
 
 // Interfaces
 interface ShimmerProps {
+  style?: any;
   width?: number;
   height?: number;
-  style?: any;
 }
 
 // Component

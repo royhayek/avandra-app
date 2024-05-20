@@ -1,6 +1,6 @@
 // Packages
-import { ms, mvs } from 'react-native-size-matters';
 import { StyleSheet } from 'react-native';
+import { mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';

@@ -9,15 +9,19 @@ import { MapMarker, MarkerPressEvent } from 'react-native-maps';
 
 // Utilities
 import makeStyles from './styles';
-
-// Interfaces
 import { useAppTheme } from '@shared/assets/theme';
 
+// Interfaces
 interface InterpolationValue {
   scale: Animated.AnimatedInterpolation<string | number>;
 }
 
 interface MarkerProps {
+  size?: number;
+  index: number;
+  displayDay?: boolean;
+  interpolations?: InterpolationValue[];
+  onMarkerPress?: (mapEventData: MarkerPressEvent) => void;
   marker: {
     searchResult?: {
       geometry?: {
@@ -28,11 +32,6 @@ interface MarkerProps {
       };
     };
   };
-  size?: number;
-  index: number;
-  displayDay?: boolean;
-  interpolations?: InterpolationValue[];
-  onMarkerPress?: (mapEventData: MarkerPressEvent) => void;
 }
 
 // Component
@@ -61,9 +60,9 @@ const Marker: React.FC<MarkerProps> = ({ marker, index, size = 10, onMarkerPress
         </Animated.View>
       </MapMarker>
     );
-  } else {
-    return null;
   }
+
+  return null;
 };
 
 export default Marker;

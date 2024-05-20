@@ -13,9 +13,9 @@ export default (theme: AppTheme) =>
     },
     radioButton: {
       gap: ms(16),
-      paddingVertical: mvs(4),
+      flexDirection: 'row',
       alignItems: 'center',
-      flexDirection: 'row'
+      paddingVertical: mvs(4),
     },
     radioTitle: {
       fontFamily: 'urbanist-medium'

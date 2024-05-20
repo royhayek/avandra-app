@@ -2,7 +2,7 @@
 import XDate from 'xdate';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 // Components
 import { Calendar } from 'react-native-calendars';

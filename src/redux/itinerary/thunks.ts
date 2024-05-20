@@ -5,15 +5,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
 import {
-  deleteTrip,
-  deleteTripPlace,
-  generateTrip,
   getTrip,
-  getTripPlaces,
-  getTripPopularPlaces,
+  deleteTrip,
+  generateTrip,
   getUserTrips,
+  getTripPlaces,
+  deleteTripPlace,
+  updateTripPlaces,
+  getTripPopularPlaces,
   saveAdditionalEvents,
-  updateTripPlaces
 } from './api';
 
 // Interfaces

@@ -1,10 +1,8 @@
 // Packages
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
-// Utilities
-import { RootState } from '@app/store';
-
 // Interfaces
+import { RootState } from '@app/store';
 import { SnackbarInitialState } from './types';
 
 // Slice

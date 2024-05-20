@@ -1,14 +1,16 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
+
+// Components
 import { Menu as RNMenu } from 'react-native-paper';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
-import { useAppTheme } from '@shared/assets/theme';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 interface MenuItem {

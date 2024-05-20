@@ -1,28 +1,26 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
+import Header from '@shared/components/Header';
 import Shimmer from '@shared/components/Shimmer';
-import { ExportIcon } from '@shared/assets/icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, View, useWindowDimensions } from 'react-native';
 import PopularListItem from '@screens/Home/components/PopularListItem';
 import RenderHTML, { defaultSystemFonts } from 'react-native-render-html';
-import { SafeAreaView, ScrollView, View, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { appActions, selectDeepLinkData } from '@redux/app/slice';
 import { getArticleDetailsAction } from '@redux/article/thunks';
+import { appActions, selectDeepLinkData } from '@redux/app/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 import { selectArticleDetails, selectArticlesLoading } from '@redux/article/slice';
 
 // Interfaces
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Header from '@shared/components/Header';
 import { ShareDataProps } from '@shared/types/ShareDataProps';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface ArticleDetailsScreenProps {}
 
@@ -52,11 +50,6 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
 
   const [articleId, setArticleId] = React.useState<string>(detailsId);
 
-  // Callbacks
-  const handleShare = useCallback(() => {
-    console.debug('[handleShare] :: article');
-  }, []);
-
   // Effects
   useEffect(() => {
     if (articleId) dispatchThunk(getArticleDetailsAction(articleId));
@@ -77,9 +70,9 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deepLinkData?.path]);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
-  }, [handleShare, navigation, styles.shareButton, theme.colors.gray, theme.colors.white, theme.dark]);
+  }, [navigation]);
 
   // Renderers Vars
   const shareData: ShareDataProps = {
@@ -91,10 +84,11 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
   return (
     <>
       <Header back share shareData={shareData} />
+
       <ScrollView
-        contentContainerStyle={styles.scrollView}
         keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}>
         <PopularListItem
           disabled
           noPadding

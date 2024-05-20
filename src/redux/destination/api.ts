@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+// Interfaces
 import { DestinationProps } from '@shared/types/Destination';
 
 // Calls

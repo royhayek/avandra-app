@@ -1,24 +1,26 @@
 // Packages
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
-import DateInput from './DateInput';
-import DaysPicker from './DaysPicker';
 import StepHeader from '../StepHeader';
-import MonthPicker from './MonthPicker';
 import { Text } from 'react-native-paper';
+import DateInput from './components/DateInput';
 import { ScrollView, View } from 'react-native';
-import DatePicker from '@shared/components/DatePicker';
+import DatePicker from './components/DatePicker';
+import DaysPicker from './components/DaysPicker';
+import MonthPicker from './components/MonthPicker';
 import ToggleButtons from '@shared/components/ToggleButtons';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { TranslateOptions } from 'i18n-js';
 import { useAppTheme } from '@shared/assets/theme';
-import { getPlannerPayload, plannerActions } from '@redux/planner/slice';
+import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
+
+// Interfaces
+import { TranslateOptions } from 'i18n-js';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`, options);
@@ -27,7 +29,7 @@ const Step2 = () => {
   // Redux
   const dispatch = useDispatch();
 
-  const plannerPayload = useSelector(getPlannerPayload);
+  const plannerPayload = useSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();
@@ -46,10 +48,17 @@ const Step2 = () => {
     [dispatch]
   );
 
-  const setNoOfDays = useCallback((days) => dispatch(plannerActions.setPayload({ noOfDays: days })), [dispatch]);
+  const setNoOfDays = useCallback(
+    (days) => {
+      dispatch(plannerActions.setPayload({ noOfDays: days }));
+    },
+    [dispatch]
+  );
 
   const setSelectedMonth = useCallback(
-    (month) => dispatch(plannerActions.setPayload({ selectedMonth: month })),
+    (month) => {
+      dispatch(plannerActions.setPayload({ selectedMonth: month }));
+    },
     [dispatch]
   );
 
@@ -69,9 +78,7 @@ const Step2 = () => {
 
   // Effects
   useEffect(() => {
-    if (plannerPayload?.periodType) {
-      setActiveButton(plannerPayload.periodType);
-    }
+    if (plannerPayload?.periodType) setActiveButton(plannerPayload.periodType);
   }, [plannerPayload]);
 
   // Renderer Vars
@@ -81,7 +88,14 @@ const Step2 = () => {
   ];
 
   // Renderers
-  const renderContent = useMemo(() => {
+  const renderHeader = () => (
+    <View style={styles.paddedContent}>
+      <StepHeader title={_t('adventure_date')} description={_t('adventure_date_desc')} />
+      <ToggleButtons buttons={toggleButtons} active={activeButton} setActive={handleActiveButton} />
+    </View>
+  );
+
+  const renderContent = () => {
     switch (activeButton) {
       case 'days':
         return (
@@ -122,27 +136,12 @@ const Step2 = () => {
           </View>
         );
     }
-  }, [
-    setNoOfDays,
-    activeButton,
-    plannerPayload,
-    formatMonthDay,
-    styles.maxDays,
-    styles.noOfDays,
-    styles.whatMonth,
-    setSelectedMonth,
-    styles.paddedContent,
-    theme.colors.secondary,
-    handleDatePickerSuccess
-  ]);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-      <View style={styles.paddedContent}>
-        <StepHeader title={_t('adventure_date')} description={_t('adventure_date_desc')} />
-        <ToggleButtons buttons={toggleButtons} active={activeButton} setActive={handleActiveButton} />
-      </View>
-      {renderContent}
+      {renderHeader}
+      {renderContent()}
     </ScrollView>
   );
 };

@@ -1,10 +1,10 @@
 export interface AuthInitialState {
-  token: string | null;
-  refreshToken: string | null;
-  loggedOut: boolean;
-  authenticated: boolean;
   loading: boolean;
+  loggedOut: boolean;
   jwtExpired: boolean;
+  token: string | null;
+  authenticated: boolean;
+  refreshToken: string | null;
   error: unknown | string | null;
 }
 

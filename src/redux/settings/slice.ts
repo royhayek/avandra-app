@@ -15,8 +15,6 @@ const initialState: SettingsInitialState = {
   loading: false,
   faqCategories: [],
   lastRefresh: null,
-  privacyPolicy: '',
-  termsAndConditions: '',
   isLoadingQuestions: false,
   faqCategoriesLoading: false
 };

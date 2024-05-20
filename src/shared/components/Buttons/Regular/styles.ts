@@ -1,7 +1,8 @@
 // Packages
 import { StyleSheet } from 'react-native';
-// Types
 import { ms, mvs } from 'react-native-size-matters';
+
+// Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme, fullWidth: boolean | undefined) =>
@@ -14,9 +15,9 @@ export default (theme: AppTheme, fullWidth: boolean | undefined) =>
     },
     linearBackground: {
       padding: ms(12),
-      borderRadius: ms(100),
       alignItems: 'center',
       flexDirection: 'row',
+      borderRadius: ms(100),
       justifyContent: 'center'
     },
     title: {

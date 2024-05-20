@@ -22,7 +22,7 @@ import makeStyles from './styles';
 import { appName } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 import { registerAction } from '@redux/auth/thunks';
-import { authActions, getAuthLoading } from '@redux/auth/slice';
+import { authActions, selectAuthLoading } from '@redux/auth/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const loading = useAppSelector(getAuthLoading);
+  const isLoading = useAppSelector(selectAuthLoading);
 
   // Statics
   const theme = useAppTheme();
@@ -232,7 +232,7 @@ const Login: React.FC = () => {
         />
       </View>
 
-      {loading && <Loading message={t('common.please_wait')} lottie />}
+      {isLoading && <Loading message={t('common.please_wait')} lottie />}
     </SafeAreaView>
   );
 };

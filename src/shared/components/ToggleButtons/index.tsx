@@ -1,6 +1,8 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
+
+// Components
 import { Text } from 'react-native-paper';
 import { StyleProp, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 
@@ -27,6 +29,9 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActiv
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  // Callbacks
+  const handleButtonPress = () => setActive(button.key);
+
   // Renderers
   return (
     <View style={[styles.container, containerStyle]}>
@@ -34,7 +39,7 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActiv
         const isActive = _.isEqual(button.key, active);
 
         return (
-          <TouchableWithoutFeedback key={button.key} onPress={() => setActive(button.key)}>
+          <TouchableWithoutFeedback key={button.key} onPress={handleButtonPress}>
             <View style={index === 0 ? styles.buttonContainer : styles.activeButtonContainer}>
               <View style={isActive ? styles.activeButton : styles.button}>
                 <Text variant="medium" style={[styles.title, isActive && styles.activeTitle]}>

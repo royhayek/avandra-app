@@ -14,7 +14,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { getPlannerPayload } from '@redux/planner/slice';
+import { selectPlannerPayload } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -29,7 +29,7 @@ const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`
 
 const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
   // Redux
-  const plannerPayload = useAppSelector(getPlannerPayload);
+  const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();

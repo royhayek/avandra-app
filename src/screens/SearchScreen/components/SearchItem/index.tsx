@@ -4,12 +4,10 @@ import { useDispatch } from 'react-redux';
 import React, { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
-import { Divider, Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import FastImage from 'react-native-fast-image';
+import { Divider, Text } from 'react-native-paper';
 import { TouchableOpacity, View } from 'react-native';
 
 // Utils
@@ -18,6 +16,8 @@ import { useAppTheme } from '@shared/assets/theme';
 import { plannerActions } from '@redux/planner/slice';
 
 // Interfaces
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 interface SearchItemProps {
   item: any;
 }
@@ -42,7 +42,6 @@ const SearchItem: React.FC<SearchItemProps> = ({ item }) => {
   // Renders
   return (
     <TouchableOpacity onPress={handleItemPress}>
-      {/* <FastImage source={{ uri: item?.image }} style={styles.image} /> */}
       <View style={styles.rowContainer}>
         <View style={styles.content}>
           <Text variant="h6">

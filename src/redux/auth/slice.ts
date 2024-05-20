@@ -57,8 +57,8 @@ export default authSlice.reducer;
 // ------------------------------------------------------------ //
 const _auth = (state: RootState) => state.auth;
 
-export const getAuth = createSelector(_auth, (data) => data);
+export const selectAuth = createSelector(_auth, (data) => data);
 
-export const getAuthLoading = createSelector(_auth, (data) => data.loading);
+export const selectAuthLoading = createSelector(_auth, (data) => data.loading);
 
-export const getUserAuthenticated = createSelector(_auth, (data) => data?.authenticated);
+export const selectIsAuthenticated = createSelector(_auth, (data) => data?.authenticated);

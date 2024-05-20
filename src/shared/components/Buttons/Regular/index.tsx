@@ -13,8 +13,6 @@ import makeStyles from './styles';
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
 
-// Interfaces
-type ButtonVariant = 'primary' | 'secondary' | 'gradient' | 'text';
 interface RegularButtonProps extends TouchableOpacityProps {
   title?: string;
   loading?: boolean;
@@ -28,6 +26,8 @@ interface RegularButtonProps extends TouchableOpacityProps {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<ViewStyle>;
 }
+
+type ButtonVariant = 'primary' | 'secondary' | 'gradient' | 'text';
 
 // Component
 const RegularButton: React.FC<RegularButtonProps> = ({
@@ -58,8 +58,8 @@ const RegularButton: React.FC<RegularButtonProps> = ({
         <LinearGradient
           start={{ x: 0, y: 0.75 }}
           end={{ x: 1, y: 0.25 }}
-          colors={backgroundColors ?? [theme.colors.primary, theme.colors.primary, theme.colors.darkBlue]}
-          style={[styles.linearBackground, style]}>
+          style={[styles.linearBackground, style]}
+          colors={backgroundColors ?? [theme.colors.primary, theme.colors.primary, theme.colors.darkBlue]}>
           {startIcon}
           <Text variant="large" style={styles.title}>
             {title}

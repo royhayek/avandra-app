@@ -31,7 +31,7 @@ const ScrollableTabs: React.FC<ScrollableTabsProps> = ({ tabs, activeTab, onTabP
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  // Effects
+  // Renderers
   if (isLoading) {
     return (
       <View style={styles.shimmerView}>

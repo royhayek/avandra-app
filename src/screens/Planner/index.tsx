@@ -1,6 +1,5 @@
 // Packages
 import _ from 'lodash';
-import io from 'socket.io-client';
 import * as Progress from 'react-native-progress';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback, useState, useEffect } from 'react';
@@ -16,18 +15,18 @@ import Step4 from './components/Step4';
 import Step5 from './components/Step5';
 import { Ionicons } from '@expo/vector-icons';
 import RegularButton from '@shared/components/Buttons/Regular';
+import GenerationModal from '@shared/components/GenerationModal';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { getUserId } from '@redux/user/slice';
+import { selectUserId } from '@redux/user/slice';
 import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { generateTripAction } from '@redux/itinerary/thunks';
-import { plannerActions, getPlannerStep, getPlannerPayload } from '@redux/planner/slice';
-import GenerationModal from '@shared/components/GenerationModal';
+import { plannerActions, selectPlannerStep, selectPlannerPayload } from '@redux/planner/slice';
 
 // Component
 const PlannerScreen = () => {
@@ -35,9 +34,9 @@ const PlannerScreen = () => {
   const dispatch = useDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
-  const userId = useSelector(getUserId);
-  const plannerStep = useSelector(getPlannerStep);
-  const plannerPayload = useSelector(getPlannerPayload);
+  const userId = useSelector(selectUserId);
+  const plannerStep = useSelector(selectPlannerStep);
+  const plannerPayload = useSelector(selectPlannerPayload);
 
   // Statics
   const theme = useAppTheme();

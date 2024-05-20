@@ -8,23 +8,21 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Components
 import { Ionicons } from '@expo/vector-icons';
 import { Switch, Text } from 'react-native-paper';
+import AccountDeletionModal from '../AccountDeletion';
 import { Linking, Platform, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { useAppSelector } from '@app/store';
-import { getConfiguration } from '@redux/app/slice';
-
-// Interfaces
-import { useAppTheme } from '@shared/assets/theme';
-import AccountDeletionModal from '../AccountDeletion';
 import { appName } from '@shared/utils';
+import { useAppSelector } from '@app/store';
+import { useAppTheme } from '@shared/assets/theme';
+import { selectConfiguration } from '@redux/app/slice';
 
 // Component
 const HelpSupportScreen = () => {
   // Redux
-  const config = useAppSelector(getConfiguration);
+  const config = useAppSelector(selectConfiguration);
 
   // Statics
   const theme = useAppTheme();

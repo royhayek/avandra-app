@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
+import Shimmer from '@shared/components/Shimmer';
 import { RightArrowPrimary } from '@shared/assets/icons';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import PopularListItem from '@screens/Home/components/PopularListItem';
@@ -14,15 +15,14 @@ import PopularListItem from '@screens/Home/components/PopularListItem';
 import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectPopularArticles, selectArticlesLoading, selectDestinationsLoading } from '@redux/article/slice';
-import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getPopularArticlesAction } from '@redux/article/thunks';
-import { selectDestinationLoading, selectPopularDestinations } from '@redux/destination/slice';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getPopularDestinationsAction } from '@redux/destination/thunks';
+import { selectPopularArticles, selectArticlesLoading } from '@redux/article/slice';
+import { selectDestinationLoading, selectPopularDestinations } from '@redux/destination/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import Shimmer from '@shared/components/Shimmer';
 
 interface PopularListProps {
   type: string;
@@ -55,8 +55,8 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
   const title = isDestinations
     ? _t('popular_destinations')
     : String(type).match(/articles/)
-      ? _t('popular_articles')
-      : '';
+    ? _t('popular_articles')
+    : '';
 
   // Callbacks
   const handleNavigateToListScreen = useCallback(() => {
@@ -70,16 +70,10 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Renderer Vars
-  const data = useMemo(
-    () => (isDestinations ? popularDestinations : popularArticles),
-    [isDestinations, popularArticles, popularDestinations]
-  );
-
   // Renderers
-  return (
-    <>
-      {isTitleShown && (
+  const renderHeader = () => {
+    return (
+      isTitleShown && (
         <View style={styles.header}>
           <Text variant="h5">{title}</Text>
           <TouchableOpacity style={styles.viewAllContainer} onPress={handleNavigateToListScreen}>
@@ -89,36 +83,45 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
             <RightArrowPrimary transform={[{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }]} />
           </TouchableOpacity>
         </View>
-      )}
+      )
+    );
+  };
 
-      {isLoadingArticles || isLoadingDestinations ? (
-        <View style={styles.shimmerView}>
-          {_.times(2, (i) => (
-            <View key={i}>
-              <Shimmer style={styles.shimmerImage} />
-              <Shimmer width={130} style={styles.shimmerTitle} />
-              <Shimmer width={80} style={styles.shimmerSubtitle} />
-            </View>
-          ))}
-        </View>
-      ) : (
-        <FlatList
-          data={data}
-          horizontal={isHorizontal}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flatListContainer}
-          renderItem={({ item }) => <PopularListItem type={type} item={item} orientation={orientation} />}
-        />
-      )}
+  const renderList = () => {
+    return isLoadingArticles || isLoadingDestinations ? (
+      <View style={styles.shimmerView}>
+        {_.times(2, (i) => (
+          <View key={i}>
+            <Shimmer style={styles.shimmerImage} />
+            <Shimmer width={130} style={styles.shimmerTitle} />
+            <Shimmer width={80} style={styles.shimmerSubtitle} />
+          </View>
+        ))}
+      </View>
+    ) : (
+      <FlatList
+        horizontal={isHorizontal}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.flatListContainer}
+        data={isDestinations ? popularDestinations : popularArticles}
+        renderItem={({ item }) => <PopularListItem type={type} item={item} orientation={orientation} />}
+      />
+    );
+  };
+
+  return (
+    <>
+      {renderHeader()}
+      {renderList()}
     </>
   );
 };
 
 PopularList.defaultProps = {
-  orientation: 'vertical',
   isTitleShown: false,
-  type: 'destinations'
+  type: 'destinations',
+  orientation: 'vertical'
 };
 
 export default PopularList;

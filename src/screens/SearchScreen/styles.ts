@@ -1,9 +1,9 @@
 // Packages
 import { StyleSheet } from 'react-native';
+import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
-import { ms, mvs } from 'react-native-size-matters';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -38,7 +38,6 @@ export default (theme: AppTheme) =>
     },
     listContainer: {
       gap: mvs(16)
-      // paddingVertical: mvs(16)
     },
     shimmerView: {
       marginHorizontal: ms(24)

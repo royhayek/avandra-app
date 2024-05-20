@@ -51,37 +51,3 @@ export const submitMessageAction = createAsyncThunk(
     }
   }
 );
-
-export const getPrivacyPolicyAction = createAsyncThunk(
-  'settings/privacyPolicy',
-  async (payload, { rejectWithValue }) => {
-    try {
-      const response = await getPrivacyPolicy();
-
-      console.debug('[getPrivacyPolicyAction - response] :: ', response.data);
-
-      return response.data;
-    } catch (error: any) {
-      console.error('[getPrivacyPolicyAction - error] :: ', error);
-
-      rejectWithValue(error.response?.data?.message);
-    }
-  }
-);
-
-export const getTermsAndConditionsAction = createAsyncThunk(
-  'settings/termsAndConditions',
-  async (payload, { rejectWithValue }) => {
-    try {
-      const response = await getTermsAndConditions();
-
-      console.debug('[getTermsAndConditionsAction - response] :: ', response.data);
-
-      return response.data;
-    } catch (error: any) {
-      console.error('[getTermsAndConditionsAction - error] :: ', error);
-
-      rejectWithValue(error.response?.data?.message);
-    }
-  }
-);

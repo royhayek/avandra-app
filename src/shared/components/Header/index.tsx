@@ -8,12 +8,12 @@ import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 import BackButton from '../Buttons/Back';
 import { Text } from 'react-native-paper';
+import ShareButton from '../Buttons/Share';
 import FastImage from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Utilities
 import makeStyles from './styles';
-import ShareButton from '../Buttons/Share';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
