@@ -35,7 +35,7 @@ const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress 
   // Renders
   return (
     <TouchableOpacity style={styles.rowContainer}>
-      <FastImage source={{ uri: item?.photoUrl }} style={styles.image} />
+      <FastImage source={{ uri: item?.photoUrl, cache: FastImage.cacheControl.immutable }} style={styles.image} />
 
       <View style={styles.content}>
         <Text variant="h6">{item?.name}</Text>

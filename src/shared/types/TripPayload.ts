@@ -1,18 +1,17 @@
 import { TravelOptionProps } from './TravelOption';
 
 export interface TripPayloadProps {
-  _id: string;
+  _id?: string;
   user: string;
   destination: string;
   periodType: string;
   noOfDays: number;
-  selectedMonth: string;
+  selectedMonth?: string;
   fromDate: string;
   toDate: string;
   byDate?: boolean;
   location: object;
   duration?: number;
-  socketId: string | undefined;
   interests: string | string[];
   traveler: TravelOptionProps;
   budget: TravelOptionProps;

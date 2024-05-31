@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Avandra',
     slug: 'avandra',
-    version: '1.0.0',
+    version: '1.0.2',
     scheme: 'avandra',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -10,7 +10,7 @@ module.exports = {
     splash: {
       image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff'
+      backgroundColor: '#051D40'
     },
     experiments: {
       tsconfigPaths: true
@@ -26,7 +26,7 @@ module.exports = {
         usesNonExemptEncryption: false,
         googleMapsApiKey: '***REMOVED***'
       },
-      associatedDomains: ['applinks:avandraapp.com', 'applinks:avandra-cms-cqt25.ondigitalocean.app'],
+      associatedDomains: ['applinks:avandraapp.com'],
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           'This app uses your location information while the app is running in the foreground.',
@@ -65,7 +65,7 @@ module.exports = {
         }
       },
       package: 'com.avandraapp.avandra',
-      versionCode: 1,
+      versionCode: 3,
       googleServicesFile: './google-services.json',
       permissions: ['android.permission.INTERNET', 'android.permission.ACCESS_NETWORK_STATE'],
       intentFilters: [
@@ -105,9 +105,10 @@ module.exports = {
         'expo-build-properties',
         {
           android: {
-            compileSdkVersion: 33,
-            targetSdkVersion: 33,
-            buildToolsVersion: '33.0.0',
+            compileSdkVersion: 34,
+            targetSdkVersion: 34,
+            minSdkVersion: 24,
+            buildToolsVersion: '34.0.0',
             usesCleartextTraffic: true
           },
           ios: {

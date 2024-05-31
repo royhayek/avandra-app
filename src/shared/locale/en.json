@@ -16,18 +16,12 @@
       "save_changes": "Save Changes",
       "yes_delete": "Yes, Delete",
       "search": "Search",
+      "expand": "Expand",
+      "collapse": "Collapse",
       "select_option": "Select an option",
       "generating_your_trip": "Generating your trip... ({{progress}}%)",
       "regenerating_your_trip": "Regenerating your trip... ({{progress}}%)",
       "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
-    },
-    "onBoarding": {
-      "walkthrough_title_1": "Discover Your Next Adventure",
-      "walkthrough_desc_1": "Avandra curates travel gems just for you. Get personalized destination recommendations and start building your dream journey.",
-      "walkthrough_title_2": "Save and Plan Your Adventures",
-      "walkthrough_desc_2": "Found your dream destination? Add it to your saved list for later. Avandra keeps your travel dreams organized and within reach.",
-      "walkthrough_title_3": "Intelligent Trip Planning with Avandra AI",
-      "walkthrough_desc_3": "Let our AI plan a detailed trip tailored to your preferences. Easy planning for your unforgettable experience."
     },
     "login": {
       "title": "Let's Get Started!",
@@ -71,25 +65,26 @@
       "popular_articles": "Popular Articles",
       "view_all": "View all"
     },
+    "search": {
+      "most_popular_searches": "Most Popular Searches"
+    },
     "destination_details": {
       "gallery": "Gallery",
       "additional_info": "Additional Info",
-      "start_a_trip": "Start a Trip"
+      "best_time": "Best Time to Go",
+      "spoken_languages": "Spoken Language(s)",
+      "currency": "Currency",
+      "continent": "Continent",
+      "start_a_trip": "Start a Trip",
+      "generate_a_trip_to": "Generate a trip to {{name}}!"
+    },
+    "article_details": {
+      "read_this_article": "Read this article {{name}}!"
     },
     "planner": {
       "step1": {
         "who_is_going": "Who is going? 🧳",
-        "lets_start": "Let's get started by selecting who you're traveling with.",
-        "only_me": "Only Me",
-        "only_me_desc": "Traveling solo, just you.",
-        "a_couple": "A Couple",
-        "a_couple_desc": "A romantic getaway for two.",
-        "family": "Family",
-        "family_desc": "Quality time with your loved ones.",
-        "friends": "Friends",
-        "friends_desc": "Adventure with your closest pals.",
-        "work": "Work",
-        "work_desc": "Business or corporate travel."
+        "lets_start": "Let's get started by selecting who you're traveling with."
       },
       "step2": {
         "adventure_date": "When will your adventure begin and end? 🗓️",
@@ -121,15 +116,7 @@
       },
       "step4": {
         "budget_title": "Set your trip budget",
-        "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort.",
-        "cheap": "Cheap",
-        "cheap_desc": "Budget-friendly, economical travel.",
-        "balanced": "Balanced",
-        "balanced_desc": "Moderate spending for a balanced trip.",
-        "luxury": "Luxury",
-        "luxury_desc": "High-end, indulgent experiences.",
-        "flexible": "Flexible",
-        "flexible_desc": "No budget restrictions."
+        "budget_desc": "Let us know your budget preference, and we'll craft an itinerary that suits your financial comfort."
       },
       "step5": {
         "review_summary": "Review Summary",
@@ -191,16 +178,20 @@
       }
     },
     "subscription": {
-      "restore_purchase": "Restore purchase",
+      "restore_purchases": "Restore purchases",
+      "continue": "Continue",
       "your_current_plan": "Your current plan",
       "popular": "Popular",
       "best_value": "Best Value",
       "select_plan": "Select Plan",
       "free_trial": "Free Trial",
       "month": "Month",
+      "year": "Year",
       "free": "Free",
       "subscription_expiry": "Your subscription will expire on Jan 10, 2024. Renew or cancel your subscription",
-      "here": "here"
+      "here": "here",
+      "no_subscriptions_found": "No subscriptions found",
+      "refer_to_documentation": "Refer to the RevenueCat documentation for more information"
     },
     "usage": {
       "daily_free_usage": "Daily Free Usage",
@@ -228,8 +219,12 @@
       "delete_your_trips": "Delete your trips?"
     },
     "trip_details": {
+      "overview": "Overview",
+      "tips": "Tips",
+      "your_journey": "Your {{name}} Journey",
       "view_on_map": "View on Google Maps",
-      "reviews": "reviews"
+      "reviews": "reviews",
+      "join_my_planned_trip_to": "Join my planned trip to {{name}}!"
     },
     "trip_modifcation": {
       "delete_event": "Delete this Event?"

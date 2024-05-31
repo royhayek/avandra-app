@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "860918187904-kcvuil266i33faurfe7ish2vtsaboti1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.avandraapp.avandra",
+            "certificate_hash": "08797e793618940e13c576d3f3ab40c014900ceb"
+          }
+        },
+        {
           "client_id": "860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu.apps.googleusercontent.com",
           "client_type": 3
         }

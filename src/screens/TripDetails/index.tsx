@@ -29,7 +29,9 @@ import { selectTrip, selectTripLoading } from '@redux/itinerary/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
+import { TranslateOptions } from 'i18n-js';
 import { ShareDataProps } from '@shared/types/ShareData';
+import { t } from '@app/i18n';
 
 interface TripDetailsScreenProps {}
 
@@ -38,6 +40,8 @@ interface RouteParams {
 }
 
 // Component
+const _t = (key: string, options?: TranslateOptions) => t(`trip_details.${key}`, options);
+
 const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   // Redux
   const dispatch = useAppDispatch();
@@ -106,7 +110,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   // Renderers Vars
   const shareData: ShareDataProps = {
-    message: `Join my planned trip to ${name}!`,
+    message: _t('join_my_planned_trip_to', { name }),
     deepLink: `https://avandraapp.com/share/trip/${tripId}`
   };
 
@@ -117,7 +121,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         style={styles.image}
         source={{ uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}` }}
       />
-      <Header back share absolute shareData={shareData} />
+      <Header hasBackBtn share absolute shareData={shareData} />
     </View>
   );
 
@@ -133,14 +137,14 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </Text>
 
         <Text variant="h5" style={styles.title}>
-          Overview
+          {_t('overview')}
         </Text>
         <Text variant="xLarge">{description}</Text>
 
         <Accordion
           title={
             <View style={styles.row}>
-              <Text variant="h5">Tips</Text>
+              <Text variant="h5">{_t('tips')}</Text>
               <MaterialCommunityIcons
                 size={ms(20)}
                 name="lightbulb-on-outline"
@@ -167,7 +171,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </Accordion>
 
         <Text variant="h5" style={styles.title}>
-          Your {name} Journey
+          {_t('your_journey', { name })}
         </Text>
 
         <View style={styles.mapContainer}>
@@ -187,8 +191,8 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
             region={{
               latitudeDelta: 0.02,
               longitudeDelta: 0.02,
-              latitude: _.first(markers)?.lat || 0,
-              longitude: _.first(markers)?.lng || 0
+              latitude: parseFloat(_.first(markers)?.lat),
+              longitude: parseFloat(_.first(markers)?.lng)
             }}
             customMapStyle={
               theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
@@ -219,7 +223,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
     return (
       <View>
         <Shimmer style={styles.curvedContainer} />
-        <Header back share absolute shareData={shareData} />
+        <Header hasBackBtn share absolute shareData={shareData} />
         <View style={styles.shimmerBody}>
           <Shimmer style={styles.shimmerTitle} />
           <Shimmer style={styles.shimmerDate} />

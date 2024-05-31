@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import { Text } from 'react-native-paper';
 import { ms } from 'react-native-size-matters';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
 // Components
 import Markdown from 'react-native-marked';
@@ -19,16 +19,17 @@ import {
 } from 'react-native';
 
 // Utilities
+import { t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
 import makeStyles, { markdownStyles } from './styles';
 
 // Interfaces
 interface AccordionProps {
-  children: string;
   expanded?: boolean;
   markdown?: boolean;
   setExpanded?: () => void;
   style?: StyleProp<ViewStyle>;
+  children: ReactNode | string;
   title: string | React.ReactNode;
   titleStyle?: StyleProp<TextStyle>;
 }
@@ -71,7 +72,7 @@ const Accordion: React.FC<AccordionProps> = ({
         <Text variant="h5">{title}</Text>
         <View style={styles.row}>
           <Text variant="medium" style={styles.expandText}>
-            {isExpanded ? 'Collapse' : 'Expand'}
+            {isExpanded ? t('common.collapse') : t('common.expand')}
           </Text>
           <Icon
             size={ms(22)}

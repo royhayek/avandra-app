@@ -17,18 +17,25 @@ import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
-import { ShareDataProps } from '@shared/types/ShareDataProps';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { ShareDataProps } from '@shared/types/ShareData';
+import { NativeStackHeaderProps, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
+interface NavigationOptions extends NativeStackNavigationOptions {
+  headerTitle?: () => React.ReactNode;
+  onBackPress?: () => void;
+  headerRight?: () => React.ReactNode;
+}
 interface HeaderProps extends NativeStackHeaderProps {
-  back: boolean;
   share: boolean;
   absolute?: boolean;
+  hasBackBtn: boolean;
+  onBackPress: () => void;
+  options: NavigationOptions;
   shareData?: ShareDataProps;
 }
 
 // Component
-const Header: React.FC<HeaderProps> = ({ options, route, back, share, absolute, shareData }) => {
+const Header: React.FC<HeaderProps> = ({ options, hasBackBtn, share, absolute, shareData }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -36,7 +43,9 @@ const Header: React.FC<HeaderProps> = ({ options, route, back, share, absolute, 
 
   // Callbacks
   const handleOnBackPress = () => {
-    if (navigation.canGoBack()) {
+    if (options?.onBackPress) {
+      options.onBackPress();
+    } else if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
       navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
@@ -55,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ options, route, back, share, absolute, 
           <View style={styles.appName}>{options.headerTitle()}</View>
         ) : null}
 
-        {back ? (
+        {hasBackBtn || options?.headerBackVisible || navigation?.canGoBack() ? (
           <BackButton onPressOut={handleOnBackPress} />
         ) : (
           <FastImage source={require('@shared/assets/icons/app-icon.png')} style={{ width: ms(28), height: mvs(28) }} />

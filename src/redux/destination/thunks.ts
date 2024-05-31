@@ -15,6 +15,7 @@ import {
 
 // Interfaces
 import { DestinationProps } from '@shared/types/Destination';
+import { RootState, store } from '@app/store';
 
 // Actions
 
@@ -100,8 +101,10 @@ export const getTravelPreferencesAction = createAsyncThunk(
     try {
       let response = null;
 
-      const { destination } = getState();
+      const { destination } = getState() as RootState;
       const { travelers, interests, budgets } = destination;
+
+      console.debug('[getTravelPreferencesAction - travelers] :: ', { travelers, interests, budgets });
 
       if (_.isEmpty(travelers) || _.isEmpty(interests) || _.isEmpty(budgets)) {
         response = await Promise.all([
@@ -109,11 +112,11 @@ export const getTravelPreferencesAction = createAsyncThunk(
           dispatch(getInterestsAction()),
           dispatch(getBudgetsAction())
         ]);
+
+        return response;
       }
 
-      console.debug('[getTravelPreferencesAction - response] :: ', response);
-
-      return response;
+      // console.debug('[getTravelPreferencesAction - response] :: ', response);
     } catch (error: any) {
       console.error('[getTravelersAction - error] :: ', error);
 

@@ -12,7 +12,7 @@ import {
 } from 'react-native-google-places-autocomplete';
 
 // Utilities
-import i18n from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import { autocompleteStyles } from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { GOOGLE_PLACES_API_KEY } from '@shared/constants';
@@ -54,7 +54,7 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
       enablePoweredByContainer={false}
       styles={autocompleteStyles(theme)}
       renderRow={renderRow ?? undefined}
-      placeholder={placeholder ?? 'Search'}
+      placeholder={placeholder ?? t('common.search')}
       textInputProps={{
         value,
         blurOnSubmit: true,
@@ -74,8 +74,7 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
 
 PlacesAutocomplete.defaultProps = {
   query: {},
-  fetchDetails: false,
-  placeholder: 'Search'
+  fetchDetails: false
 };
 
 export default PlacesAutocomplete;

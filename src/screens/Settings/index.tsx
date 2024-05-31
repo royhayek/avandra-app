@@ -12,7 +12,7 @@ import FastImage from 'react-native-fast-image';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import NavigationButton, { NavigationButtonProps } from './components/NavigationButton';
-import { EyeIcon, StarIcon, PaperIcon, LogoutIcon, PersonIcon, ShieldIcon } from '@shared/assets/icons';
+import { EyeIcon, StarIcon, PaperIcon, LogoutIcon, PersonIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
@@ -21,7 +21,7 @@ import { appName } from '@shared/utils';
 import { authActions } from '@redux/auth/slice';
 import { userActions } from '@redux/user/slice';
 import { useAppTheme } from '@shared/assets/theme';
-import { getOwnedSubscription } from '@redux/app/slice';
+import { selectSubscriptionState } from '@redux/app/slice';
 import { useAppDispatch, useAppSelector } from '@app/store';
 
 // Interfaces
@@ -35,7 +35,7 @@ const SettingsScreen = () => {
   // Redux
   const dispatch = useAppDispatch();
 
-  const ownedSubscription = useAppSelector(getOwnedSubscription);
+  const subscriptionState = useAppSelector(selectSubscriptionState);
 
   // Statics
   const theme = useAppTheme();
@@ -175,7 +175,7 @@ const SettingsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {!ownedSubscription && renderUpgradeButton()}
+      {!subscriptionState?.active && renderUpgradeButton()}
       {renderContent()}
       {renderLogoutModal()}
     </View>

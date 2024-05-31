@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // Components
 import Shimmer from '../Shimmer';
@@ -31,6 +31,22 @@ const ScrollableTabs: React.FC<ScrollableTabsProps> = ({ tabs, activeTab, onTabP
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const scrollViewRef = React.useRef<ScrollView>(null);
+
+  // Effects
+  useEffect(() => {
+    // Scroll to active tab when tab is pressed
+    if (activeTab) {
+      const activeTabIndex = _.findIndex(tabs, { key: activeTab });
+      const tabWidth = 120;
+      const offset = activeTabIndex * tabWidth;
+
+      // Scroll to active tab
+      // @ts-ignore
+      scrollViewRef.current?.scrollTo({ x: offset, animated: true });
+    }
+  }, [activeTab]);
+
   // Renderers
   if (isLoading) {
     return (
@@ -43,7 +59,11 @@ const ScrollableTabs: React.FC<ScrollableTabsProps> = ({ tabs, activeTab, onTabP
   }
 
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={[styles.container, style]}>
+    <ScrollView
+      horizontal
+      ref={scrollViewRef}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={[styles.container, style]}>
       {_.map(tabs, ({ key, title }) => {
         const isActive = _.isEqual(activeTab, key);
 

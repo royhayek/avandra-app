@@ -73,7 +73,7 @@ const PlannerScreen = () => {
         break;
 
       case 2:
-        if (!_.isEmpty(interests) && interests.length >= 3) {
+        if (interests && !_.isEmpty(interests) && interests.length >= 3) {
           updatePlannerStep(plannerStep + 1);
         } else {
           dispatch(
@@ -93,23 +93,18 @@ const PlannerScreen = () => {
     }
   }, [dispatch, plannerPayload, plannerStep, updatePlannerStep]);
 
-  const generateTrip = useCallback(
-    async (socketId: string) => {
-      const response = await dispatchThunk(generateTripAction({ ...plannerPayload, user: userId, socketId }));
-      setGenerating(false);
-
-      if (response?.payload?.success) {
-        navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-        navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
-        dispatch(plannerActions.reset());
-      }
-    },
-    [dispatch, dispatchThunk, navigation, plannerPayload, userId]
-  );
-
-  const handleSubmitPress = useCallback(() => {
+  const handleSubmitPress = useCallback(async () => {
     setGenerating(true);
-  }, []);
+
+    const response = await dispatchThunk(generateTripAction({ ...plannerPayload, user: userId }));
+    setGenerating(false);
+
+    if (response?.payload?.success) {
+      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+      navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
+      dispatch(plannerActions.reset());
+    }
+  }, [dispatch, dispatchThunk, navigation, plannerPayload, userId]);
 
   const handleOnBackPress = useCallback(() => {
     if (plannerStep === 0) {
@@ -145,11 +140,13 @@ const PlannerScreen = () => {
     navigation.setOptions(
       isLastStep
         ? {
+            headerBackVisible: true,
             onBackPress: handleOnBackPress,
             headerRight: renderCancelButton,
             title: t('planner.step5.review_summary')
           }
         : {
+            headerBackVisible: true,
             onBackPress: handleOnBackPress,
             headerRight: renderCancelButton,
             headerTitle: () => (
@@ -167,17 +164,15 @@ const PlannerScreen = () => {
           }
     );
   }, [
-    dispatch,
-    theme.dark,
+    handleOnBackPress,
     isLastStep,
     navigation,
     plannerStep,
+    renderCancelButton,
     theme.colors.dark,
     theme.colors.gray,
-    handleOnBackPress,
-    renderCancelButton,
-    handleOnCancelPress,
-    theme.colors.primary
+    theme.colors.primary,
+    theme.dark
   ]);
 
   useEffect(() => {
@@ -200,7 +195,7 @@ const PlannerScreen = () => {
       {steps[plannerStep]}
       {renderFooter()}
 
-      {generating && <GenerationModal onGenerate={generateTrip} />}
+      {generating && <GenerationModal isVisible={generating} />}
     </View>
   );
 };

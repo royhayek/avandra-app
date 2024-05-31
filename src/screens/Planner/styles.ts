@@ -9,7 +9,8 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     flex1: { flex: 1 },
     container: {
-      flex: 1
+      flex: 1,
+      paddingTop: mvs(16)
     },
     divider: {
       marginTop: mvs(10)

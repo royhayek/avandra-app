@@ -141,7 +141,7 @@ const Step2 = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-      {renderHeader}
+      {renderHeader()}
       {renderContent()}
     </ScrollView>
   );

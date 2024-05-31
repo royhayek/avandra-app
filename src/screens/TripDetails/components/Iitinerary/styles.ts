@@ -1,5 +1,5 @@
 // Packages
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
@@ -15,6 +15,7 @@ export default (theme: AppTheme) =>
       marginBottom: mvs(24)
     },
     typeLine: {
+      width: ms(48),
       marginEnd: ms(16),
       alignItems: 'center'
     },
@@ -27,7 +28,10 @@ export default (theme: AppTheme) =>
     },
     itineraryContent: {
       flex: 1,
-      width: '100%',
+      paddingEnd: ms(16),
+      width: Dimensions.get('window').width - ms(64)
+    },
+    itineraryButton: {
       borderRadius: theme.roundness,
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },
@@ -70,13 +74,15 @@ export default (theme: AppTheme) =>
       paddingHorizontal: ms(24)
     },
     navigationIcon: {
-      marginEnd: ms(16),
+      width: ms(48),
+      marginEnd: ms(8),
+      marginStart: ms(8),
       justifyContent: 'center'
     },
     itineraryNavigation: {
       flex: 1,
-      width: '100%',
       padding: ms(16),
+      marginEnd: ms(16),
       borderWidth: ms(1),
       flexDirection: 'row',
       borderRadius: theme.roundness,

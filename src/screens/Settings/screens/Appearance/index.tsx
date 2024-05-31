@@ -18,6 +18,7 @@ import { appActions, selectLanguage, selectThemeMode } from '@redux/app/slice';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { destinationsActions } from '@redux/destination/slice';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -35,8 +36,6 @@ const AppearanceScreen = () => {
   const appTheme = useAppTheme();
   const styles = makeStyles(appTheme);
 
-  const isDark = _.isEqual(themeMode, 'dark');
-
   const [theme, setTheme] = useState<string>(themeMode ?? 'default');
   const [language, setLanguage] = useState<string>(appLanguage ?? 'en');
 
@@ -53,7 +52,8 @@ const AppearanceScreen = () => {
 
   const handleLanguagePress = useCallback(() => languageSheetRef.current?.expand(), []);
 
-  const handleLanguage = useCallback(() => {
+  const handleLanguage = useCallback(async () => {
+    dispatch(destinationsActions.reset());
     dispatch(appActions.setLanguage(language));
     changeLanguage(language);
     handleLanguageSheetClose();

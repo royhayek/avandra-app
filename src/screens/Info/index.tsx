@@ -5,8 +5,8 @@ import { useRoute } from '@react-navigation/native';
 
 // Components
 import Shimmer from '@shared/components/Shimmer';
+import { ScrollView, View, useWindowDimensions } from 'react-native';
 import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
-import { Dimensions, ScrollView, View, useWindowDimensions } from 'react-native';
 
 // Utilities
 import makeStyles from './styles';
@@ -31,19 +31,14 @@ const InfoScreen = () => {
 
   const { width } = useWindowDimensions();
 
-  const type = (route.params as RouteParams)?.type;
+  const { type } = (route.params as RouteParams) || {};
   const uri = _.isEqual(type, 'privacy_policy') ? config?.privacyPolicy : config?.termsAndConditions;
 
   // Renderers
   const renderLoading = () => (
     <View style={{ marginVertical: 32 }}>
-      {_.times(15, (i) => (
-        <Shimmer
-          key={i}
-          width={Math.floor(Math.random() * (Dimensions.get('screen').width - 240 + 1)) + 200}
-          height={22}
-          style={{ marginBottom: 12 }}
-        />
+      {_.times(20, (i) => (
+        <Shimmer key={i} width={i % 2 === 0 ? width - 80 : width - 50} height={22} style={{ marginBottom: 12 }} />
       ))}
     </View>
   );
@@ -53,6 +48,7 @@ const InfoScreen = () => {
       <RenderHtml
         source={{ uri }}
         contentWidth={width}
+        ignoredDomTags={['services:']}
         remoteLoadingView={renderLoading}
         systemFonts={[...defaultSystemFonts, 'urbanist-regular', 'urbanist-bold']}
         tagsStyles={{

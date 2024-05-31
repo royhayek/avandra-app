@@ -21,6 +21,7 @@ import { selectArticleDetails, selectArticlesLoading } from '@redux/article/slic
 // Interfaces
 import { ShareDataProps } from '@shared/types/ShareDataProps';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { t } from '@app/i18n';
 
 interface ArticleDetailsScreenProps {}
 
@@ -54,10 +55,10 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
   useEffect(() => {
     if (articleId) dispatchThunk(getArticleDetailsAction(articleId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [articleId]);
 
   useEffect(() => {
-    // extract trip id from deep link data, path looks like this "trip/:id"
+    // extract trip id from deep link data, path looks like this "article/:id"
     if (deepLinkData) {
       const path = deepLinkData?.path;
       const id = _.last(_.split(path, '/'));
@@ -76,14 +77,16 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
 
   // Renderers Vars
   const shareData: ShareDataProps = {
-    message: `Read this article "${articleDetails?.name}"!`,
+    message: t('article_details.read_this_article', {
+      name: articleDetails?.name
+    }),
     deepLink: `https://avandraapp.com/share/article/${articleId}`
   };
 
   // Renderers
   return (
     <>
-      <Header back share shareData={shareData} />
+      <Header hasBackBtn share shareData={shareData} />
 
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -113,10 +116,17 @@ const ArticleDetailsScreen: React.FC<ArticleDetailsScreenProps> = () => {
             tagsStyles={{
               strong: {
                 ...theme.fonts.h5,
+                textAlign: 'left',
+                fontFamily: 'urbanist-bold'
+              },
+              h3: {
+                ...theme.fonts.xLarge,
+                textAlign: 'left',
                 fontFamily: 'urbanist-bold'
               },
               body: {
                 ...theme.fonts.xLarge,
+                textAlign: 'left',
                 fontFamily: 'urbanist-regular',
                 color: theme.dark ? theme.colors.white : theme.colors.black
               }

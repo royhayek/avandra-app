@@ -75,20 +75,15 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
     handleSheetClose();
   }, [dispatchThunk, handleSheetClose, item?._id, item?.user]);
 
-  const onGenerate = useCallback(
-    async (socketId: string) => {
-      const response = await dispatchThunk(
-        generateTripAction({ ...payload, _id: item?._id, user, regenerate: true, socketId })
-      );
+  const onGenerate = useCallback(async () => {
+    const response = await dispatchThunk(generateTripAction({ ...payload, _id: item?._id, user, regenerate: true }));
 
-      setRegenerating(false);
+    setRegenerating(false);
 
-      if (response?.payload?.success) {
-        navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
-      }
-    },
-    [dispatchThunk, item?._id, navigation, payload, user]
-  );
+    if (response?.payload?.success) {
+      navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
+    }
+  }, [dispatchThunk, item?._id, navigation, payload, user]);
 
   const handleTripMenuItemPress = useCallback(
     async (key: string) => {
@@ -255,7 +250,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
       ) : (
         <FastImage
           style={styles.verticalImage}
-          source={{ uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}` }}
+          source={{
+            uri: _.includes(image, 'http') ? image : `${PUBLIC_URL}/destination/image/${image}`,
+            cache: FastImage.cacheControl.immutable
+          }}
         />
       )}
       {renderTripInformation()}
@@ -286,7 +284,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
             )}
           </TouchableOpacity>
 
-          {regenerating && <GenerationModal regenerating={regenerating} onGenerate={onGenerate} />}
+          {regenerating && <GenerationModal isVisible={regenerating} />}
         </>
       ) : (
         <TouchableOpacity key={index} disabled={isExpired} onPress={() => handleTextPress(item)}>

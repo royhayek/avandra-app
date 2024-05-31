@@ -7,11 +7,17 @@ import { AppTheme } from '@shared/assets/theme';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
-    // Empty Layout
-    emptyContainer: {
+    container: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
+      paddingTop: mvs(16)
+    },
+    plansContainer: {
+      paddingTop: ms(24),
+      paddingBottom: mvs(16),
+      paddingHorizontal: ms(24),
+      borderTopEndRadius: ms(30),
+      borderTopStartRadius: ms(30),
+      backgroundColor: theme.dark ? theme.colors.dark[2] : theme.colors.gray[50]
     },
     lottie: {
       width: ms(150),
@@ -26,50 +32,29 @@ export default (theme: AppTheme) =>
     referText: {
       textAlign: 'center',
       marginBottom: mvs(15),
+      marginHorizontal: ms(24),
       color: theme.colors.secondary
     },
-    // Plans
-    plansList: {
-      paddingVertical: mvs(24),
+    titleAndBenefits: {
+      flex: 1,
+      marginBottom: mvs(24),
       paddingHorizontal: ms(24)
     },
-    plan: {
-      borderWidth: 1,
-      padding: ms(24),
-      marginBottom: mvs(24),
-      borderRadius: theme.roundness,
-      borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[400],
-      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]
-    },
-    badge: {
-      end: 0,
-      top: 0,
-      paddingVertical: 4,
-      position: 'absolute',
-      paddingHorizontal: 10,
-      borderTopEndRadius: theme.roundness,
-      borderEndStartRadius: theme.roundness,
-      backgroundColor: theme.colors.primary
-    },
-    name: {
-      textAlign: 'center'
-    },
-    price: {
-      textAlign: 'center'
-    },
     benefits: {
-      gap: mvs(16)
+      gap: mvs(8),
+      marginTop: mvs(16)
     },
     benefit: {
       gap: ms(12),
-      alignItems: 'center',
       paddingEnd: ms(10),
+      alignItems: 'center',
       flexDirection: 'row'
     },
     benefitText: {
       flex: 1,
       fontFamily: 'urbanist-medium'
     },
+    // Plans
     divider: {
       marginVertical: mvs(16)
     },

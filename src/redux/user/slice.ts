@@ -11,7 +11,7 @@ import { UserInitialState } from './types';
 export const initialState: UserInitialState = {
   data: {},
   error: null,
-  loading: false,
+  loading: false
 };
 
 export const userSlice = createSlice({

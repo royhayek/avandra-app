@@ -22,6 +22,8 @@ import { useAppDispatch, useAppThunkDispatch } from '@app/store';
 import { getTripPlacesAction, getTripPopularPlacesAction, saveAdditionalEventsAction } from '@redux/itinerary/thunks';
 
 // Interfaces
+import { CoordinatesProps } from '@shared/types/Coordinates';
+import { ItineraryItemProps } from '@shared/types/Itinerary';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
   GooglePlaceData,
@@ -32,10 +34,7 @@ import {
 interface RouteParams {
   tripId: string;
   date: string;
-  location: {
-    lat: number;
-    lng: number;
-  };
+  location: CoordinatesProps;
 }
 
 // Component
@@ -58,7 +57,7 @@ const EventAdditionScreen: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [popularPlaces, setPopularPlaces] = useState<any[]>([]);
 
-  const inputRef = useRef<GooglePlacesAutocompleteRef>();
+  const inputRef = useRef<GooglePlacesAutocompleteRef>(null);
 
   const selectedPlaces = popularPlaces.filter((place) => place.selected);
   const unselectedPlaces = popularPlaces.filter((place) => !place.selected);
@@ -125,7 +124,7 @@ const EventAdditionScreen: React.FC = () => {
   const fetchPopularPlaces = useCallback(async () => {
     setIsLoading(true);
     const data = await dispatchThunk(getTripPopularPlacesAction(tripId));
-    const places = data?.payload.map((place) => ({ ...place, selected: false }));
+    const places = data?.payload.map((place: ItineraryItemProps) => ({ ...place, selected: false }));
     setPopularPlaces(places);
     setIsLoading(false);
   }, [dispatchThunk, tripId]);
@@ -224,8 +223,8 @@ const EventAdditionScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {renderSearch}
-      {renderEvents}
+      {renderSearch()}
+      {renderEvents()}
       {renderFooter()}
     </View>
   );

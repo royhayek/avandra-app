@@ -15,6 +15,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import { DateData, MarkedDates } from 'react-native-calendars/src/types';
 
 interface DatePickerProps {
+  defaultValue?: StateProps;
   onSuccess: (state: object, startDate: string, endDate: string) => void;
 }
 
@@ -45,7 +46,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
   // Callbacks
   const setupMarkedDates = useCallback(
     (fromDate: string | undefined, toDate: string, markedDates: MarkedDates) => {
-      const mFromDate = new XDate(fromDate);
+      const mFromDate = new XDate(fromDate ?? '');
       const mToDate = new XDate(toDate);
 
       const range: number = mFromDate.diffDays(mToDate);
@@ -126,7 +127,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
         setState({
           isFromDatePicked: false,
           isToDatePicked: false,
-          fromDate: day.dateString,
+          fromDate: '',
           markedDates: {}
         });
       } else if (!state.isToDatePicked) {
@@ -152,7 +153,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
 
           setState(updatedState);
 
-          onSuccess(updatedState, state.fromDate, day.dateString);
+          if (state?.fromDate) onSuccess(updatedState, state?.fromDate, day.dateString);
         } else {
           setupStartMarker(day);
         }

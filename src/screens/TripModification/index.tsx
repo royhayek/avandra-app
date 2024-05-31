@@ -1,5 +1,5 @@
 // Packages
-import _, { update } from 'lodash';
+import _ from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -15,14 +15,14 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
-import { getTripAction, getTripPlacesAction, updateTripPlacesAction } from '@redux/itinerary/thunks';
+import { snackbarActions } from '@redux/snackbar/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 import { selectTripPlaces, selectTripPlacesLoading } from '@redux/itinerary/slice';
+import { getTripAction, getTripPlacesAction, updateTripPlacesAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { ItineraryItemProps } from '@shared/types/Itinerary';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { snackbarActions } from '@redux/snackbar/slice';
 
 interface RouteParams {
   tripId: string;

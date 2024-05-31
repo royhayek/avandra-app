@@ -109,7 +109,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
         style={[styles.rowContainer, isActive && styles.activeRowContainer]}>
         {_.isFunction(drag) && <DragIcon fill={theme.dark ? theme.colors.secondary : theme.colors.gray[900]} />}
 
-        <FastImage source={{ uri: item?.photoUrl }} style={styles.image} />
+        <FastImage source={{ uri: item?.photoUrl, cache: FastImage.cacheControl.immutable }} style={styles.image} />
 
         <View style={styles.content}>
           <Text variant="h6" style={styles.name}>
@@ -155,7 +155,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
       title={t('trip_modifcation.delete_event')}
       primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDelete }}
       secondaryBtnProps={{ title: t('common.cancel'), onPress: handleDeleteSheetClose }}>
-      {renderItem({ item: itineraryData?.[deletionIndex], drag: null, isActive: false })}
+      {renderItem({ item: itineraryData?.[deletionIndex], drag: () => undefined, isActive: false })}
     </CustomBottomSheet>
   );
 

@@ -29,9 +29,6 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActiv
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  // Callbacks
-  const handleButtonPress = () => setActive(button.key);
-
   // Renderers
   return (
     <View style={[styles.container, containerStyle]}>
@@ -39,7 +36,7 @@ const ToggleButtons: React.FC<ToggleButtonsProps> = ({ buttons, active, setActiv
         const isActive = _.isEqual(button.key, active);
 
         return (
-          <TouchableWithoutFeedback key={button.key} onPress={handleButtonPress}>
+          <TouchableWithoutFeedback key={button.key} onPress={() => setActive(button.key)}>
             <View style={index === 0 ? styles.buttonContainer : styles.activeButtonContainer}>
               <View style={isActive ? styles.activeButton : styles.button}>
                 <Text variant="medium" style={[styles.title, isActive && styles.activeTitle]}>

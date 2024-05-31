@@ -35,7 +35,7 @@ const PopularListItem: React.FC<PopularListItemProps> = ({
   disabled,
   noPadding,
   isLoading,
-  orientation,
+  orientation
 }) => {
   // Statics
   const isVertical = !!String(orientation).match(/vertical/);
@@ -67,7 +67,10 @@ const PopularListItem: React.FC<PopularListItemProps> = ({
       <FastImage
         resizeMode="cover"
         style={styles.image}
-        source={{ uri: `${PUBLIC_URL}/${isDestination ? 'destination' : 'article'}/image/${item?.image}` }}
+        source={{
+          uri: `${PUBLIC_URL}/${isDestination ? 'destination' : 'article'}/image/${item?.image}`,
+          cache: FastImage.cacheControl.immutable
+        }}
       />
       <Text
         numberOfLines={2}
@@ -80,7 +83,7 @@ const PopularListItem: React.FC<PopularListItemProps> = ({
           <FastImage
             resizeMode="cover"
             style={styles.flag}
-            source={{ uri: `${PUBLIC_URL}/destination/flag/${item?.flag}` }}
+            source={{ uri: `${PUBLIC_URL}/destination/flag/${item?.flag}`, cache: FastImage.cacheControl.immutable }}
           />
         )}
         <Text

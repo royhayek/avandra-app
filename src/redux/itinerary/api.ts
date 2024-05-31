@@ -3,6 +3,7 @@ import axios from 'axios';
 
 // Interfaces
 import { TripPayloadProps } from '@shared/types/TripPayload';
+import { ItineraryItemProps } from '@shared/types/Itinerary';
 
 // Calls
 
@@ -19,7 +20,7 @@ export const saveAdditionalEvents = (tripId: string, payload: any) => axios.post
 export const deleteTripPlace = (tripId: string, placeId: string, date: string) =>
   axios.delete(`trip/place/${tripId}/${placeId}/${date}`);
 
-export const updateTripPlaces = (tripId: string, places: TripPayloadProps[]) =>
+export const updateTripPlaces = (tripId: string, places: ItineraryItemProps[]) =>
   axios.patch(`trip/places/${tripId}`, { places });
 
 export const getTripPopularPlaces = (tripId: string) => axios.get(`trip/places/popular/${tripId}`);

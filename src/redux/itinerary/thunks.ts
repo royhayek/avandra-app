@@ -13,11 +13,12 @@ import {
   deleteTripPlace,
   updateTripPlaces,
   getTripPopularPlaces,
-  saveAdditionalEvents,
+  saveAdditionalEvents
 } from './api';
 
 // Interfaces
 import { TripPayloadProps } from '@shared/types/TripPayload';
+import { ItineraryItemProps } from '@shared/types/Itinerary';
 
 // This thunk will make a POST request to the OenAI API with the provided payload
 export const generateTripAction = createAsyncThunk(
@@ -160,7 +161,7 @@ export const getTripAction = createAsyncThunk('itinerary/getTrip', async (tripId
 
 export const updateTripPlacesAction = createAsyncThunk(
   'itinerary/updateTripPlaces',
-  async ({ tripId, places }: { tripId: string; places: TripPayloadProps[] }, { rejectWithValue }) => {
+  async ({ tripId, places }: { tripId: string; places: ItineraryItemProps[] }, { rejectWithValue }) => {
     try {
       // console.debug('[updateTripPlacesAction - requestData] :: ', { tripId, places });
       const response = await updateTripPlaces(tripId, places);

@@ -153,11 +153,11 @@ const Step5 = () => {
         <Divider />
         {renderTraveler()}
         <Divider />
-        {renderTripDate}
+        {renderTripDate()}
         <Divider />
-        {renderInterests}
+        {renderInterests()}
         <Divider />
-        {renderBudget}
+        {renderBudget()}
       </View>
     </ScrollView>
   );

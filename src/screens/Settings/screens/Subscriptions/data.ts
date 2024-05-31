@@ -64,7 +64,6 @@ export const dummy_subscriptions: PlanProps[] = [
         fr: "Itinéraires de voyage améliorés générés par l'IA.",
         ar: 'جداول رحلة محسّنة بواسطة الذكاء الاصطناعي.'
       },
-      { en: 'Priority customer support.', fr: 'Support client prioritaire.', ar: 'الدعم الأولوي للعملاء.' },
       {
         en: 'Exclusive access to travel articles and guides.',
         fr: 'Accès exclusif aux articles de voyage et aux guides.',
@@ -74,7 +73,8 @@ export const dummy_subscriptions: PlanProps[] = [
         en: 'Early access to new Avandra features and updates.',
         fr: 'Accès anticipé aux nouvelles fonctionnalités et mises à jour de Avandra.',
         ar: 'الوصول المبكر إلى ميزات وتحديثات Avandra الجديدة.'
-      }
+      },
+      { en: 'Priority customer support.', fr: 'Support client prioritaire.', ar: 'الدعم الأولوي للعملاء.' }
     ]
   },
   {

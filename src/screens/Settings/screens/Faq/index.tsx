@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import Input from '@shared/components/Input';
-import { ActivityIndicator, Divider, Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 import ScrollableTabs from '@shared/components/ScrollableTabs';
 import { DownChevron, SearchIcon } from '@shared/assets/icons';
 import { FlatList, TouchableOpacity, View } from 'react-native';
@@ -41,8 +41,8 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
   const styles = makeStyles(theme);
 
   const [searchText, setSearchText] = useState<string>('');
-  const [activeTab, setActiveTab] = useState(faqCategories[0]?._id ?? '');
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<string | undefined>(faqCategories[0]?._id ?? '');
 
   // Callbacks
   const handleTabPress = useCallback((tab: string) => setActiveTab(tab), []);
@@ -76,6 +76,10 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
+
+  useEffect(() => {
+    if (!_.isEmpty(faqCategories)) setActiveTab(_.first(faqCategories)?._id);
+  }, [faqCategories]);
 
   // Renderer Vars
   const tabs = _.map(faqCategories, (category) => ({

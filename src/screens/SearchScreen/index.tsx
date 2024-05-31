@@ -26,6 +26,7 @@ import {
   getRecentSearchesAction,
   getTravelPreferencesAction
 } from '@redux/destination/thunks';
+import { t } from '@app/i18n';
 
 // Component
 const SearchScreen = () => {
@@ -98,7 +99,7 @@ const SearchScreen = () => {
       {_.isEmpty(searchInput) && (
         <>
           <Text variant="h5" style={styles.title}>
-            Most Popular Searches
+            {t('search.most_popular_searches')}
           </Text>
 
           {isLoadingRecentSearches ? (

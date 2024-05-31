@@ -9,7 +9,7 @@ import {
   getInterestsAction,
   getRecentSearchesAction,
   getDestinationDetailsAction,
-  getPopularDestinationsAction,
+  getPopularDestinationsAction
 } from './thunks';
 
 // Interfaces
@@ -34,7 +34,11 @@ const initialState: DestinationInitialState = {
 const destinationsSlice = createSlice({
   name: 'destination',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => {
+      return initialState;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getPopularDestinationsAction.pending, (state) => {
       state.popularDestinations = null;

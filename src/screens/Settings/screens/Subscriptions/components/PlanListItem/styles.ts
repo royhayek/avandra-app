@@ -5,7 +5,7 @@ import { ms, mvs } from 'react-native-size-matters';
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
 
-export default (theme: AppTheme) =>
+export default (theme: AppTheme, isSelected: boolean) =>
   StyleSheet.create({
     // Empty Layout
     emptyContainer: {
@@ -29,17 +29,14 @@ export default (theme: AppTheme) =>
       color: theme.colors.secondary
     },
     // Plans
-    plansList: {
-      paddingVertical: mvs(16),
-      paddingHorizontal: ms(24)
-    },
     plan: {
-      borderWidth: 1,
-      padding: ms(24),
-      marginBottom: mvs(24),
+      padding: ms(10),
+      flexDirection: 'row',
+      marginBottom: mvs(16),
       borderRadius: theme.roundness,
-      borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[400],
-      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
+      borderWidth: isSelected ? 2 : 1,
+      backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100],
+      borderColor: isSelected ? theme.colors.primary : theme.dark ? theme.colors.dark[5] : theme.colors.gray[400]
     },
     badge: {
       end: 0,
@@ -54,23 +51,9 @@ export default (theme: AppTheme) =>
     badgeText: {
       color: theme.colors.white
     },
+    price: {},
     name: {
-      textAlign: 'center'
-    },
-    price: {
-      textAlign: 'center'
-    },
-    benefits: {
-      gap: mvs(16)
-    },
-    benefit: {
-      gap: ms(12),
-      alignItems: 'center',
-      paddingEnd: ms(10),
-      flexDirection: 'row'
-    },
-    benefitText: {
-      flex: 1,
+      color: theme.colors.secondary,
       fontFamily: 'urbanist-medium'
     },
     divider: {
@@ -85,9 +68,14 @@ export default (theme: AppTheme) =>
       gap: ms(16),
       flexDirection: 'row'
     },
+    checkboxIconStyle: {
+      borderWidth: isSelected ? 0 : 1,
+      borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[400]
+    },
     button: {
       flex: 1
     },
+    // Shimmer
     shimmerPlan: {
       justifyContent: 'center'
     },

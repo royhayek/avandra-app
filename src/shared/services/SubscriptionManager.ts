@@ -7,8 +7,7 @@ import Purchases from 'react-native-purchases';
 
 // Utilities
 import { appActions } from '@redux/app/slice';
-import { ENTITLEMENT_ID } from '@shared/constants';
-import { REVENUECAT_API_KEYS } from '@shared/constants';
+import { ENTITLEMENT_ID, REVENUECAT_API_KEYS } from '@shared/constants';
 
 // Component
 const SubscriptionManager = () => {
@@ -17,7 +16,19 @@ const SubscriptionManager = () => {
 
   // Callbacks
   // get the latest details about the user (is anonymous, user id, has active subscription)
+  const configurePurchases = async () => {
+    Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
+
+    if (Platform.OS === 'ios') {
+      await Purchases.configure({ apiKey: REVENUECAT_API_KEYS.apple });
+    } else if (Platform.OS === 'android') {
+      await Purchases.configure({ apiKey: REVENUECAT_API_KEYS.google });
+    }
+  };
+
   const getUserDetails = async () => {
+    if (!(await Purchases.isConfigured())) return;
+
     const isAnonymous = await Purchases.isAnonymous();
     const userId = await Purchases.getAppUserID();
     const customerInfo = await Purchases.getCustomerInfo();
@@ -26,32 +37,32 @@ const SubscriptionManager = () => {
     dispatch(appActions.setSubscriptionState({ isAnonymous, userId, active }));
   };
 
-  // Effects
-  useEffect(() => {
-    // Get user details on app launch
-    getUserDetails();
-  }, []);
-
-  useEffect(() => {
-    const setup = async () => {
-      if (Platform.OS == 'android') {
-        await Purchases.configure({ apiKey: REVENUECAT_API_KEYS.google });
-      } else {
-        await Purchases.configure({ apiKey: REVENUECAT_API_KEYS.apple });
-      }
+  const getCurrentOfferings = async () => {
+    try {
+      if (!(await Purchases.isConfigured())) return;
 
       const offerings = await Purchases.getOfferings();
-      dispatch(appActions.setCurrentOffering(offerings.current));
-    };
 
-    Purchases.setDebugLogsEnabled(true);
+      if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
+        dispatch(appActions.setCurrentOffering(offerings.current.availablePackages));
+      }
+    } catch (e) {
+      console.debug('[SubscriptionsScreen - useEffect - error] :: ', e);
+    }
+  };
 
-    setup().catch(console.log);
+  // Effects
+  useEffect(() => {
+    configurePurchases();
+    getUserDetails();
+    getCurrentOfferings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     // Subscribe to purchaser updates
     Purchases.addCustomerInfoUpdateListener(getUserDetails);
+
     return () => {
       Purchases.removeCustomerInfoUpdateListener(getUserDetails);
     };

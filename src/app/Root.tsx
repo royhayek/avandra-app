@@ -55,7 +55,6 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const [pushToken, setPushToken] = useState<string | undefined>();
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false);
 
-  const url = Linking.useURL();
   const colorScheme = useColorScheme();
 
   const responseListener = useRef<Notifications.Subscription>();
@@ -182,8 +181,9 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   }, []);
 
   useEffect(() => {
-    if (url) handleDeepLink(url);
-  }, [handleDeepLink, url]);
+    Linking.addEventListener('url', ({ url }) => handleDeepLink(url));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated && pushToken) storeDeviceInfo();

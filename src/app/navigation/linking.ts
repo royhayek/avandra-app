@@ -3,25 +3,16 @@ import * as Linking from 'expo-linking';
 import { LinkingOptions } from '@react-navigation/native';
 
 export const paths = {
-  Home: 'home',
   Trip: 'trip',
   Article: 'article',
-  Planner: 'planner'
+  Destination: 'destination'
 };
 
 export const config = {
   screens: {
-    Home: {
-      screens: {
-        HomeStack: {
-          screens: {
-            Home: `share/${paths.Home}`
-          }
-        }
-      }
-    },
     TripDetails: `share/${paths.Trip}/:id`,
-    ArticleDetails: `share/${paths.Article}/:id`
+    ArticleDetails: `share/${paths.Article}/:id`,
+    DestinationDetails: `share/${paths.Destination}/:id`
   }
 };
 
