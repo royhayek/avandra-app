@@ -66,6 +66,36 @@ export default (theme: AppTheme) =>
       width: '100%',
       height: mvs(180)
     },
+    disabledMapView: {
+      ...StyleSheet.absoluteFillObject,
+      flex: 1,
+      justifyContent: 'center'
+    },
+    disabledMapOverlay: {
+      flex: 1,
+      opacity: 0.5,
+      backgroundColor: theme.colors.gray[700]
+    },
+    disabledMapContent: {
+      flex: 1,
+      top: 24,
+      left: 24,
+      right: 24,
+      bottom: 24,
+      position: 'absolute'
+    },
+    illutration: {
+      width: ms(48),
+      height: ms(48),
+      alignSelf: 'center',
+      marginTop: mvs(12),
+      marginBottom: mvs(16)
+    },
+    upgradeText: {
+      textAlign: 'center',
+      color: theme.colors.white,
+      fontFamily: 'urbanist-bold'
+    },
     fab: {
       opacity: 0.9,
       right: ms(24),

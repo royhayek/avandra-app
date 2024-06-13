@@ -19,19 +19,19 @@ import Accordion from '@shared/components/Accordion';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 // Utilities
+import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { formatDate } from '@shared/utils';
 import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 import { getTripAction } from '@redux/itinerary/thunks';
-import { appActions, selectDeepLinkData } from '@redux/app/slice';
 import { selectTrip, selectTripLoading } from '@redux/itinerary/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
+import { appActions, selectDeepLinkData, selectSubscriptionState } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { ShareDataProps } from '@shared/types/ShareData';
-import { t } from '@app/i18n';
 
 interface TripDetailsScreenProps {}
 
@@ -50,6 +50,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const trip = useAppSelector(selectTrip);
   const deepLinkData = useAppSelector(selectDeepLinkData);
   const isLoadingTrip = useAppSelector(selectTripLoading);
+  const subscriptionState = useAppSelector(selectSubscriptionState);
 
   // Statics
   const theme = useAppTheme();
@@ -66,6 +67,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const { name, country, budget, traveler, fromDate, toDate } = payload || {};
 
   const isExpired = !!String(status).match(/expired/i);
+  const hasActiveSubscription = subscriptionState?.active;
 
   const markers = useMemo(() => {
     const placesList = _.flatMap(places, (place) => place.list);
@@ -174,36 +176,53 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
           {_t('your_journey', { name })}
         </Text>
 
-        <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            focusable={false}
-            zoomEnabled={false}
-            pitchEnabled={false}
-            scrollEnabled={false}
-            rotateEnabled={false}
-            toolbarEnabled={false}
-            zoomTapEnabled={false}
-            loadingEnabled={false}
-            zoomControlEnabled={false}
-            onPress={handleMapPress}
-            provider={PROVIDER_GOOGLE}
-            region={{
-              latitudeDelta: 0.02,
-              longitudeDelta: 0.02,
-              latitude: parseFloat(_.first(markers)?.lat),
-              longitude: parseFloat(_.first(markers)?.lng)
-            }}
-            customMapStyle={
-              theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
-            }>
-            {_.map(
-              markers,
-              (place, index) =>
-                place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
+        {markers.length > 0 && (
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              focusable={false}
+              zoomEnabled={false}
+              pitchEnabled={false}
+              scrollEnabled={false}
+              rotateEnabled={false}
+              toolbarEnabled={false}
+              zoomTapEnabled={false}
+              loadingEnabled={false}
+              zoomControlEnabled={false}
+              onPress={handleMapPress}
+              provider={PROVIDER_GOOGLE}
+              region={{
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+                latitude: parseFloat(_.first(markers)?.lat),
+                longitude: parseFloat(_.first(markers)?.lng)
+              }}
+              customMapStyle={
+                theme.dark ? require('@shared/assets/map/dark.json') : require('@shared/assets/map/light.json')
+              }>
+              {_.map(
+                markers,
+                (place, index) =>
+                  place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
+              )}
+            </MapView>
+
+            {!hasActiveSubscription && !__DEV__ && (
+              <View style={styles.disabledMapView}>
+                <View style={styles.disabledMapOverlay} />
+                <View style={styles.disabledMapContent}>
+                  <FastImage
+                    style={styles.illutration}
+                    source={require('@shared/assets/images/UpgradeIllustration.png')}
+                  />
+                  <Text variant="h5" style={styles.upgradeText}>
+                    Upgrade to premium to unlock the map feature
+                  </Text>
+                </View>
+              </View>
             )}
-          </MapView>
-        </View>
+          </View>
+        )}
       </View>
 
       <Itinerary data={places} />

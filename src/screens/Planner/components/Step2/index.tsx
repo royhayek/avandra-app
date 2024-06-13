@@ -50,25 +50,25 @@ const Step2 = () => {
   );
 
   const setNoOfDays = useCallback(
-    (days) => {
+    (days: number) => {
       dispatch(plannerActions.setPayload({ noOfDays: days }));
     },
     [dispatch]
   );
 
   const setSelectedMonth = useCallback(
-    (month) => {
+    (month: string) => {
       dispatch(plannerActions.setPayload({ selectedMonth: month }));
     },
     [dispatch]
   );
 
   const handleDatePickerSuccess = useCallback(
-    (state: object, start: string | undefined, end: string) => {
+    (state: object, fromDate: string | undefined, toDate: string) => {
       dispatch(
         plannerActions.setPayload({
-          toDate: end,
-          fromDate: start,
+          toDate,
+          fromDate,
           pickerState: state,
           periodType: activeButton
         })
@@ -116,6 +116,7 @@ const Step2 = () => {
                 </Text>
               </Text>
             </View>
+
             <MonthPicker
               setValue={setSelectedMonth}
               value={plannerPayload?.selectedMonth ?? _t(String(moment().format('MMMM')).toLocaleLowerCase())}

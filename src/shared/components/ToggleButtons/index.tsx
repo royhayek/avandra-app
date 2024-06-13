@@ -20,7 +20,7 @@ interface ToggleButtonsProps {
   active: string;
   buttons: Button[];
   setActive: (key: string) => void;
-  containerStyle: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 // Component

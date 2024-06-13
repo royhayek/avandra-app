@@ -232,7 +232,7 @@ const Login: React.FC = () => {
         />
       </View>
 
-      {isLoading && <Loading message={t('common.please_wait')} lottie />}
+      {isLoading && <Loading message={t('common.please_wait')} />}
     </SafeAreaView>
   );
 };

@@ -1,10 +1,10 @@
 // Packages
 import _ from 'lodash';
+import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import * as Progress from 'react-native-progress';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { View } from 'react-native';
@@ -14,6 +14,7 @@ import Step3 from './components/Step3';
 import Step4 from './components/Step4';
 import Step5 from './components/Step5';
 import { Ionicons } from '@expo/vector-icons';
+import UpgradeSheet from '@shared/components/UpgradeSheet';
 import RegularButton from '@shared/components/Buttons/Regular';
 import GenerationModal from '@shared/components/GenerationModal';
 
@@ -24,9 +25,14 @@ import { selectUserId } from '@redux/user/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
+import { selectSubscriptionState } from '@redux/app/slice';
 import { generateTripAction } from '@redux/itinerary/thunks';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { plannerActions, selectPlannerStep, selectPlannerPayload } from '@redux/planner/slice';
+
+// Interfaces
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 // Component
 const PlannerScreen = () => {
@@ -37,6 +43,7 @@ const PlannerScreen = () => {
   const userId = useAppSelector(selectUserId);
   const plannerStep = useAppSelector(selectPlannerStep);
   const plannerPayload = useAppSelector(selectPlannerPayload);
+  const subscriptionState = useAppSelector(selectSubscriptionState);
 
   // Statics
   const theme = useAppTheme();
@@ -46,6 +53,8 @@ const PlannerScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const [generating, setGenerating] = useState(false);
+
+  const upgradeSheetRef = useRef<BottomSheetMethods>(null);
 
   const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />, <Step5 />];
   const isLastStep = _.isEqual(plannerStep, steps.length - 1);
@@ -59,7 +68,13 @@ const PlannerScreen = () => {
     switch (plannerStep) {
       case 1:
         if ((_.isEqual(periodType, 'date') && fromDate && toDate) || _.isEqual(periodType, 'days')) {
-          updatePlannerStep(plannerStep + 1);
+          const noOfDays = moment(toDate, 'YYYY-MM-DD').diff(moment(fromDate, 'YYYY-MM-DD'), 'days');
+
+          if (!subscriptionState?.active && noOfDays > 2) {
+            upgradeSheetRef.current?.expand();
+          } else {
+            updatePlannerStep(plannerStep + 1);
+          }
         } else {
           dispatch(
             snackbarActions.showSnackbar({
@@ -91,7 +106,7 @@ const PlannerScreen = () => {
         updatePlannerStep(plannerStep + 1);
         break;
     }
-  }, [dispatch, plannerPayload, plannerStep, updatePlannerStep]);
+  }, [dispatch, plannerPayload, plannerStep, subscriptionState?.active, updatePlannerStep]);
 
   const handleSubmitPress = useCallback(async () => {
     setGenerating(true);
@@ -196,6 +211,7 @@ const PlannerScreen = () => {
       {renderFooter()}
 
       {generating && <GenerationModal isVisible={generating} />}
+      <UpgradeSheet sheetRef={upgradeSheetRef} />
     </View>
   );
 };

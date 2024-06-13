@@ -4,12 +4,13 @@ import React, { RefObject, useCallback } from 'react';
 
 // Components
 import CustomBottomSheet from '../BottomSheet';
+import { Divider, Text } from 'react-native-paper';
 import { TouchableOpacity, View } from 'react-native';
-import { Divider, Text, useTheme } from 'react-native-paper';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
@@ -28,8 +29,8 @@ interface PickerProps {
 // Component
 const Picker: React.FC<PickerProps> = ({ sheetRef, options }) => {
   // Statics
-  const theme = useTheme();
-  const styles = makeStyles();
+  const theme = useAppTheme();
+  const styles = makeStyles(theme);
 
   // Callbacks
   const handleClosePicker = useCallback(() => sheetRef.current?.close(), [sheetRef]);
@@ -45,7 +46,7 @@ const Picker: React.FC<PickerProps> = ({ sheetRef, options }) => {
         <View key={key}>
           <TouchableOpacity key={key} style={styles.option} onPress={() => onPress(key)}>
             {icon}
-            <Text variant="xLarge" style={[styles.title, { color: color ?? theme.fonts.xLarge.color }]}>
+            <Text variant="xLarge" style={[styles.title, { color }]}>
               {title}
             </Text>
           </TouchableOpacity>

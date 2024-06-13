@@ -1,8 +1,9 @@
 // Packages
 import { StyleSheet } from 'react-native';
+import { AppTheme } from '@shared/assets/theme';
 import { ms, mvs } from 'react-native-size-matters';
 
-export default () =>
+export default (theme: AppTheme) =>
   StyleSheet.create({
     option: {
       gap: ms(8),
@@ -10,7 +11,8 @@ export default () =>
       paddingVertical: mvs(16)
     },
     title: {
-      fontFamily: 'urbanist-semibold'
+      fontFamily: 'urbanist-semibold',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     },
     contentStyle: {
       marginTop: 0,

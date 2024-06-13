@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { ms, mvs } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 // Components
 import { View } from 'react-native';
@@ -40,6 +40,7 @@ const Header: React.FC<HeaderProps> = ({ options, hasBackBtn, share, absolute, s
   const theme = useAppTheme();
   const styles = makeStyles(theme);
   const navigation = useNavigation();
+  const isRootScreen = navigation.getState().routes.length === 1;
 
   // Callbacks
   const handleOnBackPress = () => {
@@ -64,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ options, hasBackBtn, share, absolute, s
           <View style={styles.appName}>{options.headerTitle()}</View>
         ) : null}
 
-        {hasBackBtn || options?.headerBackVisible || navigation?.canGoBack() ? (
+        {hasBackBtn || options?.headerBackVisible || !isRootScreen ? (
           <BackButton onPressOut={handleOnBackPress} />
         ) : (
           <FastImage source={require('@shared/assets/icons/app-icon.png')} style={{ width: ms(28), height: mvs(28) }} />

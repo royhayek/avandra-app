@@ -106,28 +106,34 @@ const HistoryScreen = () => {
       </>
     ) : null;
 
-  const renderEmptyLayout = () => (
-    <View style={styles.emptyContainer}>
-      <FastImage
-        style={styles.emptyImage}
-        source={
-          theme.dark
-            ? require('../../shared/assets/images/EmptyTripsDark.png')
-            : require('../../shared/assets/images/EmptyTripsLight.png')
-        }
-      />
+  const renderEmptyLayout = (type) => {
+    const info = t(
+      `my_trips.${type === 'upcoming' ? 'no_upcoming_trips' : type === 'expired' ? 'no_expired_trips' : 'no_trips'}`
+    );
 
-      <Text variant="h6" style={styles.emptyTitle}>
-        {t('my_trips.no_trips')}
-      </Text>
+    return (
+      <View style={styles.emptyContainer}>
+        <FastImage
+          style={styles.emptyImage}
+          source={
+            theme.dark
+              ? require('../../shared/assets/images/EmptyTripsDark.png')
+              : require('../../shared/assets/images/EmptyTripsLight.png')
+          }
+        />
 
-      <RegularButton
-        onPress={handleStartPlanning}
-        style={styles.startPlanningBtn}
-        title={t('my_trips.start_planning')}
-      />
-    </View>
-  );
+        <Text variant="h6" style={styles.emptyTitle}>
+          {info}
+        </Text>
+
+        <RegularButton
+          onPress={handleStartPlanning}
+          style={styles.startPlanningBtn}
+          title={t('my_trips.start_planning')}
+        />
+      </View>
+    );
+  };
 
   const renderShimmer = () => (
     <View style={styles.shimmerView}>
@@ -143,19 +149,6 @@ const HistoryScreen = () => {
     </View>
   );
 
-  const renderList = () => (
-    <FlatList
-      data={filteredTrips}
-      refreshing={refreshing}
-      keyExtractor={(item) => item._id}
-      showsVerticalScrollIndicator={false}
-      refreshControl={renderRefreshControl()}
-      ListHeaderComponent={renderListHeader()}
-      contentContainerStyle={styles.listContent}
-      renderItem={({ item, index }) => <HistoryCard isLoading={isLoadingTrips} small item={item} index={index} />}
-    />
-  );
-
   if (isLoadingTrips && _.isEmpty(trips)) {
     return renderShimmer();
   }
@@ -164,7 +157,21 @@ const HistoryScreen = () => {
     return renderEmptyLayout();
   }
 
-  return <View style={styles.container}>{renderList()}</View>;
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={filteredTrips}
+        refreshing={refreshing}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        refreshControl={renderRefreshControl()}
+        ListHeaderComponent={renderListHeader()}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={renderEmptyLayout('upcoming')}
+        renderItem={({ item, index }) => <HistoryCard isLoading={isLoadingTrips} small item={item} index={index} />}
+      />
+    </View>
+  );
 };
 
 export default HistoryScreen;

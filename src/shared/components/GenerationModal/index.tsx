@@ -44,18 +44,18 @@ const GenerationModal: React.FC<GenerationModalProps> = ({ isVisible }) => {
             setMessage('Fetching summary and tips...');
           } else if (nextProgress > 20 && nextProgress <= 80) {
             setMessage('Fetching places to visit...');
-          } else if (nextProgress > 80 && nextProgress <= 100) {
+          } else if (nextProgress > 80 && nextProgress <= 99) {
             setMessage('Finalizing trip details');
           }
 
-          if (nextProgress === 100) {
+          if (nextProgress === 99) {
             clearInterval(interval);
             // setTimeout(onClose, 1000); // Give a slight delay before closing
           }
 
           return nextProgress;
         });
-      }, 600); // Update every 600 milliseconds
+      }, 400); // Update every 600 milliseconds
     }
 
     return () => clearInterval(interval);

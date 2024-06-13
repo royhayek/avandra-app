@@ -21,7 +21,7 @@ interface ButtonProps {
 }
 
 interface CustomBottomSheetProps {
-  title: string;
+  title?: string;
   onClose: () => void;
   titleColor?: string;
   children: React.ReactNode;
@@ -70,12 +70,13 @@ const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
         )}>
         <BottomSheetView style={styles.container}>
           {title && (
-            <Text variant="h4" style={[styles.title, titleColor ? { color: titleColor } : {}]}>
-              {title}
-            </Text>
+            <>
+              <Text variant="h4" style={[styles.title, titleColor ? { color: titleColor } : {}]}>
+                {title}
+              </Text>
+              <Divider style={styles.divider} />
+            </>
           )}
-
-          <Divider style={styles.divider} />
 
           <View style={[styles.content, contentStyle]}>{children}</View>
 

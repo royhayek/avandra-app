@@ -30,7 +30,7 @@ export default (theme: AppTheme) =>
     emptyImage: {
       width: ms(85),
       height: ms(85),
-      marginBottom: mvs(16)
+      marginVertical: mvs(16)
     },
     emptyTitle: {
       marginTop: mvs(24),

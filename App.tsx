@@ -78,10 +78,7 @@ export default function App() {
     Settings.initializeSDK();
 
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
-      webClientId: '860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu.apps.googleusercontent.com',
-      iosClientId: '860918187904-d1n6oe50a2ucr06h5c72kuuha0encn3j.apps.googleusercontent.com', // Taken from google cloud console
-      offlineAccess: false
+      scopes: ['https://www.googleapis.com/auth/userinfo.profile']
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

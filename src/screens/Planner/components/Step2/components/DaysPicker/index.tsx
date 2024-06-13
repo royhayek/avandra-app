@@ -15,7 +15,7 @@ import { useAppTheme } from '@shared/assets/theme';
 
 interface DaysPickerProps {
   value: number;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  setValue: (days: number) => void;
 }
 
 // Component

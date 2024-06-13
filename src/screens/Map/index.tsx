@@ -12,15 +12,20 @@ import { IconButton } from 'react-native-paper';
 import LocationCard from './components/LocationCard';
 import BackButton from '@shared/components/Buttons/Back';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { View, Animated, Dimensions, Platform } from 'react-native';
-import { MapLocationIcon, MapNavigationIcon, MoonIcon, SunIcon } from '@shared/assets/icons';
+import { View, Animated, Dimensions, Platform, ScrollView } from 'react-native';
+import { MapLocationIcon, /* MapNavigationIcon, */ MoonIcon, SunIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
-type MapScreenProps = {};
+interface MapScreenProps {}
+
+interface RouteParams {
+  markers: any[];
+  places: any[];
+}
 
 // Component
 const { width } = Dimensions.get('window');
@@ -39,9 +44,9 @@ const MapScreen: React.FC<MapScreenProps> = () => {
 
   const mergedPlaces = _.reduce(places, (r, v) => [...r, ...v.list], []);
 
-  const mapIndex = useRef(0);
-  const mapRef = useRef(null);
-  const scrollViewRef = useRef(null);
+  const mapIndex = useRef<number>(0);
+  const mapRef = useRef<MapView>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const mapAnimation = new Animated.Value(0);
 
@@ -110,7 +115,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
     } catch (err) {
       console.error('[MapScreen] - useEffect :: ', err);
     }
-  }, []);
+  }, [isDarkTheme]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
   // Callbacks
@@ -128,14 +133,15 @@ const MapScreen: React.FC<MapScreenProps> = () => {
   };
 
   const handleShowCurrentLocation = useCallback(async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
+    const { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
       console.error('Permission to access location was denied');
+
       return;
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    const location = await Location.getCurrentPositionAsync({});
 
     mapRef.current &&
       mapRef.current.animateToRegion(
@@ -245,7 +251,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
 
   const renderMapActions = () => (
     <View style={styles.actions}>
-      <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleShowCurrentLocation} />
+      {/* <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleShowCurrentLocation} /> */}
       <IconButton size={ms(28)} icon={() => <MapLocationIcon />} onPress={handleShowCurrentLocation} />
     </View>
   );
@@ -255,7 +261,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
       {renderMapView()}
       {renderAbsoluteHeader()}
       {renderLocationsList()}
-      {renderMapActions}
+      {renderMapActions()}
     </View>
   );
 };

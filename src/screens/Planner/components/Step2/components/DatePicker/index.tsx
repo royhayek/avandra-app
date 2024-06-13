@@ -12,19 +12,12 @@ import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
+import { DatePickerStateProps } from '@shared/types/DatePickerState';
 import { DateData, MarkedDates } from 'react-native-calendars/src/types';
 
 interface DatePickerProps {
   defaultValue?: StateProps;
   onSuccess: (state: object, startDate: string, endDate: string) => void;
-}
-
-interface StateProps {
-  fromDate?: string;
-  holidayList?: object;
-  isToDatePicked: boolean;
-  markedDates: MarkedDates;
-  isFromDatePicked: boolean;
 }
 
 // Component
@@ -33,7 +26,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [state, setState] = useState<StateProps>(
+  const [state, setState] = useState<DatePickerStateProps>(
     defaultValue ?? {
       fromDate: '',
       holidayList: {},

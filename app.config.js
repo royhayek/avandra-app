@@ -2,16 +2,11 @@ module.exports = {
   expo: {
     name: 'Avandra',
     slug: 'avandra',
-    version: '1.0.2',
+    version: '1.0.3',
     scheme: 'avandra',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'automatic',
-    splash: {
-      image: './assets/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#051D40'
-    },
     experiments: {
       tsconfigPaths: true
     },
@@ -65,7 +60,7 @@ module.exports = {
         }
       },
       package: 'com.avandraapp.avandra',
-      versionCode: 3,
+      versionCode: 4,
       googleServicesFile: './google-services.json',
       permissions: ['android.permission.INTERNET', 'android.permission.ACCESS_NETWORK_STATE'],
       intentFilters: [
@@ -87,7 +82,6 @@ module.exports = {
       favicon: './assets/favicon.png'
     },
     extra: {
-      // googleMapsApiKey: '***REMOVED***',
       supportsRTL: true,
       eas: {
         projectId: 'b3677f11-1da4-4381-b67d-2229f6e0ba34'
@@ -95,6 +89,8 @@ module.exports = {
       apiUrl: process.env.EXPO_PUBLIC_SERVER_API_URL ?? 'http://localhost:4000/api'
     },
     plugins: [
+      'expo-font',
+      'expo-secure-store',
       [
         'expo-updates',
         {

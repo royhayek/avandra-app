@@ -190,7 +190,11 @@
       "year": "An",
       "free": "Gratuit",
       "subscription_expiry": "Votre abonnement expirera le 10 janvier 2024. Renouvelez ou annulez votre abonnement",
-      "here": "ici"
+      "here": "ici",
+      "no_subscriptions_found": "Aucun abonnement trouvé",
+      "refer_to_documentation": "Reportez-vous à la documentation de RevenueCat pour plus d'informations",
+      "extend_your_travel_plans": "Prolongez vos projets de voyage",
+      "upgrade_your_account": "Il semble que votre voyage dure plus de 3 jours. Pour accéder aux itinéraires de voyages d'une durée de 4 jours ou plus, veuillez envisager de mettre à niveau votre compte. N'oubliez pas que chaque date sélectionnée comprend une journée complète d'activités !"
     },
     "usage": {
       "daily_free_usage": "Utilisation gratuite quotidienne",
@@ -235,6 +239,8 @@
     },
     "my_trips": {
       "no_trips": "Vous n'avez pas encore créé de voyages. Commencez à planifier votre prochaine aventure dès maintenant!",
+      "no_upcoming_trips": "Vous n'avez aucun voyage à venir. Commencez à planifier votre prochaine aventure dès maintenant!",
+      "no_expired_trips": "Vous n'avez aucun voyage expiré. Commencez à planifier votre prochaine aventure dès maintenant!",
       "start_planning": "Commencez à planifier"
     },
     "contact": {

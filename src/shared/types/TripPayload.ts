@@ -1,4 +1,5 @@
 import { TravelOptionProps } from './TravelOption';
+import { DatePickerStateProps } from './DatePickerState';
 
 export interface TripPayloadProps {
   _id?: string;
@@ -12,7 +13,8 @@ export interface TripPayloadProps {
   byDate?: boolean;
   location: object;
   duration?: number;
-  interests: string | string[];
-  traveler: TravelOptionProps;
   budget: TravelOptionProps;
+  traveler: TravelOptionProps;
+  interests: string | string[];
+  pickerState: DatePickerStateProps;
 }

@@ -6,6 +6,7 @@
       "skip": "Skip",
       "submit": "Submit",
       "continue": "Continue",
+      "upgrade": "Upgrade",
       "privacy_policy": "Privacy Policy",
       "terms": "Terms of Service",
       "please_wait": "Please wait...",
@@ -191,7 +192,9 @@
       "subscription_expiry": "Your subscription will expire on Jan 10, 2024. Renew or cancel your subscription",
       "here": "here",
       "no_subscriptions_found": "No subscriptions found",
-      "refer_to_documentation": "Refer to the RevenueCat documentation for more information"
+      "refer_to_documentation": "Refer to the RevenueCat documentation for more information",
+      "extend_your_travel_plans": "Extend Your Travel Plans",
+      "upgrade_your_account": "It seems like your trip spans more than 3 days. To access itineraries for trips lasting 4 days or more, please consider upgrading your account. Remember, selected date includes a full day of activities!"
     },
     "usage": {
       "daily_free_usage": "Daily Free Usage",
@@ -238,6 +241,8 @@
     },
     "my_trips": {
       "no_trips": "You haven't created any trips yet. Start planning your next adventure now!",
+      "no_upcoming_trips": "You don't have any upcoming trips. Start planning your next adventure now!",
+      "no_expired_trips": "You don't have any expired trips. Start planning your next adventure now!",
       "start_planning": "Start Planning"
     },
     "contact": {

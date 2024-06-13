@@ -16,12 +16,11 @@ import { useAppTheme } from '@shared/assets/theme';
 // Interfaces
 interface IndicatorProps extends TouchableOpacityProps {
   message: string;
-  lottie?: boolean;
   dismissable?: boolean;
 }
 
 // Component
-const Loading: React.FC<IndicatorProps> = ({ dismissable, message, lottie, ...props }) => {
+const Loading: React.FC<IndicatorProps> = ({ dismissable, message }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -29,21 +28,12 @@ const Loading: React.FC<IndicatorProps> = ({ dismissable, message, lottie, ...pr
   // Renderers
   return (
     <Modal visible dismissable={dismissable} contentContainerStyle={styles.container}>
-      {lottie ? (
-        <LottieView
-          autoPlay
-          // loop={false}
-          style={styles.lottie}
-          source={require('../../../../assets/lottie.json')}
-        />
-      ) : (
-        <View style={styles.container}>
-          <ActivityIndicator size="small" />
-          <Text variant="large" style={{ marginTop: 12 }}>
-            {message}
-          </Text>
-        </View>
-      )}
+      <View style={styles.container}>
+        <ActivityIndicator size="small" />
+        <Text variant="large" style={{ marginTop: 12 }}>
+          {message}
+        </Text>
+      </View>
     </Modal>
   );
 };
