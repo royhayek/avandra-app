@@ -10,23 +10,25 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import FastImage from 'react-native-fast-image';
 import CustomBottomSheet from '@shared/components/BottomSheet';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { Linking, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import NavigationButton, { NavigationButtonProps } from './components/NavigationButton';
-import { EyeIcon, StarIcon, PaperIcon, LogoutIcon, PersonIcon } from '@shared/assets/icons';
+import { EyeIcon, StarIcon, PaperIcon, LogoutIcon, PersonIcon, LoginIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
 import { appName } from '@shared/utils';
-import { authActions } from '@redux/auth/slice';
+import { authActions, selectIsGuest } from '@redux/auth/slice';
 import { userActions } from '@redux/user/slice';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectSubscriptionState } from '@redux/app/slice';
 import { useAppDispatch, useAppSelector } from '@app/store';
+import { appActions, selectConfiguration, selectSubscriptionState } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { itineraryActions } from '@redux/itinerary/slice';
+import LoginSheet from '@shared/components/LoginSheet';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -35,6 +37,8 @@ const SettingsScreen = () => {
   // Redux
   const dispatch = useAppDispatch();
 
+  const isGuest = useAppSelector(selectIsGuest);
+  const config = useAppSelector(selectConfiguration);
   const subscriptionState = useAppSelector(selectSubscriptionState);
 
   // Statics
@@ -44,8 +48,11 @@ const SettingsScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   const logoutSheetRef = useRef<BottomSheetMethods>();
+  const bottomSheetRef = useRef<BottomSheetMethods>();
 
   // Callbacks
+  const handleLoginPress = () => dispatch(authActions.update({ authenticated: false, guest: false }));
+
   const handleLogoutPress = useCallback(() => logoutSheetRef.current?.expand(), []);
 
   const handleLogoutSheetClose = useCallback(() => logoutSheetRef.current?.close(), []);
@@ -54,18 +61,37 @@ const SettingsScreen = () => {
 
   const handleUpgradePress = useCallback(() => navigation.navigate('Subscriptions'), [navigation]);
 
-  const navigateToPersonalInfo = useCallback(() => navigation.navigate('PersonalInfo'), [navigation]);
+  const navigateToPersonalInfo = useCallback(
+    () => (isGuest ? bottomSheetRef.current?.expand() : navigation.navigate('PersonalInfo')),
+    [isGuest, navigation]
+  );
 
   const navigateToHelpAndSupport = useCallback(() => navigation.navigate('HelpSupport'), [navigation]);
 
+  const handleRateApp = useCallback(() => {
+    const appleAppId = config?.appleAppId;
+    const androidPackageName = config?.googlePackageName;
+
+    if (Platform.OS === 'android') {
+      Linking.openURL(`market://details?id=${androidPackageName}&showAllReviews=true`);
+    } else if (Platform.OS === 'ios') {
+      Linking.openURL(`itms-apps://itunes.apple.com/app/viewContentsUserReviews/id${appleAppId}?action=write-review`);
+    }
+  }, [config?.appleAppId, config?.googlePackageName]);
+
   const navigateToSubscription = useCallback(
-    () => navigation.navigate('Billing', { title: _t('billing_and_subscriptions') }),
-    [navigation]
+    () =>
+      !subscriptionState?.active
+        ? navigation.navigate('Subscriptions')
+        : navigation.navigate('Billing', { title: _t('billing_and_subscriptions') }),
+    [navigation, subscriptionState?.active]
   );
 
   const handleLogout = useCallback(() => {
     dispatch(authActions.reset());
     dispatch(userActions.reset());
+    dispatch(appActions.resetSubscriptionState());
+    dispatch(itineraryActions.reset());
   }, [dispatch]);
 
   // Renderer Vars
@@ -98,16 +124,25 @@ const SettingsScreen = () => {
         onPress: navigateToHelpAndSupport
       },
       {
+        key: 'rate',
+        name: t('settings.rate_us'),
+        icon: <StarIcon fill={buttonIconColor} />,
+        onPress: handleRateApp
+      },
+      {
         key: 'logout',
-        name: _t('logout'),
-        icon: <LogoutIcon />,
-        color: theme.colors.red,
-        onPress: handleLogoutPress
+        name: isGuest ? t('login.sign_in') : _t('logout'),
+        icon: isGuest ? <LoginIcon fill={theme.colors.primary} /> : <LogoutIcon />,
+        color: isGuest ? theme.colors.primary : theme.colors.red,
+        onPress: isGuest ? handleLoginPress : handleLogoutPress
       }
     ],
     [
+      isGuest,
       buttonIconColor,
       theme.colors.red,
+      theme.colors.primary,
+      handleRateApp,
       handleLogoutPress,
       navigateToAppearance,
       navigateToSubscription,
@@ -120,18 +155,18 @@ const SettingsScreen = () => {
   const renderUpgradeButton = () => (
     <TouchableOpacity onPress={handleUpgradePress} style={styles.upgradeContainer}>
       <FastImage style={styles.upgradeIllustration} source={require('@shared/assets/images/UpgradeIllustration.png')} />
-      <View>
+      <View style={styles.titleAndDesc}>
         <Text variant="h6" style={styles.upgradeTitle}>
           {_t('upgrade_to_plus')}
         </Text>
-        <Text variant="xSmall" style={styles.upgradeDesc}>
+        <Text variant="small" style={styles.upgradeDesc}>
           {_t('expanded_access', { name: appName })}
         </Text>
       </View>
       <Ionicons
         color="white"
         size={ms(20)}
-        name="ios-chevron-forward-sharp"
+        name="chevron-forward-sharp"
         style={{ transform: i18n.locale === 'ar' ? [{ scaleX: -1 }] : undefined }}
       />
     </TouchableOpacity>
@@ -178,6 +213,8 @@ const SettingsScreen = () => {
       {!subscriptionState?.active && renderUpgradeButton()}
       {renderContent()}
       {renderLogoutModal()}
+
+      <LoginSheet sheetRef={bottomSheetRef} />
     </View>
   );
 };

@@ -1,4 +1,5 @@
 // Packages
+import _ from 'lodash';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import * as Device from 'expo-device';
@@ -17,10 +18,14 @@ export const appName = Constants.expoConfig?.name;
 
 export const isAndroid = Platform.OS === 'android';
 
+export const isTablet = Device.deviceType === Device.DeviceType.TABLET;
+
 export const GOOGLE_MAPS_API_KEY = Platform.select({
   ios: Constants.expoConfig?.ios?.config?.googleMapsApiKey,
   android: Constants.expoConfig?.android?.config?.googleMaps?.apiKey
 });
+
+export const GOOGLE_WEB_API_KEY = Constants.expoConfig?.extra?.googleWebApiKey;
 
 export const scaledFontSize = (baseFontSize: number) => {
   const widthRatio = Dimensions.get('screen').width / 430;
@@ -114,18 +119,111 @@ export const hasArabicCharacters = (text: string) => {
 
 export const formatAmount = (num: number) => (num ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 0);
 
-export const formatDate = (date: string, format = 'MMMM DD, YYYY') => moment(date).format(format);
+export const formatDate = (date: string, format = 'MMMM DD, YYYY') => _.capitalize(moment(date).format(format));
 
 export const logout = (reason: string) => {
   store.dispatch(authActions.update({ authenticated: false }));
   console.info(`[Logout] :: Reason: ${reason}`);
 };
 
-export const openMapsWithCoords = (name: string, lat: number, lng: number) => {
-  const scheme = Platform.OS === 'ios' ? 'maps://0,0?q=' : 'geo:0,0?q=';
-  const latLng = `${lat},${lng}`;
-  const label = name;
+export const openMapsWithCoords = (lat: number, lng: number) => {
+  const url = `https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=${lat},${lng}`;
 
-  const url = Platform.OS === 'ios' ? `${scheme}${label}@${latLng}` : `${scheme}${latLng}(${label})`;
-  Linking.openURL(url);
+  Linking.canOpenURL(url)
+    .then((supported) => {
+      if (!supported) {
+      } else {
+        return Linking.openURL(url);
+      }
+    })
+    .catch((err) => console.error('An error occurred', err));
+};
+
+export const getCategory = (types: string[]) => {
+  let category = 'other';
+
+  const typePriority = {
+    restaurant: 'restaurant',
+    cafe: 'coffeeshop',
+    bakery: 'restaurant',
+    bar: 'restaurant',
+    food: 'restaurant',
+    meal_delivery: 'restaurant',
+    meal_takeaway: 'restaurant',
+    tourist_attraction: 'landmark',
+    // point_of_interest: 'landmark',
+    museum: 'landmark',
+    amusement_park: 'landmark',
+    zoo: 'landmark',
+    aquarium: 'landmark',
+    art_gallery: 'landmark',
+    store: 'shop',
+    supermarket: 'shop',
+    shopping_mall: 'shop',
+    clothing_store: 'shop',
+    electronics_store: 'shop',
+    furniture_store: 'shop',
+    hardware_store: 'shop',
+    jewelry_store: 'shop',
+    book_store: 'shop',
+    convenience_store: 'shop',
+    liquor_store: 'shop',
+    home_goods_store: 'shop',
+    lodging: 'accommodation',
+    hotel: 'accommodation',
+    motel: 'accommodation',
+    rv_park: 'accommodation',
+    campground: 'accommodation',
+    hospital: 'health',
+    pharmacy: 'health',
+    dentist: 'health',
+    doctor: 'health',
+    veterinary_care: 'health',
+    health: 'health',
+    school: 'education',
+    university: 'education',
+    library: 'education',
+    movie_theater: 'entertainment',
+    night_club: 'entertainment',
+    casino: 'entertainment',
+    bowling_alley: 'entertainment',
+    stadium: 'entertainment',
+    gym: 'entertainment',
+    spa: 'entertainment',
+    bank: 'service',
+    atm: 'service',
+    post_office: 'service',
+    police: 'service',
+    fire_station: 'service',
+    local_government_office: 'service',
+    insurance_agency: 'service',
+    accounting: 'service',
+    laundry: 'service',
+    car_wash: 'service',
+    car_rental: 'service',
+    gas_station: 'service',
+    airport: 'transport',
+    bus_station: 'transport',
+    subway_station: 'transport',
+    train_station: 'transport',
+    taxi_stand: 'transport',
+    parking: 'transport',
+    park: 'outdoor',
+    natural_feature: 'outdoor',
+    church: 'worship',
+    mosque: 'worship',
+    synagogue: 'worship',
+    hindu_temple: 'worship',
+    place_of_worship: 'worship'
+  };
+
+  for (const type of types) {
+    if (type in typePriority) {
+      category = typePriority[type];
+      // Break once we find the first match in the prioritized list
+      break;
+    }
+  }
+
+  return category;
 };

@@ -19,11 +19,13 @@ const initialState: AppInitialState = {
   currentOffering: null,
   subscriptionState: {
     userId: '',
-    active: false,
+    active: true,
     isAnonymous: false
   },
   config: {
+    appleAppId: '',
     privacyPolicy: '',
+    googlePackageName: '',
     termsAndConditions: ''
   }
 };
@@ -49,6 +51,9 @@ export const appSlice = createSlice({
     },
     setSubscriptionState: (state, action) => {
       state.subscriptionState = action.payload;
+    },
+    resetSubscriptionState: (state) => {
+      state.subscriptionState = initialState.subscriptionState;
     },
     setNetworkError: (state, action) => {
       state.networkError = action.payload;

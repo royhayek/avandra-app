@@ -21,13 +21,13 @@ import makeStyles from './styles';
 import i18n, { t } from '@app/i18n';
 import { useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { formatAmount, formatDate } from '@shared/utils';
+import { formatAmount, formatDate, getCategory } from '@shared/utils';
+import { itineraryActions } from '@redux/itinerary/slice';
 import { deleteTripPlaceAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { itineraryActions } from '@redux/itinerary/slice';
 
 interface TripModificationItemProps {
   index: number;
@@ -102,6 +102,8 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
     drag: () => number | undefined;
     isActive: boolean;
   }) => {
+    const category = item?.types && _.capitalize(getCategory(item?.types));
+
     return (
       <TouchableOpacity
         onLongPress={drag}
@@ -113,7 +115,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
 
         <View style={styles.content}>
           <Text variant="h6" style={styles.name}>
-            {item?.name}
+            {item?.displayName}
           </Text>
           {item?.rating ? (
             <View style={styles.ratingContainer}>
@@ -127,7 +129,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
             </View>
           ) : null}
           <Text variant="medium" style={styles.type}>
-            {item?.type}
+            {category}
           </Text>
         </View>
 

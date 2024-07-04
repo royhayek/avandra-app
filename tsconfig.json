@@ -17,6 +17,7 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@screens/*": ["src/screens/*"],
+      "@schemas/*": ["src/schemas/*"],
       "@redux/*": ["src/redux/*"],
       "@shared/*": ["src/shared/*"]
     }

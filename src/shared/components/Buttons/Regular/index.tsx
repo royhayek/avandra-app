@@ -31,17 +31,17 @@ type ButtonVariant = 'primary' | 'secondary' | 'gradient' | 'text';
 
 // Component
 const RegularButton: React.FC<RegularButtonProps> = ({
-  title,
   style,
-  variant,
   onPress,
   loading,
   endIcon,
-  disabled,
   startIcon,
   textStyle,
-  fullWidth,
+  title = 'Submit',
+  disabled = false,
   backgroundColors,
+  fullWidth = false,
+  variant = 'primary' as ButtonVariant,
   ...props
 }) => {
   // Statics
@@ -102,14 +102,6 @@ const RegularButton: React.FC<RegularButtonProps> = ({
       </Text>
     </Button>
   );
-};
-
-RegularButton.defaultProps = {
-  title: 'Submit',
-  disabled: false,
-  fullWidth: false,
-  onPress: () => null,
-  variant: 'primary' as ButtonVariant
 };
 
 export default RegularButton;

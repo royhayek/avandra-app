@@ -12,7 +12,7 @@ import { FAB, Text } from 'react-native-paper';
 import Header from '@shared/components/Header';
 import FastImage from 'react-native-fast-image';
 import Itinerary from './components/Iitinerary';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { EditIcon } from '@shared/assets/icons';
 import Shimmer from '@shared/components/Shimmer';
 import Accordion from '@shared/components/Accordion';
@@ -21,7 +21,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { formatDate } from '@shared/utils';
+import { formatDate, isTablet } from '@shared/utils';
 import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 import { getTripAction } from '@redux/itinerary/thunks';
@@ -72,7 +72,11 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const markers = useMemo(() => {
     const placesList = _.flatMap(places, (place) => place.list);
 
-    return _.map(placesList, (place) => ({ lat: place.coordinates.lat, lng: place.coordinates.lng }));
+    return _.map(placesList, (place) => ({
+      lat: place?.coordinates?.lat,
+      lng: place?.coordinates?.lng,
+      types: place?.types
+    }));
   }, [places]);
 
   // Callbacks
@@ -177,7 +181,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </Text>
 
         {markers.length > 0 && (
-          <View style={styles.mapContainer}>
+          <TouchableOpacity style={styles.mapContainer}  onPress={handleMapPress}>
             <MapView
               style={styles.map}
               focusable={false}
@@ -189,7 +193,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
               zoomTapEnabled={false}
               loadingEnabled={false}
               zoomControlEnabled={false}
-              onPress={handleMapPress}
+              // onPress={handleMapPress}
               provider={PROVIDER_GOOGLE}
               region={{
                 latitudeDelta: 0.02,
@@ -203,7 +207,15 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
               {_.map(
                 markers,
                 (place, index) =>
-                  place && <Marker key={index} index={index} marker={place} interpolations={[]} size={ms(28)} />
+                  place && (
+                    <Marker
+                      key={index}
+                      index={index}
+                      marker={place}
+                      interpolations={[]}
+                      size={ms(isTablet ? 22 : 30)}
+                    />
+                  )
               )}
             </MapView>
 
@@ -215,13 +227,13 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
                     style={styles.illutration}
                     source={require('@shared/assets/images/UpgradeIllustration.png')}
                   />
-                  <Text variant="h5" style={styles.upgradeText}>
-                    Upgrade to premium to unlock the map feature
+                  <Text variant="h6" style={styles.upgradeText}>
+                    {_t('upgrade_to_premium_to_unlock_map')}
                   </Text>
                 </View>
               </View>
             )}
-          </View>
+          </TouchableOpacity>
         )}
       </View>
 

@@ -34,6 +34,9 @@ export const itinerarySlice = createSlice({
       if (index !== undefined && index !== -1) {
         state.places[index].list = places;
       }
+    },
+    reset: () => {
+      return initialState;
     }
   },
   extraReducers: (builder) => {

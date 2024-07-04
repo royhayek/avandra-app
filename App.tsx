@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import 'react-native-get-random-values';
 import { Settings } from 'react-native-fbsdk-next';
+import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
 import { PersistGate } from 'redux-persist/integration/react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -10,7 +11,6 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 // Components
 import Root from './src/app/Root';
-import * as SplashScreen from 'expo-splash-screen';
 
 // Utilities
 import './src/app/api';
@@ -19,7 +19,7 @@ import 'react-native-url-polyfill/auto';
 import { persistor, store } from './src/app/store';
 
 // Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+SplashScreen.hideAsync();
 
 // Component
 Notifications.setNotificationHandler({
@@ -78,7 +78,8 @@ export default function App() {
     Settings.initializeSDK();
 
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/userinfo.profile']
+      scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
+      webClientId: '860918187904-r3ti1nkohjecadln1k3dal9uee0clcdu.apps.googleusercontent.com'
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

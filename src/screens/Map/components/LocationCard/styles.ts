@@ -28,9 +28,10 @@ export default (theme: AppTheme, isHorizontal: boolean, isDark: boolean) =>
     },
     descriptionContainer: {
       flex: 1,
+      gap: mvs(2),
       flexDirection: 'column',
-      justifyContent: 'space-evenly',
-      marginTop: isHorizontal ? 0 : mvs(8)
+      marginTop: isHorizontal ? 0 : mvs(8),
+      justifyContent: isHorizontal ? 'center' : 'space-evenly'
     },
     imageContainer: {
       justifyContent: 'center',
@@ -45,6 +46,10 @@ export default (theme: AppTheme, isHorizontal: boolean, isDark: boolean) =>
     ratingInfoContainer: {
       alignItems: 'center',
       flexDirection: 'row'
+    },
+    displayName: {
+      lineHeight: mvs(18),
+      fontFamily: 'urbanist-bold'
     },
     rating: {
       marginStart: ms(5),
@@ -63,6 +68,7 @@ export default (theme: AppTheme, isHorizontal: boolean, isDark: boolean) =>
       marginVertical: isHorizontal ? 0 : mvs(4)
     },
     address: {
-      color: theme.colors.secondary
+      fontFamily: 'urbanist-medium',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[700]
     }
   });

@@ -9,9 +9,6 @@ export default (theme: AppTheme) =>
     wrapper: {
       top: 50
     },
-    container: {
-      backgroundColor: theme.colors.redSurface
-    },
     message: {
       color: theme.colors.white,
       fontFamily: 'urbanist-bold'

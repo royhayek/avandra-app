@@ -1,7 +1,8 @@
 export interface AuthInitialState {
+  guest: boolean;
   loading: boolean;
   loggedOut: boolean;
-  jwtExpired: boolean;
+  jwtExpired?: boolean;
   token: string | null;
   authenticated: boolean;
   refreshToken: string | null;

@@ -12,8 +12,8 @@ import { CircleAddDarkIcon, CircleAddLightIcon, CircleCheckIcon } from '@shared/
 
 // Utilities
 import makeStyles from './styles';
-import { formatAmount } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
+import { formatAmount, getCategory } from '@shared/utils';
 
 // Interfaces
 interface EventAdditionItemProps {
@@ -32,13 +32,17 @@ const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress 
     fill: theme.dark ? theme.colors.white : theme.colors.gray[900]
   };
 
+  const category = _.capitalize(getCategory(item?.types));
+
   // Renders
   return (
     <TouchableOpacity style={styles.rowContainer}>
       <FastImage source={{ uri: item?.photoUrl, cache: FastImage.cacheControl.immutable }} style={styles.image} />
 
       <View style={styles.content}>
-        <Text variant="h6">{item?.name}</Text>
+        <Text variant="h6" style={styles.name}>
+          {item?.name}
+        </Text>
         {item?.rating ? (
           <View style={styles.ratingContainer}>
             <Text variant="medium" style={styles.ratingText}>
@@ -50,6 +54,9 @@ const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress 
             </Text>
           </View>
         ) : null}
+        <Text variant="medium" style={styles.type}>
+          {category}
+        </Text>
       </View>
 
       <IconButton

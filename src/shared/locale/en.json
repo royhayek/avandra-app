@@ -20,6 +20,8 @@
       "expand": "Expand",
       "collapse": "Collapse",
       "select_option": "Select an option",
+      "day": "Day",
+      "and": "and",
       "generating_your_trip": "Generating your trip... ({{progress}}%)",
       "regenerating_your_trip": "Regenerating your trip... ({{progress}}%)",
       "generating_your_trip_desc": "Please wait while our AI works its magic to create the perfect trip plan tailored to your preferences"
@@ -29,7 +31,24 @@
       "description": "Your Passport to Adventure Awaits",
       "continue_with_google": "Continue with Google",
       "continue_with_facebook": "Continue with Facebook",
-      "continue_with_apple": "Continue with Apple"
+      "continue_with_apple": "Continue with Apple",
+      "continue_with_email": "Continue with Email",
+      "sign_in": "Sign in",
+      "access_more_features": "Access more features",
+      "sign_in_to_generate": "Sign in to start generating trips and keep your trips synced across multiple devices.",
+      "dont_have_account": "Don't have an account?",
+      "sign_up_now": "Sign-up now!",
+      "forgot_your_password": "Forgot your password?"
+    },
+    "register": {
+      "title": "Sign Up 👤",
+      "description": "Create an account to start planning your next AI adventure!",
+      "get_started": "Get Started"
+    },
+    "resetPassword": {
+      "title": "Forgot Your Password? 🔒",
+      "description": "Enter your email address to reset your password. We'll send you a link to create a new one",
+      "send_reset_link": "Send Reset Link"
     },
     "profile": {
       "title": "Add a personal touch 👤",
@@ -37,9 +56,13 @@
       "full_name": "Full Name",
       "email": "Email",
       "country": "Country",
-      "gender": "Gender",
-      "male": "Male",
-      "female": "Female",
+      "current_password": "Current Password",
+      "password": "Password",
+      "new_password": "New Password",
+      "conf_password": "Confirm New Password",
+      "update_password": "Update Password",
+      "change_password": "Change Password",
+      "enter_current_and_new_pass": "Enter your current password and set a new password.",
       "success_title": "You're all set!",
       "success_desc": "Congratulations! You're now part of the Avandra community. Your personalized travel experiences await.",
       "explore_destinations": "Explore Destinations"
@@ -189,12 +212,28 @@
       "month": "Month",
       "year": "Year",
       "free": "Free",
-      "subscription_expiry": "Your subscription will expire on Jan 10, 2024. Renew or cancel your subscription",
+      "subscription_title": "You are subscribed!",
+      "subscription_expiry": "Your subscription will expire on {{expiryDate}}. Renew or cancel your subscription",
       "here": "here",
       "no_subscriptions_found": "No subscriptions found",
       "refer_to_documentation": "Refer to the RevenueCat documentation for more information",
       "extend_your_travel_plans": "Extend Your Travel Plans",
-      "upgrade_your_account": "It seems like your trip spans more than 3 days. To access itineraries for trips lasting 4 days or more, please consider upgrading your account. Remember, selected date includes a full day of activities!"
+      "upgrade_your_account": "It seems like your trip spans more than 3 days. To access itineraries for trips lasting 4 days or more, please consider upgrading your account. Remember, selected date includes a full day of activities!",
+      "upgrade_for_other_themes": "Upgrade to unlock themes",
+      "upgrade_to_unlock_themes": "Upgrade to premium to unlock dark theme and other premium features!",
+      "discover_more_with_premium": "Discover More with Premium!",
+      "subscription_terms": "Subscription Terms",
+      "subscription_terms_desc1": "By selecting 'Continue' and initiating your subscription on the subsequent pages, a monthly or annual charge will apply until you decide to cancel. You have the option to cancel at any time through your Billing settings or by reaching out to us at ",
+      "subscription_terms_desc2": ". Please note that cancellation may still result in a charge for the current billing cycle. Further details are available in our ",
+      "subscription_terms_acknowledgement": "By starting your subscription, you acknowledge that you understand and agree to these terms.",
+      "benefits": {
+        "no_itinerary_expirations": "No Itinerary Expirations",
+        "full_map_view_of_destinations": "Full Map View of Destinations",
+        "up_to_a_week_of_travel": "Up to a Week of Travel",
+        "dark_mode": "Dark Mode",
+        "support_our_team": "Support Our Team",
+        "new_features_coming_soon": "New Features Coming Soon"
+      }
     },
     "usage": {
       "daily_free_usage": "Daily Free Usage",
@@ -212,6 +251,7 @@
       "upcoming": "Upcoming",
       "expired": "Expired",
       "view": "View",
+      "upgrade_to_view": "Upgrade to view",
       "regenerate": "Regenerate",
       "share": "Share",
       "delete": "Delete",
@@ -219,7 +259,6 @@
       "you_havent_saved": "You haven't saved this iterenary, if you leave now, you'll lose of these recommendations",
       "leave": "Leave",
       "go_back": "Go Back",
-      "delete_your_trips": "Delete your trips?"
     },
     "trip_details": {
       "overview": "Overview",
@@ -227,7 +266,8 @@
       "your_journey": "Your {{name}} Journey",
       "view_on_map": "View on Google Maps",
       "reviews": "reviews",
-      "join_my_planned_trip_to": "Join my planned trip to {{name}}!"
+      "join_my_planned_trip_to": "Join my planned trip to {{name}}!",
+      "upgrade_to_premium_to_unlock_map": "Upgrade to premium to unlock map view!",
     },
     "trip_modifcation": {
       "delete_event": "Delete this Event?"
@@ -238,6 +278,12 @@
     "event_addition": {
       "selected_places": "Selected Places",
       "popular_places": "Popular places to visit"
+    },
+    "place_details": {
+      "gallery": "Gallery",
+      "location": "Location",
+      "opening_hours": "Opening Hours",
+      "ratings": "Ratings"
     },
     "my_trips": {
       "no_trips": "You haven't created any trips yet. Start planning your next adventure now!",

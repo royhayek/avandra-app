@@ -1,22 +1,25 @@
 // Packages
 import _ from 'lodash';
 import React, { useEffect } from 'react';
+import DeviceInfo from 'react-native-device-info';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
 // Components
 import { Text } from 'react-native-paper';
-import { ScrollView, TouchableOpacity } from 'react-native';
-import PlanListItem from '../Subscriptions/components/PlanListItem';
+import FastImage from 'react-native-fast-image';
+import { Linking, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { dummy_subscriptions } from '../Subscriptions/data';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import Purchases, { CustomerInfo } from 'react-native-purchases';
+import { ENTITLEMENT_ID } from '@shared/constants';
+import moment from 'moment';
 
 interface RouteParams {
   title: string;
@@ -30,6 +33,8 @@ const Billingscreen = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const [customerInfo, setCustomerInfo] = React.useState<CustomerInfo>();
+
   const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -40,20 +45,48 @@ const Billingscreen = () => {
     navigation.setOptions({ title });
   }, [navigation, title]);
 
+  const retrieveCustomerInfo = async () => {
+    const custInfo = await Purchases.getCustomerInfo();
+    setCustomerInfo(custInfo);
+  };
+
+  useEffect(() => {
+    retrieveCustomerInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Callbacks
+  const openSettings = () => {
+    let subscriptionUrl = '';
+
+    if (Platform.OS === 'ios') {
+      subscriptionUrl = 'https://apps.apple.com/account/subscriptions';
+    } else {
+      const packageName = DeviceInfo.getBundleId();
+      subscriptionUrl = `https://play.google.com/store/account/subscriptions?sku=&package=${packageName}`;
+    }
+
+    Linking.openURL(subscriptionUrl).catch((err) => console.error('Failed to open URL:', err));
+  };
+
+  // Render Vers
+  const expiryDate = moment(customerInfo?.entitlements.active[ENTITLEMENT_ID]?.expirationDate).format('dddd MM, YYYY');
+
   // Renderers
   return (
-    <ScrollView style={styles.container}>
-      <PlanListItem item={dummy_subscriptions[0]} />
+    <View style={styles.container}>
+      <FastImage source={require('@shared/assets/images/UpgradedIllustration.png')} style={styles.illutration} />
 
-      <Text variant="large" style={styles.exireInfo}>
-        {_t('subscription_expiry')}
-        <TouchableOpacity onPress={() => null} style={{ padding: 0, paddingHorizontal: 5 }}>
-          <Text variant="large" style={styles.cancelButton}>
-            {_t('here')}
-          </Text>
-        </TouchableOpacity>
+      <Text variant="h6" style={styles.title}>
+        {_t('subscription_title')}
       </Text>
-    </ScrollView>
+      <Text variant="large" style={styles.exireInfo}>
+        {_t('subscription_expiry', { expiryDate })}{' '}
+        <Text onPress={openSettings} variant="large" style={styles.cancelButton}>
+          {_t('here')}
+        </Text>
+      </Text>
+    </View>
   );
 };
 

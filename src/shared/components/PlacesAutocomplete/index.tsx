@@ -32,13 +32,13 @@ interface PlacesAutocompleteProps {
 // Component
 const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
   value,
-  query,
   inputRef,
   renderRow,
+  query = {},
   placeholder,
-  fetchDetails,
+  handlePlacePress,
   handleTextChange,
-  handlePlacePress
+  fetchDetails = false
 }) => {
   // Statics
   const theme = useAppTheme();
@@ -70,11 +70,6 @@ const PlacesAutocomplete: React.FC<PlacesAutocompleteProps> = ({
       }}
     />
   );
-};
-
-PlacesAutocomplete.defaultProps = {
-  query: {},
-  fetchDetails: false
 };
 
 export default PlacesAutocomplete;

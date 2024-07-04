@@ -7,7 +7,11 @@ export { default as AppleIconDark } from './AppleIconDark';
 
 export { default as AppleIconLight } from './AppleIconLight';
 
+export { default as LockIcon } from './LockIcon';
+
 // Profile
+export { default as ProfileIcon } from './ProfileIcon';
+
 export { default as MessageIcon } from './MessageIcon';
 
 // Common
@@ -29,6 +33,8 @@ export { default as StarIcon } from './StarIcon';
 export { default as PaperIcon } from './PaperIcon';
 
 export { default as ShieldIcon } from './ShieldIcon';
+
+export { default as LoginIcon } from './LoginIcon';
 
 export { default as LogoutIcon } from './LogoutIcon';
 
@@ -64,11 +70,23 @@ export { default as TrainIcon } from './TrainIcon';
 
 export { default as PlaneIcon } from './PlaneIcon';
 
+export { default as BedIcon } from './BedIcon';
+
+export { default as CarIcon2 } from './CarIcon2';
+
+export { default as StoreIcon } from './StoreIcon';
+
+export { default as HeartIcon } from './HeartIcon';
+
+export { default as CoffeeIcon } from './CoffeeIcon';
+
 export { default as LandmarkIcon } from './LandmarkIcon';
 
 export { default as RestaurantIcon } from './RestaurantIcon';
 
 export { default as NavigationIcon } from './NavigationIcon';
+
+export { default as GraduationCapIcon } from './GraduationCapIcon';
 
 export { default as DollarOutlineIcon } from './DollarOutlineIcon';
 

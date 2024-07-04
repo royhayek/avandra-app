@@ -10,9 +10,11 @@ import RenderHtml, { defaultSystemFonts } from 'react-native-render-html';
 
 // Utilities
 import makeStyles from './styles';
+import getEnvVars from 'environment';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectConfiguration } from '@redux/app/slice';
+import { Text } from 'react-native-paper';
 
 // Interfaces
 interface RouteParams {
@@ -28,6 +30,8 @@ const InfoScreen = () => {
   const route = useRoute();
   const theme = useAppTheme();
   const styles = makeStyles(theme);
+
+  const { serverUrl } = getEnvVars();
 
   const { width } = useWindowDimensions();
 
@@ -63,6 +67,7 @@ const InfoScreen = () => {
           }
         }}
       />
+      <Text variant='xSmall'>{serverUrl}</Text>
     </ScrollView>
   );
 };

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Platform } from 'react-native';
 
-const localhost = Platform.OS === 'ios' ? 'http://192.168.1.124:4000' : 'http://192.168.1.116:4000';
+const localhost = Platform.OS === 'ios' ? 'http://localhost:4000' : 'http://192.168.1.102:4000';
 
 const ENV = {
   development: {

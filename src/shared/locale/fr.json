@@ -12,6 +12,7 @@
       "save": "Sauvegarder",
       "cancel": "Annuler",
       "ok": "D'accord",
+      "and": "et",
       "yes_continue": "Oui, continue",
       "save_changes": "Sauvegarder les modifications",
       "yes_delete": "Oui, Supprimer",
@@ -19,6 +20,7 @@
       "expand": "Développer",
       "collapse": "Réduire",
       "select_option": "Choisi une option",
+      "day": "Jour",
       "generating_your_trip": "Génération de votre voyage... ({{progress}}%)",
       "regenerating_your_trip": "Régénération de votre voyage... ({{progress}}%)",
       "generating_your_trip_desc": "Veuillez patienter pendant que notre IA fait des merveilles pour créer le plan de voyage parfait adapté à vos préférences"
@@ -28,7 +30,24 @@
       "description": "Votre passeport pour l'aventure vous attend",
       "continue_with_google": "Continuer avec Google",
       "continue_with_facebook": "Continuer avec Facebook",
-      "continue_with_apple": "Continuer avec Apple"
+      "continue_with_apple": "Continuer avec Apple",
+      "continue_with_email": "Continuer avec e-mail",
+      "sign_in": "Se connecter",
+      "access_more_features": "Accédez à plus de fonctionnalités",
+      "sign_in_to_generate": "Connectez-vous pour commencer à générer des voyages et synchroniser vos voyages sur plusieurs appareils.",
+      "dont_have_account": "Vous n'avez pas de compte?",
+      "sign_up_now": "Inscrivez-vous maintenant",
+      "forgot_your_password": "Mot de passe oublié?"
+    },
+    "register": {
+      "title": "Créer un compte 👤",
+      "description": "Créez un compte pour commencer à planifier votre prochaine aventure IA!",
+      "get_started": "Commencer"
+    },
+    "resetPassword": {
+      "title": "Mot de passe oublié? 🔒",
+      "description": "Entrez votre adresse e-mail pour réinitialiser votre mot de passe. Nous vous enverrons un lien pour en créer un nouveau",
+      "send_reset_link": "Envoyer le lien de réinitialisation"
     },
     "profile": {
       "title": "Ajoutez une touche personnelle 👤",
@@ -36,9 +55,13 @@
       "full_name": "Nom complet",
       "email": "E-mail",
       "country": "Pays",
-      "gender": "Le Sexe",
-      "male": "Masculin",
-      "female": "Feminin",
+      "current_password": "Mot de passe actuel",
+      "password": "Mot de passe",
+      "new_password": "Nouveau mot de passe",
+      "conf_password": "Confirmer le mot de passe",
+      "update_password": "Modifier",
+      "change_password": "Changer le mot de passe",
+      "enter_current_and_new_pass": "Veuillez entrer votre mot de passe actuel et le nouveau mot de passe",
       "success_title": "Vous êtes prêt!",
       "success_desc": "Toutes nos félicitations! Vous faites désormais partie de la communauté Avandra. Vos expériences de voyage personnalisées vous attendent.",
       "explore_destinations": "Explorer les destinations"
@@ -116,7 +139,7 @@
       },
       "step4": {
         "budget_title": "Définissez votre budget de voyage 💰",
-        "budget_desc": "Indiquez-nous vos préférences budgétaires, et nous créerons un itinéraire qui convient à votre confort financier.",
+        "budget_desc": "Indiquez-nous vos préférences budgétaires, et nous créerons un itinéraire qui convient à votre confort financier."
       },
       "step5": {
         "review_summary": "Résumé de l'examen",
@@ -152,7 +175,7 @@
       "faq": "FAQ",
       "rate_us": "Évaluez nous",
       "logout": "Se déconnecter",
-      "upgrade_to_plus": "Passez à Plus!",
+      "upgrade_to_plus": "Passez à Premium!",
       "expanded_access": "Profitez de tous les avantages et explorez plus",
       "purchase_restored": "Achat restauré avec succès",
       "could_not_restore": "Impossible de restaurer l'achat",
@@ -189,12 +212,28 @@
       "month": "Mois",
       "year": "An",
       "free": "Gratuit",
-      "subscription_expiry": "Votre abonnement expirera le 10 janvier 2024. Renouvelez ou annulez votre abonnement",
+      "subscription_title": "Vous êtes abonné!",
+      "subscription_expiry": "Votre abonnement expirera le {{expiryDate}}. Renouvelez ou annulez votre abonnement",
       "here": "ici",
       "no_subscriptions_found": "Aucun abonnement trouvé",
       "refer_to_documentation": "Reportez-vous à la documentation de RevenueCat pour plus d'informations",
       "extend_your_travel_plans": "Prolongez vos projets de voyage",
-      "upgrade_your_account": "Il semble que votre voyage dure plus de 3 jours. Pour accéder aux itinéraires de voyages d'une durée de 4 jours ou plus, veuillez envisager de mettre à niveau votre compte. N'oubliez pas que chaque date sélectionnée comprend une journée complète d'activités !"
+      "upgrade_your_account": "Il semble que votre voyage dure plus de 3 jours. Pour accéder aux itinéraires de voyages d'une durée de 4 jours ou plus, veuillez envisager de mettre à niveau votre compte. N'oubliez pas que chaque date sélectionnée comprend une journée complète d'activités !",
+      "upgrade_for_other_themes": "Mettre à niveau pour débloquer des thèmes",
+      "upgrade_to_unlock_themes": "Passez à Premium pour débloquer le thème sombre et d'autres fonctionnalités premium!",
+      "discover_more_with_premium": "Découvrez-en plus avec Premium!",
+      "subscription_terms": "Conditions d'abonnement",
+      "subscription_terms_desc1": "En sélectionnant 'Continuer' et en démarrant votre abonnement sur les pages suivantes, une charge mensuelle ou annuelle s'appliquera jusqu'à ce que vous décidiez d'annuler. Vous avez la possibilité d'annuler à tout moment via vos paramètres de facturation ou en nous contactant à ",
+      "subscription_terms_desc2": ". Veuillez noter que l'annulation peut toujours entraîner des frais pour le cycle de facturation en cours. Pour plus de détails, consultez notre ",
+      "subscription_terms_acknowledgement": "En démarrant votre abonnement, vous reconnaissez que vous comprenez et acceptez ces conditions.",
+      "benefits": {
+        "no_itinerary_expirations": "Pas d'expiration d'itinéraire",
+        "full_map_view_of_destinations": "Vue Complète de la Carte des Destinations",
+        "up_to_a_week_of_travel": "Jusqu'à une Semaine de Voyage",
+        "dark_mode": "Mode Sombre",
+        "support_our_team": "Soutenez Notre Équipe",
+        "new_features_coming_soon": "Nouvelles Fonctionnalités à Venir"
+      }
     },
     "usage": {
       "daily_free_usage": "Utilisation gratuite quotidienne",
@@ -211,13 +250,15 @@
       "active_trip": "Voyage Actif",
       "upcoming": "Prochain",
       "expired": "Expiré",
+      "view": "Voir",
+      "upgrade_to_view": "Abonnez-vous pour voir",
       "regenerate": "Régénérer",
       "share": "Partager",
       "delete": "Supprimer",
       "save_before_you_go": "Sauvegarder avant de partir ?",
       "you_havent_saved": "Vous n'avez pas enregistré cet itinéraire, si vous partez maintenant, vous perdrez certaines de ces recommandations.",
       "leave": "Partir",
-      "go_back": "Retourner"
+      "go_back": "Retourner",
     },
     "trip_details": {
       "overview": "Aperçu",
@@ -226,6 +267,7 @@
       "view_on_map": "Voir sur Google Maps",
       "reviews": "avis",
       "join_my_planned_trip_to": "Rejoignez mon voyage planifié à {{name}}!",
+      "upgrade_to_premium_to_unlock_map": "Passez à Premium pour débloquer la vue de la carte",
     },
     "trip_modifcation": {
       "delete_event": "Supprimer l'événement?"
@@ -236,6 +278,12 @@
     "event_addition": {
       "selected_places": "Lieux sélectionnés",
       "popular_places": "Lieux populaires à visiter"
+    },
+    "place_details": {
+      "gallery": "Galerie",
+      "location": "Emplacement",
+      "opening_hours": "Heures d'ouverture",
+      "ratings": "Évaluations"
     },
     "my_trips": {
       "no_trips": "Vous n'avez pas encore créé de voyages. Commencez à planifier votre prochaine aventure dès maintenant!",

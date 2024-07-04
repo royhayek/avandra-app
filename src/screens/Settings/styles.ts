@@ -17,7 +17,8 @@ export default (theme: AppTheme) =>
       paddingBottom: mvs(30)
     },
     upgradeContainer: {
-      padding: ms(16),
+      paddingVertical: mvs(16),
+      paddingHorizontal: ms(12),
       marginTop: ms(12),
       borderRadius: ms(12),
       flexDirection: 'row',
@@ -26,17 +27,22 @@ export default (theme: AppTheme) =>
       justifyContent: 'space-between',
       backgroundColor: theme.colors.primary
     },
+    titleAndDesc: {
+      flex: 1,
+      paddingHorizontal: ms(12),
+      justifyContent: 'flex-start'
+    },
     upgradeTitle: {
       color: theme.colors.white,
       fontFamily: 'urbanist-bold'
     },
     upgradeDesc: {
       marginTop: mvs(2),
-      color: theme.colors.white
+      color: theme.colors.white,
+      fontFamily: 'urbanist-semibold'
     },
     upgradeIllustration: {
       width: ms(50),
-      height: ms(48),
-      marginRight: ms(6)
+      height: ms(48)
     }
   });

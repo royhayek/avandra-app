@@ -23,7 +23,7 @@ interface OutlinedButtonProps {
 
 // Component
 const OutlinedButton: React.FC<OutlinedButtonProps> = ({
-  title,
+  title = 'submit',
   onPress,
   endIcon,
   disabled,
@@ -51,11 +51,6 @@ const OutlinedButton: React.FC<OutlinedButtonProps> = ({
       </View>
     </TouchableOpacity>
   );
-};
-
-OutlinedButton.defaultProps = {
-  title: 'Submit',
-  onPress: () => null
 };
 
 export default OutlinedButton;

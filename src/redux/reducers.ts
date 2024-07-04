@@ -29,7 +29,7 @@ const appPersistConfig = {
     'deepLinkData',
     'networkError',
     'currentOffering',
-    'subscriptionState',
+    'subscriptionState'
   ]
 };
 

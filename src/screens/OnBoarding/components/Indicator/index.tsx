@@ -33,9 +33,4 @@ const Indicator: React.FC<IndicatorProps> = ({ index, length, style }) => {
   );
 };
 
-Indicator.defaultProps = {
-  index: 0,
-  length: 3
-};
-
 export default Indicator;

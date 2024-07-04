@@ -12,10 +12,11 @@ export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
   StyleSheet.create({
     container: {
       marginTop: mvs(8),
+      minHeight: mvs(50),
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: mvs(8),
-      paddingHorizontal: ms(20),
+      paddingHorizontal: ms(16),
       borderRadius: theme.roundness,
       borderWidth: theme.dark ? ms(1) : 0,
       borderColor: theme.dark ? theme.colors.dark[3] : 'transparent',
@@ -23,7 +24,7 @@ export default (theme: AppTheme, hasIcon: boolean, notEmpty: boolean) =>
     },
     textInput: {
       flex: 1,
-      minHeight: mvs(50),
+      // minHeight: mvs(50),
       backgroundColor: 'transparent',
       paddingHorizontal: hasIcon ? ms(10) : 0,
       textAlign: i18n.locale === 'ar' ? 'right' : 'left'

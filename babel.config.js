@@ -1,5 +1,6 @@
 module.exports = function (api) {
   api.cache(true);
+
   return {
     presets: [['babel-preset-expo']],
     env: {
@@ -27,6 +28,7 @@ module.exports = function (api) {
             '@app': './src/app',
             '@redux': './src/redux',
             '@shared': './src/shared',
+            '@schemas': './src/schemas',
             '@screens': './src/screens'
           },
           extensions: ['.js', '.jsx', '.ts', '.tsx']

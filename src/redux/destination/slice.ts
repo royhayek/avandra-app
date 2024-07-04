@@ -35,6 +35,9 @@ const destinationsSlice = createSlice({
   name: 'destination',
   initialState,
   reducers: {
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
     reset: () => {
       return initialState;
     }

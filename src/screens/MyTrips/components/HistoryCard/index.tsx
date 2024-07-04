@@ -19,15 +19,16 @@ import { Ionicons, Feather, Entypo, MaterialCommunityIcons } from '@expo/vector-
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { formatDate } from '@shared/utils';
+import { formatDate, isTablet } from '@shared/utils';
 import { PUBLIC_URL } from '@shared/constants';
-import { useAppThunkDispatch } from '@app/store';
+import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { deleteTripAction, generateTripAction } from '@redux/itinerary/thunks';
+import { deleteTripAction } from '@redux/itinerary/thunks';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { selectSubscriptionState } from '@redux/app/slice';
 
 interface HistoryCardProps {
   index?: number;
@@ -39,12 +40,14 @@ interface HistoryCardProps {
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`trip.${key}`, options);
 
-const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading }) => {
+const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading = false }) => {
   // Redux
   const dispatchThunk = useAppThunkDispatch();
 
+  const subscriptionState = useAppSelector(selectSubscriptionState);
+
   // Statics
-  const { _id, user, image, payload, status } = item || {};
+  const { _id, image, payload, status } = item || {};
   const { name, country, traveler, fromDate } = payload || {};
 
   const isExpired = !!String(status).match(/expired/i);
@@ -68,22 +71,18 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
   const handleCloseOptionsMenu = useCallback(() => optionsPickerRef.current?.close(), []);
 
-  const handleTextPress = useCallback(() => navigation.navigate('TripDetails', { _id: item?._id }), [item, navigation]);
+  const handleTextPress = useCallback(
+    () =>
+      subscriptionState?.active || !isExpired
+        ? navigation.navigate('TripDetails', { _id: item?._id })
+        : navigation.navigate('Subscriptions'),
+    [isExpired, item?._id, navigation, subscriptionState?.active]
+  );
 
   const handleDeleteHistory = useCallback(async () => {
     await dispatchThunk(deleteTripAction({ tripId: item?._id, userId: item?.user }));
     handleSheetClose();
   }, [dispatchThunk, handleSheetClose, item?._id, item?.user]);
-
-  const onGenerate = useCallback(async () => {
-    const response = await dispatchThunk(generateTripAction({ ...payload, _id: item?._id, user, regenerate: true }));
-
-    setRegenerating(false);
-
-    if (response?.payload?.success) {
-      navigation.navigate('TripDetails', { _id: response?.payload?.result?._id });
-    }
-  }, [dispatchThunk, item?._id, navigation, payload, user]);
 
   const handleTripMenuItemPress = useCallback(
     async (key: string) => {
@@ -132,7 +131,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
       ? [
           {
             key: 'view',
-            title: _t('view'),
+            title: subscriptionState?.active ? _t('view') : _t('upgrade_to_view'),
             onPress: () => handleTripMenuItemPress('view'),
             icon: (
               <Ionicons name="eye-outline" size={ms(22)} color={theme.dark ? theme.colors.white : theme.colors.black} />
@@ -170,7 +169,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
 
   // Renderers
   const renderDeleteIcon = useCallback(
-    () => <Ionicons name="md-trash" size={ms(16)} color={theme.dark ? theme.colors.white : theme.colors.black} />,
+    () => <Ionicons name="trash" size={ms(16)} color={theme.dark ? theme.colors.white : theme.colors.black} />,
     [theme.colors.black, theme.colors.white, theme.dark]
   );
 
@@ -202,7 +201,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
             <Entypo name="dot-single" size={ms(20)} style={styles.dot} />
 
             <View style={styles.infoItemContainer}>
-              <Feather name="calendar" style={styles.calendarIcon} size={ms(small ? ms(15) : ms(18))} />
+              <Feather name="calendar" style={styles.calendarIcon} size={ms(small ? 15 : 18)} />
               <Text variant="medium" style={styles.date}>
                 {formatDate(fromDate, 'MMMM DD, YYYY')}
               </Text>
@@ -216,7 +215,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
   const renderVerticalTripCard = (hasDelete = true) => (
     <View style={styles.container}>
       {isLoading ? (
-        <Shimmer style={styles.cityImage} />
+        <Shimmer style={[styles.cityImage, isTablet && styles.tabletCityImage]} />
       ) : (
         <ImageBackground
           resizeMode="cover"
@@ -264,11 +263,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
     <>
       {small ? (
         <>
-          <TouchableOpacity
-            key={index}
-            disabled={isExpired}
-            onPress={() => handleTextPress(item)}
-            style={styles.verticalContainer}>
+          <TouchableOpacity key={index} onPress={() => handleTextPress()} style={styles.verticalContainer}>
             <View style={styles.flex1}>{renderTripCard()}</View>
 
             {isLoading ? (
@@ -287,7 +282,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
           {regenerating && <GenerationModal isVisible={regenerating} />}
         </>
       ) : (
-        <TouchableOpacity key={index} disabled={isExpired} onPress={() => handleTextPress(item)}>
+        <TouchableOpacity key={index} disabled={isExpired} onPress={() => handleTextPress()}>
           {renderVerticalTripCard()}
         </TouchableOpacity>
       )}
@@ -305,10 +300,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ small, item, index, isLoading
       </CustomBottomSheet>
     </>
   );
-};
-
-HistoryCard.defaultProps = {
-  isLoading: false
 };
 
 export default HistoryCard;

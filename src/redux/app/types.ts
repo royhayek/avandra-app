@@ -14,7 +14,9 @@ export interface AppInitialState {
   currentOffering: PurchasesPackage[] | null;
   subscriptionState: SubscriptionStateProps | null;
   config: {
+    appleAppId: string;
     privacyPolicy: string;
+    googlePackageName: string;
     termsAndConditions: string;
   };
 }

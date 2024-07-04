@@ -33,7 +33,11 @@ interface PopularListProps {
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`home.${key}`, options);
 
-const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleShown }) => {
+const PopularList: React.FC<PopularListProps> = ({
+  type = 'destinations',
+  orientation = 'vertical',
+  isTitleShown = false
+}) => {
   // Redux
   const dispatch = useAppThunkDispatch();
 
@@ -55,8 +59,8 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
   const title = isDestinations
     ? _t('popular_destinations')
     : String(type).match(/articles/)
-    ? _t('popular_articles')
-    : '';
+      ? _t('popular_articles')
+      : '';
 
   // Callbacks
   const handleNavigateToListScreen = useCallback(() => {
@@ -116,12 +120,6 @@ const PopularList: React.FC<PopularListProps> = ({ type, orientation, isTitleSho
       {renderList()}
     </>
   );
-};
-
-PopularList.defaultProps = {
-  isTitleShown: false,
-  type: 'destinations',
-  orientation: 'vertical'
 };
 
 export default PopularList;

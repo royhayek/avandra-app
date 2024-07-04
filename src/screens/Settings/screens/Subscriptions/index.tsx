@@ -1,46 +1,56 @@
 // Packages
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
-import { FlatList, View } from 'react-native';
+import { FlatList, Linking, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { CheckIcon } from '@shared/assets/icons';
 import PlanListItem from './components/PlanListItem';
+import LoginSheet from '@shared/components/LoginSheet';
 import SuccessUpgrade from './components/SuccessUpgrade';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
-import i18n, { t } from '@app/i18n';
+import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { benefits } from './data';
 import { useAppSelector } from '@app/store';
+import { selectIsGuest } from '@redux/auth/slice';
+import { ENTITLEMENT_ID } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
 import { selectCurrentOfferings } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { dummy_subscriptions } from './data';
-import { ENTITLEMENT_ID } from '@shared/constants';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import CustomBottomSheet from '@shared/components/BottomSheet';
+import { ms } from 'react-native-size-matters';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`, options);
 
 const SubscriptionsScreen = () => {
   // Redux
+  const isGuest = useAppSelector(selectIsGuest);
   const currentOfferings = useAppSelector(selectCurrentOfferings);
-  console.debug('[SubscriptionsScreen - currentOfferings] :: ', currentOfferings);
 
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const [isSuccess, setIsSuccess] = useState(false);
+  const authBottomSheetRef = useRef<BottomSheetMethods>();
+  const infoBottomSheetRef = useRef<BottomSheetMethods>();
 
+  const [isSuccess, setIsSuccess] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PurchasesPackage>();
 
-  const benefits = dummy_subscriptions[1].benefits;
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
   const handleRestorePurchase = async () => {
@@ -57,13 +67,17 @@ const SubscriptionsScreen = () => {
     try {
       if (!selectedPlan) return;
 
-      const { customerInfo } = await Purchases.purchasePackage(selectedPlan);
+      if (isGuest) {
+        authBottomSheetRef.current?.expand();
+      } else {
+        const { customerInfo } = await Purchases.purchasePackage(selectedPlan);
 
-      console.debug('[handlePurchasePackage - customerInfo] :: ', customerInfo.entitlements.active);
+        console.debug('[handlePurchasePackage - customerInfo] :: ', customerInfo.entitlements.active);
 
-      if (typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined') {
-        // Unlock that great "pro" content
-        setIsSuccess(true);
+        if (typeof customerInfo.entitlements.active[ENTITLEMENT_ID] !== 'undefined') {
+          // Unlock that great "pro" content
+          setIsSuccess(true);
+        }
       }
     } catch (error) {
       // if (!error.userCancelled) {
@@ -72,27 +86,63 @@ const SubscriptionsScreen = () => {
     }
   };
 
+  const handleOnInfoPress = useCallback(() => {
+    infoBottomSheetRef.current?.expand();
+  }, []);
+
+  const handleInfoSheetClose = useCallback(() => {
+    infoBottomSheetRef.current?.close();
+  }, []);
+
+  const handleOnEmailPress = useCallback(() => {
+    Linking.openURL('mailto:support@avandraapp.com');
+  }, []);
+
+  const handleOnTermsPress = useCallback(() => {
+    Linking.openURL('https://avandraapp.com/terms_and_conditions.html');
+  }, []);
+
+  const handleOnPolicyPress = useCallback(() => {
+    Linking.openURL('https://avandraapp.com/privacy_policy.html');
+  }, []);
+
+  const renderInfoButton = useCallback(
+    () => (
+      <Ionicons
+        size={ms(28)}
+        onPress={handleOnInfoPress}
+        name="information-circle-outline"
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+      />
+    ),
+    [handleOnInfoPress, theme.colors.gray, theme.colors.white, theme.dark]
+  );
+
   // Effects
+  useEffect(() => {
+    navigation.setOptions({ headerRight: renderInfoButton });
+  }, [navigation, renderInfoButton]);
+
   useEffect(() => {
     if (currentOfferings) setSelectedPlan(_.first(currentOfferings));
   }, [currentOfferings]);
 
   // Renderers
   if (isSuccess) {
-    return <SuccessUpgrade item={benefits} />;
+    return <SuccessUpgrade benefits={benefits} />;
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.titleAndBenefits}>
-        <Text variant="h4">Access advanced features with premium!</Text>
+        <Text variant="h4">{_t('discover_more_with_premium')}</Text>
 
         <View style={styles.benefits}>
           {_.map(benefits, (benefit, index) => (
             <View key={index} style={styles.benefit}>
-              <CheckIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+              <CheckIcon fill={theme.colors.primary} />
               <Text variant="xLarge" style={styles.benefitText}>
-                {benefit[i18n.locale]}
+                {_t(`benefits.${benefit}`)}
               </Text>
             </View>
           ))}
@@ -132,6 +182,35 @@ const SubscriptionsScreen = () => {
         <RegularButton title={_t('continue')} onPress={handlePurchasePackage} />
         <RegularButton variant="text" title={_t('restore_purchases')} onPress={handleRestorePurchase} />
       </View>
+
+      <LoginSheet sheetRef={authBottomSheetRef} />
+
+      <CustomBottomSheet sheetRef={infoBottomSheetRef} onClose={handleInfoSheetClose} contentStyle={styles.content}>
+        <Text variant="h4" style={styles.title}>
+          {_t('subscription_terms')}
+        </Text>
+        <Text variant="medium" style={styles.terms}>
+          {_t('subscription_terms_desc1')}
+          <Text onPress={handleOnEmailPress} variant="medium" style={styles.link}>
+            support@avandraapp.com
+          </Text>
+          {_t('subscription_terms_desc2')}
+          <Text variant="medium" onPress={handleOnTermsPress} style={styles.link}>
+            {t('common.terms')}
+          </Text>{' '}
+          {t('common.and')}{' '}
+          <Text variant="medium" onPress={handleOnPolicyPress} style={styles.link}>
+            {t('common.privacy_policy')}
+          </Text>
+          .
+        </Text>
+
+        <Text variant="medium" style={styles.acknowledgment}>
+          {_t('subscription_terms_acknowledgement')}
+        </Text>
+
+        <RegularButton title={t('common.continue')} onPress={handleInfoSheetClose} />
+      </CustomBottomSheet>
     </View>
   );
 };

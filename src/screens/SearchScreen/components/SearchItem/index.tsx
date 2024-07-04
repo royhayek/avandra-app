@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import React, { useCallback } from 'react';
+import React, { RefObject, useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 
@@ -17,15 +17,21 @@ import { plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useAppSelector } from '@app/store';
+import { selectIsGuest } from '@redux/auth/slice';
 
 interface SearchItemProps {
   item: any;
+  bottomSheetRef: RefObject<BottomSheetMethods>;
 }
 
 // Component
-const SearchItem: React.FC<SearchItemProps> = ({ item }) => {
+const SearchItem: React.FC<SearchItemProps> = ({ item, bottomSheetRef }) => {
   // Redux
   const dispatch = useDispatch();
+
+  const isGuest = useAppSelector(selectIsGuest);
 
   // Statics
   const theme = useAppTheme();
@@ -35,9 +41,16 @@ const SearchItem: React.FC<SearchItemProps> = ({ item }) => {
 
   // Callbacks
   const handleItemPress = useCallback(() => {
-    dispatch(plannerActions.setPayload({ destination: { name: item.name, country: item.country, image: item.image } }));
-    navigation.navigate('Planner');
-  }, [dispatch, item.name, item.country, item.image, navigation]);
+    if (isGuest) {
+      bottomSheetRef.current?.expand();
+    } else {
+      dispatch(
+        plannerActions.setPayload({ destination: { name: item.name, country: item.country, image: item.image } })
+      );
+
+      navigation.navigate('Planner');
+    }
+  }, [isGuest, dispatch, item.name, item.country, item.image, navigation, bottomSheetRef]);
 
   // Renders
   return (

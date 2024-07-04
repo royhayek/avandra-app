@@ -11,7 +11,7 @@ import StarRating from 'react-native-star-rating-widget';
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { formatAmount, openMapsWithCoords } from '@shared/utils';
+import { formatAmount, getCategory, openMapsWithCoords } from '@shared/utils';
 
 // Interfaces
 import { LocationProps } from '@shared/types/Location';
@@ -38,12 +38,13 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
     rating,
     address,
     photoUrl,
+    displayName,
     userRatingsTotal,
     coordinates: { lat = '', lng = '' } = {}
   } = location || {};
 
   // Callbacks
-  const handleLocationPress = useCallback(() => openMapsWithCoords(name, lat, lng), [lat, lng, name]);
+  const handleLocationPress = useCallback(() => openMapsWithCoords(lat, lng), [lat, lng]);
 
   // Renderers
   return (
@@ -53,11 +54,17 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
       </View>
 
       <View style={styles.descriptionContainer}>
-        <Text variant="xLarge">{name}</Text>
+        <Text variant="h6" style={styles.displayName}>{displayName}</Text>
 
         {rating ? (
           <View style={styles.ratingInfoContainer}>
-            <StarRating rating={rating} enableSwiping={false} starSize={16} starStyle={{ marginHorizontal: 0 }} />
+            <StarRating
+              starSize={16}
+              rating={rating}
+              enableSwiping={false}
+              onChange={() => null}
+              starStyle={{ marginHorizontal: 0 }}
+            />
 
             <Text variant="medium" style={styles.rating}>
               {rating}
@@ -74,7 +81,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, width, onMap, ori
           </Text>
         )}
 
-        <Text variant="medium" style={styles.address}>
+        <Text variant="small" style={styles.address}>
           {address}
         </Text>
       </View>

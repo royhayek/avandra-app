@@ -17,6 +17,7 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { ParamListBase, RouteProp } from '@react-navigation/native';
+import { isTablet } from '@shared/utils';
 
 interface TabBarLabelProps {
   color: string;
@@ -44,11 +45,11 @@ const TabNavigation = () => {
     let iconName: string | any;
 
     if (route.name === 'HomeStack') {
-      iconName = focused ? 'ios-earth' : 'ios-earth-outline';
+      iconName = focused ? 'earth' : 'earth-outline';
     } else if (route.name === 'TripsStack') {
-      iconName = focused ? 'ios-paper-plane' : 'ios-paper-plane-outline';
+      iconName = focused ? 'paper-plane' : 'paper-plane-outline';
     } else if (route.name === 'SettingsStack') {
-      iconName = focused ? 'ios-settings' : 'ios-settings-outline';
+      iconName = focused ? 'settings' : 'settings-outline';
     }
 
     // You can return any component that you like here!
@@ -58,7 +59,7 @@ const TabNavigation = () => {
 
   const getTabBarLabel = ({ children, focused }: TabBarLabelProps) =>
     focused ? (
-      <Text variant="medium" style={{ fontFamily: 'urbanist-semibold' }}>
+      <Text variant={isTablet ? 'h5' : 'medium'} style={{ fontFamily: 'urbanist-semibold' }}>
         {children}
       </Text>
     ) : null;

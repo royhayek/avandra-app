@@ -113,16 +113,18 @@ const HistoryScreen = () => {
 
     return (
       <View style={styles.emptyContainer}>
-        <FastImage
-          style={styles.emptyImage}
-          source={
-            theme.dark
-              ? require('../../shared/assets/images/EmptyTripsDark.png')
-              : require('../../shared/assets/images/EmptyTripsLight.png')
-          }
-        />
+        {!String(type).match(/upcoming|expired/) ? (
+          <FastImage
+            style={styles.emptyImage}
+            source={
+              theme.dark
+                ? require('../../shared/assets/images/EmptyTripsDark.png')
+                : require('../../shared/assets/images/EmptyTripsLight.png')
+            }
+          />
+        ) : null}
 
-        <Text variant="h6" style={styles.emptyTitle}>
+        <Text variant="xLarge" style={styles.emptyTitle}>
           {info}
         </Text>
 

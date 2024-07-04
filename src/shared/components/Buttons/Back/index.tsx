@@ -47,8 +47,4 @@ const BackButton: React.FC<BackButtonProps> = ({ style, onPressOut, ...props }) 
   );
 };
 
-BackButton.defaultProps = {
-  onPress: () => null
-};
-
 export default BackButton;

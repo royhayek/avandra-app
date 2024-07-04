@@ -9,6 +9,7 @@ import { SnackbarInitialState } from './types';
 const initialState: SnackbarInitialState = {
   title: '',
   message: '',
+  type: '',
   show: false,
   delay: 1200,
   autohide: true
@@ -20,6 +21,7 @@ const snackbarSlice = createSlice({
   reducers: {
     showSnackbar: (state, action) => {
       state.show = true;
+      state.type = action.payload.type;
       state.title = action.payload.title;
       state.message = action.payload.message;
     },

@@ -18,11 +18,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 interface UpgradeSheetProps {
+  title: string;
+  description: string;
   sheetRef: RefObject<BottomSheetMethods>;
 }
 
 // Component
-const UpgradeSheet: React.FC<UpgradeSheetProps> = ({ sheetRef }) => {
+const UpgradeSheet: React.FC<UpgradeSheetProps> = ({ sheetRef, title, description }) => {
   // Statics
   const theme = useTheme();
   const styles = makeStyles();
@@ -52,11 +54,11 @@ const UpgradeSheet: React.FC<UpgradeSheetProps> = ({ sheetRef }) => {
         />
 
         <Text variant="h5" style={styles.title}>
-          {t('subscription.extend_your_travel_plans')}
+          {title}
         </Text>
         <TouchableOpacity style={styles.option} onPress={() => {}}>
           <Text variant="large" style={[styles.description, { color: theme.fonts.xLarge.color }]}>
-            {t('subscription.upgrade_your_account')}
+            {description}
           </Text>
         </TouchableOpacity>
       </>

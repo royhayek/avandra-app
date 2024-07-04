@@ -20,7 +20,7 @@ import { useAppTheme } from '@shared/assets/theme';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { submitMessageAction } from '@redux/settings/thunks';
 import { selectSettingsLoading } from '@redux/settings/slice';
-import { contactSchema } from 'src/schemas/Contact/ContactSchema';
+import { contactSchema } from '@schemas/Contact/ContactSchema';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces

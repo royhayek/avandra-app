@@ -1,32 +1,37 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication';
-import { LoginManager, AuthenticationToken, AccessToken, Profile } from 'react-native-fbsdk-next';
+import { AccessToken, AuthenticationToken, LoginManager, Profile } from 'react-native-fbsdk-next';
 
 // Components
-import { Text } from 'react-native-paper';
+import Input from '@shared/components/Input';
+import { Formik, FormikProps } from 'formik';
 import FastImage from 'react-native-fast-image';
 import Loading from '@shared/components/Loading';
+import { Button, Text } from 'react-native-paper';
 import SocialButton from './components/SocialButton';
+import BackButton from '@shared/components/Buttons/Back';
 import { Platform, SafeAreaView, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
-import { AppleIconDark, AppleIconLight, FacebookIcon, GoogleIcon } from '@shared/assets/icons';
+import { AppleIconDark, AppleIconLight, FacebookIcon, GoogleIcon, LockIcon, MessageIcon } from '@shared/assets/icons';
 
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { appName } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
-import { registerAction } from '@redux/auth/thunks';
+import { loginSchema } from '@schemas/User/LoginSchema';
+import { loginAction, registerAction } from '@redux/auth/thunks';
 import { authActions, selectAuthLoading } from '@redux/auth/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
-import { SocialLoginProps } from '@shared/types/SocialLoginProps';
+import { SocialLoginProps } from '@shared/types/SocialLogin';
+import { SignInFormValuesProps } from '@shared/types/SignInForm';
 
 // Component
 const Login: React.FC = () => {
@@ -40,6 +45,12 @@ const Login: React.FC = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const formRef = useRef<FormikProps<SignInFormValuesProps> | null>(null);
+
+  const [byEmailView, setByEmailView] = useState(false);
+
+  const formInitialValues = { email: '', password: '' };
+
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   // Callbacks
@@ -49,11 +60,13 @@ const Login: React.FC = () => {
 
       const response = await dispatchThunk(registerAction(payload));
 
-      const { providerId, name, email, country } = response.payload.user || {};
+      const { providerId, name, email } = response.payload.user || {};
+
+      console.debug('response.payload.user', response.payload.user);
 
       if (response.payload?.success) {
-        if (_.isEqual(providerId, socialId) && !_.isEmpty(name) && !_.isEmpty(email) && !_.isEmpty(country)) {
-          dispatch(authActions.update({ authenticated: true }));
+        if (_.isEqual(providerId, socialId) && !_.isEmpty(name) && !_.isEmpty(email)) {
+          dispatch(authActions.update({ authenticated: true, guest: false }));
         } else {
           navigation.navigate('Profile');
         }
@@ -154,6 +167,10 @@ const Login: React.FC = () => {
   const handleSignInPress = useCallback(
     async (type: string) => {
       switch (type) {
+        case 'email':
+          setByEmailView(true);
+          break;
+
         case 'google':
           await handleGoogleSignIn(type);
           break;
@@ -173,13 +190,48 @@ const Login: React.FC = () => {
     [handleAppleSignIn, handleFacebookSignIn, handleGoogleSignIn]
   );
 
+  const handleFormSubmit = useCallback(
+    async (values: SignInFormValuesProps) => {
+      console.info('[handleFormSubmit] :: ', { values });
+      await dispatchThunk(loginAction(values));
+    },
+    [dispatchThunk]
+  );
+
   const handleNavigateToInfo = useCallback(
     (type: string, options?: object) => navigation.navigate('Info', { type, name: t(`common.${type}`, options) }),
     [navigation]
   );
 
+  const handleOnBackPress = useCallback(() => {
+    setByEmailView(false);
+  }, []);
+
+  const handleSkipPress = useCallback(async () => {
+    dispatch(authActions.update({ guest: true }));
+  }, [dispatch]);
+
+  const handleSignUpPress = useCallback(() => {
+    navigation.navigate('Profile', { screen: 'SignUp' });
+  }, [navigation]);
+
+  const handleForgotPassPress = useCallback(() => {
+    navigation.navigate('ForgotPassword');
+  }, [navigation]);
+
   // Renderer vars
   const socialButtons = [
+    {
+      key: 'email',
+      title: t('login.continue_with_email'),
+      icon: (
+        <MessageIcon
+          width={30}
+          transform="scale(1.1)"
+          fill={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+        />
+      )
+    },
     {
       key: 'google',
       title: t('login.continue_with_google'),
@@ -204,19 +256,82 @@ const Login: React.FC = () => {
   // Renders
   return (
     <SafeAreaView style={styles.container}>
+      <View style={[styles.header, { justifyContent: byEmailView ? 'space-between' : 'flex-end' }]}>
+        {byEmailView && <BackButton onPressOut={handleOnBackPress} />}
+
+        <Button
+          mode="contained"
+          loading={isLoading}
+          onPress={handleSkipPress}
+          textColor={theme.colors.primary}
+          buttonColor={theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]}>
+          {t('common.skip')}
+        </Button>
+      </View>
+
       <View style={styles.content}>
-        <FastImage source={require('@shared/assets/images/logo.png')} style={styles.logo} />
+        <FastImage source={require('@shared/assets/icons/app-icon.png')} style={styles.logo} />
+
         <Text variant="h3" style={styles.title}>
           {t('login.title')}
         </Text>
         <Text variant="xLarge">{t('login.description')}</Text>
       </View>
 
-      <View style={styles.socialButtons}>
-        {_.map(socialButtons, ({ key, title, icon }) => (
-          <SocialButton key={key} title={title} icon={icon} onPress={() => handleSignInPress(key)} />
-        ))}
-      </View>
+      {byEmailView ? (
+        <Formik
+          innerRef={formRef}
+          validateOnChange={false}
+          onSubmit={handleFormSubmit}
+          validationSchema={loginSchema}
+          initialValues={formInitialValues}>
+          {({ handleChange, submitForm, values, errors }) => (
+            <>
+              <View style={styles.inputsContainer}>
+                <Input
+                  name="email"
+                  error={errors.email}
+                  value={values.email}
+                  label={t('profile.email')}
+                  handleChange={handleChange('email')}
+                  keyboardType="email-address"
+                  placeholder={t('profile.email')}
+                  leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                />
+
+                <Input
+                  name="password"
+                  secureTextEntry
+                  error={errors.password}
+                  value={values.password}
+                  label={t('profile.password')}
+                  handleChange={handleChange('password')}
+                  placeholder={t('profile.password')}
+                  leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                />
+                <Text variant="medium" onPress={handleForgotPassPress} style={styles.forgotPassText}>
+                  {t('login.forgot_your_password')}
+                </Text>
+
+                <RegularButton title={t('login.sign_in')} style={styles.signInBtn} onPress={submitForm} />
+
+                <Text variant="large" style={styles.noAccountText}>
+                  {t('login.dont_have_account')}{' '}
+                  <Text variant="large" style={styles.signUpText} onPress={handleSignUpPress}>
+                    {t('login.sign_up_now')}
+                  </Text>
+                </Text>
+              </View>
+            </>
+          )}
+        </Formik>
+      ) : (
+        <View style={styles.socialButtons}>
+          {_.map(socialButtons, ({ key, title, icon }) => (
+            <SocialButton key={key} title={title} icon={icon} onPress={() => handleSignInPress(key)} />
+          ))}
+        </View>
+      )}
 
       <View style={styles.infoPages}>
         <RegularButton

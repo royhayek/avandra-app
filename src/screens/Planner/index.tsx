@@ -211,7 +211,11 @@ const PlannerScreen = () => {
       {renderFooter()}
 
       {generating && <GenerationModal isVisible={generating} />}
-      <UpgradeSheet sheetRef={upgradeSheetRef} />
+      <UpgradeSheet
+        sheetRef={upgradeSheetRef}
+        title={t('subscription.extend_your_travel_plans')}
+        description={t('subscription.upgrade_your_account')}
+      />
     </View>
   );
 };

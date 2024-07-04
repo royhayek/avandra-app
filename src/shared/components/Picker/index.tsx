@@ -46,7 +46,9 @@ const Picker: React.FC<PickerProps> = ({ sheetRef, options }) => {
         <View key={key}>
           <TouchableOpacity key={key} style={styles.option} onPress={() => onPress(key)}>
             {icon}
-            <Text variant="xLarge" style={[styles.title, { color }]}>
+            <Text
+              variant="xLarge"
+              style={[styles.title, { color: color ?? (theme.dark ? theme.colors.white : theme.colors.dark[4]) }]}>
               {title}
             </Text>
           </TouchableOpacity>

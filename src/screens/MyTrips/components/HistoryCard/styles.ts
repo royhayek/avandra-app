@@ -68,7 +68,12 @@ export default (theme: AppTheme, isExpired: boolean) =>
     cityImage: {
       flex: 1,
       width: '100%',
+
       borderRadius: ms(24)
+    },
+    tabletCityImage: {
+      alignSelf: 'center',
+      aspectRatio: 16 / 9
     },
     dot: {
       marginHorizontal: ms(2),

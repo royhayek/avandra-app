@@ -8,7 +8,7 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     list: {
-      gap: mvs(16),
+      gap: mvs(8),
       paddingVertical: mvs(16)
     },
     date: {
@@ -43,7 +43,6 @@ export default (theme: AppTheme) =>
     },
     content: {
       flex: 1,
-      gap: mvs(2),
       marginEnd: ms(8),
       marginStart: ms(12)
     },

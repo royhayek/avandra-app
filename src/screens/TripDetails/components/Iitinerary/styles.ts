@@ -69,9 +69,8 @@ export default (theme: AppTheme) =>
     mediumText: {
       fontFamily: 'urbanist-medium'
     },
-    paddedContent: {
-      flex: 1,
-      paddingHorizontal: ms(24)
+    listContainer: {
+      flex: 1
     },
     navigationIcon: {
       width: ms(48),

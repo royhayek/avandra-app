@@ -68,7 +68,11 @@ const Header: React.FC<HeaderProps> = ({ options, hasBackBtn, share, absolute, s
         {hasBackBtn || options?.headerBackVisible || !isRootScreen ? (
           <BackButton onPressOut={handleOnBackPress} />
         ) : (
-          <FastImage source={require('@shared/assets/icons/app-icon.png')} style={{ width: ms(28), height: mvs(28) }} />
+          <FastImage
+            source={require('@shared/assets/icons/app-icon.png')}
+            resizeMode="contain"
+            style={{ width: ms(32), height: mvs(32) }}
+          />
         )}
 
         {options?.headerRight ? options?.headerRight() : share ? <ShareButton data={shareData} /> : null}

@@ -32,10 +32,10 @@ interface PopularListItemProps {
 const PopularListItem: React.FC<PopularListItemProps> = ({
   item,
   type,
-  disabled,
-  noPadding,
-  isLoading,
-  orientation
+  disabled = false,
+  noPadding = false,
+  isLoading = false,
+  orientation = 'horizontal'
 }) => {
   // Statics
   const isVertical = !!String(orientation).match(/vertical/);
@@ -94,13 +94,6 @@ const PopularListItem: React.FC<PopularListItemProps> = ({
       </View>
     </TouchableOpacity>
   );
-};
-
-PopularListItem.defaultProps = {
-  disabled: false,
-  noPadding: false,
-  isLoading: false,
-  orientation: 'horizontal'
 };
 
 export default PopularListItem;

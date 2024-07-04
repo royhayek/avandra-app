@@ -12,6 +12,7 @@
       "save": "حفظ",
       "cancel": "إلغاء",
       "ok": "نعم",
+      "and": "و",
       "yes_continue": "نعم، استمر",
       "save_changes": "حفظ التغييرات",
       "yes_delete": "نعم، حذف",
@@ -19,6 +20,7 @@
       "expand": "توسيع",
       "collapse": "طي المحتوى",
       "select_option": "حدد خيارًا",
+      "day": "يوم",
       "generating_your_trip": "جارٍ إنشاء رحلتك... ({{progress}}%)",
       "regenerating_your_trip": "جارٍ إعادة إنشاء رحلتك... ({{progress}}%)",
       "generating_your_trip_desc": "يرجى الانتظار أثناء عمل ذكاء الاصطناعي لدينا لإنشاء خطة رحلة مثالية تتناسب مع تفضيلاتك"
@@ -28,7 +30,24 @@
       "description": "جواز سفرك إلى المغامرة في انتظارك",
       "continue_with_google": "استمر مع جوجل",
       "continue_with_facebook": "استمر مع الفيسبوك",
-      "continue_with_apple": "استمر مع أبل"
+      "continue_with_apple": "استمر مع أبل",
+      "continue_with_email": "استمر بالبريد الإلكتروني",
+      "sign_in": "تسجيل الدخول",
+      "access_more_features": "الوصول إلى المزيد من الميزات",
+      "sign_in_to_generate": "قم بتسجيل الدخول لبدء إنشاء الرحلات والحفاظ على مزامنة رحلاتك عبر أجهزة متعددة.",
+      "dont_have_account": "ليس لديك حساب؟",
+      "sign_up_now": "سجل الآن",
+      "forgot_your_password": "نسيت كلمة المرور؟"
+    },
+    "register": {
+      "title": "قم بالتسجيل 👤",
+      "description": "أنشئ حسابًا لبدء التخطيط لمغامرة الذكاء الاصطناعي التالية!",
+      "get_started": "البدء"
+    },
+    "resetPassword": {
+      "title": "نسيت كلمة المرور؟ 🔒",
+      "description": "أدخل عنوان بريدك الإلكتروني لإعادة تعيين كلمة المرور الخاصة بك. سنرسل لك رابطًا لإنشاء رابط جديد",
+      "send_reset_link": "أرسل رابط إعادة الضبط"
     },
     "profile": {
       "title": "أضف لمسة شخصية 👤",
@@ -36,9 +55,13 @@
       "full_name": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "country": "الدولة",
-      "gender": "الجنس",
-      "male": "مذكر",
-      "female": "أنثى",
+      "current_password": "كلمة المرور الحالية",
+      "password": "كلمة المرور",
+      "new_password": "كلمة المرور الجديدة",
+      "conf_password": "تأكيد كلمة المرور الجديدة",
+      "update_password": "تحديث كلمة المرور",
+      "change_password": "تغيير كلمة المرور",
+      "enter_current_and_new_pass": "يرجى إدخال كلمة المرور الحالية والجديدة",
       "success_title": "!أنت جاهز تمامًا",
       "success_desc": "تهانينا! أنت الآن جزء من مجتمع Avandra. تجارب السفر الشخصية الخاصة بك في انتظارك.",
       "explore_destinations": "اكتشف الوجهات"
@@ -190,12 +213,28 @@
       "month": "شهر",
       "year": "سنة",
       "free": "مجانا",
-      "subscription_expiry": "سينتهي اشتراكك في 10 يناير 2024. قم بتجديد اشتراكك أو إلغائه",
+      "subscription_title": "أنت مشترك!",
+      "subscription_expiry": "سينتهي اشتراكك في {{expiryDate}}. قم بتجديد اشتراكك أو إلغائه",
       "here": "هنا",
       "no_subscriptions_found": "لم يتم العثور على أي اشتراكات",
       "refer_to_documentation": "راجع وثائق RevenueCat لمزيد من المعلومات",
       "extend_your_travel_plans": "قم بتمديد خطط سفرك",
-      "upgrade_your_account": "يبدو أن رحلتك تمتد لأكثر من 3 أيام. للوصول إلى مسارات الرحلات التي تستغرق 4 أيام أو أكثر، يرجى التفكير في ترقية حسابك. تذكر أن كل تاريخ محدد يتضمن يومًا كاملاً من الأنشطة!"
+      "upgrade_your_account": "يبدو أن رحلتك تمتد لأكثر من 3 أيام. للوصول إلى مسارات الرحلات التي تستغرق 4 أيام أو أكثر، يرجى التفكير في ترقية حسابك. تذكر أن كل تاريخ محدد يتضمن يومًا كاملاً من الأنشطة!",
+      "upgrade_for_other_themes": "قم بالترقية لفتح السمات",
+      "upgrade_to_unlock_themes": "قم بالترقية إلى الإصدار المميز لفتح المظهر الداكن والميزات المميزة الأخرى!",
+      "discover_more_with_premium": "اكتشف المزيد مع الإصدار المميز!",
+      "subscription_terms": "شروط الاشتراك",
+      "subscription_terms_desc1": "عند اختيار 'متابعة' وبدء اشتراكك في الصفحات التالية، سيتم تحصيل رسوم شهرية أو سنوية حتى تقرر الإلغاء. لديك خيار الإلغاء في أي وقت من خلال إعدادات الفوترة الخاصة بك أو عن طريق التواصل معنا على ",
+      "subscription_terms_desc2": ". يرجى ملاحظة أن الإلغاء قد يؤدي إلى تحصيل رسوم للفترة الحالية من الفوترة. لمزيد من التفاصيل، راجع ",
+      "subscription_terms_acknowledgement": "ببدء اشتراكك، فإنك تقر بأنك تفهم وتوافق على هذه الشروط.",
+      "benefits": {
+        "no_itinerary_expirations": "لا انتهاء صلاحية للمسارات",
+        "full_map_view_of_destinations": "عرض خريطة كاملة لجميع الوجهات",
+        "up_to_a_week_of_travel": "حتى أسبوع من السفر",
+        "dark_mode": "الوضع الليلي",
+        "support_our_team": "ادعم فريقنا",
+        "new_features_coming_soon": "ميزات جديدة قادمة قريباً"
+      }
     },
     "usage": {
       "daily_free_usage": "الاستخدام اليومي المجاني",
@@ -213,13 +252,14 @@
       "upcoming": "القادمة",
       "expired": "المنتهية",
       "view": "عرض",
+      "upgrade_to_view": "اشترك للعرض",
       "regenerate": "اعادة الرحلة",
       "share": "نشر",
       "delete": "حذف",
       "save_before_you_go": "حفظ قبل الرحيل؟",
       "you_havent_saved": "لم تقم بحفظ هذا الجدول الزمني، إذا غادرت الآن، ستفقد بعض هذه الاقتراحات.",
       "leave": "غادر",
-      "go_back": "ارجع"
+      "go_back": "ارجع",
     },
     "trip_details": {
       "overview": "نظرة عامة",
@@ -227,7 +267,8 @@
       "your_journey": "{{name}} رحلتك في",
       "view_on_map": "عرض على خرائط جوجل",
       "reviews": "تقييمات",
-      "join_my_planned_trip_to": "انضم إلى رحلتي المخططة إلى {{name}}!"
+      "join_my_planned_trip_to": "انضم إلى رحلتي المخططة إلى {{name}}!",
+      "upgrade_to_premium_to_unlock_map": "قم بالترقية إلى الإصدار المميز لفتح الخريطة الكاملة!"
     },
     "trip_modifcation": {
       "delete_event": "حذف هذا الحدث؟"
@@ -238,6 +279,12 @@
     "event_addition": {
       "selected_places": "الأماكن المختارة",
       "popular_places": "الأماكن المشهورة للزيارة"
+    },
+    "place_details": {
+      "gallery": "الصور",
+      "location": "الموقع",
+      "opening_hours": "ساعات العمل",
+      "ratings": "التقييم"
     },
     "my_trips": {
       "no_trips": "لم تقم بإنشاء أي رحلات بعد. ابدأ بالتخطيط لمغامرتك القادمة الآن!",

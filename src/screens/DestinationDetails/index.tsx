@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ParamListBase, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -11,6 +11,7 @@ import Header from '@shared/components/Header';
 import FastImage from 'react-native-fast-image';
 import Shimmer from '@shared/components/Shimmer';
 import ImageView from 'react-native-image-viewing';
+import LoginSheet from '@shared/components/LoginSheet';
 import RegularButton from '@shared/components/Buttons/Regular';
 import { CurrencyIcon, LanguageIcon, MapIcon } from '@shared/assets/icons';
 import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from 'react-native';
@@ -19,17 +20,24 @@ import { Dimensions, FlatList, ScrollView, TouchableOpacity, View } from 'react-
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { PUBLIC_URL } from '@shared/constants';
+import { selectIsGuest } from '@redux/auth/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import makeCommonStyles from '@shared/assets/styles';
 import { plannerActions } from '@redux/planner/slice';
 import { appActions, selectDeepLinkData } from '@redux/app/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { getTravelPreferencesAction, getDestinationDetailsAction } from '@redux/destination/thunks';
-import { selectOptionsLoading, selectDestinationDetails, selectDestinationLoading } from '@redux/destination/slice';
+import {
+  selectOptionsLoading,
+  selectDestinationDetails,
+  selectDestinationLoading,
+  destinationsActions
+} from '@redux/destination/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { ShareDataProps } from '@shared/types/ShareData';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 interface ImageViewState {
   isOpen: boolean;
@@ -50,6 +58,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const dispatch = useDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
+  const isGuest = useAppSelector(selectIsGuest);
   const deepLinkData = useAppSelector(selectDeepLinkData);
   const areOptionsLoading = useAppSelector(selectOptionsLoading);
   const isLoadingDetails = useAppSelector(selectDestinationLoading);
@@ -63,8 +72,11 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
   const route = useRoute();
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+  const bottomSheetRef = useRef<BottomSheetMethods>();
+
   const { detailsId } = route?.params as RouteParams;
 
+  const [isLoading, setIsLoading] = useState(false);
   const [destinationId, setDestinationId] = React.useState<string>(detailsId);
   const [imageViewState, setImageViewState] = React.useState<ImageViewState>({ isOpen: false, index: 0 });
 
@@ -73,16 +85,26 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
 
   // Callbacks
   const handleStartTripPress = useCallback(async () => {
-    dispatch(plannerActions.setPayload({ destination: { id: destinationId, name, image, country } }));
-    await dispatchThunk(getTravelPreferencesAction());
-    navigation.navigate('Planner');
-  }, [country, destinationId, dispatch, dispatchThunk, image, name, navigation]);
+    if (isGuest) {
+      bottomSheetRef.current?.expand();
+    } else {
+      setIsLoading(true);
+      dispatch(plannerActions.setPayload({ destination: { id: destinationId, name, image, country } }));
+      await dispatchThunk(getTravelPreferencesAction());
+      setIsLoading(false);
+      navigation.navigate('Planner');
+    }
+  }, [country, destinationId, dispatch, dispatchThunk, image, isGuest, name, navigation]);
 
   const handleGalleryImagePress = useCallback((index: number) => setImageViewState({ isOpen: true, index }), []);
 
   // Effects
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
+
+    return () => {
+      dispatch(destinationsActions.setIsLoading(false));
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -244,10 +266,12 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         <RegularButton
           fullWidth
           title={_t('start_a_trip')}
-          loading={areOptionsLoading}
           onPress={handleStartTripPress}
+          loading={areOptionsLoading && isLoading}
         />
       </View>
+
+      <LoginSheet sheetRef={bottomSheetRef} />
     </>
   );
 };

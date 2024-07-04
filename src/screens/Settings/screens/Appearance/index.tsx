@@ -10,15 +10,17 @@ import NavigationButton, { NavigationButtonProps } from '../../components/Naviga
 
 // Utilities
 import makeStyles from './styles';
-import { changeLanguage, t } from '@app/i18n';
 import { useAppTheme } from '@shared/assets/theme';
+import { changeLanguage, changeLocale, t } from '@app/i18n';
 import { useAppDispatch, useAppSelector } from '@app/store';
-import { appActions, selectLanguage, selectThemeMode } from '@redux/app/slice';
+import { destinationsActions } from '@redux/destination/slice';
+import { appActions, selectLanguage, selectSubscriptionState, selectThemeMode } from '@redux/app/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { destinationsActions } from '@redux/destination/slice';
+import UpgradeSheet from '@shared/components/UpgradeSheet';
+import { PREMIUM_ENABLED } from '@shared/constants';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -28,8 +30,10 @@ const AppearanceScreen = () => {
   const dispatch = useAppDispatch();
   const themeMode = useAppSelector(selectThemeMode);
   const appLanguage = useAppSelector(selectLanguage);
+  const subscriptionState = useAppSelector(selectSubscriptionState);
 
   const themeSheetRef = useRef<BottomSheetMethods>(null);
+  const upgradeSheetRef = useRef<BottomSheetMethods>(null);
   const languageSheetRef = useRef<BottomSheetMethods>(null);
 
   // Statics
@@ -53,16 +57,22 @@ const AppearanceScreen = () => {
   const handleLanguagePress = useCallback(() => languageSheetRef.current?.expand(), []);
 
   const handleLanguage = useCallback(async () => {
-    dispatch(destinationsActions.reset());
-    dispatch(appActions.setLanguage(language));
+    await dispatch(destinationsActions.reset());
+    await dispatch(appActions.setLanguage(language));
     changeLanguage(language);
+    changeLocale(language);
     handleLanguageSheetClose();
   }, [dispatch, handleLanguageSheetClose, language]);
 
   const handleTheme = useCallback(() => {
-    dispatch(appActions.setThemeMode(theme));
+    if (subscriptionState?.active || (!subscriptionState?.active && _.isEqual(theme, 'light')) || !PREMIUM_ENABLED) {
+      dispatch(appActions.setThemeMode(theme));
+    } else {
+      upgradeSheetRef.current?.expand();
+    }
+
     handleThemeSheetClose();
-  }, [dispatch, handleThemeSheetClose, theme]);
+  }, [dispatch, handleThemeSheetClose, subscriptionState?.active, theme]);
 
   // Renderer Vars
   const languageOptions = [
@@ -152,6 +162,12 @@ const AppearanceScreen = () => {
           ))}
         </RadioButton.Group>
       </CustomBottomSheet>
+
+      <UpgradeSheet
+        sheetRef={upgradeSheetRef}
+        title={t('subscription.upgrade_for_other_themes')}
+        description={t('subscription.upgrade_to_unlock_themes')}
+      />
     </View>
   );
 };

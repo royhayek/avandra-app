@@ -13,11 +13,12 @@ import LocationCard from './components/LocationCard';
 import BackButton from '@shared/components/Buttons/Back';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { View, Animated, Dimensions, Platform, ScrollView } from 'react-native';
-import { MapLocationIcon, /* MapNavigationIcon, */ MoonIcon, SunIcon } from '@shared/assets/icons';
+import { MapLocationIcon, MapNavigationIcon, /* MapNavigationIcon, */ MoonIcon, SunIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
+import { isTablet, openMapsWithCoords } from '@shared/utils';
 
 // Interfaces
 interface MapScreenProps {}
@@ -61,6 +62,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
   };
 
   const [state] = useState(initialMapState);
+  const [markerIndex, setMarkerIndex] = useState(0);
   const [mapTheme, setMapTheme] = useState(theme.dark ? 'dark' : 'light');
 
   const isDarkTheme = _.isEqual(mapTheme, 'dark');
@@ -129,7 +131,14 @@ const MapScreen: React.FC<MapScreenProps> = () => {
 
     if (Platform.OS === 'ios') x = x - SPACING_FOR_CARD_INSET;
 
+    setMarkerIndex(markerID);
     scrollViewRef.current && scrollViewRef.current?.scrollTo({ x, y: 0, animated: true });
+  };
+
+  const handleNavigateToCoordinates = () => {
+    const marker = state.markers[markerIndex];
+    const { lat, lng } = marker;
+    openMapsWithCoords(lat, lng);
   };
 
   const handleShowCurrentLocation = useCallback(async () => {
@@ -161,7 +170,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
 
     const scale = mapAnimation.interpolate({
       inputRange,
-      outputRange: [1, 1.4, 1],
+      outputRange: [1, 1.3, 1],
       extrapolate: 'clamp'
     });
 
@@ -183,10 +192,10 @@ const MapScreen: React.FC<MapScreenProps> = () => {
           marker && (
             <Marker
               displayDay
-              size={24}
               key={index}
               index={index}
               marker={marker}
+              size={ms(isTablet ? 22 : 32)}
               interpolations={interpolations}
               onMarkerPress={onMarkerPress}
             />
@@ -251,7 +260,7 @@ const MapScreen: React.FC<MapScreenProps> = () => {
 
   const renderMapActions = () => (
     <View style={styles.actions}>
-      {/* <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleShowCurrentLocation} /> */}
+      <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleNavigateToCoordinates} />
       <IconButton size={ms(28)} icon={() => <MapLocationIcon />} onPress={handleShowCurrentLocation} />
     </View>
   );

@@ -11,12 +11,14 @@ import { Text } from 'react-native-paper';
 import { FlatList, View } from 'react-native';
 import Shimmer from '@shared/components/Shimmer';
 import SearchItem from './components/SearchItem';
+import LoginSheet from '@shared/components/LoginSheet';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
 
 // Utilities
 import makeStyles from './styles';
+import { selectIsGuest } from '@redux/auth/slice';
 import { useAppTheme } from '@shared/assets/theme';
 import { plannerActions } from '@redux/planner/slice';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
@@ -28,12 +30,16 @@ import {
 } from '@redux/destination/thunks';
 import { t } from '@app/i18n';
 
+// Interfaces
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+
 // Component
 const SearchScreen = () => {
   // Redux
   const dispatch = useDispatch();
   const dispatchThunk = useAppThunkDispatch();
 
+  const isGuest = useAppSelector(selectIsGuest);
   const recentSearches = useAppSelector(selectRecentSearches);
   const isLoadingRecentSearches = useAppSelector(selectRecentSearchesLoading);
 
@@ -45,6 +51,7 @@ const SearchScreen = () => {
 
   const [searchInput, setSearchInput] = useState('');
 
+  const bottomSheetRef = useRef<BottomSheetMethods>();
   const inputRef = useRef<GooglePlacesAutocompleteRef>();
 
   // Callbacks
@@ -54,17 +61,21 @@ const SearchScreen = () => {
 
   const handlePlacePress = useCallback(
     async (data: GooglePlaceData) => {
-      if (data && data.structured_formatting) {
-        const name = data.structured_formatting.main_text;
-        const country = data.terms[data.terms.length - 1].value;
+      if (isGuest) {
+        bottomSheetRef.current?.expand();
+      } else {
+        if (data && data.structured_formatting) {
+          const name = data.structured_formatting.main_text;
+          const country = data.terms[data.terms.length - 1].value;
 
-        dispatchThunk(incrementSearchesAction({ name, country }));
-        dispatchThunk(getRecentSearchesAction());
-        dispatch(plannerActions.setPayload({ destination: { name, country } }));
-        navigation.navigate('Planner', { destination: { name, country } });
+          dispatchThunk(incrementSearchesAction({ name, country }));
+          dispatchThunk(getRecentSearchesAction());
+          dispatch(plannerActions.setPayload({ destination: { name, country } }));
+          navigation.navigate('Planner', { destination: { name, country } });
+        }
       }
     },
-    [dispatch, dispatchThunk, navigation]
+    [dispatch, dispatchThunk, isGuest, navigation]
   );
 
   // Effects
@@ -113,7 +124,7 @@ const SearchScreen = () => {
               style={styles.list}
               data={recentSearches}
               contentContainerStyle={styles.listContainer}
-              renderItem={({ item, index }) => <SearchItem key={index} item={item} />}
+              renderItem={({ item, index }) => <SearchItem key={index} item={item} bottomSheetRef={bottomSheetRef} />}
             />
           )}
         </>
@@ -125,6 +136,8 @@ const SearchScreen = () => {
     <SafeAreaView style={styles.container}>
       {renderHeader()}
       {renderPopularList()}
+
+      <LoginSheet sheetRef={bottomSheetRef} />
     </SafeAreaView>
   );
 };

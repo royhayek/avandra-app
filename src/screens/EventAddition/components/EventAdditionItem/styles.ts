@@ -21,12 +21,15 @@ export default (theme: AppTheme) =>
     },
     content: {
       flex: 1,
-      gap: mvs(4),
       marginEnd: ms(8),
       marginStart: ms(12)
     },
     name: {
       fontFamily: 'urbanist-bold'
+    },
+    type: {
+      fontFamily: 'urbanist-medium',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[700]
     },
     addEventBtn: {
       marginBottom: mvs(24),

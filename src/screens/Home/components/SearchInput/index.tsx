@@ -35,12 +35,12 @@ const _t = (key: string, options?: TranslateOptions) => t(`home.${key}`, options
 
 const SearchInput: React.FC<DestinationInputProps> = ({
   value,
-  disabled,
   onChange,
   onPressIn,
   inputStyle,
   placeholder,
   containerStyle,
+  disabled = false,
   ...inputProps
 }) => {
   // Renderers
@@ -59,10 +59,6 @@ const SearchInput: React.FC<DestinationInputProps> = ({
       />
     </TouchableOpacity>
   );
-};
-
-SearchInput.defaultProps = {
-  disabled: false
 };
 
 export default SearchInput;

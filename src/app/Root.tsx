@@ -1,5 +1,6 @@
 // Packages
 import _ from 'lodash';
+import moment from 'moment';
 import * as Device from 'expo-device';
 import * as Updates from 'expo-updates';
 import * as Linking from 'expo-linking';
@@ -7,6 +8,9 @@ import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { LayoutChangeEvent, useColorScheme, Platform } from 'react-native';
+
+import 'moment/locale/fr';
+import 'moment/locale/ar';
 
 // Components
 import RootNavigation from './navigation';
@@ -138,6 +142,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const initData = useCallback(async () => {
     !__DEV__ && checkForUpdates();
     changeLocale(language);
+    moment.locale(language);
     const seenWalkthrough = (await AsyncStorage.getItem('seenWalkthrough')) === 'true';
     if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
     await dispatchThunk(validateTokenAction());

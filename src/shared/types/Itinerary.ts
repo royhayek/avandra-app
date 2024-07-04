@@ -14,29 +14,48 @@ export interface ItineraryPayload {
   byDate: boolean;
 }
 
+export interface OpeningHoursProps {
+  open_now: boolean;
+  periods: {
+    close: {
+      day: number;
+      time: string;
+    };
+    open: {
+      day: number;
+      time: string;
+    };
+  }[];
+  weekday_text: string[];
+}
+
 export interface ItineraryItemProps {
   _id: string;
   name: string;
   time: string;
   date: string;
-  address: string;
-  openingHours: object;
-  description: string;
-  estimatedCost: number;
-  userRatingsTotal: number;
-  coordinates: CoordinatesProps;
-  priceLevel: number;
-  photoUrl: string;
-  rating: number;
-  reviews: number;
   type: string;
   flag: string;
   image: string;
-  payload: ItineraryPayload;
   tips: string[];
-  places: ItineraryProps[];
-  location: CoordinatesProps;
+  photos: string[];
   status: string;
+  rating: number;
+  address: string;
+  types: string[];
+  website: string;
+  reviews: number;
+  photoUrl: string;
+  priceLevel: number;
+  description: string;
+  openingHours: OpeningHoursProps;
+  estimatedCost: number;
+  userRatingsTotal: number;
+  places: ItineraryProps[];
+  payload: ItineraryPayload;
+  location: CoordinatesProps;
+  internationalPhone: string;
+  coordinates: CoordinatesProps;
   directions: {
     byCar: string;
     byTrain: string;

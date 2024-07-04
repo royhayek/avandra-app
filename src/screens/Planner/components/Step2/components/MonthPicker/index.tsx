@@ -43,7 +43,7 @@ const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
     const endMonth = moment().add(11, 'month');
 
     while (endMonth.diff(currentMonth, 'months') >= 0) {
-      months.push(_t(currentMonth.format('MMMM').toLocaleLowerCase()));
+      months.push(currentMonth.format('MMMM').toLocaleLowerCase());
       currentMonth.add(1, 'month');
     }
 

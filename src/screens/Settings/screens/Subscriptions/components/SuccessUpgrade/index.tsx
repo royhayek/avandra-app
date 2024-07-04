@@ -28,9 +28,7 @@ interface SuccessUpgradeProps {
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`, options);
 
-const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({
-  item: { _id, name, best, price, trial, period, popular, currency, benefits }
-}) => {
+const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({ benefits }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -50,7 +48,7 @@ const SuccessUpgrade: React.FC<SuccessUpgradeProps> = ({
           Congratulations!
         </Text>
         <Text variant="xLarge" style={styles.name}>
-          You're now a {name[i18n.locale]}!
+          You're now a
         </Text>
 
         <Divider style={styles.divider} />

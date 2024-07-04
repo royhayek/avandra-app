@@ -7,6 +7,7 @@ import i18n from '@app/i18n';
 
 // Types
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -25,7 +26,7 @@ export default (theme: AppTheme) =>
       backgroundColor: 'transparent'
     },
     container: {
-      minHeight: mvs(48),
+      minHeight: isTablet ? mvs(80) : mvs(48),
       alignItems: 'center',
       flexDirection: 'row',
       paddingHorizontal: ms(4),

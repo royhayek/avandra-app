@@ -5,7 +5,7 @@ import { ms } from 'react-native-size-matters';
 
 // Components
 import { Text } from 'react-native-paper';
-import { TouchableOpacity, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import BouncyCheckbox, { BouncyCheckboxHandle } from 'react-native-bouncy-checkbox';
 
 // Utilities
@@ -32,7 +32,7 @@ const PlanListItem: React.FC<PlanListItemProps> = ({ item, selected, setSelected
   const styles = makeStyles(theme, selected);
 
   const { packageType, product } = item;
-  const { description, price, priceString } = product;
+  const { title, description, price, priceString } = product;
 
   const checkboxRef = useRef<BouncyCheckboxHandle>(null);
 
@@ -58,13 +58,6 @@ const PlanListItem: React.FC<PlanListItemProps> = ({ item, selected, setSelected
         />
 
         <View>
-          {/* {(best || popular) && (
-            <View style={styles.badge}>
-              <Text variant="large" style={styles.badgeText}>
-                {best ? _t('best_value') : popular ? _t('popular') : ''}
-              </Text>
-            </View>
-          )} */}
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text variant="h5" style={styles.price}>
               {price === 0 ? _t('free') : priceString}
@@ -73,7 +66,7 @@ const PlanListItem: React.FC<PlanListItemProps> = ({ item, selected, setSelected
           </View>
 
           <Text variant="large" style={styles.name} numberOfLines={1}>
-            {description}
+            {Platform.OS === 'ios' ? description : title}
           </Text>
         </View>
       </View>

@@ -13,6 +13,7 @@ import SearchScreen from '@screens/SearchScreen';
 import OnBoardingScreen from '@screens/OnBoarding';
 import TripDetailsScreen from '@screens/TripDetails';
 import FaqScreen from '@screens/Settings/screens/Faq';
+import PlaceDetailsScreen from '@screens/PlaceDetails';
 import EventAdditionScreen from '@screens/EventAddition';
 import PopularScreen from '@screens/Home/screens/Popular';
 import ArticleDetailsScreen from '@screens/ArticleDetails';
@@ -30,10 +31,11 @@ import i18n, { t } from '@app/i18n';
 import { useAppSelector } from '@app/store';
 import { getScreenOptions } from './options';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectIsAuthenticated } from '@redux/auth/slice';
+import { selectIsAuthenticated, selectIsGuest } from '@redux/auth/slice';
 
 // Interfaces
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack/lib/typescript/src/types';
+import ForgotPasswordScreen from '@screens/ForgotPassword';
 
 // Component
 const _t = (key: string) => t(`navigation.${key}`);
@@ -42,6 +44,7 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigation = () => {
   // Redux
+  const isGuest = useAppSelector(selectIsGuest);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   // Statics
@@ -58,7 +61,7 @@ const RootNavigation = () => {
     }
   };
 
-  if (isAuthenticated) {
+  if (isAuthenticated || isGuest) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={TabNavigation} />
@@ -78,6 +81,7 @@ const RootNavigation = () => {
           component={ContactScreen}
           options={{ ...getScreenOptions(theme), title: _t('contact') }}
         />
+        <Stack.Screen name="PlaceDetails" component={PlaceDetailsScreen} options={{ ...getScreenOptions(theme) }} />
         <Stack.Screen
           name="TripModification"
           component={TripModificationScreen}
@@ -128,6 +132,7 @@ const RootNavigation = () => {
       <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen
         name="Info"
         component={InfoScreen}

@@ -20,7 +20,9 @@ const CustomSnackbar = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
-  const { show, message, delay } = snackbarSelect;
+  const { type, show, message, delay } = snackbarSelect;
+
+  console.debug({ type, show, message, delay });
 
   // Callbacks
   const handleDismiss = useCallback(() => dispatch(snackbarActions.hideSnackbar()), [dispatch]);
@@ -30,7 +32,10 @@ const CustomSnackbar = () => {
     <Snackbar
       visible={show}
       duration={delay}
-      style={styles.container}
+      style={{
+        backgroundColor:
+          type === 'success' ? theme.colors.primary : type === 'info' ? theme.colors.pieBlue : theme.colors.redSurface
+      }}
       onDismiss={handleDismiss}
       wrapperStyle={styles.wrapper}>
       <Text variant="medium" style={styles.message}>

@@ -8,21 +8,21 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 // Components
 import { Ionicons } from '@expo/vector-icons';
 import { Switch, Text } from 'react-native-paper';
+import { TouchableOpacity, View } from 'react-native';
 import AccountDeletionModal from '../AccountDeletion';
-import { Linking, Platform, TouchableOpacity, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { appName } from '@shared/utils';
 import { useAppSelector } from '@app/store';
+import { selectIsGuest } from '@redux/auth/slice';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectConfiguration } from '@redux/app/slice';
 
 // Component
 const HelpSupportScreen = () => {
   // Redux
-  const config = useAppSelector(selectConfiguration);
+  const isGuest = useAppSelector(selectIsGuest);
 
   // Statics
   const theme = useAppTheme();
@@ -46,17 +46,6 @@ const HelpSupportScreen = () => {
     [navigation]
   );
 
-  const handleRateApp = useCallback(() => {
-    const appleAppId = config?.other?.appleAppId;
-    const androidPackageName = config?.other?.googlePackageName;
-
-    if (Platform.OS === 'android') {
-      Linking.openURL(`market://details?id=${androidPackageName}&showAllReviews=true`);
-    } else if (Platform.OS === 'ios') {
-      Linking.openURL(`itms-apps://itunes.apple.com/app/viewContentsUserReviews/id${appleAppId}?action=write-review`);
-    }
-  }, [config?.other?.appleAppId, config?.other?.googlePackageName]);
-
   // Renderer Vars
   const buttons = useMemo(
     () => [
@@ -65,11 +54,15 @@ const HelpSupportScreen = () => {
         name: t('settings.faq'),
         onPress: navigateToFaq
       },
-      {
-        key: 'contact',
-        name: t('settings.contact_support'),
-        onPress: navigateToSupport
-      },
+      ...(!isGuest
+        ? [
+            {
+              key: 'contact',
+              name: t('settings.contact_support'),
+              onPress: navigateToSupport
+            }
+          ]
+        : []),
       {
         key: 'language',
         name: t('common.privacy_policy'),
@@ -80,20 +73,19 @@ const HelpSupportScreen = () => {
         name: t('common.terms'),
         onPress: () => navigateToInfo('terms')
       },
-      {
-        key: 'rate',
-        name: t('settings.rate_us'),
-        onPress: handleRateApp
-      },
-      {
-        key: 'delete_account',
-        name: t('settings.delete_account'),
-        description: t('settings.delete_account_desc', { name: appName }),
-        onPress: handleDeleteAccount,
-        color: theme.colors.red
-      }
+      ...(!isGuest
+        ? [
+            {
+              key: 'delete_account',
+              name: t('settings.delete_account'),
+              description: t('settings.delete_account_desc', { name: appName }),
+              onPress: handleDeleteAccount,
+              color: theme.colors.red
+            }
+          ]
+        : [])
     ],
-    [navigateToFaq, navigateToSupport, handleRateApp, handleDeleteAccount, navigateToInfo, theme.colors.red]
+    [navigateToFaq, navigateToSupport, handleDeleteAccount, navigateToInfo, theme.colors.red, isGuest]
   );
 
   // Renderers
@@ -138,7 +130,7 @@ const HelpSupportScreen = () => {
         </TouchableOpacity>
       ))}
 
-      <AccountDeletionModal visible={isDeletionModalOpen} onCancel={handleCancelDeletion} />
+      {!isGuest && <AccountDeletionModal visible={isDeletionModalOpen} onCancel={handleCancelDeletion} />}
     </View>
   );
 };

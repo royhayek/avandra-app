@@ -1,35 +1,41 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 
 // Components
 import { Text } from 'react-native-paper';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
-import Picker from '@shared/components/Picker';
 import FastImage from 'react-native-fast-image';
 import { ScrollView, View } from 'react-native';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RegularButton from '@shared/components/Buttons/Regular';
-import { DownChevron, MessageIcon } from '@shared/assets/icons';
-import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from 'react-native-country-picker-modal';
+import { DownChevron, LocationIcon, LockIcon, MessageIcon, ProfileIcon } from '@shared/assets/icons';
+import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from '@theankur/react-native-country-picker-modal';
 
 // Utils
 import { t } from '@app/i18n';
 import makeStyles from './styles';
-import { authActions } from '@redux/auth/slice';
+import { authActions, selectAuthLoading } from '@redux/auth/slice';
 import { useAppTheme } from '@shared/assets/theme';
+import { useRoute } from '@react-navigation/native';
+import { registerAction } from '@redux/auth/thunks';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { updateProfileAction } from '@redux/user/thunks';
-import { profileSchema } from 'src/schemas/User/ProfileSchema';
+import { signUpSchema } from '@schemas/User/SignUpSchema';
+import { profileSchema } from '@schemas/User/ProfileSchema';
 import { selectUser, selectUserSubmitting } from '@redux/user/slice';
 import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store';
 
 // Interfaces
-import { ProfileFormValuesProps } from '@shared/types/ProfileFormProps';
-import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { SignUpFormValuesProps } from '@shared/types/SignUpForm';
+import { ProfileFormValuesProps } from '@shared/types/ProfileForm';
+
+interface RouteParams {
+  screen: string;
+}
 
 // Component
 const Profile = () => {
@@ -38,6 +44,7 @@ const Profile = () => {
   const dispatchThunk = useAppThunkDispatch();
 
   const user = useAppSelector(selectUser);
+  const isSignUpLoading = useAppSelector(selectAuthLoading);
   const loading = useAppSelector(selectUserSubmitting);
 
   // Statics
@@ -45,35 +52,45 @@ const Profile = () => {
   const styles = makeStyles(theme);
   const commonStyles = makeCommonStyles(theme);
 
-  const genderPickerRef = useRef<BottomSheetMethods>(null);
   const formRef = useRef<FormikProps<ProfileFormValuesProps> | null>(null);
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
+  const route = useRoute();
+  const { screen } = (route.params as RouteParams) || {};
+  const isSigningUp = screen && _.isEqual(screen, 'SignUp');
+
   const { _id, name, email } = user;
-  const formInitialValues = { _id, name, email, country: '', gender: '' };
+  const profileFormInitialValues = { _id, name, email, country: '' };
+  const signUpFormInitialValues = { name: '', email: '', password: '', country: '' };
 
   // Callbacks
-  const handleOpenGenderPicker = useCallback(() => genderPickerRef.current?.expand(), []);
-
-  const handleCloseGenderPicker = useCallback(() => genderPickerRef.current?.close(), []);
-
   const handleOpenCountryPicker = useCallback(() => setIsOpenCountryPicker(true), []);
 
   const handleCloseCountryPicker = useCallback(() => setIsOpenCountryPicker(false), []);
 
   const handleExplorePress = useCallback(() => dispatch(authActions.update({ authenticated: true })), [dispatch]);
 
-  const handleGenderPress = useCallback(
-    (gender: string) => {
-      formRef.current?.setFieldValue('gender', gender);
-      handleCloseGenderPicker();
+  const handleSignUpFormSubmit = useCallback(
+    async (values: SignUpFormValuesProps) => {
+      console.info('[handleSignUpFormSubmit] :: ', { values });
+      const response = await dispatchThunk(registerAction(values));
+
+      if (response.payload?.success) setIsSuccess(true);
+      else
+        dispatch(
+          snackbarActions.showSnackbar({
+            type: 'error',
+            title: 'Error',
+            message: 'An error has occured, try again later.'
+          })
+        );
     },
-    [handleCloseGenderPicker]
+    [dispatch, dispatchThunk]
   );
 
-  const handleFormSubmit = useCallback(
+  const handleProfileFormSubmit = useCallback(
     async (values: ProfileFormValuesProps) => {
       console.info('[handleFormSubmit] :: ', { values });
       const response = await dispatchThunk(updateProfileAction(values));
@@ -91,14 +108,85 @@ const Profile = () => {
     [dispatch, dispatchThunk]
   );
 
-  // Renderer vars
-  const genderOptions = [
-    { key: 'male', title: 'Male', onPress: handleGenderPress },
-    { key: 'female', title: 'Female', onPress: handleGenderPress }
-  ];
-
   // Renders
-  const renderForm = () => (
+  const renderSignUpForm = () => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.content}>
+        <Text variant="h3" style={styles.title}>
+          {isSigningUp ? t('register.title') : t('profile.title')}
+        </Text>
+        <Text variant="xLarge">{isSigningUp ? t('register.description') : t('profile.description')}</Text>
+
+        <Formik
+          innerRef={formRef}
+          validateOnChange={false}
+          validationSchema={signUpSchema}
+          onSubmit={handleSignUpFormSubmit}
+          initialValues={signUpFormInitialValues}>
+          {({ handleChange, values, errors }) => (
+            <View style={styles.form}>
+              <Input
+                name="name"
+                value={values.name}
+                error={errors.name}
+                label={t('profile.full_name')}
+                handleChange={handleChange('name')}
+                placeholder={t('profile.full_name')}
+                leftIcon={<ProfileIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              <Input
+                name="email"
+                error={errors.email}
+                value={values.email}
+                label={t('profile.email')}
+                keyboardType="email-address"
+                placeholder={t('profile.email')}
+                handleChange={handleChange('email')}
+                leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              <Input
+                name="password"
+                secureTextEntry
+                value={values.password}
+                error={errors.password}
+                label={t('profile.password')}
+                handleChange={handleChange('password')}
+                placeholder={t('profile.password')}
+                leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              <Input
+                name="country"
+                error={errors.country}
+                value={values.country}
+                label={t('profile.country')}
+                onFocus={handleOpenCountryPicker}
+                placeholder={t('profile.country')}
+                handleChange={handleChange('country')}
+                leftIcon={<LocationIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              />
+
+              {isOpenCountryPicker && (
+                <CountryPicker
+                  withFilter
+                  countryCode="AD"
+                  visible={isOpenCountryPicker}
+                  onClose={handleCloseCountryPicker}
+                  onSelect={(country: Country) => formRef.current?.setFieldValue('country', country.name)}
+                  theme={{ ...(theme.dark ? DARK_THEME : DEFAULT_THEME), backgroundColor: theme.colors.background }}
+                />
+              )}
+            </View>
+          )}
+        </Formik>
+      </View>
+    </ScrollView>
+  );
+
+  const renderProfileForm = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.content}>
         <Text variant="h3" style={styles.title}>
@@ -108,9 +196,9 @@ const Profile = () => {
 
         <Formik
           innerRef={formRef}
-          onSubmit={handleFormSubmit}
+          onSubmit={handleProfileFormSubmit}
           validationSchema={profileSchema}
-          initialValues={formInitialValues}>
+          initialValues={profileFormInitialValues}>
           {({ handleChange, values, errors }) => (
             <View style={styles.form}>
               <Input
@@ -144,17 +232,6 @@ const Profile = () => {
                 rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
               />
 
-              <Input
-                name="gender"
-                error={errors.gender}
-                label={t('profile.gender')}
-                onFocus={handleOpenGenderPicker}
-                placeholder={t('profile.gender')}
-                handleChange={handleChange('gender')}
-                value={_.find(genderOptions, { key: values.gender })?.title}
-                rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
-              />
-
               {isOpenCountryPicker && (
                 <CountryPicker
                   withFilter
@@ -165,8 +242,6 @@ const Profile = () => {
                   theme={{ ...(theme.dark ? DARK_THEME : DEFAULT_THEME), backgroundColor: theme.colors.background }}
                 />
               )}
-
-              <Picker sheetRef={genderPickerRef} options={genderOptions} />
             </View>
           )}
         </Formik>
@@ -178,9 +253,11 @@ const Profile = () => {
     <View style={commonStyles.footer}>
       <RegularButton
         fullWidth
-        loading={loading}
-        title={isSuccess ? t('profile.explore_destinations') : t('common.continue')}
+        loading={loading || isSignUpLoading}
         onPress={() => (isSuccess ? handleExplorePress() : formRef.current?.handleSubmit())}
+        title={
+          isSuccess ? t('profile.explore_destinations') : isSigningUp ? t('register.get_started') : t('common.continue')
+        }
       />
     </View>
   );
@@ -206,7 +283,7 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />
-      {renderForm()}
+      {isSigningUp ? renderSignUpForm() : renderProfileForm()}
       {renderFooter()}
     </SafeAreaView>
   );

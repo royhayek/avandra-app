@@ -31,10 +31,4 @@ const PopularScreen: React.FC<PopularScreenProps> = () => {
   return <PopularList type={type} />;
 };
 
-PopularScreen.defaultProps = {
-  orientation: 'vertical',
-  isTitleShown: false,
-  type: 'destinations'
-};
-
 export default PopularScreen;

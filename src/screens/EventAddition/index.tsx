@@ -15,7 +15,7 @@ import PlacesAutocomplete from '@shared/components/PlacesAutocomplete';
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { GOOGLE_MAPS_API_KEY } from '@shared/utils';
+import { GOOGLE_MAPS_API_KEY, GOOGLE_WEB_API_KEY, getCategory } from '@shared/utils';
 import makeCommonStyles from '@shared/assets/styles';
 import { snackbarActions } from '@redux/snackbar/slice';
 import { useAppDispatch, useAppThunkDispatch } from '@app/store';
@@ -92,19 +92,24 @@ const EventAdditionScreen: React.FC = () => {
 
   const handlePlacePress = useCallback(
     (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+      console.debug('[handlePlacePress] :: ', { data, details });
+
       const formattedDetails = {
         selected: true,
         name: details?.name,
+        types: details?.types,
         rating: details?.rating,
+        photos: details?.photos,
+        website: details?.website,
         placeId: details?.place_id,
+        displayName: details?.name,
         priceLevel: details?.price_level,
         address: details?.formatted_address,
         coordinates: details?.geometry.location,
         userRatingsTotal: details?.user_ratings_total,
         openingHours: details?.opening_hours?.weekday_text,
         internationalPhone: details?.international_phone_number,
-        type: _.includes(details?.types, 'restaurant') ? 'restaurant' : 'landmark',
-        photoUrl: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1024&photoreference=${details?.photos?.[0].photo_reference}&key=${GOOGLE_MAPS_API_KEY}`
+        photoUrl: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1024&photoreference=${details?.photos?.[0].photo_reference}&key=${GOOGLE_WEB_API_KEY}`
       };
 
       if (_.find(popularPlaces, { placeId: formattedDetails.placeId })) {

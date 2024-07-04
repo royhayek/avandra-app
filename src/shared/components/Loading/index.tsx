@@ -3,7 +3,6 @@ import _ from 'lodash';
 import React from 'react';
 
 // Components
-import LottieView from 'lottie-react-native';
 import { TouchableOpacityProps, View } from 'react-native';
 import { ActivityIndicator, Modal, Text } from 'react-native-paper';
 
@@ -20,7 +19,7 @@ interface IndicatorProps extends TouchableOpacityProps {
 }
 
 // Component
-const Loading: React.FC<IndicatorProps> = ({ dismissable, message }) => {
+const Loading: React.FC<IndicatorProps> = ({ dismissable = false, message }) => {
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme);
@@ -29,17 +28,13 @@ const Loading: React.FC<IndicatorProps> = ({ dismissable, message }) => {
   return (
     <Modal visible dismissable={dismissable} contentContainerStyle={styles.container}>
       <View style={styles.container}>
-        <ActivityIndicator size="small" />
+        <ActivityIndicator size="large" />
         <Text variant="large" style={{ marginTop: 12 }}>
           {message}
         </Text>
       </View>
     </Modal>
   );
-};
-
-Loading.defaultProps = {
-  dismissable: false
 };
 
 export default Loading;
