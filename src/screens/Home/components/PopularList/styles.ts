@@ -4,6 +4,7 @@ import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme, isHorizontal: boolean) =>
   StyleSheet.create({
@@ -26,8 +27,8 @@ export default (theme: AppTheme, isHorizontal: boolean) =>
     },
     flatListContainer: {
       gap: mvs(16),
-      paddingHorizontal: ms(24),
       paddingTop: isHorizontal ? 0 : mvs(24),
+      paddingHorizontal: isTablet && !isHorizontal ? 0 : ms(24),
       paddingBottom: isHorizontal ? mvs(8) : mvs(20)
     },
     shimmerView: {
@@ -39,8 +40,9 @@ export default (theme: AppTheme, isHorizontal: boolean) =>
     },
     shimmerImage: {
       borderRadius: ms(12),
-      width: isHorizontal ? ms(200) : '100%',
-      height: isHorizontal ? mvs(140) : mvs(200)
+      aspectRatio: '11/8',
+      width: isHorizontal ? (isTablet ? ms(180) : ms(200)) : '100%',
+      height: isHorizontal ? (isTablet ? mvs(160) : mvs(140)) : mvs(200)
     },
     shimmerTitle: {
       height: mvs(20),

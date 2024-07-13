@@ -19,6 +19,7 @@ import { useAppTheme } from '@shared/assets/theme';
 // Interfaces
 import { ShareDataProps } from '@shared/types/ShareData';
 import { NativeStackHeaderProps, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { isTablet } from '@shared/utils';
 
 interface NavigationOptions extends NativeStackNavigationOptions {
   headerTitle?: () => React.ReactNode;
@@ -58,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ options, hasBackBtn, share, absolute, s
     <SafeAreaView style={[styles.safeAreaView, absolute && styles.absoluteView]}>
       <View style={styles.container}>
         {options?.title ? (
-          <Text variant="h4" style={styles.appName}>
+          <Text variant={isTablet ? 'h5' : 'h4'} style={styles.appName}>
             {options?.title}
           </Text>
         ) : options?.headerTitle ? (

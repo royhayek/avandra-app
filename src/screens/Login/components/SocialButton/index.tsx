@@ -27,7 +27,7 @@ const SocialButton: React.FC<SocialButtonProps> = ({ icon, title, onPress }) => 
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.content}>
         <View style={styles.iconContent}>{icon}</View>
-        <Text variant="titleSmall" style={styles.title}>
+        <Text variant="medium" style={styles.title}>
           {title}
         </Text>
       </View>

@@ -18,6 +18,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { selectUserId } from '@redux/user/slice';
 import { useAppTheme } from '@shared/assets/theme';
+import { selectIsAuthenticated } from '@redux/auth/slice';
 import { getUserTripsAction } from '@redux/itinerary/thunks';
 import { useAppSelector, useAppThunkDispatch } from '@app/store';
 import { selectUserItineraries, selectUserItinerariesLoading } from '@redux/itinerary/slice';
@@ -35,6 +36,7 @@ const HistoryScreen = () => {
 
   const userId = useAppSelector(selectUserId);
   const trips = useAppSelector(selectUserItineraries);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const isLoadingTrips = useAppSelector(selectUserItinerariesLoading);
 
   // Statics
@@ -63,9 +65,9 @@ const HistoryScreen = () => {
 
   // Effects
   useEffect(() => {
-    refreshSavedTrips();
+    isAuthenticated && refreshSavedTrips();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthenticated]);
 
   // Renderer Vars
   const segmentedButtons = [

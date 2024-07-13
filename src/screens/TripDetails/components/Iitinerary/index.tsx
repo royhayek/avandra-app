@@ -17,12 +17,14 @@ import { CarIcon, TimeIcon, WalkIcon, TrainIcon, PlaneIcon, LocationIcon, Naviga
 import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
-import { formatAmount, formatDate, getCategory } from '@shared/utils';
+import { formatAmount, formatDate, getCategory, openMapsWithCoords } from '@shared/utils';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
+import { ms } from 'react-native-size-matters';
+import { CoordinatesProps } from '@shared/types/Coordinates';
 
 interface ItineraryListProps {
   data: ItineraryProps[];
@@ -50,6 +52,10 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
     [navigation]
   );
 
+  const handleViewOnMapsPress = useCallback((coordinates: CoordinatesProps) => {
+    openMapsWithCoords(coordinates.lat, coordinates.lng);
+  }, []);
+
   const itineraryDate = (date: string) => (date ? (moment(date).isValid() ? formatDate(date, 'MMM DD') : date) : '');
 
   // Renderer Vars
@@ -62,114 +68,138 @@ const Itinerary: React.FC<ItineraryListProps> = ({ data }) => {
 
   // Renderers
   const renderItinerary = (props: ItineraryItemProps) => {
-    const { date, types, name, address, rating, openingHours, userRatingsTotal, priceLevel, photoUrl, directions } =
-      props;
+    if (props) {
+      const {
+        date,
+        types,
+        name,
+        address,
+        rating,
+        openingHours,
+        userRatingsTotal,
+        priceLevel,
+        photoUrl,
+        directions,
+        coordinates
+      } = props || {};
 
-    const category = types && getCategory(types);
-    const day = moment(date).format('dddd');
-    const time = _.find(openingHours?.weekday_text, (d) => _.includes(d, day));
-    const priceLevelText = _.times(priceLevel, () => '$').join('');
+      const category = types && getCategory(types);
+      const day = moment(date).format('dddd');
+      const time = _.find(openingHours?.weekday_text, (d) => _.includes(d, day));
+      const priceLevelText = _.times(priceLevel, () => '$').join('');
 
-    const iconFillColor = theme.dark ? theme.colors.white : theme.colors.gray[900];
+      const iconFillColor = theme.dark ? theme.colors.white : theme.colors.gray[900];
 
-    return (
-      <View key={name}>
-        <View style={styles.rowContent}>
-          <View style={styles.typeLine}>
-            {category && <PlaceIcon type={category} color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+      return (
+        <View key={name}>
+          <View style={styles.rowContent}>
+            <View style={styles.typeLine}>
+              {category && (
+                <PlaceIcon
+                  type={category}
+                  color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                  size={ms(28)}
+                />
+              )}
 
-            <View style={styles.verticalLine} />
+              <View style={styles.verticalLine} />
+            </View>
+
+            <View style={styles.itineraryContent}>
+              <TouchableOpacity style={styles.itineraryButton} onPress={() => handleItineraryPress(props)}>
+                <FastImage
+                  source={{ uri: photoUrl, cache: FastImage.cacheControl.immutable }}
+                  style={styles.itineraryImage}
+                />
+                <View style={styles.itineraryDetails}>
+                  <Text variant="h5">{name}</Text>
+                  <Text variant="small" style={styles.address}>
+                    {address}
+                  </Text>
+                  {rating ? (
+                    <View style={styles.ratingContainer}>
+                      <Text variant="medium" style={styles.ratingText}>
+                        {rating}
+                      </Text>
+                      <StarRatingDisplay rating={rating} starSize={18} starStyle={{ marginHorizontal: 0 }} />
+                      <Text variant="small" style={styles.ratingText}>
+                        ({formatAmount(userRatingsTotal)})
+                      </Text>
+                      {priceLevel ? (
+                        <Text variant="small" style={styles.ratingText}>
+                          {` •  ${priceLevelText}`}
+                        </Text>
+                      ) : null}
+                    </View>
+                  ) : null}
+
+                  <Divider style={styles.divider} />
+
+                  {time ? (
+                    <View style={styles.infoRow}>
+                      <TimeIcon fill={iconFillColor} />
+                      <Text variant="medium" style={styles.mediumText}>
+                        {time}
+                      </Text>
+                    </View>
+                  ) : null}
+
+                  <View style={styles.infoRow}>
+                    <LocationIcon fill={theme.colors.primary} width={20} transform="scale(0.95)" />
+                    <Text
+                      variant="medium"
+                      onPress={() => handleViewOnMapsPress(coordinates)}
+                      style={[styles.mediumText, { color: theme.colors.primary }]}>
+                      {_t('view_on_map')}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <View style={styles.itineraryContent}>
-            <TouchableOpacity style={styles.itineraryButton} onPress={() => handleItineraryPress(props)}>
-              <FastImage
-                source={{ uri: photoUrl, cache: FastImage.cacheControl.immutable }}
-                style={styles.itineraryImage}
-              />
-              <View style={styles.itineraryDetails}>
-                <Text variant="h5">{name}</Text>
-                <Text variant="small" style={styles.address}>
-                  {address}
-                </Text>
-                {rating ? (
-                  <View style={styles.ratingContainer}>
-                    <Text variant="medium" style={styles.ratingText}>
-                      {rating}
-                    </Text>
-                    <StarRatingDisplay rating={rating} starSize={18} starStyle={{ marginHorizontal: 0 }} />
-                    <Text variant="small" style={styles.ratingText}>
-                      ({formatAmount(userRatingsTotal)})
-                    </Text>
-                    {priceLevel ? (
-                      <Text variant="small" style={styles.ratingText}>
-                        {` •  ${priceLevelText}`}
-                      </Text>
-                    ) : null}
-                  </View>
-                ) : null}
+          {directions && (
+            <View style={styles.rowContent}>
+              <View style={styles.navigationIcon}>
+                <NavigationIcon fill={iconFillColor} />
+              </View>
 
-                <Divider style={styles.divider} />
+              <View style={styles.itineraryNavigation}>
+                <View style={styles.navigation}>
+                  <CarIcon fill={iconFillColor} />
+                  <Text variant="small" style={styles.navigationTitle}>
+                    {directions?.byCar}
+                  </Text>
+                </View>
 
-                {time ? (
-                  <View style={styles.infoRow}>
-                    <TimeIcon fill={iconFillColor} />
-                    <Text variant="medium" style={styles.mediumText}>
-                      {time}
-                    </Text>
-                  </View>
-                ) : null}
+                <View style={styles.navigation}>
+                  <TrainIcon fill={iconFillColor} />
+                  <Text variant="small" style={styles.navigationTitle}>
+                    {directions?.byTrain}
+                  </Text>
+                </View>
 
-                <View style={styles.infoRow}>
-                  <LocationIcon fill={theme.colors.primary} width={20} transform="scale(0.95)" />
-                  <Text variant="medium" style={[styles.mediumText, { color: theme.colors.primary }]}>
-                    {_t('view_on_map')}
+                <View style={styles.navigation}>
+                  <WalkIcon fill={iconFillColor} />
+                  <Text variant="small" style={styles.navigationTitle}>
+                    {directions?.byWalk}
+                  </Text>
+                </View>
+
+                <View style={styles.navigation}>
+                  <PlaneIcon fill={iconFillColor} />
+                  <Text variant="small" style={styles.navigationTitle}>
+                    {directions?.byPlane ?? '-'}
                   </Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          </View>
+            </View>
+          )}
         </View>
+      );
+    }
 
-        {directions && (
-          <View style={styles.rowContent}>
-            <View style={styles.navigationIcon}>
-              <NavigationIcon fill={iconFillColor} />
-            </View>
-
-            <View style={styles.itineraryNavigation}>
-              <View style={styles.navigation}>
-                <CarIcon fill={iconFillColor} />
-                <Text variant="small" style={styles.navigationTitle}>
-                  {directions?.byCar}
-                </Text>
-              </View>
-
-              <View style={styles.navigation}>
-                <TrainIcon fill={iconFillColor} />
-                <Text variant="small" style={styles.navigationTitle}>
-                  {directions?.byTrain}
-                </Text>
-              </View>
-
-              <View style={styles.navigation}>
-                <WalkIcon fill={iconFillColor} />
-                <Text variant="small" style={styles.navigationTitle}>
-                  {directions?.byWalk}
-                </Text>
-              </View>
-
-              <View style={styles.navigation}>
-                <PlaneIcon fill={iconFillColor} />
-                <Text variant="small" style={styles.navigationTitle}>
-                  {directions?.byPlane ?? '-'}
-                </Text>
-              </View>
-            </View>
-          </View>
-        )}
-      </View>
-    );
+    return null;
   };
 
   return (

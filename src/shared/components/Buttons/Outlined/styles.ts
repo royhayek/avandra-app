@@ -8,7 +8,8 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
-      opacity: 1
+      opacity: 1,
+      minHeight: mvs(46)
     },
     disabledContainer: {
       opacity: 0.5
@@ -25,6 +26,7 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.dark ? theme.colors.background : theme.colors.white
     },
     title: {
+      flex: 1,
       paddingHorizontal: ms(3),
       color: theme.dark ? theme.colors.white : theme.colors.black
     },

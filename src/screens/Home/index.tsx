@@ -1,5 +1,5 @@
 // Packages
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 
 // Components
@@ -11,9 +11,9 @@ import SearchInput from './components/SearchInput';
 import makeStyles from './styles';
 
 // Interfaces
-interface HomeScreenProps {}
-
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+interface HomeScreenProps {}
 
 // Component
 const HomeScreen: React.FC<HomeScreenProps> = () => {

@@ -33,6 +33,7 @@ import { plannerActions, selectPlannerStep, selectPlannerPayload } from '@redux/
 // Interfaces
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { ms } from 'react-native-size-matters';
 
 // Component
 const PlannerScreen = () => {
@@ -141,7 +142,7 @@ const PlannerScreen = () => {
     () => (
       <Ionicons
         name="close"
-        size={24}
+        size={ms(22)}
         color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
         onPress={handleOnCancelPress}
         style={{ marginRight: 20 }}

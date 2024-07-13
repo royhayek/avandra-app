@@ -19,6 +19,7 @@ import { MapLocationIcon, MapNavigationIcon, /* MapNavigationIcon, */ MoonIcon, 
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { isTablet, openMapsWithCoords } from '@shared/utils';
+import Icon from '@shared/components/Icon';
 
 // Interfaces
 interface MapScreenProps {}
@@ -260,8 +261,16 @@ const MapScreen: React.FC<MapScreenProps> = () => {
 
   const renderMapActions = () => (
     <View style={styles.actions}>
-      <IconButton size={ms(32)} icon={() => <MapNavigationIcon />} onPress={handleNavigateToCoordinates} />
-      <IconButton size={ms(28)} icon={() => <MapLocationIcon />} onPress={handleShowCurrentLocation} />
+      <IconButton
+        size={ms(32)}
+        icon={() => <Icon name="mapNavigation" size={ms(36)} />}
+        onPress={handleNavigateToCoordinates}
+      />
+      <IconButton
+        size={ms(28)}
+        icon={() => <Icon name="mapLocation" size={ms(36)} />}
+        onPress={handleShowCurrentLocation}
+      />
     </View>
   );
 

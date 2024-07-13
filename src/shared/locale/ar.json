@@ -67,7 +67,7 @@
       "explore_destinations": "اكتشف الوجهات"
     },
     "navigation": {
-      "home": "الرئيسية",
+      "discover": "اكتشف",
       "history": "رحلاتي",
       "categories": "التصنيفات",
       "settings": "الإعدادات",
@@ -227,6 +227,7 @@
       "subscription_terms_desc1": "عند اختيار 'متابعة' وبدء اشتراكك في الصفحات التالية، سيتم تحصيل رسوم شهرية أو سنوية حتى تقرر الإلغاء. لديك خيار الإلغاء في أي وقت من خلال إعدادات الفوترة الخاصة بك أو عن طريق التواصل معنا على ",
       "subscription_terms_desc2": ". يرجى ملاحظة أن الإلغاء قد يؤدي إلى تحصيل رسوم للفترة الحالية من الفوترة. لمزيد من التفاصيل، راجع ",
       "subscription_terms_acknowledgement": "ببدء اشتراكك، فإنك تقر بأنك تفهم وتوافق على هذه الشروط.",
+      "auto_renewal_cancel_anytime": "تجديد تلقائي، إلغاء بأي وقت",
       "benefits": {
         "no_itinerary_expirations": "لا انتهاء صلاحية للمسارات",
         "full_map_view_of_destinations": "عرض خريطة كاملة لجميع الوجهات",
@@ -268,7 +269,8 @@
       "view_on_map": "عرض على خرائط جوجل",
       "reviews": "تقييمات",
       "join_my_planned_trip_to": "انضم إلى رحلتي المخططة إلى {{name}}!",
-      "upgrade_to_premium_to_unlock_map": "قم بالترقية إلى الإصدار المميز لفتح الخريطة الكاملة!"
+      "upgrade_to_premium_to_unlock_map": "قم بالترقية إلى الإصدار المميز لفتح الخريطة الكاملة!",
+      "place_already_added": "تمت إضافة هذا المكان بالفعل إلى برنامج رحلتك"
     },
     "trip_modifcation": {
       "delete_event": "حذف هذا الحدث؟"

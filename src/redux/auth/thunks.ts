@@ -1,15 +1,15 @@
 // Packages
+import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
+import { login, register } from './api';
 import { userActions } from '@redux/user/slice';
 import { snackbarActions } from '@redux/snackbar/slice';
-import { login, register, validateToken } from './api';
 
 // Interfaces
 import { SocialLoginProps } from '@shared/types/SocialLogin';
 import { SignInFormValuesProps } from '@shared/types/SignInForm';
-import { authActions } from './slice';
 
 // Actions
 export const registerAction = createAsyncThunk(
@@ -45,7 +45,7 @@ export const loginAction = createAsyncThunk(
 
       if (response.data?.success) dispatch(userActions.update({ data: response.data.user }));
 
-      dispatch(authActions.update({ token: response.data.token }));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
       return response.data;
     } catch (error: any) {
@@ -58,15 +58,3 @@ export const loginAction = createAsyncThunk(
     }
   }
 );
-
-export const validateTokenAction = createAsyncThunk('auth/validateToken', async (args, { rejectWithValue }) => {
-  try {
-    const response = await validateToken();
-
-    // console.debug('[validateTokenAction] :: response', response);
-
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response?.data);
-  }
-});

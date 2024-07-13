@@ -2,20 +2,22 @@
 import _ from 'lodash';
 import React, { useRef } from 'react';
 import { ms } from 'react-native-size-matters';
+import { PurchasesPackage } from 'react-native-purchases';
 
 // Components
 import { Text } from 'react-native-paper';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import BouncyCheckbox, { BouncyCheckboxHandle } from 'react-native-bouncy-checkbox';
 
 // Utilities
-import { t } from '@app/i18n';
+import i18n, { t } from '@app/i18n';
 import makeStyles from './styles';
+import { useAppSelector } from '@app/store';
+import { selectMetaData } from '@redux/app/slice';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
-import { PurchasesPackage } from 'react-native-purchases';
 
 interface PlanListItemProps {
   item: PurchasesPackage;
@@ -27,16 +29,21 @@ interface PlanListItemProps {
 const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`, options);
 
 const PlanListItem: React.FC<PlanListItemProps> = ({ item, selected, setSelected }) => {
+  // Redux
+  const metaData = useAppSelector(selectMetaData);
+
   // Statics
   const theme = useAppTheme();
   const styles = makeStyles(theme, selected);
 
   const { packageType, product } = item;
-  const { title, description, price, priceString } = product;
+  const { price, priceString } = product;
 
   const checkboxRef = useRef<BouncyCheckboxHandle>(null);
 
   const period = String(packageType).match(/monthly/i) ? _t('month') : _t('year');
+
+  const description = metaData?.offerings[item.packageType]?.description[i18n.locale] || '';
 
   // Callbacks
   const handleCheckboxPress = () => {
@@ -58,15 +65,13 @@ const PlanListItem: React.FC<PlanListItemProps> = ({ item, selected, setSelected
         />
 
         <View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text variant="h5" style={styles.price}>
-              {price === 0 ? _t('free') : priceString}
-            </Text>
+          <Text variant="h5">
+            {price === 0 ? _t('free') : priceString}
             <Text variant="h6">{period && !String(packageType).match(/lifetime|free/) ? ` / ${period}` : ''}</Text>
-          </View>
+          </Text>
 
           <Text variant="large" style={styles.name} numberOfLines={1}>
-            {Platform.OS === 'ios' ? description : title}
+            {description}
           </Text>
         </View>
       </View>

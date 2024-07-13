@@ -29,7 +29,6 @@ import { changeLocale } from './i18n';
 import { selectUserId } from '@redux/user/slice';
 import deepLinkingOptions from './navigation/linking';
 import NetworkInfo from '@shared/services/NetworkInfo';
-import { validateTokenAction } from '@redux/auth/thunks';
 import { selectIsAuthenticated } from '@redux/auth/slice';
 import { darkTheme, lightTheme } from '@shared/assets/theme';
 import { getDeviceId, registerForPushNotificationsAsync } from '@shared/utils';
@@ -102,7 +101,7 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
   const initPushNotifications = useCallback(() => {
     registerForPushNotificationsAsync().then(async (token) => {
       console.info('[initPushNotifications] :: Your device push token is', token);
-      setPushToken(token);
+      if (token) setPushToken(token);
     });
 
     if (Platform.OS === 'android') {
@@ -115,8 +114,8 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
       console.debug('[initPushNotifications] :: Received notification raw data', data);
 
       const notification = Platform.select({
-        android: data.request.content,
-        ios: data.request.content
+        android: data?.request?.content,
+        ios: data?.request?.content
       });
 
       console.debug('[initPushNotifications] :: Received notification', notification);
@@ -145,7 +144,6 @@ const Root: React.FC<RootProps> = ({ onLayout }) => {
     moment.locale(language);
     const seenWalkthrough = (await AsyncStorage.getItem('seenWalkthrough')) === 'true';
     if (!seenWalkthrough) await dispatchThunk(getWalkthroughAction());
-    await dispatchThunk(validateTokenAction());
     await getConfiguration();
     initPushNotifications();
   }, [checkForUpdates, dispatchThunk, getConfiguration, initPushNotifications, language]);

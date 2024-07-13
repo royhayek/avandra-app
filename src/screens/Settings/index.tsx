@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import { ms } from 'react-native-size-matters';
+import { ms, s } from 'react-native-size-matters';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -29,6 +29,7 @@ import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { itineraryActions } from '@redux/itinerary/slice';
 import LoginSheet from '@shared/components/LoginSheet';
+import Icon from '@shared/components/Icon';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -102,37 +103,43 @@ const SettingsScreen = () => {
       {
         key: 'personal_info',
         name: _t('personal_info'),
-        icon: <PersonIcon fill={buttonIconColor} />,
+        icon: <Icon name="profile" size={ms(22)} color={buttonIconColor} />,
         onPress: navigateToPersonalInfo
       },
       {
         key: 'manage_subscription',
         name: _t('billing_and_subscriptions'),
-        icon: <StarIcon fill={buttonIconColor} />,
+        icon: <Icon name="star" size={ms(22)} color={buttonIconColor} />,
         onPress: navigateToSubscription
       },
       {
         key: 'appearance',
         name: _t('app_appearance'),
-        icon: <EyeIcon fill={buttonIconColor} />,
+        icon: <Icon name="show" size={ms(22)} color={buttonIconColor} />,
         onPress: navigateToAppearance
       },
       {
         key: 'help_and_support',
         name: _t('help_and_support'),
-        icon: <PaperIcon fill={buttonIconColor} />,
+        icon: <Icon name="paper" size={ms(22)} color={buttonIconColor} />,
         onPress: navigateToHelpAndSupport
       },
       {
         key: 'rate',
         name: t('settings.rate_us'),
-        icon: <StarIcon fill={buttonIconColor} />,
+        icon: <Icon name="edit_square" size={ms(20)} color={buttonIconColor} />,
         onPress: handleRateApp
       },
       {
         key: 'logout',
         name: isGuest ? t('login.sign_in') : _t('logout'),
-        icon: isGuest ? <LoginIcon fill={theme.colors.primary} /> : <LogoutIcon />,
+        icon: (
+          <Icon
+            size={ms(22)}
+            name={isGuest ? 'login' : 'logout'}
+            color={isGuest ? theme.colors.primary : theme.colors.red}
+          />
+        ),
         color: isGuest ? theme.colors.primary : theme.colors.red,
         onPress: isGuest ? handleLoginPress : handleLogoutPress
       }
@@ -143,6 +150,7 @@ const SettingsScreen = () => {
       theme.colors.red,
       theme.colors.primary,
       handleRateApp,
+      handleLoginPress,
       handleLogoutPress,
       navigateToAppearance,
       navigateToSubscription,

@@ -1,14 +1,15 @@
 // Packages
 import _ from 'lodash';
+import { s } from 'react-native-size-matters';
 import React, { useCallback, useRef } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 
 // Components
 import { Text } from 'react-native-paper';
+import Icon from '@shared/components/Icon';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
 import { ScrollView, View } from 'react-native';
-import { MessageIcon } from '@shared/assets/icons';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RegularButton from '@shared/components/Buttons/Regular';
@@ -100,7 +101,9 @@ const ForgotPasswordScreen = () => {
                 keyboardType="email-address"
                 placeholder={t('profile.email')}
                 handleChange={handleChange('email')}
-                leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon size={s(14)} name="message" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
             </View>
           )}

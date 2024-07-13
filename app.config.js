@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Avandra',
     slug: 'avandra',
-    version: '1.0.7',
+    version: '1.1.1',
     scheme: 'avandra',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -12,7 +12,7 @@ module.exports = {
     },
     assetBundlePatterns: ['**/*'],
     ios: {
-      buildNumber: '2',
+      buildNumber: '1',
       supportsTablet: true,
       usesAppleSignIn: true,
       bundleIdentifier: 'com.avandraapp.avandra',
@@ -126,6 +126,8 @@ module.exports = {
         }
       ],
       'expo-apple-authentication',
+      '@react-native-firebase/app',
+      '@react-native-firebase/crashlytics',
       // './react-native-maps-plugin',
       './plugins/trust-local-certs'
     ],

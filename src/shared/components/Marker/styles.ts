@@ -4,6 +4,7 @@ import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -24,8 +25,8 @@ export default (theme: AppTheme) =>
       height: mvs(40)
     },
     iconView: {
-      top: 15,
-      padding: 3,
+      top: 16,
+      padding: ms(1.5),
       borderRadius: 50,
       position: 'absolute',
       alignItems: 'center',
@@ -33,10 +34,10 @@ export default (theme: AppTheme) =>
       backgroundColor: theme.colors.white
     },
     dot: {
-      top: 23,
-      width: 10,
-      height: 10,
-      borderRadius: 50,
+      top: isTablet ? 18 : 22,
+      width: isTablet ? ms(16) : ms(12),
+      height: isTablet ? ms(16) : ms(12),
+      borderRadius: ms(50),
       position: 'absolute',
       backgroundColor: theme.colors.white
     },

@@ -23,5 +23,3 @@ export const Endpoints = {
 export const DEVICE_ID_KEY = 'deviceId';
 
 export const GOOGLE_PLACES_API_KEY = '***REMOVED***';
-
-export const PREMIUM_ENABLED = false;

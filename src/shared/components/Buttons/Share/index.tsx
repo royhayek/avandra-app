@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import React, { useCallback } from 'react';
-import { ms } from 'react-native-size-matters';
+import { ms, s } from 'react-native-size-matters';
 import { StyleProp, ViewStyle } from 'react-native';
 import Share, { ShareOptions } from 'react-native-share';
 
@@ -16,6 +16,7 @@ import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
 import { ShareDataProps } from '@shared/types/ShareDataProps';
+import Icon from '@shared/components/Icon';
 
 interface ShareButtonProps extends Omit<IconButtonProps, 'icon'> {
   data: ShareDataProps;
@@ -44,12 +45,14 @@ const ShareButton: React.FC<ShareButtonProps> = ({ data, style, ...props }) => {
   // Renderers
   return (
     <IconButton
-      size={ms(18)}
+      size={ms(20)}
       onPress={handleOnSharePress}
       style={[styles.container, style]}
       icon={() => (
-        <ExportIcon
-          fill={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+        <Icon
+          name="share"
+          size={ms(18)}
+          color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
           style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
         />
       )}

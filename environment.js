@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Platform } from 'react-native';
 
-const localhost = Platform.OS === 'ios' ? 'http://localhost:4000' : 'http://192.168.1.102:4000';
+const localhost = Platform.OS === 'ios' ? 'http://localhost:4000' : 'http://192.168.1.100:4000';
 
 const ENV = {
   development: {
@@ -14,8 +14,8 @@ const ENV = {
     defaultLanguage: 'EN'
   },
   production: {
-    serverUrl: 'https://wondrous-app-fs8jj.ondigitalocean.app',
-    serverApiUrl: 'https://wondrous-app-fs8jj.ondigitalocean.app/api',
+    serverUrl: 'https://avandra-server-goy2v.ondigitalocean.app',
+    serverApiUrl: 'https://avandra-server-goy2v.ondigitalocean.app/api',
     wsUrl: 'wss://wondrous-app-fs8jj.ondigitalocean.app',
     serverAccessToken: '',
     openaiApiUrl: 'https://api.openai.com/v1/',

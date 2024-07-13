@@ -28,6 +28,7 @@ import { deleteTripPlaceAction } from '@redux/itinerary/thunks';
 // Interfaces
 import { ItineraryItemProps, ItineraryProps } from '@shared/types/Itinerary';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import Icon from '@shared/components/Icon';
 
 interface TripModificationItemProps {
   index: number;
@@ -96,57 +97,65 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
     item,
     drag,
     isActive,
+    hasActions = true,
     ...props
   }: {
     item: ItineraryItemProps;
     drag: () => number | undefined;
     isActive: boolean;
+    hasActions: boolean;
   }) => {
-    const category = item?.types && _.capitalize(getCategory(item?.types));
+    if (item) {
+      const category = item?.types && _.capitalize(getCategory(item?.types));
 
-    return (
-      <TouchableOpacity
-        onLongPress={drag}
-        disabled={isActive || !_.isFunction(drag)}
-        style={[styles.rowContainer, isActive && styles.activeRowContainer]}>
-        {_.isFunction(drag) && <DragIcon fill={theme.dark ? theme.colors.secondary : theme.colors.gray[900]} />}
+      return (
+        <TouchableOpacity
+          onLongPress={drag}
+          disabled={isActive || !_.isFunction(drag)}
+          style={[styles.rowContainer, isActive && styles.activeRowContainer]}>
+          {hasActions && <Icon name="drag" color={theme.dark ? theme.colors.secondary : theme.colors.gray[900]} />}
 
-        <FastImage source={{ uri: item?.photoUrl, cache: FastImage.cacheControl.immutable }} style={styles.image} />
+          <FastImage source={{ uri: item?.photoUrl, cache: FastImage.cacheControl.immutable }} style={styles.image} />
 
-        <View style={styles.content}>
-          <Text variant="h6" style={styles.name}>
-            {item?.displayName}
-          </Text>
-          {item?.rating ? (
-            <View style={styles.ratingContainer}>
-              <Text variant="medium" style={styles.ratingText}>
-                {item?.rating}
-              </Text>
-              <StarRatingDisplay rating={item?.rating} starSize={14} starStyle={{ marginHorizontal: 0 }} />
-              <Text variant="small" style={styles.ratingText}>
-                ({formatAmount(item?.userRatingsTotal)})
-              </Text>
-            </View>
-          ) : null}
-          <Text variant="medium" style={styles.type}>
-            {category}
-          </Text>
-        </View>
+          <View style={styles.content}>
+            <Text variant="h6" style={styles.name}>
+              {item?.displayName}
+            </Text>
+            {item?.rating ? (
+              <View style={styles.ratingContainer}>
+                <Text variant="medium" style={styles.ratingText}>
+                  {item?.rating}
+                </Text>
+                <StarRatingDisplay rating={item?.rating} starSize={14} starStyle={{ marginHorizontal: 0 }} />
+                <Text variant="small" style={styles.ratingText}>
+                  ({formatAmount(item?.userRatingsTotal)})
+                </Text>
+              </View>
+            ) : null}
+            <Text variant="medium" style={styles.type}>
+              {category}
+            </Text>
+          </View>
 
-        {_.isFunction(drag) && (
-          <IconButton
-            size={ms(18)}
-            onPress={() => handleDeletePress(props?.getIndex())}
-            icon={() => (
-              <DeleteIcon
-                fill={theme.dark ? theme.colors.white : theme.colors.gray[900]}
-                style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
-              />
-            )}
-          />
-        )}
-      </TouchableOpacity>
-    );
+          {hasActions && (
+            <IconButton
+              size={ms(18)}
+              onPress={() => handleDeletePress(props?.getIndex())}
+              icon={() => (
+                <Icon
+                  size={ms(20)}
+                  name="trashBin"
+                  color={theme.colors.red}
+                  style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
+                />
+              )}
+            />
+          )}
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
   };
 
   const renderDeleteModal = () => (
@@ -157,7 +166,7 @@ const TripModificationItem: React.FC<TripModificationItemProps> = ({
       title={t('trip_modifcation.delete_event')}
       primaryBtnProps={{ title: t('common.yes_delete'), onPress: handleDelete }}
       secondaryBtnProps={{ title: t('common.cancel'), onPress: handleDeleteSheetClose }}>
-      {renderItem({ item: itineraryData?.[deletionIndex], drag: () => undefined, isActive: false })}
+      {renderItem({ item: itineraryData?.[deletionIndex], drag: () => undefined, isActive: false, hasActions: false })}
     </CustomBottomSheet>
   );
 

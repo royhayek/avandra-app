@@ -1,13 +1,15 @@
 // Packages
 import _ from 'lodash';
+import { ms, s } from 'react-native-size-matters';
 import React, { useCallback, useState, useRef } from 'react';
 
 // Components
+import Icon from '@shared/components/Icon';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
-import { DownChevron, EditIcon, MessageIcon } from '@shared/assets/icons';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+import PasswordChangeModal from './components/PasswordChangeModal';
 import { AvatarPlaceholderDark, AvatarPlaceholderLight } from '@shared/assets/images';
 import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from '@theankur/react-native-country-picker-modal';
 
@@ -24,7 +26,6 @@ import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store'
 
 // Interfaces
 import { ProfileFormValuesProps } from '@shared/types/ProfileForm';
-import PasswordChangeModal from './components/PasswordChangeModal';
 
 // Component
 const PersonalInfoScreen = () => {
@@ -118,9 +119,16 @@ const PersonalInfoScreen = () => {
                   name="name"
                   value={values.name}
                   error={errors.name}
-                  handleChange={handleChange('name')}
                   label={t('profile.full_name')}
+                  handleChange={handleChange('name')}
                   placeholder={t('profile.full_name')}
+                  leftIcon={
+                    <Icon
+                      size={ms(18)}
+                      name="profile"
+                      color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                    />
+                  }
                 />
 
                 <Input
@@ -131,7 +139,13 @@ const PersonalInfoScreen = () => {
                   handleChange={handleChange('email')}
                   keyboardType="email-address"
                   placeholder={t('profile.email')}
-                  leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                  leftIcon={
+                    <Icon
+                      size={ms(18)}
+                      name="message"
+                      color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                    />
+                  }
                 />
 
                 <Input
@@ -142,7 +156,22 @@ const PersonalInfoScreen = () => {
                   placeholder={t('profile.country')}
                   onPressOut={handleOpenCountryPicker}
                   handleChange={handleChange('country')}
-                  rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                  leftIcon={
+                    <Icon
+                      size={ms(18)}
+                      name="location"
+                      onPress={handleOpenCountryPicker}
+                      color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                    />
+                  }
+                  rightIcon={
+                    <Icon
+                      size={ms(20)}
+                      name="chevronDown"
+                      onPress={handleOpenCountryPicker}
+                      color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                    />
+                  }
                 />
 
                 <Input
@@ -153,9 +182,16 @@ const PersonalInfoScreen = () => {
                   onPress={handlePasswordPress}
                   label={t('profile.password')}
                   placeholder={t('profile.password')}
+                  leftIcon={
+                    <Icon size={ms(18)} name="lock" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                  }
                   rightIcon={
                     <TouchableOpacity onPress={handlePasswordPress}>
-                      <EditIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                      <Icon
+                        size={ms(18)}
+                        name="edit"
+                        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                      />
                     </TouchableOpacity>
                   }
                 />

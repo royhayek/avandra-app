@@ -17,6 +17,7 @@ const initialState: AppInitialState = {
   networkError: null,
   themeMode: 'default',
   currentOffering: null,
+  metaData: null,
   subscriptionState: {
     userId: '',
     active: true,
@@ -48,6 +49,9 @@ export const appSlice = createSlice({
     },
     setCurrentOffering: (state, action) => {
       state.currentOffering = action.payload;
+    },
+    setMetadata: (state, action) => {
+      state.metaData = action.payload;
     },
     setSubscriptionState: (state, action) => {
       state.subscriptionState = action.payload;
@@ -88,6 +92,8 @@ export default appSlice.reducer;
 const _app = (state: RootState) => state.app;
 
 export const selectLanguage = createSelector(_app, (data) => data.language);
+
+export const selectMetaData = createSelector(_app, (data) => data.metaData);
 
 export const selectThemeMode = createSelector(_app, (data) => data.themeMode);
 

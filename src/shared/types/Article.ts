@@ -4,4 +4,5 @@ export interface ArticleProps {
   image: string;
   date: string;
   details: string;
+  enabled: boolean;
 }

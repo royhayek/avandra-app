@@ -32,6 +32,8 @@ import { appActions, selectDeepLinkData, selectSubscriptionState } from '@redux/
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { ShareDataProps } from '@shared/types/ShareData';
+import { selectUserId } from '@redux/user/slice';
+import Icon from '@shared/components/Icon';
 
 interface TripDetailsScreenProps {}
 
@@ -48,6 +50,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
   const dispatchThunk = useAppThunkDispatch();
 
   const trip = useAppSelector(selectTrip);
+  const userId = useAppSelector(selectUserId);
   const deepLinkData = useAppSelector(selectDeepLinkData);
   const isLoadingTrip = useAppSelector(selectTripLoading);
   const subscriptionState = useAppSelector(selectSubscriptionState);
@@ -63,9 +66,10 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   const [tripId, setTripId] = useState<string>(_id);
 
-  const { flag, image, description, payload, tips, places, location, status } = trip || {};
+  const { flag, image, description, payload, tips, places, location, status, user } = trip || {};
   const { name, country, budget, traveler, fromDate, toDate } = payload || {};
 
+  const isTheOwner = _.isEqual(userId, user);
   const isExpired = !!String(status).match(/expired/i);
   const hasActiveSubscription = subscriptionState?.active;
 
@@ -81,8 +85,8 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   // Callbacks
   const handleMapPress = useCallback(
-    () => navigation.navigate('Map', { markers, places }),
-    [navigation, markers, places]
+    () => (hasActiveSubscription || __DEV__ ? navigation.navigate('Map', { markers, places }) : null),
+    [hasActiveSubscription, navigation, markers, places]
   );
 
   const handleEditItinerary = useCallback(
@@ -181,7 +185,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         </Text>
 
         {markers.length > 0 && (
-          <TouchableOpacity style={styles.mapContainer}  onPress={handleMapPress}>
+          <TouchableOpacity style={styles.mapContainer} onPress={handleMapPress}>
             <MapView
               style={styles.map}
               focusable={false}
@@ -243,10 +247,10 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
 
   const renderFab = () => (
     <FAB
-      size="medium"
       style={styles.fab}
       onPress={handleEditItinerary}
-      icon={() => <EditIcon fill={theme.colors.white} />}
+      size={isTablet ? 'large' : 'medium'}
+      icon={() => <Icon name="edit" size={ms(22)} color={theme.colors.white} />}
     />
   );
 
@@ -278,7 +282,7 @@ const TripDetailsScreen: React.FC<TripDetailsScreenProps> = () => {
         {renderContent()}
       </ScrollView>
 
-      {!isExpired && renderFab()}
+      {!isExpired && isTheOwner && renderFab()}
     </>
   );
 };

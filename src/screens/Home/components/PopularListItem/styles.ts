@@ -1,18 +1,21 @@
 // Packages
 import { StyleSheet } from 'react-native';
-import { ms, mvs } from 'react-native-size-matters';
+import { ms, mvs, s } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme, isVertical: boolean) =>
   StyleSheet.create({
     button: {
-      width: isVertical ? '100%' : ms(200)
+      flex: 1,
+      width: !isVertical ? (isTablet ? ms(180) : ms(200)) : '100%'
     },
     image: {
-      aspectRatio: '11/8',
-      borderRadius: ms(12)
+      borderRadius: ms(12),
+      width: !isVertical ? (isTablet ? ms(180) : ms(200)) : '100%',
+      height: !isVertical ? (isTablet ? mvs(160) : mvs(140)) : mvs(200)
     },
     name: {
       marginTop: mvs(6),

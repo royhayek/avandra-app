@@ -2,24 +2,17 @@
 import React from 'react';
 
 // Components
-import {
-  BedIcon,
-  CarIcon2,
-  StoreIcon,
-  HeartIcon,
-  CoffeeIcon,
-  LandmarkIcon,
-  RestaurantIcon,
-  GraduationCapIcon
-} from '@shared/assets/icons';
+import { CarIcon2, HeartIcon, GraduationCapIcon } from '@shared/assets/icons';
 
 // Utilities
 import { useAppTheme } from '@shared/assets/theme';
+import Icon from '../Icon';
 
 // Interfaces
 interface PlaceIconProps {
   type: string;
   color?: string;
+  size?: number;
   transform?: string;
 }
 
@@ -34,28 +27,25 @@ const PlaceIcon: React.FC<PlaceIconProps> = ({ type, color, ...props }) => {
     switch (type) {
       case 'restaurant':
         return (
-          <RestaurantIcon
-            fill={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
+          <Icon
+            name="forkKnife"
+            color={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
             {...props}
           />
         );
       case 'shop':
         return (
-          <StoreIcon
-            width={30}
-            height={30}
-            transform="scale(1.2)"
-            fill={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
+          <Icon
+            name="store"
+            color={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
             {...props}
           />
         );
       case 'coffeeshop':
         return (
-          <CoffeeIcon
-            width={30}
-            height={30}
-            transform="scale(1.2)"
-            fill={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
+          <Icon
+            name="coffee"
+            color={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
             {...props}
           />
         );
@@ -79,18 +69,17 @@ const PlaceIcon: React.FC<PlaceIconProps> = ({ type, color, ...props }) => {
         );
       case 'accommodation':
         return (
-          <BedIcon
-            width={30}
-            height={30}
-            transform="scale(1.2)"
-            fill={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
+          <Icon
+            name="bed"
+            color={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
             {...props}
           />
         );
       default:
         return (
-          <LandmarkIcon
-            fill={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
+          <Icon
+            name="location"
+            color={color ? color : theme.colors.dark ? theme.colors.white : theme.colors.gray[900]}
             {...props}
           />
         );

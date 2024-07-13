@@ -41,6 +41,7 @@ export const authSlice = createSlice({
       state.jwtExpired = false;
       state.authenticated = true;
       state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
     });
 
     builder.addCase(registerAction.rejected, (state, action) => {
@@ -59,6 +60,7 @@ export const authSlice = createSlice({
       state.jwtExpired = false;
       state.authenticated = true;
       state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
     });
 
     builder.addCase(loginAction.rejected, (state, action) => {

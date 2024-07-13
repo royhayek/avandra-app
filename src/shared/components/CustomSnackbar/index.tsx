@@ -22,8 +22,6 @@ const CustomSnackbar = () => {
 
   const { type, show, message, delay } = snackbarSelect;
 
-  console.debug({ type, show, message, delay });
-
   // Callbacks
   const handleDismiss = useCallback(() => dispatch(snackbarActions.hideSnackbar()), [dispatch]);
 

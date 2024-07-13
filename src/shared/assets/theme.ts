@@ -1,5 +1,5 @@
-import { ms } from 'react-native-size-matters';
-import { scaledFontSize } from '@shared/utils';
+import { ms, s } from 'react-native-size-matters';
+import { isTablet, scaledFontSize } from '@shared/utils';
 import { MD3DarkTheme as DarkTheme, MD3LightTheme as DefaultTheme, useTheme } from 'react-native-paper';
 
 // Define a type for your custom fonts
@@ -101,68 +101,68 @@ const darkColors = {
 
 const customFonts = (theme: string) => ({
   h1: {
-    fontSize: scaledFontSize(48),
-    lineHeight: scaledFontSize(76.8),
+    fontSize: isTablet ? ms(44) : ms(48),
+    lineHeight: isTablet ? ms(71) : ms(75),
     fontFamily: 'urbanist-bold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h2: {
-    fontSize: scaledFontSize(40),
-    lineHeight: scaledFontSize(64),
+    fontSize: isTablet ? ms(36) : ms(40),
+    lineHeight: isTablet ? ms(58) : ms(62),
     fontFamily: 'urbanist-bold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h3: {
-    fontSize: scaledFontSize(32),
-    lineHeight: scaledFontSize(48),
+    fontSize: isTablet ? ms(28) : ms(32),
+    lineHeight: isTablet ? ms(46) : ms(50),
     fontFamily: 'urbanist-bold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h4: {
-    fontSize: scaledFontSize(24),
-    lineHeight: scaledFontSize(38.4),
+    fontSize: isTablet ? ms(20) : ms(24),
+    lineHeight: isTablet ? ms(34) : ms(38),
     fontFamily: 'urbanist-bold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h5: {
-    fontSize: scaledFontSize(20),
-    lineHeight: scaledFontSize(32),
+    fontSize: isTablet ? ms(16) : ms(20),
+    lineHeight: isTablet ? ms(28) : ms(32),
     fontFamily: 'urbanist-bold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   h6: {
-    fontSize: scaledFontSize(18),
-    lineHeight: scaledFontSize(28.8),
+    fontSize: isTablet ? ms(14) : ms(18),
+    lineHeight: isTablet ? ms(24) : ms(28),
     fontFamily: 'urbanist-semibold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   xLarge: {
-    fontSize: scaledFontSize(18),
-    lineHeight: scaledFontSize(28.8),
+    fontSize: isTablet ? ms(14) : ms(18),
+    lineHeight: isTablet ? ms(24) : ms(28),
     fontFamily: 'urbanist-regular',
     color: theme === 'dark' ? lightColors.gray[200] : lightColors.gray[700]
   },
   large: {
-    fontSize: scaledFontSize(16),
-    lineHeight: scaledFontSize(25.6),
+    fontSize: isTablet ? ms(12) : ms(16),
+    lineHeight: isTablet ? ms(20) : ms(24),
     fontFamily: 'urbanist-bold',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   medium: {
-    fontSize: scaledFontSize(14),
-    lineHeight: scaledFontSize(22.4),
+    fontSize: isTablet ? ms(10) : ms(14),
+    lineHeight: isTablet ? ms(16) : ms(20),
     fontFamily: 'urbanist-regular',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   small: {
-    fontSize: scaledFontSize(12),
-    lineHeight: scaledFontSize(19.2),
+    fontSize: isTablet ? ms(8) : ms(12),
+    lineHeight: isTablet ? ms(14) : ms(16),
     fontFamily: 'urbanist-regular',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   },
   xSmall: {
-    fontSize: scaledFontSize(10),
-    lineHeight: scaledFontSize(16),
+    fontSize: isTablet ? ms(6) : ms(10),
+    lineHeight: isTablet ? ms(8) : ms(12),
     fontFamily: 'urbanist-regular',
     color: theme === 'dark' ? darkColors.white : lightColors.gray[900]
   }

@@ -17,10 +17,11 @@ export default (theme: AppTheme) =>
     tab: {
       flex: 1,
       width: ms(130),
-      borderWidth: 1,
+      borderWidth: ms(1),
+      minHeight: mvs(48),
       borderRadius: ms(50),
       alignItems: 'center',
-      paddingVertical: mvs(8),
+      justifyContent: 'center',
       borderColor: theme.dark ? theme.colors.dark[5] : theme.colors.gray[300]
     },
     activeTab: {

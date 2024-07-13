@@ -67,7 +67,7 @@
       "explore_destinations": "Explorer les destinations"
     },
     "navigation": {
-      "home": "Accueil",
+      "discover": "Découvrir",
       "history": "Mes Plans",
       "settings": "Paramètres",
       "my_subscription": "Mon abonnement",
@@ -226,6 +226,7 @@
       "subscription_terms_desc1": "En sélectionnant 'Continuer' et en démarrant votre abonnement sur les pages suivantes, une charge mensuelle ou annuelle s'appliquera jusqu'à ce que vous décidiez d'annuler. Vous avez la possibilité d'annuler à tout moment via vos paramètres de facturation ou en nous contactant à ",
       "subscription_terms_desc2": ". Veuillez noter que l'annulation peut toujours entraîner des frais pour le cycle de facturation en cours. Pour plus de détails, consultez notre ",
       "subscription_terms_acknowledgement": "En démarrant votre abonnement, vous reconnaissez que vous comprenez et acceptez ces conditions.",
+      "auto_renewal_cancel_anytime": "Renouvellement auto, annulez à tout moment",
       "benefits": {
         "no_itinerary_expirations": "Pas d'expiration d'itinéraire",
         "full_map_view_of_destinations": "Vue Complète de la Carte des Destinations",
@@ -268,6 +269,7 @@
       "reviews": "avis",
       "join_my_planned_trip_to": "Rejoignez mon voyage planifié à {{name}}!",
       "upgrade_to_premium_to_unlock_map": "Passez à Premium pour débloquer la vue de la carte",
+      "place_already_added": "Lieu déjà ajouté"
     },
     "trip_modifcation": {
       "delete_event": "Supprimer l'événement?"

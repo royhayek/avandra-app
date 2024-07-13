@@ -9,6 +9,7 @@ export default (theme: AppTheme) =>
   StyleSheet.create({
     footer: {
       gap: ms(16),
+      display: 'flex',
       borderTopWidth: 1,
       flexDirection: 'row',
       marginBottom: mvs(10),

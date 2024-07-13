@@ -51,7 +51,6 @@ export default (theme: AppTheme, isSelected: boolean) =>
     badgeText: {
       color: theme.colors.white
     },
-    price: {},
     name: {
       color: theme.colors.secondary,
       fontFamily: 'urbanist-medium'

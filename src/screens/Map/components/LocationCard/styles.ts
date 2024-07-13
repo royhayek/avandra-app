@@ -48,6 +48,7 @@ export default (theme: AppTheme, isHorizontal: boolean, isDark: boolean) =>
       flexDirection: 'row'
     },
     displayName: {
+      color: isDark ? theme.colors.white : theme.colors.gray[900],
       lineHeight: mvs(18),
       fontFamily: 'urbanist-bold'
     },
@@ -69,6 +70,6 @@ export default (theme: AppTheme, isHorizontal: boolean, isDark: boolean) =>
     },
     address: {
       fontFamily: 'urbanist-medium',
-      color: theme.dark ? theme.colors.white : theme.colors.gray[700]
+      color: theme.dark && isDark ? theme.colors.white : theme.colors.gray[700]
     }
   });

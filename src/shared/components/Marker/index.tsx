@@ -11,7 +11,7 @@ import { MapMarker, MarkerPressEvent } from 'react-native-maps';
 
 // Utilities
 import makeStyles from './styles';
-import { getCategory, isTablet } from '@shared/utils';
+import { getCategory } from '@shared/utils';
 import { useAppTheme } from '@shared/assets/theme';
 
 // Interfaces
@@ -66,20 +66,16 @@ const Marker: React.FC<MarkerProps> = ({ marker, index, size = 10, onMarkerPress
             <View style={styles.dot} />
           ) : (
             <View style={styles.iconView}>
-              <PlaceIcon
-                width={ms(16)}
-                height={ms(16)}
-                type={getCategory(types)}
-                color={theme.colors.gray[900]}
-                transform={isTablet ? 'scale(0.95)' : 'scale(0.7)'}
-              />
+              <PlaceIcon width={ms(16)} height={ms(16)} type={getCategory(types)} color={theme.colors.gray[900]} />
             </View>
           )}
-          <View style={styles.placeNo}>
-            <Text variant="small" style={styles.label}>
-              {index + 1}
-            </Text>
-          </View>
+          {!_.isUndefined(index) && (
+            <View style={styles.placeNo}>
+              <Text variant="small" style={styles.label}>
+                {index + 1}
+              </Text>
+            </View>
+          )}
         </Animated.View>
       </MapMarker>
     );

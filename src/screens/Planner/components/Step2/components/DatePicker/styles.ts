@@ -4,12 +4,14 @@ import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
     calendar: {
       marginVertical: mvs(16),
       borderRadius: theme.roundness,
+      paddingVertical: isTablet ? mvs(16) : 0,
       backgroundColor: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100]
     },
     dateStyle: {

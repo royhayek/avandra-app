@@ -8,6 +8,7 @@ import { AppTheme } from '@shared/assets/theme';
 export default (theme: AppTheme) =>
   StyleSheet.create({
     container: {
+      zIndex: 1001,
       padding: ms(24),
       alignSelf: 'center',
       borderRadius: ms(12),

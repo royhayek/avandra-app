@@ -31,7 +31,7 @@ export default (theme: AppTheme) =>
       bottom: 0,
       position: 'absolute',
       width: windowWidth,
-      height: windowWidth,
+      height: windowWidth / 1.3,
       marginLeft: windowWidth / 2
     },
     content: {
@@ -76,9 +76,12 @@ export default (theme: AppTheme) =>
       height: windowWidth
     },
     infoRow: {
-      gap: ms(6),
+      gap: ms(8),
       flexDirection: 'row',
       alignItems: 'flex-start'
+    },
+    infoIcon: {
+      marginTop: mvs(7)
     },
     infoContentText: {
       flex: 1,

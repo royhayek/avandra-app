@@ -8,6 +8,7 @@ export interface AppInitialState {
   language: string;
   themeMode: string;
   plannerStep: number;
+  metaData: object | null;
   deepLinkData: ParsedURL | null;
   walkthrough: WalkthroughProps[];
   networkError: NetworkErrorProps | null;

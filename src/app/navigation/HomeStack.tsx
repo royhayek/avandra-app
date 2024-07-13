@@ -21,7 +21,11 @@ const HomeStack = () => {
   // Renderers
   return (
     <Stack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-      <Stack.Screen name="Home" component={HomeScreen} options={{ title: _t('home'), ...getScreenOptions(theme) }} />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: _t('discover'), ...getScreenOptions(theme) }}
+      />
     </Stack.Navigator>
   );
 };

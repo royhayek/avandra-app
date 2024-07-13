@@ -1,5 +1,6 @@
 // Packages
 import _ from 'lodash';
+import { ms, s } from 'react-native-size-matters';
 import React, { useCallback, useRef, useState } from 'react';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -8,6 +9,7 @@ import { AppleAuthenticationScope, signInAsync } from 'expo-apple-authentication
 import { AccessToken, AuthenticationToken, LoginManager, Profile } from 'react-native-fbsdk-next';
 
 // Components
+import Icon from '@shared/components/Icon';
 import Input from '@shared/components/Input';
 import { Formik, FormikProps } from 'formik';
 import FastImage from 'react-native-fast-image';
@@ -15,9 +17,8 @@ import Loading from '@shared/components/Loading';
 import { Button, Text } from 'react-native-paper';
 import SocialButton from './components/SocialButton';
 import BackButton from '@shared/components/Buttons/Back';
-import { Platform, SafeAreaView, View } from 'react-native';
 import RegularButton from '@shared/components/Buttons/Regular';
-import { AppleIconDark, AppleIconLight, FacebookIcon, GoogleIcon, LockIcon, MessageIcon } from '@shared/assets/icons';
+import { Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
 
 // Utils
 import { t } from '@app/i18n';
@@ -48,6 +49,7 @@ const Login: React.FC = () => {
   const formRef = useRef<FormikProps<SignInFormValuesProps> | null>(null);
 
   const [byEmailView, setByEmailView] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
 
   const formInitialValues = { email: '', password: '' };
 
@@ -205,7 +207,8 @@ const Login: React.FC = () => {
 
   const handleOnBackPress = useCallback(() => {
     setByEmailView(false);
-  }, []);
+    console.debug('by email', byEmailView);
+  }, [byEmailView]);
 
   const handleSkipPress = useCallback(async () => {
     dispatch(authActions.update({ guest: true }));
@@ -219,35 +222,33 @@ const Login: React.FC = () => {
     navigation.navigate('ForgotPassword');
   }, [navigation]);
 
+  const handleViewPassPress = useCallback(() => {
+    setIsPasswordShown((prev) => !prev);
+  }, []);
+
   // Renderer vars
   const socialButtons = [
     {
       key: 'email',
       title: t('login.continue_with_email'),
-      icon: (
-        <MessageIcon
-          width={30}
-          transform="scale(1.1)"
-          fill={theme.dark ? theme.colors.white : theme.colors.gray[900]}
-        />
-      )
+      icon: <Icon name="message" size={s(20)} color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
     },
     {
       key: 'google',
       title: t('login.continue_with_google'),
-      icon: <GoogleIcon />
+      icon: <Icon name="google" size={s(20)} />
     },
     {
       key: 'facebook',
       title: t('login.continue_with_facebook'),
-      icon: <FacebookIcon />
+      icon: <Icon name="facebook" size={s(20)} />
     },
     ...(Platform.OS === 'ios'
       ? [
           {
             key: 'apple',
             title: t('login.continue_with_apple'),
-            icon: theme.dark ? <AppleIconDark /> : <AppleIconLight />
+            icon: <Icon name={theme.dark ? 'appleLight' : 'appleDark'} size={s(20)} />
           }
         ]
       : [])
@@ -261,7 +262,6 @@ const Login: React.FC = () => {
 
         <Button
           mode="contained"
-          loading={isLoading}
           onPress={handleSkipPress}
           textColor={theme.colors.primary}
           buttonColor={theme.dark ? theme.colors.dark[3] : theme.colors.gray[50]}>
@@ -296,18 +296,35 @@ const Login: React.FC = () => {
                   handleChange={handleChange('email')}
                   keyboardType="email-address"
                   placeholder={t('profile.email')}
-                  leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                  leftIcon={
+                    <Icon
+                      size={s(14)}
+                      name="message"
+                      color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                    />
+                  }
                 />
 
                 <Input
                   name="password"
-                  secureTextEntry
                   error={errors.password}
                   value={values.password}
                   label={t('profile.password')}
+                  secureTextEntry={!isPasswordShown}
                   handleChange={handleChange('password')}
                   placeholder={t('profile.password')}
-                  leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                  leftIcon={
+                    <Icon size={s(14)} name="lock" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                  }
+                  rightIcon={
+                    <TouchableOpacity onPress={handleViewPassPress}>
+                      <Icon
+                        size={ms(20)}
+                        name={isPasswordShown ? 'hide' : 'show'}
+                        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                      />
+                    </TouchableOpacity>
+                  }
                 />
                 <Text variant="medium" onPress={handleForgotPassPress} style={styles.forgotPassText}>
                   {t('login.forgot_your_password')}

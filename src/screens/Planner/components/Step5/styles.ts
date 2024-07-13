@@ -15,7 +15,8 @@ export default (theme: AppTheme) =>
       flex: 1,
       gap: ms(16),
       flexDirection: 'row',
-      marginVertical: mvs(12)
+      marginVertical: mvs(12),
+      alignItems: 'flex-start'
     },
     row: {
       gap: ms(20),
@@ -27,6 +28,9 @@ export default (theme: AppTheme) =>
       marginTop: mvs(6),
       alignItems: 'center',
       flexDirection: 'row'
+    },
+    icon: {
+      marginTop: mvs(8)
     },
     image: {
       width: ms(110),

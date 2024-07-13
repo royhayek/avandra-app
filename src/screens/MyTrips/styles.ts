@@ -4,6 +4,7 @@ import { ms, mvs } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -33,6 +34,7 @@ export default (theme: AppTheme) =>
       marginVertical: mvs(16)
     },
     emptyTitle: {
+      width: isTablet ? '60%' : '100%',
       marginTop: mvs(24),
       textAlign: 'center',
       fontFamily: 'urbanist-semibold'

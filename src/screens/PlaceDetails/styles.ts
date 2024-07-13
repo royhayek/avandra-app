@@ -100,7 +100,8 @@ export default (theme: AppTheme) =>
     },
     map: {
       width: '100%',
-      height: mvs(180)
+      height: mvs(180),
+      borderRadius: theme.roundness
     },
     openingHours: {
       gap: mvs(8),

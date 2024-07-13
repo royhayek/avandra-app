@@ -1,12 +1,14 @@
 // Packages
 import _ from 'lodash';
+import { ms, mvs } from 'react-native-size-matters';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
+import Icon from '@shared/components/Icon';
 import Input from '@shared/components/Input';
+import Shimmer from '@shared/components/Shimmer';
 import { Divider, Text } from 'react-native-paper';
 import ScrollableTabs from '@shared/components/ScrollableTabs';
-import { DownChevron, SearchIcon } from '@shared/assets/icons';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 
 // Utilities
@@ -21,7 +23,6 @@ import {
   selectQuestionsLoading,
   selectFaqCategoriesLoading
 } from '@redux/settings/slice';
-import Shimmer from '@shared/components/Shimmer';
 
 // Interfaces
 interface FaqScreenProps {}
@@ -40,9 +41,12 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
   const theme = useAppTheme();
   const styles = makeStyles(theme);
 
+  const enabledFaqCategories = useMemo(() => _.filter(faqCategories, (category) => category.enabled), [faqCategories]);
+  const enabledFaqQuestions = useMemo(() => _.filter(faqQuestions, (question) => question.enabled), [faqQuestions]);
+
   const [searchText, setSearchText] = useState<string>('');
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<string | undefined>(faqCategories[0]?._id ?? '');
+  const [activeTab, setActiveTab] = useState<string | undefined>(enabledFaqCategories[0]?._id ?? '');
 
   // Callbacks
   const handleTabPress = useCallback((tab: string) => setActiveTab(tab), []);
@@ -56,12 +60,12 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
 
   const filteredData = useMemo(
     () =>
-      _.filter(faqQuestions, (faq) => {
+      _.filter(enabledFaqQuestions, (faq) => {
         const question = faq?.question;
 
         return _.includes(_.toLower(question), _.toLower(searchText));
       }),
-    [faqQuestions, searchText]
+    [enabledFaqQuestions, searchText]
   );
 
   // Effects
@@ -71,18 +75,18 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab && !_.isEmpty(faqCategories)) {
+    if (activeTab && !_.isEmpty(enabledFaqCategories)) {
       dispatchThunk(getFaqQuestionsAction(activeTab));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   useEffect(() => {
-    if (!_.isEmpty(faqCategories)) setActiveTab(_.first(faqCategories)?._id);
-  }, [faqCategories]);
+    if (!_.isEmpty(enabledFaqCategories)) setActiveTab(_.first(enabledFaqCategories)?._id);
+  }, [enabledFaqCategories]);
 
   // Renderer Vars
-  const tabs = _.map(faqCategories, (category) => ({
+  const tabs = _.map(enabledFaqCategories, (category) => ({
     key: category?._id,
     title: category?.name
   }));
@@ -96,8 +100,8 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
         <View style={styles.content}>
           <Input
             value={searchText}
-            leftIcon={<SearchIcon />}
             placeholder={t('common.search')}
+            leftIcon={<Icon name="search" />}
             handleChange={handleSearchTextChange}
           />
         </View>
@@ -105,7 +109,7 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
       {isLoadingQuestions ? (
         <View style={styles.shimmerView}>
           {_.times(5, (i) => (
-            <Shimmer key={i} style={styles.shimmerItem} height={65} />
+            <Shimmer key={i} style={styles.shimmerItem} height={mvs(65)} />
           ))}
         </View>
       ) : (
@@ -124,9 +128,11 @@ const InfoScreen: React.FC<FaqScreenProps> = () => {
                   <Text variant="h6" style={styles.questionText}>
                     {item.question}
                   </Text>
-                  <DownChevron
-                    fill={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]}
+                  <Icon
+                    size={ms(20)}
+                    name="chevronDown"
                     transform={[{ rotateX: isExpanded ? '180deg' : '0deg' }]}
+                    color={theme.dark ? theme.colors.gray[200] : theme.colors.gray[700]}
                   />
                 </TouchableOpacity>
 

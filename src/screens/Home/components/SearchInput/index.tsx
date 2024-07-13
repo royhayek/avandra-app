@@ -19,6 +19,8 @@ import { t } from '@app/i18n';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import Icon from '@shared/components/Icon';
+import { ms, s } from 'react-native-size-matters';
 
 interface DestinationInputProps {
   value?: string;
@@ -52,7 +54,7 @@ const SearchInput: React.FC<DestinationInputProps> = ({
         autoFocus={!disabled}
         onPressIn={onPressIn}
         inputStyle={inputStyle}
-        leftIcon={<SearchIcon />}
+        leftIcon={<Icon name="search" size={ms(20)} />}
         placeholder={placeholder ?? _t('search_by')}
         handleChange={_.isFunction(onChange) ? onChange : () => null}
         {...inputProps}

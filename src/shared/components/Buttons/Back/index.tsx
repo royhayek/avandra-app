@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import React from 'react';
-import { ms } from 'react-native-size-matters';
+import { ms, s } from 'react-native-size-matters';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -16,6 +16,7 @@ import makeStyles from './styles';
 
 // Interfaces
 import { useAppTheme } from '@shared/assets/theme';
+import Icon from '@shared/components/Icon';
 
 interface BackButtonProps extends Omit<IconButtonProps, 'icon'> {
   onPress?: () => void;
@@ -33,11 +34,13 @@ const BackButton: React.FC<BackButtonProps> = ({ style, onPressOut, ...props }) 
   // Renderers
   return (
     <IconButton
-      size={ms(18)}
+      size={ms(20)}
       style={[styles.container, style]}
       onPressOut={_.isFunction(onPressOut) ? onPressOut : () => navigation.goBack()}
       icon={() => (
-        <LeftChevron
+        <Icon
+          size={ms(18)}
+          name="chevronLeft"
           color={theme.dark ? theme.colors.white : theme.colors.black}
           style={{ transform: [{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }] }}
         />

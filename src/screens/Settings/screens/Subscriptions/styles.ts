@@ -1,9 +1,10 @@
 // Packages
 import { StyleSheet } from 'react-native';
-import { ms, mvs } from 'react-native-size-matters';
+import { ms, mvs, s } from 'react-native-size-matters';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import i18n, { isRTL } from '@app/i18n';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -12,11 +13,8 @@ export default (theme: AppTheme) =>
       paddingTop: mvs(24)
     },
     plansContainer: {
-      paddingTop: ms(24),
-      paddingBottom: mvs(24),
-      paddingHorizontal: ms(24),
-      borderTopEndRadius: ms(30),
-      borderTopStartRadius: ms(30)
+      paddingBottom: mvs(12),
+      paddingHorizontal: ms(24)
       // backgroundColor: theme.dark ? theme.colors.dark[2] : theme.colors.gray[50]
     },
     lottie: {
@@ -54,8 +52,8 @@ export default (theme: AppTheme) =>
     },
     benefitText: {
       flex: 1,
-      color: theme.dark ? theme.colors.white : theme.colors.gray[900],
-      fontFamily: 'urbanist-semibold'
+      fontFamily: 'urbanist-medium',
+      color: theme.dark ? theme.colors.white : theme.colors.gray[900]
     },
     // Plans
     divider: {
@@ -69,10 +67,13 @@ export default (theme: AppTheme) =>
       flexDirection: 'row'
     },
     title: {
-      textAlign: 'center',
+      textAlign: 'center'
     },
     button: {
       flex: 1
+    },
+    content: {
+      direction: i18n.locale === 'ar' ? 'rtl' : 'ltr'
     },
     terms: {
       marginTop: mvs(16)

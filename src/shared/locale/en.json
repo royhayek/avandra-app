@@ -68,7 +68,7 @@
       "explore_destinations": "Explore Destinations"
     },
     "navigation": {
-      "home": "Home",
+      "discover": "Discover",
       "history": "My trips",
       "settings": "Settings",
       "my_subscription": "My Subscription",
@@ -226,6 +226,7 @@
       "subscription_terms_desc1": "By selecting 'Continue' and initiating your subscription on the subsequent pages, a monthly or annual charge will apply until you decide to cancel. You have the option to cancel at any time through your Billing settings or by reaching out to us at ",
       "subscription_terms_desc2": ". Please note that cancellation may still result in a charge for the current billing cycle. Further details are available in our ",
       "subscription_terms_acknowledgement": "By starting your subscription, you acknowledge that you understand and agree to these terms.",
+      "auto_renewal_cancel_anytime": "Auto-renewal, Cancel Anytime",
       "benefits": {
         "no_itinerary_expirations": "No Itinerary Expirations",
         "full_map_view_of_destinations": "Full Map View of Destinations",
@@ -268,6 +269,7 @@
       "reviews": "reviews",
       "join_my_planned_trip_to": "Join my planned trip to {{name}}!",
       "upgrade_to_premium_to_unlock_map": "Upgrade to premium to unlock map view!",
+      "place_already_added": "This place has already been added to your itinerary"
     },
     "trip_modifcation": {
       "delete_event": "Delete this Event?"

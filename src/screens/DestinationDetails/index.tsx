@@ -38,6 +38,7 @@ import {
 import { TranslateOptions } from 'i18n-js';
 import { ShareDataProps } from '@shared/types/ShareData';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import Icon from '@shared/components/Icon';
 
 interface ImageViewState {
   isOpen: boolean;
@@ -149,7 +150,11 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         renderHeaderShimmer()
       ) : (
         <View style={styles.stickyHeader}>
-          <FastImage source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }} style={styles.image} />
+          <FastImage
+            source={{ uri: `${PUBLIC_URL}/destination/image/${image}` }}
+            style={styles.image}
+            resizeMode="cover"
+          />
         </View>
       )}
       <Header hasBackBtn absolute share shareData={shareData} />
@@ -206,7 +211,11 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
       <View style={styles.paddedContent}>
         {bestTime && (
           <View style={styles.infoRow}>
-            <LanguageIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+            <Icon
+              name="timeCircle"
+              style={styles.infoIcon}
+              color={theme.dark ? theme.colors.white : theme.colors.black}
+            />
             <View style={{ flex: 1 }}>
               <Text variant="large">{_t('best_time')}</Text>
               <Text variant="large" style={styles.infoContentText}>
@@ -217,7 +226,11 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
         )}
         {spokenLang && (
           <View style={styles.infoRow}>
-            <LanguageIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+            <Icon
+              name="translate"
+              style={styles.infoIcon}
+              color={theme.dark ? theme.colors.white : theme.colors.black}
+            />
             <View>
               <Text variant="large">{_t('spoken_languages')}</Text>
               <Text variant="large" style={styles.infoContentText}>
@@ -227,7 +240,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
           </View>
         )}
         <View style={styles.infoRow}>
-          <CurrencyIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+          <Icon name="dollar" style={styles.infoIcon} color={theme.dark ? theme.colors.white : theme.colors.black} />
           <View>
             <Text variant="large">{_t('currency')}</Text>
             <Text variant="large" style={styles.infoContentText}>
@@ -236,7 +249,7 @@ const DestinationDetailsScreen: React.FC<DestinationDetailsScreenProps> = () => 
           </View>
         </View>
         <View style={styles.infoRow}>
-          <MapIcon fill={theme.dark ? theme.colors.white : theme.colors.black} />
+          <Icon name="map" style={styles.infoIcon} color={theme.dark ? theme.colors.white : theme.colors.black} />
           <View>
             <Text variant="large">{_t('continent')}</Text>
             <Text variant="large" style={styles.infoContentText}>

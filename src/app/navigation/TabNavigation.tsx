@@ -1,7 +1,7 @@
 // Packages
 import { Platform } from 'react-native';
 import React, { ReactNode } from 'react';
-import { ms, mvs } from 'react-native-size-matters';
+import { ms, mvs, s } from 'react-native-size-matters';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Components
@@ -59,7 +59,7 @@ const TabNavigation = () => {
 
   const getTabBarLabel = ({ children, focused }: TabBarLabelProps) =>
     focused ? (
-      <Text variant={isTablet ? 'h5' : 'medium'} style={{ fontFamily: 'urbanist-semibold' }}>
+      <Text variant={isTablet ? 'h6' : 'medium'} style={{ fontFamily: 'urbanist-semibold' }}>
         {children}
       </Text>
     ) : null;
@@ -78,7 +78,7 @@ const TabNavigation = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarAllowFontScaling: true,
-        tabBarIconStyle: { width: ms(32) },
+        tabBarIconStyle: { width: s(32) },
         tabBarLabelPosition: 'beside-icon',
         tabBarActiveTintColor: theme.dark ? theme.colors.white : theme.colors.black,
         tabBarInactiveBackgroundColor: 'transparent',
@@ -92,7 +92,7 @@ const TabNavigation = () => {
           marginVertical: Platform.OS === 'ios' ? 9 : 16
         }
       })}>
-      <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: _t('home') }} />
+      <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: _t('discover') }} />
       <Tab.Screen name="TripsStack" component={TripsStack} options={{ title: _t('history') }} />
       <Tab.Screen name="SettingsStack" component={SettingsStack} options={{ title: _t('settings') }} />
     </Tab.Navigator>

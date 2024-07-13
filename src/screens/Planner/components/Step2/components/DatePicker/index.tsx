@@ -1,7 +1,7 @@
 // Packages
 import XDate from 'xdate';
 import moment from 'moment';
-import { ms } from 'react-native-size-matters';
+import { ms, mvs } from 'react-native-size-matters';
 import React, { useCallback, useState } from 'react';
 
 // Components
@@ -181,8 +181,8 @@ const DatePicker: React.FC<DatePickerProps> = ({ defaultValue, onSuccess }) => {
         calendarBackground: theme.dark ? theme.colors.dark[3] : theme.colors.gray[100],
         arrowStyle: {
           width: ms(32),
-          marginVertical: 10,
           alignItems: 'center',
+          marginVertical: mvs(10),
           borderRadius: theme.roundness,
           backgroundColor: theme.colors.primary
         }

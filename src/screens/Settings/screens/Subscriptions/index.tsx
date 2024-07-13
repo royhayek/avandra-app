@@ -1,20 +1,22 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ms, s } from 'react-native-size-matters';
 import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Components
 import { Text } from 'react-native-paper';
+import Icon from '@shared/components/Icon';
 import LottieView from 'lottie-react-native';
-import { FlatList, Linking, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { CheckIcon } from '@shared/assets/icons';
 import PlanListItem from './components/PlanListItem';
 import LoginSheet from '@shared/components/LoginSheet';
 import SuccessUpgrade from './components/SuccessUpgrade';
 import RegularButton from '@shared/components/Buttons/Regular';
+import CustomBottomSheet from '@shared/components/BottomSheet';
+import { FlatList, Linking, ScrollView, View } from 'react-native';
 
 // Utilities
 import { t } from '@app/i18n';
@@ -29,8 +31,7 @@ import { selectCurrentOfferings } from '@redux/app/slice';
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import CustomBottomSheet from '@shared/components/BottomSheet';
-import { ms } from 'react-native-size-matters';
+import { isTablet } from '@shared/utils';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`subscription.${key}`, options);
@@ -137,16 +138,16 @@ const SubscriptionsScreen = () => {
       <View style={styles.titleAndBenefits}>
         <Text variant="h4">{_t('discover_more_with_premium')}</Text>
 
-        <View style={styles.benefits}>
+        <ScrollView style={styles.benefits}>
           {_.map(benefits, (benefit, index) => (
             <View key={index} style={styles.benefit}>
-              <CheckIcon fill={theme.colors.primary} />
-              <Text variant="xLarge" style={styles.benefitText}>
+              <Icon name="check" color={theme.colors.primary} />
+              <Text variant={isTablet ? 'xLarge' : 'h5'} style={styles.benefitText}>
                 {_t(`benefits.${benefit}`)}
               </Text>
             </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
 
       <View style={styles.plansContainer}>
@@ -179,7 +180,12 @@ const SubscriptionsScreen = () => {
           />
         )}
 
-        <RegularButton title={_t('continue')} onPress={handlePurchasePackage} />
+        <RegularButton
+          title={_t('continue')}
+          onPress={handlePurchasePackage}
+          textStyle={{ lineHeight: s(16) }}
+          subtitle={_t('auto_renewal_cancel_anytime')}
+        />
         <RegularButton variant="text" title={_t('restore_purchases')} onPress={handleRestorePurchase} />
       </View>
 

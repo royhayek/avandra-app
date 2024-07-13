@@ -4,11 +4,11 @@ import React from 'react';
 import { ms } from 'react-native-size-matters';
 
 // Components
+import Icon from '@shared/components/Icon';
 import FastImage from 'react-native-fast-image';
 import { IconButton, Text } from 'react-native-paper';
 import { TouchableOpacity, View } from 'react-native';
 import { StarRatingDisplay } from 'react-native-star-rating-widget';
-import { CircleAddDarkIcon, CircleAddLightIcon, CircleCheckIcon } from '@shared/assets/icons';
 
 // Utilities
 import makeStyles from './styles';
@@ -64,11 +64,11 @@ const EventAdditionItem: React.FC<EventAdditionItemProps> = ({ item, onAddPress 
         onPress={() => onAddPress(item)}
         icon={() =>
           item?.selected ? (
-            <CircleCheckIcon />
+            <Icon name="circleCheck" />
           ) : theme.dark ? (
-            <CircleAddDarkIcon {...iconProps} />
+            <Icon name="circleAddDark" {...iconProps} />
           ) : (
-            <CircleAddLightIcon {...iconProps} />
+            <Icon name="circleAddLight" {...iconProps} />
           )
         }
       />

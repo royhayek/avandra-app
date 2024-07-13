@@ -1,13 +1,14 @@
 // Packages
 import _ from 'lodash';
+import { ms } from 'react-native-size-matters';
 import React, { useCallback, useRef, useState } from 'react';
 
 // Components
-import { TouchableOpacity, View } from 'react-native';
-import Input from '@shared/components/Input';
+import Icon from '@shared/components/Icon';
 import { Formik, FormikProps } from 'formik';
-import { EyeIcon, LockIcon } from '@shared/assets/icons';
-import { IconButton, Modal, Portal, Text } from 'react-native-paper';
+import Input from '@shared/components/Input';
+import { TouchableOpacity, View } from 'react-native';
+import { Modal, Portal, Text } from 'react-native-paper';
 import RegularButton from '@shared/components/Buttons/Regular';
 
 // Utilities
@@ -101,11 +102,19 @@ const PasswordChangeModal: React.FC<AccountDeletionModalProps> = ({ visible, onC
   };
 
   // Renderers
-  const renderViewIconBtn = (type) => (
-    <TouchableOpacity onPress={() => handleViewPress(type)}>
-      <EyeIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
-    </TouchableOpacity>
-  );
+  const renderViewIconBtn = (type: 'currentPassword' | 'password' | 'confPassword') => {
+    const shown = shownPassword === type;
+
+    return (
+      <TouchableOpacity onPress={() => handleViewPress(type)}>
+        <Icon
+          name={shown ? 'hide' : 'show'}
+          size={ms(20)}
+          color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Portal>
@@ -135,7 +144,9 @@ const PasswordChangeModal: React.FC<AccountDeletionModalProps> = ({ visible, onC
                 placeholder={t('profile.current_password')}
                 rightIcon={renderViewIconBtn('currentPassword')}
                 secureTextEntry={!shownPassword || shownPassword !== 'currentPassword'}
-                leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon name="lock" size={ms(18)} color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
 
               <Input
@@ -147,7 +158,9 @@ const PasswordChangeModal: React.FC<AccountDeletionModalProps> = ({ visible, onC
                 placeholder={t('profile.new_password')}
                 rightIcon={renderViewIconBtn('password')}
                 secureTextEntry={!shownPassword || shownPassword !== 'password'}
-                leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon name="lock" size={ms(18)} color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
 
               <Input
@@ -159,7 +172,9 @@ const PasswordChangeModal: React.FC<AccountDeletionModalProps> = ({ visible, onC
                 placeholder={t('profile.conf_password')}
                 rightIcon={renderViewIconBtn('confPassword')}
                 secureTextEntry={!shownPassword || shownPassword !== 'confPassword'}
-                leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon name="lock" size={ms(18)} color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
             </View>
           )}

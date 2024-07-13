@@ -22,7 +22,7 @@ import { ArticleProps } from '@shared/types/Article';
 interface PopularListItemProps {
   type: string;
   item: ArticleProps;
-  isLoading: boolean;
+  isLoading?: boolean;
   disabled?: boolean;
   noPadding?: boolean;
   orientation: string | undefined;
@@ -63,7 +63,7 @@ const PopularListItem: React.FC<PopularListItemProps> = ({
   }
 
   return (
-    <TouchableOpacity key={item?._id} onPress={handleNavigateDetailsScreen} style={styles.button} disabled={disabled}>
+    <TouchableOpacity key={item?._id} style={styles.button} onPress={handleNavigateDetailsScreen} disabled={disabled}>
       <FastImage
         resizeMode="cover"
         style={styles.image}

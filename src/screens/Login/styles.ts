@@ -1,9 +1,10 @@
 // Packages
 import { StyleSheet } from 'react-native';
-import { ms, mvs } from 'react-native-size-matters';
+import { ms, mvs, s } from 'react-native-size-matters';
 
 // Utilities
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -18,6 +19,7 @@ export default (theme: AppTheme) =>
       top: mvs(48),
       left: ms(24),
       right: ms(24),
+      zIndex: 1000,
       position: 'absolute',
       flexDirection: 'row',
       alignItems: 'flex-start'
@@ -32,8 +34,8 @@ export default (theme: AppTheme) =>
       marginBottom: mvs(12)
     },
     socialButtons: {
-      gap: 28,
-      marginHorizontal: ms(24)
+      marginHorizontal: ms(24),
+      gap: isTablet ? mvs(20) : mvs(28)
     },
     infoPages: {
       alignItems: 'center',
@@ -45,13 +47,13 @@ export default (theme: AppTheme) =>
       marginHorizontal: ms(32)
     },
     forgotPassText: {
-      lineHeight: 18,
+      lineHeight: s(18),
       textAlign: 'right',
       color: theme.colors.primary,
       fontFamily: 'urbanist-semibold'
     },
     noAccountText: {
-      marginTop: 16,
+      marginTop: mvs(16),
       textAlign: 'center',
       fontFamily: 'urbanist-semibold'
     },

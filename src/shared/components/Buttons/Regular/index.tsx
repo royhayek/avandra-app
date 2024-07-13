@@ -15,6 +15,7 @@ import { useAppTheme } from '@shared/assets/theme';
 
 interface RegularButtonProps extends TouchableOpacityProps {
   title?: string;
+  subtitle?: string;
   loading?: boolean;
   fullWidth?: boolean;
   disabled?: boolean;
@@ -35,6 +36,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
   onPress,
   loading,
   endIcon,
+  subtitle,
   startIcon,
   textStyle,
   title = 'Submit',
@@ -73,7 +75,7 @@ const RegularButton: React.FC<RegularButtonProps> = ({
   if (_.isEqual(variant, 'text')) {
     return (
       <Button loading={loading} disabled={loading} onPress={onPress} style={[styles.button, style]}>
-        <Text variant="medium" style={[styles.buttonLabelStyle, textStyle]}>
+        <Text variant="medium" style={textStyle}>
           {title}
         </Text>
       </Button>
@@ -82,25 +84,37 @@ const RegularButton: React.FC<RegularButtonProps> = ({
 
   if (_.isEqual(variant, 'secondary')) {
     return (
-      <Button
+      <TouchableOpacity
         onPress={onPress}
         loading={loading}
         disabled={loading}
         style={[styles.button, styles.secondaryButton, style]}>
-        <Text variant="large" style={[styles.buttonLabelStyle, styles.secondaryButtonLabel]}>
+        <Text variant="large" style={styles.secondaryButtonLabel}>
           {title}
         </Text>
-      </Button>
+      </TouchableOpacity>
     );
   }
 
   // Renderers
   return (
-    <Button loading={loading} disabled={loading} onPress={onPress} style={[styles.button, styles.primaryButton, style]}>
-      <Text variant="large" style={[styles.buttonLabelStyle, styles.primaryButtonLabel]}>
-        {title}
-      </Text>
-    </Button>
+    <TouchableOpacity
+      loading={loading}
+      disabled={loading}
+      onPress={onPress}
+      style={[styles.button, styles.primaryButton, style]}>
+      <View style={styles.buttonContainer}>
+        <Text variant="large" style={[styles.primaryButtonLabel, textStyle]}>
+          {title}
+        </Text>
+
+        {subtitle && (
+          <Text variant="small" style={styles.subtitle}>
+            {subtitle}
+          </Text>
+        )}
+      </View>
+    </TouchableOpacity>
   );
 };
 

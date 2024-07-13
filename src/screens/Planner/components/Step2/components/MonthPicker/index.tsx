@@ -1,6 +1,7 @@
 // Packages
 import _ from 'lodash';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 import { Fontisto } from '@expo/vector-icons';
 import { ms } from 'react-native-size-matters';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -14,7 +15,7 @@ import { t } from '@app/i18n';
 import makeStyles from './styles';
 import { useAppSelector } from '@app/store';
 import { useAppTheme } from '@shared/assets/theme';
-import { selectPlannerPayload } from '@redux/planner/slice';
+import { plannerActions, selectPlannerPayload } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
@@ -29,6 +30,8 @@ const _t = (key: string, options?: TranslateOptions) => t(`planner.step2.${key}`
 
 const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
   // Redux
+  const dispatch = useDispatch();
+
   const plannerPayload = useAppSelector(selectPlannerPayload);
 
   // Statics
@@ -69,8 +72,11 @@ const MonthPicker: React.FC<MonthPickerProps> = ({ value, setValue }) => {
       const index = _.indexOf(upcomingMonths, selectedMonth);
 
       if (index !== -1) listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.5 });
+    } else {
+      dispatch(plannerActions.setPayload({ selectedMonth: _.first(upcomingMonths) }));
     }
-  }, [plannerPayload, upcomingMonths]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Renderers
   return (

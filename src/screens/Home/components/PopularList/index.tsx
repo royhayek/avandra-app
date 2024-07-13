@@ -23,6 +23,9 @@ import { selectDestinationLoading, selectPopularDestinations } from '@redux/dest
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import Icon from '@shared/components/Icon';
+import { isTablet } from '@shared/utils';
+import { ms, mvs } from 'react-native-size-matters';
 
 interface PopularListProps {
   type: string;
@@ -74,6 +77,10 @@ const PopularList: React.FC<PopularListProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Render Vars
+  const enabledDestinations = _.filter(popularDestinations, (destination) => destination?.enabled);
+  const enabledArticles = _.filter(popularArticles, (article) => article?.enabled);
+
   // Renderers
   const renderHeader = () => {
     return (
@@ -84,7 +91,11 @@ const PopularList: React.FC<PopularListProps> = ({
             <Text variant="large" style={styles.viewAllText}>
               {_t('view_all')}
             </Text>
-            <RightArrowPrimary transform={[{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }]} />
+            <Icon
+              name="arrowRight"
+              color={theme.colors.primary}
+              transform={[{ rotateY: i18n.locale === 'ar' ? '180deg' : '0deg' }]}
+            />
           </TouchableOpacity>
         </View>
       )
@@ -97,8 +108,8 @@ const PopularList: React.FC<PopularListProps> = ({
         {_.times(2, (i) => (
           <View key={i}>
             <Shimmer style={styles.shimmerImage} />
-            <Shimmer width={130} style={styles.shimmerTitle} />
-            <Shimmer width={80} style={styles.shimmerSubtitle} />
+            <Shimmer width={ms(130)} style={styles.shimmerTitle} />
+            <Shimmer width={mvs(80)} style={styles.shimmerSubtitle} />
           </View>
         ))}
       </View>
@@ -107,8 +118,10 @@ const PopularList: React.FC<PopularListProps> = ({
         horizontal={isHorizontal}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        numColumns={!isHorizontal && isTablet ? 2 : 1}
         contentContainerStyle={styles.flatListContainer}
-        data={isDestinations ? popularDestinations : popularArticles}
+        columnWrapperStyle={!isHorizontal && isTablet && { gap: ms(10), paddingHorizontal: ms(16) }}
+        data={isDestinations ? enabledDestinations : enabledArticles}
         renderItem={({ item }) => <PopularListItem type={type} item={item} orientation={orientation} />}
       />
     );

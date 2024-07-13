@@ -16,6 +16,7 @@ import RegularButton from '@shared/components/Buttons/Regular';
 // Utilities
 import { t } from '@app/i18n';
 import makeStyles from './styles';
+import { isTablet } from '@shared/utils';
 import { useAppSelector } from '@app/store';
 import { PUBLIC_URL } from '@shared/constants';
 import { useAppTheme } from '@shared/assets/theme';
@@ -37,6 +38,7 @@ const OnBoarding = () => {
   const swiperRef = useRef<Swiper>(null);
 
   const [index, setIndex] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
 
   // Callbacks
   const navigateToLogin = useCallback(async () => {
@@ -48,6 +50,11 @@ const OnBoarding = () => {
     const seenWalkthrough = await AsyncStorage.getItem('seenWalkthrough');
     if (seenWalkthrough) navigateToLogin();
   }, [navigateToLogin]);
+
+  const handleContentLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    setContentHeight(height);
+  };
 
   const handleOnIndexChanged = useCallback((i: number) => setIndex(i), []);
 
@@ -86,7 +93,7 @@ const OnBoarding = () => {
         />
       </View>
 
-      <View style={styles.bottomBackground}>
+      <View style={[styles.bottomBackground, { height: contentHeight + 100 }]}>
         <FastImage
           resizeMode="stretch"
           style={styles.contentImage}
@@ -100,8 +107,8 @@ const OnBoarding = () => {
         <View style={styles.content}>
           <Swiper ref={swiperRef} pagingEnabled showsPagination loop={false} onIndexChanged={handleOnIndexChanged}>
             {_.map(walkthroughList, ({ title, description }) => (
-              <View key={title} style={{ flex: 1 }}>
-                <Text variant="h3" style={styles.title}>
+              <View key={title} onLayout={handleContentLayout}>
+                <Text variant={isTablet ? 'h4' : 'h3'} style={styles.title}>
                   {title}
                 </Text>
                 <Text variant="xLarge" style={styles.description}>
@@ -116,14 +123,8 @@ const OnBoarding = () => {
                     style={styles.button}
                     onPress={handleBackOrSkipPress}
                     title={index > 0 ? t('common.back') : t('common.skip')}
-                    backgroundColors={[theme.colors.lightGray, theme.colors.lightGray]}
                   />
-                  <RegularButton
-                    style={styles.button}
-                    title={t('common.continue')}
-                    onPress={handleContinuePress}
-                    backgroundColors={[theme.colors.primary, theme.colors.primary]}
-                  />
+                  <RegularButton style={styles.button} title={t('common.continue')} onPress={handleContinuePress} />
                 </View>
               </View>
             ))}

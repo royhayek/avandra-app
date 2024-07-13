@@ -7,5 +7,6 @@ export interface FaqProps {
   answer: string;
   question: string;
   category: string;
+  enabled: boolean;
   language: LanguageProps;
 }

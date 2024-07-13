@@ -45,6 +45,7 @@ const SubscriptionManager = () => {
 
       if (offerings.current !== null && offerings.current.availablePackages.length !== 0) {
         dispatch(appActions.setCurrentOffering(offerings.current.availablePackages));
+        dispatch(appActions.setMetadata(offerings.current.metadata));
       }
     } catch (e) {
       console.debug('[SubscriptionsScreen - useEffect - error] :: ', e);

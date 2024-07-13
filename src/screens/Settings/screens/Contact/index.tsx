@@ -1,14 +1,15 @@
 // Packages
 import _ from 'lodash';
+import { ms } from 'react-native-size-matters';
 import React, { useCallback, useRef } from 'react';
 
 // Components
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
+import Icon from '@shared/components/Icon';
 import Input from '@shared/components/Input';
 import { Formik, FormikProps } from 'formik';
 import Picker from '@shared/components/Picker';
-import { DownChevron } from '@shared/assets/icons';
 import RegularButton from '@shared/components/Buttons/Regular';
 import { ParamListBase, useNavigation } from '@react-navigation/native';
 
@@ -112,6 +113,7 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
 
       <Formik
         innerRef={formRef}
+        validateOnChange={false}
         onSubmit={handleFormSubmit}
         validationSchema={contactSchema}
         initialValues={formInitialValues}>
@@ -126,7 +128,13 @@ const ContactScreen: React.FC<FaqScreenProps> = () => {
               onPressOut={handleOpenTypePicker}
               handleChange={handleChange('type')}
               value={_.find(messageTypeOptions, { key: values.type })?.title}
-              rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+              rightIcon={
+                <Icon
+                  size={ms(20)}
+                  name="chevronDown"
+                  color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                />
+              }
             />
 
             <Input

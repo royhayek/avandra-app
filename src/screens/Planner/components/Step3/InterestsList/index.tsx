@@ -10,6 +10,7 @@ import { Chip } from 'react-native-paper';
 import makeStyles from './styles';
 import { useAppTheme } from '@shared/assets/theme';
 import { TravelOptionProps } from '@shared/types/TravelOption';
+import { isTablet } from '@shared/utils';
 
 // Interfaces
 interface InterestsListProps {
@@ -45,8 +46,8 @@ const InterestsList: React.FC<InterestsListProps> = ({ data, disabled, value, se
   return (
     <FlatList
       data={data}
-      numColumns={2}
       scrollEnabled={!disabled}
+      numColumns={isTablet ? 3 : 2}
       keyExtractor={(item) => item._id}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatList}

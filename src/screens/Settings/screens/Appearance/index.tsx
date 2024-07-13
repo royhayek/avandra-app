@@ -5,6 +5,7 @@ import React, { useCallback, useRef, useState } from 'react';
 // Components
 import { View } from 'react-native';
 import { RadioButton, Text } from 'react-native-paper';
+import UpgradeSheet from '@shared/components/UpgradeSheet';
 import CustomBottomSheet from '@shared/components/BottomSheet';
 import NavigationButton, { NavigationButtonProps } from '../../components/NavigationButton';
 
@@ -19,8 +20,6 @@ import { appActions, selectLanguage, selectSubscriptionState, selectThemeMode } 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import UpgradeSheet from '@shared/components/UpgradeSheet';
-import { PREMIUM_ENABLED } from '@shared/constants';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`settings.${key}`, options);
@@ -65,7 +64,7 @@ const AppearanceScreen = () => {
   }, [dispatch, handleLanguageSheetClose, language]);
 
   const handleTheme = useCallback(() => {
-    if (subscriptionState?.active || (!subscriptionState?.active && _.isEqual(theme, 'light')) || !PREMIUM_ENABLED) {
+    if (subscriptionState?.active || (!subscriptionState?.active && _.isEqual(theme, 'light'))) {
       dispatch(appActions.setThemeMode(theme));
     } else {
       upgradeSheetRef.current?.expand();

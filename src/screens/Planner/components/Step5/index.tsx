@@ -21,6 +21,8 @@ import { selectPlannerPayload, plannerActions } from '@redux/planner/slice';
 
 // Interfaces
 import { TranslateOptions } from 'i18n-js';
+import Icon from '@shared/components/Icon';
+import { ms, s } from 'react-native-size-matters';
 
 // Component
 const _t = (key: string, options?: TranslateOptions) => t(`planner.step5.${key}`, options);
@@ -50,18 +52,24 @@ const Step5 = () => {
       <Text variant="h5" style={styles.title}>
         {title}
       </Text>
-      <IconButton
-        size={15}
+      <Icon
+        name="edit"
+        size={ms(22)}
         style={styles.editIcon}
+        color={theme.colors.primary}
         onPress={() => onPress(key)}
-        icon={() => <EditIcon fill={theme.colors.primary} />}
       />
     </View>
   );
 
   const renderDestination = () => (
     <View style={styles.section}>
-      <LocationIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+      <Icon
+        name="location"
+        size={ms(22)}
+        style={styles.icon}
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+      />
 
       <View style={styles.flex1}>
         <Text variant="h5" style={styles.title}>
@@ -94,7 +102,12 @@ const Step5 = () => {
 
   const renderTraveler = () => (
     <View style={styles.section}>
-      <UsersIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+      <Icon
+        name="users"
+        size={ms(20)}
+        style={styles.icon}
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+      />
 
       <View style={styles.flex1}>
         {renderTitle('traveler', _t('party'), () => handleEditPress(0))}
@@ -107,7 +120,12 @@ const Step5 = () => {
 
   const renderTripDate = () => (
     <View style={styles.section}>
-      <CalendarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+      <Icon
+        name="calendar"
+        size={ms(20)}
+        style={styles.icon}
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+      />
 
       <View style={styles.flex1}>
         {renderTitle('date', _t('trip_dates'), () => handleEditPress(1))}
@@ -122,7 +140,12 @@ const Step5 = () => {
 
   const renderInterests = () => (
     <View style={styles.section}>
-      <StarIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+      <Icon
+        name="star"
+        size={ms(22)}
+        style={styles.icon}
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+      />
 
       <View style={styles.flex1}>
         {renderTitle('interests', _t('interest', { number: interests?.length }), () => handleEditPress(2))}
@@ -133,7 +156,12 @@ const Step5 = () => {
 
   const renderBudget = () => (
     <View style={styles.section}>
-      <MoneyBagIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+      <Icon
+        name="dollar"
+        size={ms(22)}
+        style={styles.icon}
+        color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+      />
 
       <View style={styles.flex1}>
         {renderTitle('bidget', _t('budget'), () => handleEditPress(3))}

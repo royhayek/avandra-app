@@ -1,9 +1,11 @@
 // Packages
 import _ from 'lodash';
+import { ms, s } from 'react-native-size-matters';
 import React, { useCallback, useState, useRef } from 'react';
 
 // Components
 import { Text } from 'react-native-paper';
+import Icon from '@shared/components/Icon';
 import { Formik, FormikProps } from 'formik';
 import Input from '@shared/components/Input';
 import FastImage from 'react-native-fast-image';
@@ -11,7 +13,6 @@ import { ScrollView, View } from 'react-native';
 import BackButton from '@shared/components/Buttons/Back';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RegularButton from '@shared/components/Buttons/Regular';
-import { DownChevron, LocationIcon, LockIcon, MessageIcon, ProfileIcon } from '@shared/assets/icons';
 import CountryPicker, { Country, DARK_THEME, DEFAULT_THEME } from '@theankur/react-native-country-picker-modal';
 
 // Utils
@@ -32,6 +33,7 @@ import { useAppDispatch, useAppSelector, useAppThunkDispatch } from '@app/store'
 // Interfaces
 import { SignUpFormValuesProps } from '@shared/types/SignUpForm';
 import { ProfileFormValuesProps } from '@shared/types/ProfileForm';
+import { TouchableOpacity } from 'react-native';
 
 interface RouteParams {
   screen: string;
@@ -55,6 +57,7 @@ const Profile = () => {
   const formRef = useRef<FormikProps<ProfileFormValuesProps> | null>(null);
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isOpenCountryPicker, setIsOpenCountryPicker] = useState(false);
 
   const route = useRoute();
@@ -108,6 +111,10 @@ const Profile = () => {
     [dispatch, dispatchThunk]
   );
 
+  const handleViewPassPress = useCallback(() => {
+    setIsPasswordShown((prev) => !prev);
+  }, []);
+
   // Renders
   const renderSignUpForm = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -132,7 +139,9 @@ const Profile = () => {
                 label={t('profile.full_name')}
                 handleChange={handleChange('name')}
                 placeholder={t('profile.full_name')}
-                leftIcon={<ProfileIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon size={ms(20)} name="profile" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
 
               <Input
@@ -143,18 +152,31 @@ const Profile = () => {
                 keyboardType="email-address"
                 placeholder={t('profile.email')}
                 handleChange={handleChange('email')}
-                leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon size={ms(20)} name="message" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
 
               <Input
                 name="password"
-                secureTextEntry
                 value={values.password}
                 error={errors.password}
                 label={t('profile.password')}
-                handleChange={handleChange('password')}
+                secureTextEntry={!isPasswordShown}
                 placeholder={t('profile.password')}
-                leftIcon={<LockIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                handleChange={handleChange('password')}
+                leftIcon={
+                  <Icon size={ms(20)} name="lock" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
+                rightIcon={
+                  <TouchableOpacity onPress={handleViewPassPress}>
+                    <Icon
+                      size={ms(20)}
+                      name={isPasswordShown ? 'hide' : 'show'}
+                      color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                    />
+                  </TouchableOpacity>
+                }
               />
 
               <Input
@@ -165,8 +187,22 @@ const Profile = () => {
                 onFocus={handleOpenCountryPicker}
                 placeholder={t('profile.country')}
                 handleChange={handleChange('country')}
-                leftIcon={<LocationIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
-                rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon
+                    size={ms(20)}
+                    name="location"
+                    onPress={handleOpenCountryPicker}
+                    color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                  />
+                }
+                rightIcon={
+                  <Icon
+                    size={ms(20)}
+                    name="chevronDown"
+                    onPress={handleOpenCountryPicker}
+                    color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                  />
+                }
               />
 
               {isOpenCountryPicker && (
@@ -218,7 +254,9 @@ const Profile = () => {
                 keyboardType="email-address"
                 placeholder={t('profile.email')}
                 handleChange={handleChange('email')}
-                leftIcon={<MessageIcon fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                leftIcon={
+                  <Icon size={ms(20)} name="message" color={theme.dark ? theme.colors.white : theme.colors.gray[900]} />
+                }
               />
 
               <Input
@@ -229,7 +267,13 @@ const Profile = () => {
                 onFocus={handleOpenCountryPicker}
                 placeholder={t('profile.country')}
                 handleChange={handleChange('country')}
-                rightIcon={<DownChevron fill={theme.dark ? theme.colors.white : theme.colors.gray[900]} />}
+                rightIcon={
+                  <Icon
+                    size={ms(20)}
+                    name="chevronDown"
+                    color={theme.dark ? theme.colors.white : theme.colors.gray[900]}
+                  />
+                }
               />
 
               {isOpenCountryPicker && (

@@ -5,6 +5,7 @@ import { Platform, StyleSheet } from 'react-native';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
+import { isTablet } from '@shared/utils';
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -22,7 +23,6 @@ export default (theme: AppTheme) =>
       left: 0,
       right: 0,
       bottom: 0,
-      // height: '48%',
       position: 'absolute',
       height:
         Device.deviceType === Device.DeviceType.PHONE ? (Platform.OS === 'android' ? mvs(400) : mvs(365)) : mvs(330)
@@ -30,8 +30,8 @@ export default (theme: AppTheme) =>
     content: {
       left: 0,
       right: 0,
-      top: mvs(70),
-      position: 'absolute'
+      position: 'absolute',
+      top: isTablet ? mvs(70) : mvs(80)
     },
     contentImage: {
       width: '100%',
@@ -40,7 +40,8 @@ export default (theme: AppTheme) =>
     title: {
       fontWeight: 'bold',
       textAlign: 'center',
-      paddingHorizontal: ms(20)
+      paddingHorizontal: ms(20),
+      marginTop: isTablet ? mvs(20) : 0
     },
     description: {
       textAlign: 'center',
@@ -52,6 +53,6 @@ export default (theme: AppTheme) =>
       marginBottom: mvs(24)
     },
     button: {
-      flex: 1
+      width: '50%'
     }
   });

@@ -261,7 +261,7 @@ const PlaceDetailsScreen: React.FC<PlaceDetailsScreenProps> = () => {
                   <Text
                     key={d}
                     variant="large"
-                    style={{ lineHeight: 18, fontFamily: currentDay ? 'urbanist-semibold' : 'urbanist-regular' }}>
+                    style={{ lineHeight: ms(18), fontFamily: currentDay ? 'urbanist-semibold' : 'urbanist-regular' }}>
                     {_.capitalize(d)}
                   </Text>
                 );

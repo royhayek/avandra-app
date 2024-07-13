@@ -1,11 +1,9 @@
 // Packages
+import { StyleSheet } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
-import { Dimensions, StyleSheet } from 'react-native';
 
 // Interfaces
 import { AppTheme } from '@shared/assets/theme';
-
-const windowWidth = Dimensions.get('window').width;
 
 export default (theme: AppTheme) =>
   StyleSheet.create({
@@ -16,13 +14,6 @@ export default (theme: AppTheme) =>
     },
     shareButton: {
       marginRight: ms(16)
-    },
-    image: {
-      bottom: 0,
-      width: windowWidth,
-      height: windowWidth,
-      position: 'absolute',
-      marginLeft: windowWidth / 2
     },
     content: {
       flex: 1,
