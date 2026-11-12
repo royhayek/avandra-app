@@ -41,3 +41,11 @@ ios/
 private_key.pepk
 credentials.json
 package-lock.json
+
+# Secrets and local logs
+.env
+.env.*
+!.env.example
+*.log
+logs/
+*-service-account*.json
